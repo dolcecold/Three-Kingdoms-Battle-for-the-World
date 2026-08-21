@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>천하결전 덱랩 · Light Concept</title>
+<style>
+:root{
+  --bg:#f6f7fb;--panel:#fff;--ink:#182033;--muted:#6f788a;--line:#e7eaf0;
+  --navy:#172a52;--navy-2:#223b70;--gold:#b98a34;--gold-bg:#fbf6ea;
+  --green:#2f7d54;--green-bg:#edf8f1;--red:#b94d4d;--red-bg:#fff0f0;
+  --amber:#a66a12;--amber-bg:#fff7e8;--blue:#3468a8;--blue-bg:#eef5ff;
+  --shadow:0 8px 28px rgba(27,38,66,.07);--r:16px;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR","Apple SD Gothic Neo",sans-serif;font-size:14px;line-height:1.45}
+button,input{font:inherit}button{cursor:pointer}.wrap{max-width:1180px;margin:0 auto;padding:0 18px 56px}
+.top{position:sticky;top:0;z-index:30;background:rgba(246,247,251,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.topin{max-width:1180px;margin:auto;padding:12px 18px 10px;display:flex;gap:14px;align-items:center}.brand{display:flex;align-items:center;gap:9px;min-width:max-content}.logo{width:34px;height:34px;border-radius:10px;background:var(--navy);color:#e7c573;display:grid;place-items:center;font-weight:900}.brand b{font-size:17px}.brand small{display:block;color:var(--muted);font-size:11px;margin-top:1px}
+.seasons{display:flex;background:#eceff5;border-radius:999px;padding:3px;margin-left:4px}.season{border:0;background:transparent;color:#6f788a;padding:6px 12px;border-radius:999px;font-weight:800}.season.on{background:#fff;color:var(--navy);box-shadow:0 1px 6px #0001}
+.spacer{flex:1}.search{width:min(320px,31vw);position:relative}.search input{width:100%;border:1px solid var(--line);background:#fff;border-radius:11px;padding:9px 12px 9px 34px;outline:none}.search:before{content:"⌕";position:absolute;left:11px;top:5px;font-size:22px;color:#7d8799}.ownedBtn{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:11px;padding:9px 12px;font-weight:800;white-space:nowrap}.ownedCount{color:var(--gold);margin-left:5px}
+.tabs{max-width:1180px;margin:auto;padding:0 18px;display:flex;gap:4px;overflow:auto;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tab{border:0;background:transparent;color:#687185;padding:10px 13px;border-bottom:3px solid transparent;font-weight:800;white-space:nowrap}.tab.on{color:var(--navy);border-color:var(--navy)}
+.page{display:none;padding-top:20px}.page.on{display:block}.heroTop{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:13px}.title h2{margin:0;font-size:22px;letter-spacing:-.4px}.title p{margin:4px 0 0;color:var(--muted);font-size:12px}.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:#fff;color:#667085;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700}.chip.on{border-color:#c9d4e8;background:#eef3fb;color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:15px}.deckHead{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.deckName{font-weight:900;font-size:17px;letter-spacing:-.2px}.badges{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}.badge{font-size:11px;padding:3px 7px;border-radius:999px;font-weight:800}.gold{background:var(--gold-bg);color:#87631f}.green{background:var(--green-bg);color:var(--green)}.red{background:var(--red-bg);color:var(--red)}.blue{background:var(--blue-bg);color:var(--blue)}
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:14px 0 13px}.hero{min-width:0;background:#f7f8fb;border:1px solid #eceef3;border-radius:11px;padding:10px 7px;text-align:center}.avatar{width:38px;height:38px;margin:0 auto 6px;border-radius:50%;display:grid;place-items:center;color:white;font-weight:900;background:linear-gradient(145deg,#314b7a,#192949)}.hero:nth-child(2) .avatar{background:linear-gradient(145deg,#8e6e3e,#4c3820)}.hero:nth-child(3) .avatar{background:linear-gradient(145deg,#556a4e,#2e412c)}.hero b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hero small{color:var(--muted);font-size:10px}
+.rows{border-top:1px solid var(--line)}.row{display:grid;grid-template-columns:58px 1fr;gap:9px;padding:7px 0;border-bottom:1px solid #f0f2f6}.row:last-child{border-bottom:0}.row strong{font-size:11px;color:#737d90}.row span{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.actions{display:flex;gap:7px;margin-top:12px}.btn{flex:1;border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px;font-weight:800;color:#465066}.btn.primary{background:var(--navy);border-color:var(--navy);color:#fff}
+.quick{display:grid;grid-template-columns:1.25fr .75fr;gap:12px;margin-top:12px}.summary{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px}.summaryRow{display:flex;align-items:center;gap:13px}.score{width:74px;height:74px;border-radius:50%;border:6px solid #eee3c8;display:grid;place-items:center;color:#9a721f;font-size:26px;font-weight:900;background:#fffaf0}.summary h3{margin:0 0 5px;font-size:17px}.summary p{margin:0;color:var(--muted);font-size:12px}.checks{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:13px}.check{background:#f7f8fb;border-radius:10px;padding:9px}.check b{display:block;font-size:14px}.check small{color:var(--muted)}
+.matrixBox{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}.matrixScroll{overflow:auto}.matrix{border-collapse:collapse;width:100%;min-width:720px;font-size:12px}.matrix th,.matrix td{padding:10px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);text-align:center}.matrix th{background:#f8f9fc;color:#596379;font-weight:800;position:sticky;top:0}.matrix th:first-child,.matrix td:first-child{text-align:left;min-width:130px;position:sticky;left:0;background:#fff;z-index:2}.matrix th:first-child{background:#f8f9fc;z-index:3}.fav{background:#edf8f1;color:#2b7a4e;font-weight:800}.even{background:#fff7e8;color:#9a6514;font-weight:800}.bad{background:#fff0f0;color:#ad4848;font-weight:800}.neutral{color:#9aa2b1}.legend{display:flex;gap:14px;justify-content:flex-end;padding:10px 13px;color:#6e7789;font-size:11px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}.dot.g{background:#43a36d}.dot.y{background:#e2a232}.dot.r{background:#d35959}
+.profileBar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.profile{border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px 10px;color:#677185;font-weight:800}.profile.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.indGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.algoCard .algoTop{display:flex;justify-content:space-between;align-items:center}.rank{font-size:11px;color:#8a6a2e;background:#fbf3df;border-radius:999px;padding:4px 8px;font-weight:900}.reason{margin-top:10px;background:#f7f8fb;padding:9px 10px;border-radius:10px;color:#5e687c;font-size:11px}.detailGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}.mini{background:#fafbfc;border:1px solid #edf0f4;border-radius:9px;padding:8px}.mini b{display:block;font-size:12px;margin-bottom:4px}.mini small{display:block;color:#6f788a;line-height:1.5}
+.empty{background:#fff;border:1px dashed #ccd3df;border-radius:var(--r);padding:32px;text-align:center;color:#798295}.empty b{display:block;color:#404a5e;margin-bottom:5px}
+.drawerShade{position:fixed;inset:0;background:#11182755;z-index:50;display:none}.drawerShade.on{display:block}.drawer{position:absolute;right:0;top:0;height:100%;width:min(430px,94vw);background:#fff;box-shadow:-10px 0 40px #0002;padding:18px;overflow:auto}.drawerHead{display:flex;align-items:center;justify-content:space-between;gap:10px}.drawerHead h3{margin:0;font-size:19px}.close{border:0;background:#f1f3f6;border-radius:9px;width:34px;height:34px;font-size:18px}.invTabs{display:flex;background:#f1f3f7;padding:3px;border-radius:10px;margin:15px 0 10px}.invTab{flex:1;border:0;background:transparent;border-radius:8px;padding:8px;color:#737d90;font-weight:800}.invTab.on{background:#fff;color:var(--navy);box-shadow:0 1px 5px #0001}.filters{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}.filter{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 9px;font-size:11px}.filter.on{background:#eef3fb;border-color:#cad6eb;color:var(--navy);font-weight:800}.inventory{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.pick{position:relative;border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 7px;text-align:left;min-height:65px}.pick.on{border-color:#7ebb99;background:#f0faf4}.pick.on:after{content:"✓";position:absolute;right:7px;top:6px;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:#3b9361;color:#fff;font-size:11px}.pick b{display:block;margin-bottom:4px}.pick small{color:#7b8496}.notice{font-size:11px;color:#7a8496;margin:10px 0 0}.saveBar{position:sticky;bottom:0;background:#fff;padding-top:12px;margin-top:16px;border-top:1px solid var(--line);display:flex;gap:7px}.saveBar button{flex:1}
+.toast{position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);background:#172a52;color:#fff;padding:9px 13px;border-radius:999px;z-index:80;opacity:0;pointer-events:none;transition:.2s;font-size:12px}.toast.on{opacity:1;transform:translate(-50%,0)}
+@media(max-width:900px){.grid{grid-template-columns:1fr 1fr}.grid .card:last-child{display:none}.quick{grid-template-columns:1fr}.indGrid{grid-template-columns:1fr}.search{display:none}}
+@media(max-width:640px){body{font-size:13px}.wrap{padding-left:12px;padding-right:12px}.topin,.tabs{padding-left:12px;padding-right:12px}.brand small{display:none}.brand b{font-size:15px}.logo{width:31px;height:31px}.seasons{margin-left:0}.season{padding:5px 9px}.ownedBtn{padding:8px 9px}.grid{grid-template-columns:1fr}.grid .card:last-child{display:block}.heroTop{align-items:flex-start;flex-direction:column}.title h2{font-size:20px}.card{padding:13px}.checks{grid-template-columns:1fr 1fr}.team{gap:5px}.row{grid-template-columns:53px 1fr}.detailGrid{grid-template-columns:1fr}.inventory{grid-template-columns:1fr 1fr}.tab{padding:9px 10px}.summaryRow{align-items:flex-start}.score{width:64px;height:64px;font-size:23px;flex:0 0 auto}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="topin">
+    <div class="brand"><div class="logo">天</div><div><b>천하결전 덱랩</b><small>가볍게 보는 덱 추천</small></div></div>
+    <div class="seasons"><button class="season" data-season="S1">S1</button><button class="season" data-season="S2">S2</button></div>
+    <div class="spacer"></div>
+    <label class="search"><input id="search" placeholder="장수·전법·덱 검색" /></label>
+    <button class="ownedBtn" id="openOwned">보유 설정 <span class="ownedCount" id="ownedCount">0</span></button>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="tab" data-tab="meta">추천 덱</button>
+    <button class="tab" data-tab="independent">내 카드 추천</button>
+    <button class="tab" data-tab="counter">상성표</button>
+  </nav>
+</div>
+
+<main class="wrap">
+  <section class="page" id="page-meta">
+    <div class="heroTop"><div class="title"><h2>추천 덱</h2><p>사람들이 많이 쓰는 시즌 조합 · 확인된 세팅 중심</p></div><div class="chips" id="metaFilters"><button class="chip on" data-filter="all">전체</button><button class="chip" data-filter="대표">대표</button><button class="chip" data-filter="뉴메타">새 조합</button><button class="chip" data-filter="개척">초반</button></div></div>
+    <div class="grid" id="metaGrid"></div>
+  </section>
+
+  <section class="page" id="page-independent">
+    <div class="heroTop"><div class="title"><h2>내 카드 추천</h2><p>보유 장수와 전법만 보고 알고리즘이 직접 조합</p></div><button class="ownedBtn" id="openOwned2">보유 카드 바꾸기</button></div>
+    <div class="profileBar" id="profiles">
+      <button class="profile on" data-profile="general">균형</button><button class="profile" data-profile="physrush">빠른 공격</button><button class="profile" data-profile="tactstatus">책략·상태</button><button class="profile" data-profile="multichase">추격</button><button class="profile" data-profile="sustain">버티기</button>
+    </div>
+    <div class="indGrid" id="indGrid"></div>
+  </section>
+
+  <section class="page" id="page-counter">
+    <div class="heroTop"><div class="title"><h2>상성표</h2><p>한눈에 보는 유리 · 비슷 · 불리</p></div></div>
+    <div class="matrixBox"><div class="matrixScroll"><table class="matrix" id="matrix"></table></div><div class="legend"><span><i class="dot g"></i>유리</span><span><i class="dot y"></i>비슷</span><span><i class="dot r"></i>불리</span></div></div>
+  </section>
+</main>
+
+<div class="drawerShade" id="drawerShade">
+  <aside class="drawer" role="dialog" aria-modal="true" aria-label="보유 카드 설정">
+    <div class="drawerHead"><div><h3>보유 카드</h3><div class="notice">선택 내용은 이 브라우저에 자동 저장됩니다.</div></div><button class="close" id="closeOwned">×</button></div>
+    <div class="invTabs"><button class="invTab on" data-mode="hero">장수</button><button class="invTab" data-mode="tactic">전법</button></div>
+    <div class="filters" id="invFilters"></div>
+    <div class="inventory" id="inventory"></div>
+    <div class="saveBar"><button class="btn" id="clearOwned">전체 해제</button><button class="btn primary" id="doneOwned">완료</button></div>
+  </aside>
+</div>
+<div class="toast" id="toast">저장되었습니다</div>
+
+<script>
+const DEMO={
+ heroes:[
+  ['마초','촉','병기'],['주태','오','방어'],['원소','군','보조'],['조조','위','보조'],['순욱','위','보조'],['사마의','위','책략'],['감부인','촉','치유'],['조운','촉','병기'],['초선','군','보조'],['여포','군','병기'],['진궁','군','책략'],['악진','위','병기'],['노숙','오','보조'],['손권','오','보조'],['육손','오','책략'],['유비','촉','치유'],['관우','촉','병기'],['장비','촉','병기'],['제갈량','촉','책략'],['대교','오','치유'],['주유','오','책략'],['황개','오','방어'],['태사자','오','병기'],['황충','촉','병기']
+ ].map(x=>({name:x[0],faction:x[1],role:x[2]})),
+ tactics:['요새 함락','연전연승','예리한 통찰','세금 과징수','난공불락','천하평론','허점 공략','준비 완료','고요한 제압','청낭 치료','음과 양','허실 간파','청천벽력','무방비 공격','보급 차단','칠군수몰','압도적 승리','화공전술','파죽지세','청풍 질주','신의 가호','철벽 방어','기문둔갑','최상의 지략'].map((name,i)=>({name,type:i%3===0?'병기':i%3===1?'책략':'보조'})),
+ meta:{
+  S1:[
+   {id:'dahuang',name:'대황제',team:['제갈량','황개','대교'],cat:'대표',tags:['안정','책략'],formation:'추형진',counter:'속공',skills:'압도적 승리 · 칠군수몰',laws:'출사표 · 시리 · 탈계',troop:'추천 세팅',gear:'지력 · 통솔',horse:'자료 기준',score:97},
+   {id:'chungui',name:'충의궁',team:['유비','장비','황충'],cat:'대표',tags:['유지력','병기'],formation:'기형진',counter:'회복 차단',skills:'청낭 치료 · 칠군수몰',laws:'지원 · 공격',troop:'추천 세팅',gear:'통솔 · 무력',horse:'자료 기준',score:95},
+   {id:'dowon',name:'도원',team:['유비','관우','장비'],cat:'대표',tags:['균형','안정'],formation:'기형진',counter:'책략 누적',skills:'보급 차단 · 압도적 승리',laws:'지원 · 공격',troop:'추천 세팅',gear:'통솔 · 무력',horse:'자료 기준',score:91}
+  ],
+  S2:[
+   {id:'s2_mjwon',name:'마초·주태·원소',team:['마초','주태','원소'],cat:'대표',tags:['빠른 공격','높은 생존'],formation:'안형진',counter:'지속 책략 · 보호 무시',skills:'요새 함락 · 연전연승 · 난공불락',laws:'철기 · 시리 · 역전',troop:'경기병 · 장궁병',gear:'무력/선공 · 통솔',horse:'공식 미제공',score:100},
+   {id:'s2_caosima',name:'조조·순욱·사마의',team:['조조','순욱','사마의'],cat:'대표',tags:['안정','책략 후반'],formation:'기형진',counter:'초고선공 병기',skills:'허점 공략 · 음과 양 · 청천벽력',laws:'합모 · 병령 · 귀모',troop:'중방패병 · 검방패병',gear:'지력/통솔 중심',horse:'공식 미제공',score:100},
+   {id:'s2_ganzhao',name:'감부인·조운·초선',team:['감부인','조운','초선'],cat:'대표',tags:['피신','회복'],formation:'추형진',counter:'명중 · 제어 · 회복 차단',skills:'회복 · 피신 · 반응형 피해',laws:'피신/생존 중심',troop:'진급 병종',gear:'주력 속성 중심',horse:'공식 미제공',score:99},
+   {id:'s2_lvchen',name:'여포·진궁·악진',team:['여포','진궁','악진'],cat:'뉴메타',tags:['폭발','속공'],formation:'언월진',counter:'제어 · 보호',skills:'병기 폭발 · 선공 지원',laws:'공격 중심',troop:'진급 병종',gear:'무력/선공 중심',horse:'해외 보강 가능',score:96},
+   {id:'s2_lusun',name:'노숙·손권·육손',team:['노숙','손권','육손'],cat:'뉴메타',tags:['지속','책략'],formation:'기형진',counter:'초반 폭딜',skills:'상태 누적 · 책략 지원',laws:'책략 중심',troop:'진급 병종',gear:'지력/통솔 중심',horse:'해외 보강 가능',score:95},
+   {id:'s2_open1',name:'황개·손권·주유',team:['황개','손권','주유'],cat:'개척',tags:['초반','안정'],formation:'기형진',counter:'고폭발',skills:'칠군수몰 · 화공 계열',laws:'일부 미제공',troop:'일부 미제공',gear:'일부 미제공',horse:'미제공',score:88}
+  ]
+ },
+ independent:{
+  S1:[
+   {team:['제갈량','황개','대교'],score:94,formation:'어린진',reasons:['딜-지원 역할 균형','회복+방어 유지력'],builds:{'제갈량':['압도적 승리','청천벽력'],'황개':['칠군수몰','천하평론'],'대교':['보급 차단','청낭 치료']}},
+   {team:['유비','관우','장비'],score:91,formation:'기형진',reasons:['핵심 딜러 보호','회복+방어 유지력'],builds:{'유비':['보급 차단','청낭 치료'],'관우':['압도적 승리','허점 공략'],'장비':['칠군수몰','무방비 공격']}}
+  ],
+  S2:[
+   {team:['조조','순욱','사마의'],score:98,formation:'기형진',reasons:['상태 딜러-책략 지원 연동','회복+방어 유지력'],builds:{'조조':['허점 공략','고요한 제압'],'순욱':['청낭 치료','음과 양'],'사마의':['허실 간파','청천벽력']}},
+   {team:['감부인','조운','초선'],score:96,formation:'추형진',reasons:['피신 공급-트리거 연동','1캐리-2지원 집중 구조'],builds:{'감부인':['신의 가호','청낭 치료'],'조운':['요새 함락','연전연승'],'초선':['난공불락','음과 양']}},
+   {team:['여포','진궁','악진'],score:94,formation:'언월진',reasons:['선공 지원-딜러 연동','딜-지원 역할 균형'],builds:{'여포':['요새 함락','무방비 공격'],'진궁':['허실 간파','청천벽력'],'악진':['연전연승','허점 공략']}},
+   {team:['노숙','손권','육손'],score:92,formation:'기형진',reasons:['상태 연쇄','책략 지원 연동'],builds:{'노숙':['음과 양','청낭 치료'],'손권':['허점 공략','난공불락'],'육손':['청천벽력','화공전술']}}
+  ]
+ },
+ counter:{
+  S1:['대황제','충의궁','도원'],
+  S2:['마초·주태·원소','조조·순욱·사마의','감부인·조운·초선','여포·진궁·악진','노숙·손권·육손']
+ }
+};
+
+const KEY='tianxia.decklab.light.v1';
+const defaults={season:'S2',tab:'meta',profile:'general',metaFilter:'all',inventoryMode:'hero',inventoryFilter:'전체',ownedHeroes:['마초','주태','원소','조조','순욱','사마의','감부인','조운','초선'],ownedTactics:['요새 함락','연전연승','난공불락','허점 공략','청낭 치료','음과 양','허실 간파','청천벽력']};
+let state=load();
+function load(){try{return {...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return {...defaults}}}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));renderCount()}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function toast(msg='자동 저장됨'){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('on'),1100)}
+function initials(n){return n.slice(0,2)}
+function heroInfo(n){return DEMO.heroes.find(x=>x.name===n)||{name:n,faction:'',role:''}}
+function renderNav(){document.querySelectorAll('.season').forEach(b=>b.classList.toggle('on',b.dataset.season===state.season));document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===state.tab));document.querySelectorAll('.page').forEach(p=>p.classList.toggle('on',p.id==='page-'+state.tab));}
+function renderCount(){document.getElementById('ownedCount').textContent=state.ownedHeroes.length+'명'}
+function heroBoxes(team){return `<div class="team">${team.map(n=>{const h=heroInfo(n);return `<div class="hero"><div class="avatar">${esc(initials(n))}</div><b>${esc(n)}</b><small>${esc(h.faction)} · ${esc(h.role)}</small></div>`}).join('')}</div>`}
+function metaCard(d){const owned=d.team.filter(n=>state.ownedHeroes.includes(n)).length;return `<article class="card" data-search="${esc([d.name,...d.team,d.skills,d.laws,d.formation].join(' '))}"><div class="deckHead"><div><div class="deckName">${esc(d.name)}</div><div class="badges"><span class="badge gold">${esc(d.cat)}</span>${d.tags.map((x,i)=>`<span class="badge ${i?'green':'blue'}">${esc(x)}</span>`).join('')}</div></div><span class="badge ${owned===3?'green':'gold'}">보유 ${owned}/3</span></div>${heroBoxes(d.team)}<div class="rows"><div class="row"><strong>주요 전법</strong><span>${esc(d.skills)}</span></div><div class="row"><strong>병법</strong><span>${esc(d.laws)}</span></div><div class="row"><strong>진형</strong><span>${esc(d.formation)}</span></div><div class="row"><strong>병종</strong><span>${esc(d.troop)}</span></div><div class="row"><strong>장비</strong><span>${esc(d.gear)}</span></div><div class="row"><strong>말</strong><span>${esc(d.horse)}</span></div></div><div class="actions"><button class="btn" onclick="goCounter()">상성 보기</button><button class="btn primary" onclick="useTeam(${JSON.stringify(d.team).replace(/"/g,'&quot;')})">이 덱 선택</button></div></article>`}
+function renderMeta(){document.querySelectorAll('#metaFilters .chip').forEach(b=>b.classList.toggle('on',b.dataset.filter===state.metaFilter));let data=DEMO.meta[state.season]||[];if(state.metaFilter!=='all')data=data.filter(d=>d.cat===state.metaFilter);const q=document.getElementById('search').value.trim().toLowerCase();if(q)data=data.filter(d=>[d.name,...d.team,d.skills,d.laws,d.formation].join(' ').toLowerCase().includes(q));document.getElementById('metaGrid').innerHTML=data.length?data.map(metaCard).join(''):`<div class="empty" style="grid-column:1/-1"><b>조건에 맞는 추천 덱이 없어요.</b>필터나 검색어를 바꿔보세요.</div>`}
+function profileLabel(p){return {general:'균형',physrush:'빠른 공격',tactstatus:'책략·상태',multichase:'추격',sustain:'버티기'}[p]||p}
+function algoCard(d,i){const owned=d.team.filter(n=>state.ownedHeroes.includes(n)).length;const pct=Math.max(1,Math.round((100-d.score)*.7+3));return `<article class="card algoCard"><div class="algoTop"><div><div class="deckName">${d.team.join(' · ')}</div><div class="badges"><span class="badge blue">${profileLabel(state.profile)}</span><span class="badge green">보유 ${owned}/3</span></div></div><span class="rank">추천 ${i+1}위</span></div>${heroBoxes(d.team)}<div class="summaryRow"><div class="score">${d.score}</div><div><h3>상위 약 ${pct}%</h3><p>${esc(d.formation)} · ${esc(d.reasons[0])}</p></div></div><div class="detailGrid">${d.team.map(n=>`<div class="mini"><b>${esc(n)}</b><small>전법 · ${(d.builds[n]||[]).map(esc).join(' / ')}</small><small>병법 · 역할 맞춤 추천</small><small>장비·말 · 특성 기반 추천</small></div>`).join('')}</div><div class="reason">${d.reasons.map(esc).join(' · ')}</div><div class="actions"><button class="btn" onclick="goCounter()">상성 보기</button><button class="btn primary" onclick="useTeam(${JSON.stringify(d.team).replace(/"/g,'&quot;')})">이 덱 선택</button></div></article>`}
+function renderIndependent(){document.querySelectorAll('.profile').forEach(b=>b.classList.toggle('on',b.dataset.profile===state.profile));let data=(DEMO.independent[state.season]||[]).filter(d=>d.team.every(n=>!state.ownedHeroes.length||state.ownedHeroes.includes(n)));if(!data.length){document.getElementById('indGrid').innerHTML=`<div class="empty" style="grid-column:1/-1"><b>현재 보유 장수로 3인 조합을 만들 수 없어요.</b>보유 설정에서 장수를 더 선택해 주세요.</div>`;return}document.getElementById('indGrid').innerHTML=data.map(algoCard).join('')}
+function outcome(i,j){if(i===j)return['neutral','—'];const v=(i*7+j*11+state.season.charCodeAt(1))%5;return v<2?['fav','유리']:v<4?['even','비슷']:['bad','불리']}
+function renderCounter(){const a=DEMO.counter[state.season]||[];let html='<thead><tr><th>상대 덱 ↓ / 내 덱 →</th>'+a.map(x=>`<th>${esc(x)}</th>`).join('')+'</tr></thead><tbody>';a.forEach((r,i)=>{html+=`<tr><td><b>${esc(r)}</b></td>`;a.forEach((c,j)=>{const [cl,tx]=outcome(i,j);html+=`<td class="${cl}">${tx}</td>`});html+='</tr>'});html+='</tbody>';document.getElementById('matrix').innerHTML=html}
+function renderInventoryFilters(){const vals=state.inventoryMode==='hero'?['전체','위','촉','오','군']:['전체','병기','책략','보조'];document.getElementById('invFilters').innerHTML=vals.map(x=>`<button class="filter ${state.inventoryFilter===x?'on':''}" data-invfilter="${x}">${x}</button>`).join('')}
+function renderInventory(){renderInventoryFilters();const isHero=state.inventoryMode==='hero',list=isHero?DEMO.heroes:DEMO.tactics,selected=isHero?state.ownedHeroes:state.ownedTactics;let arr=list;if(state.inventoryFilter!=='전체')arr=arr.filter(x=>(isHero?x.faction:x.type)===state.inventoryFilter);document.getElementById('inventory').innerHTML=arr.map(x=>`<button class="pick ${selected.includes(x.name)?'on':''}" data-pick="${esc(x.name)}"><b>${esc(x.name)}</b><small>${esc(isHero?`${x.faction} · ${x.role}`:x.type)}</small></button>`).join('')}
+function fullRender(){renderNav();renderCount();renderMeta();renderIndependent();renderCounter();renderInventory()}
+function openOwned(){document.getElementById('drawerShade').classList.add('on');renderInventory()}
+function closeOwned(){document.getElementById('drawerShade').classList.remove('on')}
+function goCounter(){state.tab='counter';save();fullRender();window.scrollTo({top:0,behavior:'smooth'})}
+function useTeam(team){state.ownedHeroes=[...new Set([...state.ownedHeroes,...team])];save();fullRender();toast('장수를 보유 목록에 추가했어요')}
+window.goCounter=goCounter;window.useTeam=useTeam;
+
+document.addEventListener('click',e=>{
+ const s=e.target.closest('.season');if(s){state.season=s.dataset.season;save();fullRender();return}
+ const t=e.target.closest('.tab');if(t){state.tab=t.dataset.tab;save();fullRender();return}
+ const mf=e.target.closest('[data-filter]');if(mf){state.metaFilter=mf.dataset.filter;save();renderMeta();return}
+ const pr=e.target.closest('.profile');if(pr){state.profile=pr.dataset.profile;save();renderIndependent();return}
+ const it=e.target.closest('.invTab');if(it){state.inventoryMode=it.dataset.mode;state.inventoryFilter='전체';save();document.querySelectorAll('.invTab').forEach(x=>x.classList.toggle('on',x===it));renderInventory();return}
+ const fl=e.target.closest('[data-invfilter]');if(fl){state.inventoryFilter=fl.dataset.invfilter;save();renderInventory();return}
+ const pk=e.target.closest('[data-pick]');if(pk){const n=pk.dataset.pick,k=state.inventoryMode==='hero'?'ownedHeroes':'ownedTactics',a=new Set(state[k]);a.has(n)?a.delete(n):a.add(n);state[k]=[...a];save();renderInventory();renderIndependent();renderMeta();return}
+});
+document.getElementById('search').addEventListener('input',renderMeta);
+document.getElementById('openOwned').onclick=openOwned;document.getElementById('openOwned2').onclick=openOwned;document.getElementById('closeOwned').onclick=closeOwned;document.getElementById('doneOwned').onclick=()=>{closeOwned();toast('보유 카드가 저장됐어요')};
+document.getElementById('drawerShade').addEventListener('click',e=>{if(e.target.id==='drawerShade')closeOwned()});
+document.getElementById('clearOwned').onclick=()=>{if(state.inventoryMode==='hero')state.ownedHeroes=[];else state.ownedTactics=[];save();renderInventory();renderIndependent();renderMeta();toast('선택을 모두 해제했어요')};
+fullRender();
+</script>
+</body>
+</html>
