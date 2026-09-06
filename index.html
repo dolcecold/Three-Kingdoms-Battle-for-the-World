@@ -4958,4 +4958,382 @@ window.__AUDIT10634__=window.__AUDIT10642__;
 })();
 </script>
 
+
+<script>
+/* Audit106.43 EXP1 — duration-aware cleanse / status exposure Layer2.
+ * Scope:
+ *  - Model cleanse as reduction of REMAINING status exposure, not as a flat support bonus.
+ *  - 1-turn statuses receive zero cleanse credit: the first affected turn is treated as already spent.
+ *  - Active cleanse cannot rescue silence/fear/confusion that prevents or destabilizes its own action.
+ *  - Only unconditional, enemy-applied, explicitly named status nodes are scored.
+ *  - Persistent setup states (fire/flood/storm/burn/hex) use the attacker's existing status reliance.
+ *  - Disarm cleanse credit uses pursuit dependence only; generic physical output is NOT assumed to require basics.
+ *  - External matchup matrix remains validation-only; no coefficient is fit to it.
+ */
+(function(){
+'use strict';
+const A42=window.__AUDIT10642__,A36BASE=window.__AUDIT10636_BASE__,A29=window.__AUDIT10629__,A17=window.__AUDIT10617__,A95=window.__AUDIT95__;
+if(!A42||!A29||!A17||!A95)return;
+const E=A95.engine,ST=A95.state;
+let planCache={key:null,pack:null},featureCache=new WeakMap();
+const STATUS_TERMS=['침묵','공포','혼란','무장 해제','화공','홍수','폭풍','연소','요술','조롱','위협'];
+const PERSISTENT_SETUP=new Set(['화공','홍수','폭풍','연소','요술']);
+const ACTION_LOCK=new Set(['침묵','공포','혼란']);
+
+function feat(row){let f=featureCache.get(row);if(!f){f=A95.features(row);featureCache.set(row,f)}return f}
+function sig(team){return [...(team||[])].sort().join('|')}
+function flat(builds){return Object.values(builds||{}).flat()}
+function descH(n){return window.__A96_DESCH__?String(window.__A96_DESCH__(n)||''):''}
+function descT(n){return window.__A96_DESCT__?String(window.__A96_DESCT__(n)||''):''}
+function clamp01(x){return Math.max(0,Math.min(1,+x||0))}
+function rateRaw(raw){const m=String(raw||'').match(/([0-9]+(?:\.[0-9]+)?)%/);return m?clamp01(+m[1]/100):1}
+function heroRate(n){const h=E.heroes&&E.heroes[n]||{};if(/지휘|패시브/.test(String(h.skillType||'')))return 1;return rateRaw(h.rate||h.rateRaw||'100%')}
+function tacticRate(n){return E.tacticProcRate?clamp01(E.tacticProcRate(n)):rateRaw((E.tactics&&E.tactics[n]||{}).rateRaw||'100%')}
+function sentenceAt(d,at){function boundary(i){if(i<0||i>=d.length)return false;if(d[i]==='。')return true;if(d[i]!=='.')return false;const a=d[i-1]||'',b=d[i+1]||'';return !( /[0-9]/.test(a)&&/[0-9]/.test(b) )}let l=0;for(let i=Math.max(0,at-1);i>=0;i--)if(boundary(i)){l=i+1;break}let r=d.length;for(let i=at;i<d.length;i++)if(boundary(i)){r=i+1;break}return d.slice(l,r)}
+function enemyTargetFraction(s){
+ if(/적군과\s*아군\s*전체의\s*랜덤\s*목표\s*4개/.test(s))return 2/3;
+ if(/랜덤\s*적군\s*1명과\s*우군\s*1명/.test(s))return 1/3;
+ if(/전체\s*적군|적군\s*전체/.test(s))return 1;
+ let m=s.match(/랜덤\s*적군\s*(\d)명/);if(m)return Math.min(1,+m[1]/3);
+ if(/랜덤\s*적군\s*(?:단일\s*목표|1명)|적군\s*(?:단일\s*목표|1명)|공격\s*목표|목표에게/.test(s))return 1/3;
+ if(/적군/.test(s)&&!/자신에게|아군에게|우군에게/.test(s))return 1/3;
+ return 0;
+}
+function durationNear(s,term){
+ const e=term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');let m;
+ const rs=[new RegExp('(\\d+)턴\\s*동안\\s*지속되는[^.]{0,35}'+e),new RegExp('(\\d+)턴\\s*[^.]{0,18}'+e),new RegExp(e+'[^.]{0,35}(\\d+)턴\\s*동안'),new RegExp(e+'[^.]{0,25}(\\d+)턴\\s*지속')];
+ for(const r of rs){m=s.match(r);if(m)return Math.max(1,+m[1])}
+ return 1;
+}
+function chanceNear(s,termAt){
+ const pre=s.slice(Math.max(0,termAt-150),termAt+10);let m,last=null;
+ // Chance percentages must be directly attached to the word 확률. Damage coefficients earlier in the same sentence are ignored.
+ const pair=/([0-9]+(?:\.[0-9]+)?)%\s*(?:→|>>|->)\s*([0-9]+(?:\.[0-9]+)?)%\s*(?:의\s*)?확률/g;while((m=pair.exec(pre)))last=+m[2]/100;
+ if(last!=null)return clamp01(last);
+ const one=/([0-9]+(?:\.[0-9]+)?)%\s*(?:의\s*)?확률/g;while((m=one.exec(pre)))last=+m[1]/100;
+ return last==null?1:clamp01(last);
+}
+function conditionalBefore(s,localAt){
+ const pre=s.slice(0,localAt);
+ return /(?:목표|상대|적군)[^.]{0,60}(?:상태면|상태를\s*보유한\s*경우|이미\s*[^.]{0,25}상태)|(?:보유\s*중인|보유한)\s*경우/.test(pre);
+}
+function timingRate(d,s,baseRate,v){
+ if(/2번째와\s*4번째\s*턴|2턴[^.]{0,30}4턴/.test(s))return 2/8;
+ if(/짝수\s*턴\s*시작\s*시|홀수\s*턴/.test(s))return .5;
+ if(/2턴부터\s*매\s*턴\s*시작\s*시/.test(s))return 7/8;
+ if(/4번째\s*턴\s*시작\s*시/.test(s))return 1/8;
+ if(/전투\s*시작/.test(s))return 1/8;
+ if(/매\s*턴\s*(?:시작|종료)\s*시|매\s*턴/.test(s))return baseRate;
+ if(v&&(+v.active||+v.pursuit))return baseRate;
+ // Command/passive nodes without a clear repeated timing are conservatively treated as one battle event.
+ if(v&&(+v.command||+v.passive||+v.action_free))return 1/8;
+ return baseRate;
+}
+function statusNodesFrom(sourceType,name,carrier,d,v,baseRate){
+ const nodes=[];
+ for(const term of STATUS_TERMS){let from=0;while(true){const at=d.indexOf(term,from);if(at<0)break;from=at+term.length;const s=sentenceAt(d,at),sentenceStart=d.indexOf(s),localAt=Math.max(0,at-(sentenceStart>=0?sentenceStart:0));const tf=enemyTargetFraction(s);if(!tf)continue;
+  // Skip status words used only as a condition/target selector (e.g. '화공 상태를 보유한 적군 목표').
+  const after=s.slice(localAt+term.length,localAt+term.length+40);if(/^\s*상태\s*(?:를\s*보유|인|인\s*경우|이면|적군|목표|보유)/.test(after))continue;
+  // Skip conditional follow-up status: its prerequisite occupancy is not yet modeled here.
+  if(conditionalBefore(s,localAt))continue;
+  const duration=durationNear(s,term),chance=chanceNear(s,localAt),eventRate=timingRate(d,s,baseRate,v),occupancy=clamp01(eventRate*chance*tf*duration);
+  if(occupancy<=0)continue;nodes.push({sourceType,source:name,carrier:carrier||name,term,duration,chance,eventRate,targetFraction:tf,occupancy,sentence:s.trim()});
+ }}
+ return nodes;
+}
+function statusExposure(row){
+ const nodes=[];
+ for(const h of row.team||[]){const d=descH(h),v=E.hv[h]||{};nodes.push(...statusNodesFrom('hero',h,h,d,v,heroRate(h)))}
+ for(const h of row.team||[])for(const n of (row.builds||{})[h]||[]){const d=descT(n),v=E.tv[n]||{};nodes.push(...statusNodesFrom('tactic',n,h,d,v,tacticRate(n)))}
+ return{nodes,byTerm:Object.fromEntries(STATUS_TERMS.map(t=>[t,nodes.filter(x=>x.term===t).reduce((s,x)=>s+x.occupancy,0)]))};
+}
+function allyTargetFraction(s){
+ if(/병력이\s*가장\s*낮은\s*아군\s*단일\s*목표|아군\s*단일\s*목표|우군\s*단일\s*목표/.test(s))return 1/3;
+ let m=s.match(/(?:랜덤\s*)?(?:아군|우군)\s*(\d)명/);if(m)return Math.min(1,+m[1]/3);
+ if(/전체\s*아군/.test(s))return 1;
+ return 1/3;
+}
+function cleanseNode(sourceType,name,carrier,d,v,baseRate){
+ const at=d.indexOf('디버프 상태');if(at<0||!/(제거)/.test(d.slice(at,at+80)))return null;const s=sentenceAt(d,at);let m=s.match(/디버프\s*상태\s*(\d+)가지/),kinds=m?+m[1]:1;
+ const targetFraction=allyTargetFraction(s),eventRate=timingRate(d,s,baseRate,v),actionDependent=!!(v&&+v.active),timing=/매\s*턴\s*종료/.test(s)?'turn_end':actionDependent?'active':(/매\s*턴\s*시작/.test(s)?'turn_start':'action_free');
+ return{sourceType,source:name,carrier:carrier||name,kinds,targetFraction,eventRate,perTurnCoverage:clamp01(eventRate*targetFraction),actionDependent,timing,sentence:s.trim()};
+}
+function cleanseProfile(row){
+ const nodes=[];
+ for(const h of row.team||[]){const d=descH(h),v=E.hv[h]||{},n=cleanseNode('hero',h,h,d,v,heroRate(h));if(n)nodes.push(n)}
+ for(const h of row.team||[])for(const t of (row.builds||{})[h]||[]){const d=descT(t),v=E.tv[t]||{},n=cleanseNode('tactic',t,h,d,v,tacticRate(t));if(n)nodes.push(n)}
+ return{nodes};
+}
+function applicableCoverage(cleanser,statusTerm,attacker=null){
+ const p=cleanseProfile(cleanser);let miss=1,used=[];const enemyDenial=attacker&&A36BASE&&A36BASE.hardActiveDenial?clamp01(A36BASE.hardActiveDenial(attacker)):0;
+ for(const n of p.nodes){if(ACTION_LOCK.has(statusTerm)&&n.actionDependent)continue;const availability=n.actionDependent?(1-enemyDenial):1,effectiveCoverage=clamp01(n.perTurnCoverage*availability);miss*=1-effectiveCoverage;used.push({...n,availability,effectiveCoverage})}
+ return{coverage:clamp01(1-miss),nodes:used,allNodes:p.nodes,enemyHardActiveDenial:enemyDenial};
+}
+function savedExposureFraction(duration,coverage){
+ duration=Math.max(1,+duration||1);coverage=clamp01(coverage);if(duration<=1||coverage<=0)return 0;
+ // First affected turn is already spent. For each remaining turn j, credit only the probability
+ // that cleanse has occurred by then. This avoids a flat cleanse bonus and naturally rewards longer statuses.
+ let saved=0;for(let j=1;j<duration;j++)saved+=1-Math.pow(1-coverage,j);return clamp01(saved/duration);
+}
+function presenceConsumerEntries(row,term,producerSource){
+ const entries=[];const esc=x=>String(x).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+ function add(sourceType,name,carrier,d,v,rate){if(name===producerSource)return;const at=d.indexOf(term);
+  if(at>=0){const ss=sentenceAt(d,at),localAt=Math.max(0,ss.indexOf(term)),after=ss.slice(localAt+term.length,localAt+term.length+45);
+   const specific=/^\s*상태(?:면|인\s*경우|를\s*보유|를\s*이미\s*보유|\s*적군|\s*목표)/.test(after)||new RegExp('(?:목표|적군)[^.]{0,45}'+esc(term)+'[^.]{0,18}상태').test(ss);
+   if(specific){const tf=enemyTargetFraction(ss)||1/3;entries.push({sourceType,source:name,carrier:carrier||name,term,specific:true,rate:clamp01(rate),targetFraction:tf,value:clamp01(rate*tf),sentence:ss.trim()});return}}
+  // Generic state-presence consumers only. Application-trigger reactions are deliberately excluded because cleanse occurs after application.
+  const generic=/(?:디버프|이상)\s*상태(?:를)?\s*(?:보유한\s*경우|보유\s*중|1개\s*당|하나\s*당)|보유\s*중인\s*(?:기타\s*)?이상\s*상태\s*하나\s*당/.test(d);
+  if(generic&&!/(?:디버프|이상)\s*상태.{0,20}(?:받으면|받을\s*때)|디버프\s*효과\s*부여\s*후/.test(d)){const tf=enemyTargetFraction(d)||1/3;entries.push({sourceType,source:name,carrier:carrier||name,term,generic:true,rate:clamp01(rate),targetFraction:tf,value:clamp01(rate*tf),sentence:d})}
+ }
+ for(const h of row.team||[]){const d=descH(h),v=E.hv[h]||{};add('hero',h,h,d,v,heroRate(h))}
+ for(const h of row.team||[])for(const t of (row.builds||{})[h]||[]){const d=descT(t),v=E.tv[t]||{};add('tactic',t,h,d,v,tacticRate(t))}
+ return entries;
+}
+function persistentConsumerReliance(attacker,term,producerSource){const es=presenceConsumerEntries(attacker,term,producerSource);let miss=1;for(const e of es)miss*=1-e.value;return{value:clamp01(1-miss),entries:es}}
+function vulnerability(defender,attacker,node){const term=node.term,D=feat(defender);if(term==='침묵'||term==='공포')return{value:clamp01(D.action),consumers:[]};if(term==='무장 해제')return{value:clamp01(D.pursuit),consumers:[]};if(PERSISTENT_SETUP.has(term)){const z=persistentConsumerReliance(attacker,term,node.source);return{value:z.value,consumers:z.entries}}return{value:0,consumers:[]}}
+function cleanseDefense(defender,attacker){
+ const ex=statusExposure(attacker),contrib=[];let total=0;
+ for(const n of ex.nodes){const cov=applicableCoverage(defender,n.term,attacker),saved=savedExposureFraction(n.duration,cov.coverage),vv=vulnerability(defender,attacker,n),v=vv.value,value=n.occupancy*saved*v;if(value>0){total+=value;contrib.push({...n,cleanseCoverage:cov.coverage,savedFraction:saved,vulnerability:v,value,cleanseNodes:cov.nodes.map(x=>x.source),consumerNodes:vv.consumers})}}
+ return{value:total,contrib,cleanse:cleanseProfile(defender),attackerExposure:ex};
+}
+function interactionCleanse(a,b){return A42.interactionTyped(a,b)+cleanseDefense(a,b).value-cleanseDefense(b,a).value}
+function environmentRows(){return A42.environmentRows()}
+function median(v){if(!v.length)return 0;const a=[...v].sort((x,y)=>x-y),n=a.length;return n%2?a[(n-1)/2]:(a[n/2-1]+a[n/2])/2}
+function coverage(row){const env=environmentRows(),vals=env.map(x=>({deck:x.meta.deck,score:interactionCleanse(row,x.row),profile:x.profile,activeHeroes:x.activeHeroes})),sorted=vals.map(x=>x.score).sort((a,b)=>a-b);if(!sorted.length)return{count:0,median:0,bottomQuartile:0,worst:0,positiveRate:0,volatility:0};const q=Math.max(1,Math.ceil(sorted.length*.25)),bottom=sorted.slice(0,q),avg=a=>a.reduce((x,y)=>x+y,0)/Math.max(1,a.length),mu=avg(sorted),variance=avg(sorted.map(x=>(x-mu)*(x-mu)));return{count:sorted.length,median:median(sorted),bottomQuartile:avg(bottom),worst:sorted[0],positiveRate:sorted.filter(x=>x>0).length/sorted.length,volatility:Math.sqrt(Math.max(0,variance)),values:vals}}
+function cacheKey(){const p=A17.resourcePool(),locks=((ST.lockedTeams||{})[ST.season]||[]);return[ST.season,[...p.heroes].sort().join(','),[...p.tactics].sort().join(','),locks.map(x=>sig(x.team)+'#'+flat(x.builds).sort().join(',')).sort().join(';')].join('|')}
+function decorate(row,label,cov){const r={...row};r.overallSurfaceLabel=label;r.audit10643Coverage=cov;r.audit10642Coverage=cov;r.audit10636Coverage=cov;r.audit10634Coverage=cov;r.objectiveTag='meta_coverage';r.choiceOrigin='matchup_coverage_duration_cleanse_exp';r.sourceScoreContribution=0;r.sourceRecommendScoreIgnored=true;r.alternativeCandidate=true;r.reasons=[label+' · KR S2 동일가중 structural opponent bank',`지속시간 정화 상성 · 중앙 ${cov.median>=0?'+':''}${cov.median.toFixed(3)} · 하위25 ${cov.bottomQuartile>=0?'+':''}${cov.bottomQuartile.toFixed(3)} · 최악 ${cov.worst>=0?'+':''}${cov.worst.toFixed(3)}`,'1턴 상태 정화 가점 0 · 액티브 정화는 침묵/공포/혼란 자기구제 불가','외부 S3 상성표는 검증 canary 전용 · 점수 기여 0','Layer1 역할 저점 × Layer2 하위25 Pareto'].concat(r.reasons||[]);return r}
+function representatives(rows,limit=12){const xs=(rows||[]).map(r=>({r,cov:coverage(r),role:A29.roleVector(r)})).filter(x=>x.cov.count>0);if(!xs.length)return{rows:[],evaluated:0,raw:[],pareto:[]};const maxFloor=Math.max(...xs.map(x=>x.role.floor),1),pareto=xs.filter(x=>!xs.some(y=>y!==x&&y.role.floor>=x.role.floor&&y.cov.bottomQuartile>=x.cov.bottomQuartile&&(y.role.floor>x.role.floor||y.cov.bottomQuartile>x.cov.bottomQuartile)));pareto.sort((a,b)=>b.cov.bottomQuartile-a.cov.bottomQuartile||b.role.floor-a.role.floor||b.cov.median-a.cov.median);const bestCoverage=Math.max(...pareto.map(x=>x.cov.bottomQuartile)),bestFloor=Math.max(...pareto.map(x=>x.role.floor));const out=pareto.slice(0,limit).map(x=>{let label='균형 트레이드오프';if(x.cov.bottomQuartile===bestCoverage)label='상성 최우선';if(x.role.floor===bestFloor)label=label==='상성 최우선'?'2축 동시 최선':'블라인드 저점 보존';const r=decorate(x.r,label,x.cov);r.audit10643Pareto=true;r.audit10642Pareto=true;r.audit10636Pareto=true;r.audit10635Pareto=true;r.audit10635Layer1={floor:x.role.floor,median:x.role.median,ceiling:x.role.ceiling,ratio:x.role.floor/maxFloor};return r});return{rows:out,evaluated:xs.length,raw:xs,pareto}}
+function buildPlan(){const key=cacheKey();if(planCache.key===key&&planCache.pack)return planCache.pack;if(ST.season!=='S2'){const z={squads:[],capacity:0,objectiveTag:'meta_coverage',audit10643Status:'KR_S2_ONLY'};planCache={key,pack:z};return z}const t0=performance.now(),base=A29.buildPlan(),rep=representatives(base.squads||[],12),rows=rep.rows;const pack={squads:rows,capacity:base.capacity,candidateCount:base.candidateCount,evaluatedCount:rep.evaluated,objectiveTag:'meta_coverage',audit10643:true,audit10643Status:rows.length?'EXPERIMENT_DURATION_CLEANSE':'NO_COVERAGE_ROWS',environmentCount:environmentRows().length,sourceScoreContribution:0,encounterWeights:null,runtimeMs:performance.now()-t0,overallStrategy:'layer1_role_floor_x_layer2_duration_cleanse_bottom_quartile_pareto'};planCache={key,pack};return pack}
+const ALIAS_TO_DECK={'조감초':'감부인·조운·초선','선등여포':'여포·진궁·악진','악순주':'주순악','주태황개주유':'주황주','주태원소마초':'마초·주태·원소','쌍황육손':'쌍황륙','손노육':'노숙·손권·육손','순욱태위':'조조·순욱·사마의'};
+function externalCanary(){const base=A42.externalCanary(),bank=environmentRows(),by={};for(const a of base.mappedDecks){const x=bank.find(x=>x.meta.deck===ALIAS_TO_DECK[a]);if(x)by[a]=x.row}const pairs=base.pairs.map(p=>({...p,durationCleanse:interactionCleanse(by[p.a],by[p.b]),cleanseDelta:interactionCleanse(by[p.a],by[p.b])-p.typedMitigation}));function metric(key){const nt=pairs.filter(x=>x.expected!==0),strong=nt.filter(x=>Math.abs(x.expected)===2),weak=nt.filter(x=>Math.abs(x.expected)===1),ok=x=>Math.sign(x[key])===Math.sign(x.expected);return{nonTieCount:nt.length,directionPass:nt.filter(ok).length,directionRate:nt.filter(ok).length/Math.max(1,nt.length),strongCount:strong.length,strongPass:strong.filter(ok).length,strongRate:strong.filter(ok).length/Math.max(1,strong.length),weakCount:weak.length,weakPass:weak.filter(ok).length,weakRate:weak.filter(ok).length/Math.max(1,weak.length)}}let anti=0;for(const a of base.mappedDecks)for(const b of base.mappedDecks)if(a<b)anti=Math.max(anti,Math.abs(interactionCleanse(by[a],by[b])+interactionCleanse(by[b],by[a])));return{...base,durationCleanse:metric('durationCleanse'),durationCleanseAntisymmetryMaxError:anti,pairs,validationClass:'TEAM_STRUCTURE_MATRIX_WITH_CURRENT_KR_SETUP_PROXY',setupLevelGroundTruth:false,scoreContribution:0,coefficientFitToCanary:false}}
+function semanticFixtures(){const bank=environmentRows(),get=d=>{const x=bank.find(x=>x.meta.deck===d);return x&&x.row},rows={};for(const [k,d] of Object.entries(ALIAS_TO_DECK)){const r=get(d);if(r)rows[k]={status:statusExposure(r),cleanse:cleanseProfile(r)}}const extra=get('유비·황충·방통');if(extra)rows['유비황충방통']={status:statusExposure(extra),cleanse:cleanseProfile(extra)};return rows}
+function health(){const c=externalCanary(),p=buildPlan(),f=semanticFixtures(),rows=p.squads||[],bank=environmentRows(),get=d=>{const x=bank.find(x=>x.meta.deck===d);return x&&x.row},son=get('노숙·손권·육손'),ss=get('쌍황륙'),yu=get('유비·황충·방통'),sy=get('주순악'),oneTurn=savedExposureFraction(1,.9),activeVsSilence=son?applicableCoverage(son,'침묵').coverage:1,persistentCredit=(yu&&son)?cleanseDefense(yu,son).value:0,ubiNative=yu?cleanseProfile(yu).nodes.find(x=>x.source==='유비'):null,baseActive=(sy?cleanseProfile(sy).nodes.find(x=>x.actionDependent):null),discountedActive=(sy&&son?applicableCoverage(sy,'화공',son).nodes.find(x=>x.actionDependent):null);const checks={moduleReady:true,environment13:p.environmentCount===13,sourceScoreZero:rows.every(r=>(+r.sourceScoreContribution||0)===0),durationCleanseAntisymmetry:c.durationCleanseAntisymmetryMaxError<1e-9,canaryScoreZero:c.scoreContribution===0,noCanaryFit:c.coefficientFitToCanary===false,setupGroundTruthNotClaimed:c.setupLevelGroundTruth===false,oneTurnCleanseCreditZero:oneTurn===0,activeCleanseCannotSelfRescueSilence:activeVsSilence<1e-12,persistentSetupGetsConservativeCredit:persistentCredit>0,activeCleanseDiscountedByEnemyHardDenial:!!baseActive&&!!discountedActive&&discountedActive.effectiveCoverage<baseActive.perTurnCoverage,liuBeiNativeCleanseActionFree:!!ubiNative&&ubiNative.actionDependent===false&&ubiNative.timing==='turn_end'};return{version:'Audit106.43-exp1',pass:Object.values(checks).every(Boolean),checks,canary:{a10642:c.typedMitigation,a10643:c.durationCleanse,antisymmetry:c.durationCleanseAntisymmetryMaxError},fixtures:{oneTurnSaved:oneTurn,activeVsSilenceCoverage:activeVsSilence,persistentCredit,activeCleanseBase:baseActive,activeCleanseDiscounted:discountedActive,liuBeiNative:ubiNative},pack:{count:rows.length,runtimeMs:p.runtimeMs},policy:{experimental:true,metaCoverageHold:true,sourceTierDeckNameScoreContribution:0,noCoefficientFitToCanary:true,oneTurnCleanseCredit:0,activeCleanseSelfRescueActionLock:false,conditionalStatusScoring:false,autoCommitAllowed:false}}}
+window.__AUDIT10643__={version:'Audit106.43-layer2-duration-cleanse-exp1',interactionCleanse,statusExposure,cleanseProfile,applicableCoverage,savedExposureFraction,presenceConsumerEntries,persistentConsumerReliance,cleanseDefense,environmentRows,coverage,representatives,buildPlan,externalCanary,semanticFixtures,health,reset:()=>{planCache={key:null,pack:null};featureCache=new WeakMap()},policy:{experimental:true,metaCoverageOnly:true,externalMatrixValidationOnly:true,durationAwareCleanse:true,oneTurnCleanseCredit:0,actionDependentCleanseCannotSelfRescueActionLock:true,conditionalStatusSkipped:true,sourceTierDeckNameScoreContribution:0,noCoefficientFitToCanary:true,antisymmetricPairwise:true,pioneerIsolation:true,autoCommitAllowed:false}};
+window.__AUDIT10642_BASE__=A42;
+window.__AUDIT10636__=window.__AUDIT10643__;
+window.__AUDIT10634__=window.__AUDIT10643__;
+})();
+</script>
+
+
+<script>
+/* Audit106.44 EXP1 — explicit 8-turn tempo diagnostic, score contribution = 0.
+ * This module intentionally does NOT route meta coverage away from A106.43.
+ * It exists to test whether a description-derived early-physical vs delayed-tactical
+ * race can safely replace/add to the old coarse opening×ramp idea. Current answer: HOLD.
+ */
+(function(){
+'use strict';
+const A43=window.__AUDIT10643__,A95=window.__AUDIT95__;
+if(!A43||!A95)return;
+const E=A95.engine;
+const clamp=x=>Math.max(0,Math.min(1,+x||0));
+const descH=n=>String((window.__A96_DESCH__&&window.__A96_DESCH__(n))||'');
+const descT=n=>String((window.__A96_DESCT__&&window.__A96_DESCT__(n))||'');
+function pctRaw(s){const m=String(s||'').match(/([0-9]+(?:\.[0-9]+)?)%/);return m?clamp(+m[1]/100):1}
+function heroRate(n){const h=(E.heroes||{})[n]||{};if(/지휘|패시브/.test(String(h.skillType||'')))return 1;return pctRaw(h.rate||h.rateRaw||'100%')}
+function tacticRate(n){return E.tacticProcRate?clamp(E.tacticProcRate(n)):pctRaw(((E.tactics||{})[n]||{}).rateRaw||'100%')}
+function breadth(d){if(/전체\s*적군|적군\s*전체/.test(d))return 1;let m=d.match(/(?:랜덤\s*)?적군\s*(\d)명/);if(m)return Math.min(1,+m[1]/3);return /적군|목표/.test(d)?1/3:1/3}
+function hits(d){let m=d.match(/(?:연속|각각)\s*(\d)회|총\s*(\d)회|(?:다시\s*)?[^.]{0,12}\s(\d)회\s*(?:진행|시전)/);return m?+(m[1]||m[2]||m[3]||1):1}
+function directDesc(d){return /(?:[0-9]+(?:\.[0-9]+)?%\s*(?:→|>>|->)\s*)?[0-9]+(?:\.[0-9]+)?%\s*(?:의\s*)?(?:병기|책략|책략과\s*병기|병기와\s*책략)?\s*피해/.test(d)&&!/(받는\s*(?:병기|책략)?\s*피해|피해가\s*감소|피해를\s*감소)/.test(d)}
+function sourceChannel(v,d){let p=(+v.carrier_physical_damage||0)+(+v.ally_granted_physical_damage||0)+(+v.counter||0),t=(+v.carrier_tactical_damage||0)+(+v.ally_granted_tactical_damage||0);if(p===0&&t===0&&+v.pursuit&&/병기\s*피해/.test(d))p=1;if(p===0&&t===0)return null;return p>=t?'physical':'tactical'}
+function explicitTurns(d){const a=[];if(/2번째와\s*4번째\s*턴/.test(d))return[2,4];let m;const re=/(\d)번째\s*턴|(?:^|[^0-9])(\d)턴\s*(?:시작|종료)\s*시/g;while((m=re.exec(d)))a.push(+(m[1]||m[2]));return[...new Set(a.filter(x=>x>=1&&x<=8))]}
+function addSource(tl,{d,v,rate,channel,name}){if(!channel||!directDesc(d))return;let turns=explicitTurns(d),mode='';if(turns.length)mode='explicit';else if(+v.battle_start){turns=[1];mode='battle_start'}else if(+v.prepare){turns=[2,4,6,8];mode='prepare'}else if(+v.pursuit){turns=[1,2,3,4,5,6,7,8];mode='pursuit'}else if(+v.active){turns=[1,2,3,4,5,6,7,8];mode='active'}else if(+v.turn_start||+v.turn_end||+v.command||+v.passive||+v.action_free){turns=[1,2,3,4,5,6,7,8];mode='action_free'}else{turns=[1,2,3,4,5,6,7,8];mode='other'}const impact=Math.max(.25,breadth(d)*hits(d)),per=rate*impact;for(const t of turns)tl[channel][t-1]+=per;tl.sources.push({name,channel,mode,turns,rate,impact,prepare:!!+v.prepare,stacking:!!(+v.stacking||+v.self_scaling_ramp||+v.pursuit_damage_ramp),description:d.slice(0,240)})}
+function timeline(row){const tl={physical:Array(8).fill(0),tactical:Array(8).fill(0),sources:[]};for(const h of row.team||[]){const v=E.hv[h]||{},d=descH(h);addSource(tl,{d,v,rate:heroRate(h),channel:sourceChannel(v,d),name:h+' 고유'});for(const n of (row.builds||{})[h]||[]){const tv=E.tv[n]||{},td=descT(n);addSource(tl,{d:td,v:tv,rate:tacticRate(n),channel:sourceChannel(tv,td),name:h+':'+n})}}const phys=tl.physical.reduce((a,b)=>a+b,0),tact=tl.tactical.reduce((a,b)=>a+b,0),total=phys+tact||1,earlyPhysicalMass=tl.physical[0]+tl.physical[1],earlyTacticalMass=tl.tactical[0]+tl.tactical[1];let delayNum=0;for(let i=0;i<8;i++)delayNum+=i*(tl.physical[i]+tl.tactical[i]);const meanTurn=1+delayNum/total,prepMass=tl.sources.filter(x=>x.prepare).reduce((s,x)=>s+x.turns.length*x.rate*x.impact,0)/total,f=A95.features(row);return{team:row.team,builds:row.builds,physical:tl.physical,tactical:tl.tactical,sources:tl.sources,total,physicalShare:phys/total,tacticalShare:tact/total,earlyPhysicalMass,earlyTacticalMass,meanTurn,delay:clamp((meanTurn-1)/7),prepareShare:prepMass,ramp:f.ramp||0}}
+/* Deliberately simple diagnostic candidate. It is NOT used in scoring. */
+function diagnosticAxes(row){const t=timeline(row),earlyPhysical=t.earlyPhysicalMass/(t.earlyPhysicalMass+2),delayedTactical=t.tacticalShare*((t.prepareShare+t.ramp)/2);return{earlyPhysical,delayedTactical,timeline:t}}
+function tempoTerm(a,b){const A=diagnosticAxes(a),B=diagnosticAxes(b);return A.earlyPhysical*B.delayedTactical-B.earlyPhysical*A.delayedTactical}
+const ALIAS={'조감초':'감부인·조운·초선','선등여포':'여포·진궁·악진','악순주':'주순악','주태황개주유':'주황주','주태원소마초':'마초·주태·원소','쌍황육손':'쌍황륙','손노육':'노숙·손권·육손','순욱태위':'조조·순욱·사마의'};
+function diagnosticCanary(){const c=A43.externalCanary(),env=A43.environmentRows(),by={};for(const [a,d] of Object.entries(ALIAS)){const x=env.find(x=>x.meta.deck===d);if(x)by[a]=x.row}const pairs=c.pairs.map(p=>{const term=tempoTerm(by[p.a],by[p.b]),baseline=p.durationCleanse,candidate=baseline+term;return{a:p.a,b:p.b,expected:p.expected,expectedLabel:p.expectedLabel,baseline,tempoTerm:term,candidate}});function metric(key){const nt=pairs.filter(x=>x.expected!==0),strong=nt.filter(x=>Math.abs(x.expected)===2),weak=nt.filter(x=>Math.abs(x.expected)===1),ok=x=>Math.sign(x[key])===Math.sign(x.expected);return{nonTieCount:nt.length,directionPass:nt.filter(ok).length,directionRate:nt.filter(ok).length/Math.max(1,nt.length),strongCount:strong.length,strongPass:strong.filter(ok).length,strongRate:strong.filter(ok).length/Math.max(1,strong.length),weakCount:weak.length,weakPass:weak.filter(ok).length,weakRate:weak.filter(ok).length/Math.max(1,weak.length)}}let anti=0;for(const a of Object.keys(by))for(const b of Object.keys(by))if(a<b)anti=Math.max(anti,Math.abs(tempoTerm(by[a],by[b])+tempoTerm(by[b],by[a])));return{baseline:metric('baseline'),unitTempoCandidate:metric('candidate'),antisymmetry:anti,pairs,scoreContribution:0,coefficientFitToCanary:false}}
+function fixtures(){const env=A43.environmentRows(),get=d=>(env.find(x=>x.meta.deck===d)||{}).row,son=get('노숙·손권·육손'),lv=get('여포·진궁·악진');const st=timeline(son),lt=timeline(lv);return{sonNoFireDurationAsTurn2:!st.sources.some(x=>x.name.includes('화공전술')&&x.mode==='explicit'),noStackOnlyFalseDamage:!Object.values(ALIAS).map(get).filter(Boolean).some(r=>timeline(r).sources.some(x=>x.name.includes('연전연승'))),preparedDetected:st.prepareShare>0,physicalEarlyDetected:lt.earlyPhysicalMass>0,son:diagnosticAxes(son),lv:diagnosticAxes(lv)}}
+function health(){const c=diagnosticCanary(),f=fixtures(),overall=window.__AUDIT10637__&&window.__AUDIT10637__.health?window.__AUDIT10637__.health():{pass:false};const checks={moduleReady:true,diagnosticOnly:true,scoreContributionZero:c.scoreContribution===0,noCanaryFit:c.coefficientFitToCanary===false,tempoAntisymmetry:c.antisymmetry<1e-9,noDurationMisread:f.sonNoFireDurationAsTurn2,noStackOnlyDamage:f.noStackOnlyFalseDamage,preparedDetected:f.preparedDetected,physicalEarlyDetected:f.physicalEarlyDetected,overallRegression:!!overall.pass,metaRouteStillA10643:window.__AUDIT10636__===A43};return{version:'Audit106.44-exp1',pass:Object.values(checks).every(Boolean),checks,canary:c,fixtures:f,decision:'HOLD_TEMPO_SCORE_KEEP_DIAGNOSTIC_ONLY',policy:{scoreContribution:0,metaCoverageRoute:'A106.43',noCoefficientFitToCanary:true,autoCommitAllowed:false}}}
+window.__AUDIT10644__={version:'Audit106.44-explicit-tempo-diagnostic-exp1',timeline,diagnosticAxes,tempoTerm,diagnosticCanary,fixtures,health,policy:{experimental:true,diagnosticOnly:true,scoreContribution:0,noCoefficientFitToCanary:true,metaCoverageUnchanged:true,autoCommitAllowed:false}};
+})();
+</script>
+
+
+<script>
+/* Audit106.45 — independent S3 relationship holdout bank.
+ * Chronologically added after A106.43 was frozen. Validation only; zero score contribution.
+ */
+(function(){
+'use strict';
+const A43=window.__AUDIT10643__; if(!A43)return;
+const sig=t=>[...(t||[])].sort().join('|');
+const BANK=[
+ {id:'H1',a:['악진','여포','진궁'],b:['노숙','손권','육손'],expected:1,grade:'B',source:'17173 2024-10-05 S3 配队思路',basis:'exact attacker; defender Sun Quan/Lu Xun core; attacker described as countering tactical teams lacking mitigation'},
+ {id:'H2',a:['마초','주태','원소'],b:['노숙','손권','육손'],expected:1,grade:'C',source:'TapTap/17173 S3 popular lineups',basis:'Ma Chao fast-burst family vs exact LuSu-SunQuan-LuXun; attacker support slots differ'},
+ {id:'H3',a:['노숙','손권','육손'],b:['조조','순욱','사마의'],expected:1,grade:'C',source:'TapTap 2024-09 S3 popular lineups',basis:'exact LuSu-SunQuan-LuXun vs slow/double-mitigation Sima Yi family; defender support differs'},
+ {id:'H4',a:['마초','주태','원소'],b:['조조','손권','육손'],expected:-1,grade:'C',source:'TapTap 2024-10-18 S3 battlefield lineups',basis:'Ma Chao family explicitly excepted against CaoCao-SunQuan-LuXun double-emperor mitigation'},
+ {id:'H5',a:['감부인','조운','초선'],b:['마초','주태','원소'],expected:1,grade:'C',source:'TapTap 2024-10-18 S3 battlefield lineups',basis:'ZhaoYun+Gan evasion family counters Ma Chao physical; third slots differ'},
+ {id:'H6',a:['감부인','조운','초선'],b:['악진','여포','진궁'],expected:1,grade:'C',source:'TapTap 2024-10-18 S3 battlefield lineups',basis:'ZhaoYun+Gan evasion family counters Lu Bu physical; third slot differs'}
+];
+function rowMap(){const m=new Map();for(const x of A43.environmentRows()||[])m.set(sig(x.row.team),x.row);return m}
+function evaluate(interaction=A43.interactionCleanse){const m=rowMap(),rows=[];for(const h of BANK){const a=m.get(sig(h.a)),b=m.get(sig(h.b));if(!a||!b){rows.push({...h,status:'UNMAPPED'});continue}const score=interaction(a,b),actual=score>1e-9?1:score<-1e-9?-1:0,pass=actual===h.expected;rows.push({...h,score,actual,pass,status:'MAPPED'})}const mapped=rows.filter(x=>x.status==='MAPPED'),byGrade={};for(const g of ['A','B','C']){const z=mapped.filter(x=>x.grade===g);byGrade[g]={count:z.length,pass:z.filter(x=>x.pass).length,rate:z.length?z.filter(x=>x.pass).length/z.length:null}}return{version:'Audit106.45',rows,mapped:mapped.length,pass:mapped.filter(x=>x.pass).length,rate:mapped.length?mapped.filter(x=>x.pass).length/mapped.length:0,byGrade,policy:{validationOnly:true,chronologicallyIndependentFromA10643:true,scoreContribution:0,noCoefficientFit:true,gradeAGroundTruthCount:0}}}
+function health(){const e=evaluate(),checks={moduleReady:true,sixMapped:e.mapped===6,noScoreContribution:e.policy.scoreContribution===0,noGradeA:e.policy.gradeAGroundTruthCount===0,metaRouteStillA43:window.__AUDIT10636__===A43,overallUnaffected:!!window.__AUDIT10637__};return{version:'Audit106.45-independent-holdout-exp1',pass:Object.values(checks).every(Boolean),checks,evaluation:e}}
+window.__AUDIT10645__={version:'Audit106.45-independent-s3-holdout-exp1',bank:BANK,evaluate,health,policy:{experimental:true,validationOnly:true,scoreContribution:0,noCoefficientFitToHoldout:true,metaRouteUnchanged:true,autoCommitAllowed:false}};
+})();
+</script>
+<script>
+/* Audit106.46 EXP1 — action-channel typed hard-control semantics.
+ * Safe scope only:
+ *  - Silence blocks ACTIVE load, not pursuit load.
+ *  - Fear blocks both ACTIVE and pursuit/action-dependent load.
+ *  - Multi-target control is normalized as affected enemy fraction before multiplying team-level action load.
+ *  - Disarm / confusion / taunt are parsed and surfaced as diagnostics but contribute ZERO score here.
+ *  - Existing Audit106.36 coefficient 0.85 is reused; no fit to external or independent canaries.
+ */
+(function(){
+'use strict';
+const A43=window.__AUDIT10643__,A36BASE=window.__AUDIT10636_BASE__,A29=window.__AUDIT10629__,A17=window.__AUDIT10617__,A95=window.__AUDIT95__,A45=window.__AUDIT10645__;
+if(!A43||!A36BASE||!A29||!A17||!A95)return;
+const C=(typeof AUDIT50_CANONICAL!=='undefined'?AUDIT50_CANONICAL:window.AUDIT50_CANONICAL),E=A95.engine,ST=A95.state;
+if(!C)return;
+const H=Object.fromEntries((C.masters?.heroes||[]).map(x=>[x.name,x]));
+const T=Object.fromEntries((C.masters?.tactics||[]).map(x=>[x.name,x]));
+const TYPES=['침묵','공포','무장 해제','혼란','조롱'];
+const clamp=x=>Math.max(0,Math.min(1,+x||0)),sig=t=>[...(t||[])].sort().join('|'),flat=b=>Object.values(b||{}).flat();
+let planCache={key:null,pack:null};
+function sentences(d){return String(d||'').replace(/(\d)\.(\d)/g,'$1§$2').split(/(?<=[.!?])\s*/).map(s=>s.replace(/§/g,'.').trim()).filter(Boolean)}
+function maxPct(s){const a=[...String(s||'').matchAll(/([0-9]+(?:\.[0-9]+)?)%/g)].map(m=>+m[1]/100);return a.length?Math.max(...a):1}
+function proc(kind,name,x){if(kind==='tactic'&&E.tacticProcRate)return clamp(E.tacticProcRate(name));const raw=kind==='hero'?(x.rate||x.rateRaw):(x.rateRaw||x.rate);return clamp(maxPct(raw))}
+function targetFraction(s){s=String(s||'');if(/적군과\s*아군\s*전체의\s*랜덤\s*목표\s*4개/.test(s))return 2/3;if(/(?:전체\s*적군|적군\s*전체)/.test(s))return 1;const r=s.match(/(?:랜덤\s*)?적군\s*(\d)\s*[~～-]\s*(\d)명/);if(r)return Math.min(1,((+r[1]+ +r[2])/2)/3);const m=s.match(/(?:랜덤\s*)?적군\s*(\d)명/);if(m)return Math.min(1,+m[1]/3);if(/(?:랜덤\s*)?적군\s*단일\s*목표|공격\s*목표|적군\s*목표/.test(s))return 1/3;return 1/3}
+function chanceBefore(s,term){const at=s.indexOf(term),pre=at>=0?s.slice(Math.max(0,at-120),at):s,ms=[...pre.matchAll(/([0-9]+(?:\.[0-9]+)?)%(?:\s*(?:→|>>|->)\s*([0-9]+(?:\.[0-9]+)?)%)?\s*확률로?/g)];if(!ms.length)return 1;const m=ms[ms.length-1];return clamp(+(m[2]||m[1])/100)}
+function conditional(s,term){const at=s.indexOf(term),pre=at>=0?s.slice(0,at):s;return /(?:상태면|상태이면|상태를\s*보유한\s*경우|상태를\s*보유한\s*목표|이미\s*[^,.]{0,25}상태)/.test(pre)}
+function selfOrImmunity(s,term){const at=s.indexOf(term),near=at>=0?s.slice(Math.max(0,at-50),Math.min(s.length,at+term.length+35)):s;if(/(?:면역|무시)/.test(near))return true;const pre=at>=0?s.slice(Math.max(0,at-45),at):s;return /(?:자신에게|자신이)[^,.]{0,28}$/.test(pre)||/(?:우군|아군)[^,.]{0,28}$/.test(pre)&&!/적군/.test(s)}
+function isApplication(s,term){const at=s.indexOf(term);if(at<0)return false;if(term==='조롱')return /(?:조롱하고|조롱하며|조롱한다|조롱\s*및|조롱.*부여한다|조롱.*부여하며)/.test(s);const after=s.slice(at,Math.min(s.length,at+75));return /(?:부여한다|부여하며|부여하고|빠뜨린다|빠뜨리며)/.test(after)&&!/부여\s*확률/.test(after)}
+function parseSource(kind,name){const x=(kind==='hero'?H[name]:T[name])||{},d=String(x.description||''),base=proc(kind,name,x),out=[];for(const s of sentences(d)){for(const term of TYPES){if(!s.includes(term)||!isApplication(s,term)||selfOrImmunity(s,term))continue;let cond=conditional(s,term),split=1;if(/무력이\s*지력보다\s*높으면/.test(s)&&/반대일\s*경우/.test(s)&&(term==='무장 해제'||term==='침묵')){cond=false;split=.5}const chance=chanceBefore(s,term)*split,tf=targetFraction(s),value=cond?0:base*chance*tf;out.push({kind,source:name,term,baseRate:base,chance,targetFraction:tf,conditional:cond,value,sentence:s})}}return out}
+function controlPressure(row){const nodes=[];for(const h of row.team||[]){nodes.push(...parseSource('hero',h));for(const t of (row.builds?.[h]||[]))nodes.push(...parseSource('tactic',t))}const raw=Object.fromEntries(TYPES.map(t=>[t,0]));for(const n of nodes)raw[n.term]+=n.value;const p=Object.fromEntries(TYPES.map(t=>[t,clamp(raw[t])]));return{...p,nodes,raw,scoreContribution:{'침묵':1,'공포':1,'무장 해제':0,'혼란':0,'조롱':0}}}
+function actionLoads(row){let active=0,pursuit=0;for(const h of row.team||[]){const v=E.hv[h]||{};active+=+v.active||0;pursuit+=+v.pursuit||0;for(const t of row.builds?.[h]||[]){const w=E.tv[t]||{};active+=+w.active||0;pursuit+=+w.pursuit||0}}return{active:clamp(active/8),pursuit:clamp(pursuit/8),action:clamp((active+pursuit)/8),activeCount:active,pursuitCount:pursuit}}
+function typedLockEffect(attacker,defender){const p=controlPressure(attacker),l=actionLoads(defender),activeBlock=clamp(p['침묵']+p['공포']),pursuitBlock=clamp(p['공포']);return{value:activeBlock*l.active+pursuitBlock*l.pursuit,activeBlock,pursuitBlock,pressure:p,loads:l,scoreContribution:{silence:1,fear:1,disarm:0,confusion:0,taunt:0}}}
+function disarmDiagnostic(attacker,defender){const p=controlPressure(attacker),l=actionLoads(defender);return{value:p['무장 해제']*l.pursuit,pressure:p['무장 해제'],pursuitLoad:l.pursuit,scoreContribution:0}}
+function legacyLockEffect(attacker,defender){return A36BASE.hardActiveDenial(attacker)*A95.features(defender).action}
+function interactionTypedLock(a,b){const correction=.85*((typedLockEffect(a,b).value-legacyLockEffect(a,b))-(typedLockEffect(b,a).value-legacyLockEffect(b,a)));return A43.interactionCleanse(a,b)+correction}
+function environmentRows(){return A43.environmentRows()}
+function median(v){if(!v.length)return 0;const a=[...v].sort((x,y)=>x-y),n=a.length;return n%2?a[(n-1)/2]:(a[n/2-1]+a[n/2])/2}
+function coverage(row){const env=environmentRows(),vals=env.map(x=>({deck:x.meta.deck,score:interactionTypedLock(row,x.row),profile:x.profile,activeHeroes:x.activeHeroes})),sorted=vals.map(x=>x.score).sort((a,b)=>a-b);if(!sorted.length)return{count:0,median:0,bottomQuartile:0,worst:0,positiveRate:0,volatility:0};const q=Math.max(1,Math.ceil(sorted.length*.25)),bottom=sorted.slice(0,q),avg=a=>a.reduce((x,y)=>x+y,0)/Math.max(1,a.length),mu=avg(sorted),variance=avg(sorted.map(x=>(x-mu)*(x-mu)));return{count:sorted.length,median:median(sorted),bottomQuartile:avg(bottom),worst:sorted[0],positiveRate:sorted.filter(x=>x>0).length/sorted.length,volatility:Math.sqrt(Math.max(0,variance)),values:vals}}
+function cacheKey(){const p=A17.resourcePool(),locks=((ST.lockedTeams||{})[ST.season]||[]);return[ST.season,[...p.heroes].sort().join(','),[...p.tactics].sort().join(','),locks.map(x=>sig(x.team)+'#'+flat(x.builds).sort().join(',')).sort().join(';')].join('|')}
+function decorate(row,label,cov){const r={...row};r.overallSurfaceLabel=label;r.audit10646Coverage=cov;r.audit10643Coverage=cov;r.audit10642Coverage=cov;r.audit10636Coverage=cov;r.audit10634Coverage=cov;r.objectiveTag='meta_coverage';r.choiceOrigin='matchup_coverage_typed_action_lock_exp';r.sourceScoreContribution=0;r.sourceRecommendScoreIgnored=true;r.alternativeCandidate=true;r.reasons=[label+' · KR S2 동일가중 structural opponent bank',`행동채널 제어 상성 · 중앙 ${cov.median>=0?'+':''}${cov.median.toFixed(3)} · 하위25 ${cov.bottomQuartile>=0?'+':''}${cov.bottomQuartile.toFixed(3)} · 최악 ${cov.worst>=0?'+':''}${cov.worst.toFixed(3)}`,'침묵→액티브 / 공포→액티브+추격 · 다중대상은 팀 범위로 정규화','무장해제·혼란·조롱은 진단만 · 점수 기여 0','외부/독립 상성표 점수 기여 0 · coefficient fitting 0','Layer1 역할 저점 × Layer2 하위25 Pareto'].concat(r.reasons||[]);return r}
+function representatives(rows,limit=12){const xs=(rows||[]).map(r=>({r,cov:coverage(r),role:A29.roleVector(r)})).filter(x=>x.cov.count>0);if(!xs.length)return{rows:[],evaluated:0,raw:[],pareto:[]};const maxFloor=Math.max(...xs.map(x=>x.role.floor),1),pareto=xs.filter(x=>!xs.some(y=>y!==x&&y.role.floor>=x.role.floor&&y.cov.bottomQuartile>=x.cov.bottomQuartile&&(y.role.floor>x.role.floor||y.cov.bottomQuartile>x.cov.bottomQuartile)));pareto.sort((a,b)=>b.cov.bottomQuartile-a.cov.bottomQuartile||b.role.floor-a.role.floor||b.cov.median-a.cov.median);const bestCoverage=Math.max(...pareto.map(x=>x.cov.bottomQuartile)),bestFloor=Math.max(...pareto.map(x=>x.role.floor));const out=pareto.slice(0,limit).map(x=>{let label='균형 트레이드오프';if(x.cov.bottomQuartile===bestCoverage)label='상성 최우선';if(x.role.floor===bestFloor)label=label==='상성 최우선'?'2축 동시 최선':'블라인드 저점 보존';const r=decorate(x.r,label,x.cov);r.audit10646Pareto=true;r.audit10643Pareto=true;r.audit10635Pareto=true;r.audit10635Layer1={floor:x.role.floor,median:x.role.median,ceiling:x.role.ceiling,ratio:x.role.floor/maxFloor};return r});return{rows:out,evaluated:xs.length,raw:xs,pareto}}
+function buildPlan(){const key=cacheKey();if(planCache.key===key&&planCache.pack)return planCache.pack;if(ST.season!=='S2'){const z={squads:[],capacity:0,objectiveTag:'meta_coverage',audit10646Status:'KR_S2_ONLY'};planCache={key,pack:z};return z}const t0=performance.now(),base=A29.buildPlan(),rep=representatives(base.squads||[],12),rows=rep.rows;const pack={squads:rows,capacity:base.capacity,candidateCount:base.candidateCount,evaluatedCount:rep.evaluated,objectiveTag:'meta_coverage',audit10646:true,audit10646Status:rows.length?'EXPERIMENT_TYPED_ACTION_LOCK':'NO_COVERAGE_ROWS',environmentCount:environmentRows().length,sourceScoreContribution:0,encounterWeights:null,runtimeMs:performance.now()-t0,overallStrategy:'layer1_role_floor_x_layer2_typed_action_lock_bottom_quartile_pareto'};planCache={key,pack};return pack}
+const ALIAS_TO_DECK={'조감초':'감부인·조운·초선','선등여포':'여포·진궁·악진','악순주':'주순악','주태황개주유':'주황주','주태원소마초':'마초·주태·원소','쌍황육손':'쌍황륙','손노육':'노숙·손권·육손','순욱태위':'조조·순욱·사마의'};
+function externalCanary(){const base=A43.externalCanary(),bank=environmentRows(),by={};for(const a of base.mappedDecks){const x=bank.find(x=>x.meta.deck===ALIAS_TO_DECK[a]);if(x)by[a]=x.row}const pairs=base.pairs.map(p=>({...p,typedActionLock:interactionTypedLock(by[p.a],by[p.b]),actionLockDelta:interactionTypedLock(by[p.a],by[p.b])-p.durationCleanse}));function metric(key){const nt=pairs.filter(x=>x.expected!==0),strong=nt.filter(x=>Math.abs(x.expected)===2),weak=nt.filter(x=>Math.abs(x.expected)===1),ok=x=>Math.sign(x[key])===Math.sign(x.expected);return{nonTieCount:nt.length,directionPass:nt.filter(ok).length,directionRate:nt.filter(ok).length/Math.max(1,nt.length),strongCount:strong.length,strongPass:strong.filter(ok).length,strongRate:strong.filter(ok).length/Math.max(1,strong.length),weakCount:weak.length,weakPass:weak.filter(ok).length,weakRate:weak.filter(ok).length/Math.max(1,weak.length)}}let anti=0;for(const a of base.mappedDecks)for(const b of base.mappedDecks)if(a<b)anti=Math.max(anti,Math.abs(interactionTypedLock(by[a],by[b])+interactionTypedLock(by[b],by[a])));return{...base,typedActionLock:metric('typedActionLock'),typedActionLockAntisymmetryMaxError:anti,pairs,validationClass:'TEAM_STRUCTURE_MATRIX_WITH_CURRENT_KR_SETUP_PROXY',setupLevelGroundTruth:false,scoreContribution:0,coefficientFitToCanary:false}}
+function independentHoldout(){return A45&&A45.evaluate?A45.evaluate(interactionTypedLock):null}
+function semanticFixtures(){const bank=environmentRows(),get=t=>{const k=sig(t),x=bank.find(x=>sig(x.row.team)===k);return x&&x.row},lubu=get(['악진','여포','진궁']),son=get(['노숙','손권','육손']),h1=lubu&&son?{before:A43.interactionCleanse(lubu,son),after:interactionTypedLock(lubu,son),attackerLoads:actionLoads(lubu),defenderPressure:controlPressure(son),legacyDefenderEffect:legacyLockEffect(son,lubu),typedDefenderEffect:typedLockEffect(son,lubu),disarmDiagnostic:disarmDiagnostic(son,lubu)}:null,luBuFalse=parseSource('hero','여포').filter(x=>x.term==='무장 해제'),qimen=parseSource('tactic','기문둔갑').filter(x=>x.term==='공포');return{h1,luBuImmunityNotParsed:luBuFalse.length===0,qimenSingleFearApplication:qimen.length===1,disarmScoreContribution:0,confusionScoreContribution:0,tauntScoreContribution:0}}
+function health(){const p=buildPlan(),c=externalCanary(),h=independentHoldout(),f=semanticFixtures(),overall=window.__AUDIT10637__?.health?.(),rows=p.squads||[],h1=h&&h.rows&&h.rows.find(x=>x.id==='H1');const checks={moduleReady:true,environment13:p.environmentCount===13,rowsPresent:rows.length>0,sourceScoreZero:rows.every(r=>(+r.sourceScoreContribution||0)===0),typedLockAntisymmetry:c.typedActionLockAntisymmetryMaxError<1e-9,canaryScoreZero:c.scoreContribution===0,noCanaryFit:c.coefficientFitToCanary===false,setupGroundTruthNotClaimed:c.setupLevelGroundTruth===false,overallRegression:!!overall?.pass,luBuImmunityExcluded:f.luBuImmunityNotParsed,qimenProbabilityMentionNotDoubleCounted:f.qimenSingleFearApplication,nonScoredControlTypesZero:f.disarmScoreContribution===0&&f.confusionScoreContribution===0&&f.tauntScoreContribution===0,h1IndependentDirectionRecovered:!!h1&&h1.pass===true,metaRouteUnchanged:window.__AUDIT10636__===A43};return{version:'Audit106.46-exp1',pass:Object.values(checks).every(Boolean),checks,canary:{a10643:c.durationCleanse,a10646:c.typedActionLock,antisymmetry:c.typedActionLockAntisymmetryMaxError},independentHoldout:h,fixtures:f,pack:{count:rows.length,runtimeMs:p.runtimeMs},policy:{experimental:true,metaCoverageHold:true,typedActionLock:true,targetCoverageNormalized:true,scoredControls:['침묵','공포'],diagnosticOnlyControls:['무장 해제','혼란','조롱'],controlCoefficient:.85,sourceTierDeckNameScoreContribution:0,externalCanaryScoreContribution:0,independentHoldoutScoreContribution:0,noCoefficientFitToCanary:true,autoCommitAllowed:false}}}
+const API={version:'Audit106.46-layer2-typed-action-lock-exp1',parseSource,controlPressure,actionLoads,typedLockEffect,disarmDiagnostic,legacyLockEffect,interactionTypedLock,environmentRows,coverage,representatives,buildPlan,externalCanary,independentHoldout,semanticFixtures,health,reset:()=>{planCache={key:null,pack:null}},policy:{experimental:true,metaCoverageOnly:true,typedActionLock:true,targetCoverageNormalized:true,scoredControls:['침묵','공포'],diagnosticOnlyControls:['무장 해제','혼란','조롱'],controlCoefficient:.85,sourceTierDeckNameScoreContribution:0,noCoefficientFitToCanary:true,antisymmetricPairwise:true,pioneerIsolation:true,autoCommitAllowed:false}};
+window.__AUDIT10643_BASE__=A43;
+window.__AUDIT10646__=API;
+})();
+</script>
+
+<script>
+/* Audit106.47 EXP1 — control parser hardening + nonblocking-control admission gate.
+ * Corrects semantic parser errors without fitting coefficients:
+ *  - "%의 확률로" is a probability phrase (e.g. 칠군수몰 36.11%), not 100%.
+ *  - A status used only as a prerequisite ("침묵 상태면 공포") is not re-counted as a new application.
+ *  - Explicit odd/even-turn control is normalized to its actual 8-turn opportunity share.
+ *  - Control target is resolved near the control clause (e.g. 우금 "공격자에게" = one target).
+ *  - Disarm/confusion/taunt remain diagnostic-only until their topology is independently validated.
+ */
+(function(){
+'use strict';
+const A46=window.__AUDIT10646__,A43=window.__AUDIT10643__,A45=window.__AUDIT10645__,A29=window.__AUDIT10629__,A17=window.__AUDIT10617__,A95=window.__AUDIT95__;
+if(!A46||!A43||!A29||!A17||!A95)return;
+const E=A95.engine,ST=A95.state,TYPES=['침묵','공포','무장 해제','혼란','조롱'];
+const clamp=x=>Math.max(0,Math.min(1,+x||0)),sig=t=>[...(t||[])].sort().join('|'),flat=b=>Object.values(b||{}).flat();
+let planCache={key:null,pack:null};
+function desc(kind,n){return String((kind==='hero'?E.heroes?.[n]:E.tactics?.[n])?.description||'')}
+function explicitChance(s,term){const at=s.indexOf(term),pre=at>=0?s.slice(Math.max(0,at-150),at):s,ms=[...pre.matchAll(/([0-9]+(?:\.[0-9]+)?)%(?:\s*(?:→|>>|->)\s*([0-9]+(?:\.[0-9]+)?)%)?\s*(?:의\s*)?확률로?/g)];if(!ms.length)return null;const m=ms[ms.length-1];return clamp(+(m[2]||m[1])/100)}
+function scheduleFactor(s){if(/(?:짝수|홀수)\s*턴(?:\s*시작\s*시)?/.test(s))return .5;if(/2번째\s*턴부터\s*매\s*턴/.test(s))return 7/8;return 1}
+function termConditionOnly(s,term){const q=term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),re=new RegExp(q+'\\s*상태(?:면|이면|인 경우|라면|를\\s*보유한\\s*경우)');if(!re.test(s))return false;return s.split(term).length-1===1}
+function targetFractions(s,term,fallback){const at=s.indexOf(term),pre=at>=0?s.slice(Math.max(0,at-110),at):s;if(/공격자에게[^,.]{0,30}$/.test(pre))return{enemy:1/3,ally:0,basis:'attacker_single'};if(/적군과\s*아군\s*전체의\s*랜덤\s*목표\s*4개/.test(s))return{enemy:2/3,ally:2/3,basis:'mixed_4_of_6'};if(/(?:전체\s*적군|적군\s*전체)/.test(s))return{enemy:1,ally:0,basis:'enemy_all'};let m=s.match(/(?:랜덤\s*)?적군\s*(\d)\s*[~～-]\s*(\d)명/);if(m)return{enemy:Math.min(1,((+m[1]+ +m[2])/2)/3),ally:0,basis:'enemy_range'};m=s.match(/(?:랜덤\s*)?적군\s*(\d)명/);if(m)return{enemy:Math.min(1,+m[1]/3),ally:0,basis:'enemy_n'};if(/(?:랜덤\s*)?적군\s*(?:단일\s*목표|1명)|공격\s*목표|적군\s*목표/.test(s))return{enemy:1/3,ally:0,basis:'enemy_single'};return{enemy:fallback==null?1/3:fallback,ally:0,basis:'fallback'}}
+function duration(kind,name,s,term){const d=desc(kind,name),at=d.indexOf(s),near=at>=0?d.slice(Math.max(0,at-30),Math.min(d.length,at+s.length+45)):s;let m=near.match(/(\d+)턴\s*동안\s*지속/);if(m)return +m[1];m=near.match(/(\d+)턴\s*지속/);return m?+m[1]:1}
+function parseSource(kind,name){const old=A46.parseSource(kind,name),out=[];for(const n of old){if(termConditionOnly(n.sentence,n.term))continue;const ec=explicitChance(n.sentence,n.term),chance=ec==null?n.chance:ec,sch=scheduleFactor(n.sentence),tf=targetFractions(n.sentence,n.term,n.targetFraction),dur=duration(kind,name,n.sentence,n.term),value=n.conditional?0:n.baseRate*chance*tf.enemy*sch;out.push({...n,chance,targetFraction:tf.enemy,targetFractions:tf,duration:dur,scheduleFactor:sch,value,parser47:true})}return out}
+function controlPressure(row){const nodes=[];for(const h of row.team||[]){nodes.push(...parseSource('hero',h));for(const t of row.builds?.[h]||[])nodes.push(...parseSource('tactic',t))}const raw=Object.fromEntries(TYPES.map(t=>[t,0]));for(const n of nodes)raw[n.term]+=n.value;const p=Object.fromEntries(TYPES.map(t=>[t,clamp(raw[t])]));return{...p,nodes,raw,scoreContribution:{'침묵':1,'공포':1,'무장 해제':0,'혼란':0,'조롱':0}}}
+function typedLockEffect(attacker,defender){const p=controlPressure(attacker),l=A46.actionLoads(defender),activeBlock=clamp(p['침묵']+p['공포']),pursuitBlock=clamp(p['공포']);return{value:activeBlock*l.active+pursuitBlock*l.pursuit,activeBlock,pursuitBlock,pressure:p,loads:l,scoreContribution:{silence:1,fear:1,disarm:0,confusion:0,taunt:0}}}
+function interactionParser47(a,b){const da=typedLockEffect(a,b).value-A46.typedLockEffect(a,b).value,db=typedLockEffect(b,a).value-A46.typedLockEffect(b,a).value;return A46.interactionTypedLock(a,b)+.85*(da-db)}
+function environmentRows(){return A46.environmentRows()}
+function median(v){if(!v.length)return 0;const a=[...v].sort((x,y)=>x-y),n=a.length;return n%2?a[(n-1)/2]:(a[n/2-1]+a[n/2])/2}
+function coverage(row){const env=environmentRows(),vals=env.map(x=>({deck:x.meta.deck,score:interactionParser47(row,x.row),profile:x.profile,activeHeroes:x.activeHeroes})),sorted=vals.map(x=>x.score).sort((a,b)=>a-b);if(!sorted.length)return{count:0,median:0,bottomQuartile:0,worst:0,positiveRate:0,volatility:0};const q=Math.max(1,Math.ceil(sorted.length*.25)),bottom=sorted.slice(0,q),avg=a=>a.reduce((x,y)=>x+y,0)/Math.max(1,a.length),mu=avg(sorted),variance=avg(sorted.map(x=>(x-mu)*(x-mu)));return{count:sorted.length,median:median(sorted),bottomQuartile:avg(bottom),worst:sorted[0],positiveRate:sorted.filter(x=>x>0).length/sorted.length,volatility:Math.sqrt(Math.max(0,variance)),values:vals}}
+function cacheKey(){const p=A17.resourcePool(),locks=((ST.lockedTeams||{})[ST.season]||[]);return[ST.season,[...p.heroes].sort().join(','),[...p.tactics].sort().join(','),locks.map(x=>sig(x.team)+'#'+flat(x.builds).sort().join(',')).sort().join(';')].join('|')}
+function decorate(row,label,cov){const r={...row};r.overallSurfaceLabel=label;r.audit10647Coverage=cov;r.audit10646Coverage=cov;r.audit10643Coverage=cov;r.audit10642Coverage=cov;r.audit10636Coverage=cov;r.audit10634Coverage=cov;r.objectiveTag='meta_coverage';r.choiceOrigin='matchup_coverage_control_parser_hardened_exp';r.sourceScoreContribution=0;r.sourceRecommendScoreIgnored=true;r.alternativeCandidate=true;r.reasons=[label+' · KR S2 동일가중 structural opponent bank',`제어 parser 보정 · 중앙 ${cov.median>=0?'+':''}${cov.median.toFixed(3)} · 하위25 ${cov.bottomQuartile>=0?'+':''}${cov.bottomQuartile.toFixed(3)} · 최악 ${cov.worst>=0?'+':''}${cov.worst.toFixed(3)}`,'%의 확률 / 상태조건 중복 / 홀짝턴 / 근접 대상절 parser 수정','무장해제·혼란·조롱은 admission gate 유지 · 점수 기여 0','외부/독립 상성표 점수 기여 0 · coefficient fitting 0'].concat(r.reasons||[]);return r}
+function representatives(rows,limit=12){const xs=(rows||[]).map(r=>({r,cov:coverage(r),role:A29.roleVector(r)})).filter(x=>x.cov.count>0);if(!xs.length)return{rows:[],evaluated:0,raw:[],pareto:[]};const maxFloor=Math.max(...xs.map(x=>x.role.floor),1),pareto=xs.filter(x=>!xs.some(y=>y!==x&&y.role.floor>=x.role.floor&&y.cov.bottomQuartile>=x.cov.bottomQuartile&&(y.role.floor>x.role.floor||y.cov.bottomQuartile>x.cov.bottomQuartile)));pareto.sort((a,b)=>b.cov.bottomQuartile-a.cov.bottomQuartile||b.role.floor-a.role.floor||b.cov.median-a.cov.median);const bestCoverage=Math.max(...pareto.map(x=>x.cov.bottomQuartile)),bestFloor=Math.max(...pareto.map(x=>x.role.floor));const out=pareto.slice(0,limit).map(x=>{let label='균형 트레이드오프';if(x.cov.bottomQuartile===bestCoverage)label='상성 최우선';if(x.role.floor===bestFloor)label=label==='상성 최우선'?'2축 동시 최선':'블라인드 저점 보존';const r=decorate(x.r,label,x.cov);r.audit10647Pareto=true;r.audit10635Pareto=true;r.audit10635Layer1={floor:x.role.floor,median:x.role.median,ceiling:x.role.ceiling,ratio:x.role.floor/maxFloor};return r});return{rows:out,evaluated:xs.length,raw:xs,pareto}}
+function buildPlan(){const key=cacheKey();if(planCache.key===key&&planCache.pack)return planCache.pack;if(ST.season!=='S2'){const z={squads:[],capacity:0,objectiveTag:'meta_coverage',audit10647Status:'KR_S2_ONLY'};planCache={key,pack:z};return z}const t0=performance.now(),base=A29.buildPlan(),rep=representatives(base.squads||[],12),rows=rep.rows;const pack={squads:rows,capacity:base.capacity,candidateCount:base.candidateCount,evaluatedCount:rep.evaluated,objectiveTag:'meta_coverage',audit10647:true,audit10647Status:rows.length?'EXPERIMENT_CONTROL_PARSER_HARDENED':'NO_COVERAGE_ROWS',environmentCount:environmentRows().length,sourceScoreContribution:0,encounterWeights:null,runtimeMs:performance.now()-t0,overallStrategy:'layer1_role_floor_x_layer2_parser_hardened_bottom_quartile_pareto'};planCache={key,pack};return pack}
+const ALIAS_TO_DECK={'조감초':'감부인·조운·초선','선등여포':'여포·진궁·악진','악순주':'주순악','주태황개주유':'주황주','주태원소마초':'마초·주태·원소','쌍황육손':'쌍황륙','손노육':'노숙·손권·육손','순욱태위':'조조·순욱·사마의'};
+function externalCanary(){const base=A46.externalCanary(),bank=environmentRows(),by={};for(const a of base.mappedDecks){const x=bank.find(x=>x.meta.deck===ALIAS_TO_DECK[a]);if(x)by[a]=x.row}const pairs=base.pairs.map(p=>({...p,parser47:interactionParser47(by[p.a],by[p.b])}));function metric(key){const nt=pairs.filter(x=>x.expected!==0),strong=nt.filter(x=>Math.abs(x.expected)===2),weak=nt.filter(x=>Math.abs(x.expected)===1),ok=x=>Math.sign(x[key])===Math.sign(x.expected);return{nonTieCount:nt.length,directionPass:nt.filter(ok).length,directionRate:nt.filter(ok).length/Math.max(1,nt.length),strongCount:strong.length,strongPass:strong.filter(ok).length,strongRate:strong.filter(ok).length/Math.max(1,strong.length),weakCount:weak.length,weakPass:weak.filter(ok).length,weakRate:weak.filter(ok).length/Math.max(1,weak.length)}}let anti=0;for(const a of base.mappedDecks)for(const b of base.mappedDecks)if(a<b)anti=Math.max(anti,Math.abs(interactionParser47(by[a],by[b])+interactionParser47(by[b],by[a])));return{...base,parser47:metric('parser47'),parser47AntisymmetryMaxError:anti,pairs,scoreContribution:0,coefficientFitToCanary:false}}
+function independentHoldout(){return A45&&A45.evaluate?A45.evaluate(interactionParser47):null}
+function sourceNode(kind,name,term){return parseSource(kind,name).filter(x=>x.term===term)}
+function parserFixtures(){const flood=sourceNode('tactic','칠군수몰','침묵'),unguarded=sourceNode('tactic','무방비 공격','침묵'),caoren=sourceNode('hero','조인','침묵'),yujin=sourceNode('hero','우금','무장 해제'),xushu=sourceNode('hero','서서','침묵');return{floodSilence:flood,unguardedSilence:unguarded,caorenSilence:caoren,yujinDisarm:yujin,xushuSilence:xushu,checks:{floodChanceCorrect:flood.length===1&&Math.abs(flood[0].chance-.3611)<1e-9,conditionalSilenceNotDuplicated:unguarded.length===1,caorenEvenTurnHalf:caoren.length===1&&Math.abs(caoren[0].scheduleFactor-.5)<1e-9,yujinTargetsAttacker:yujin.length===1&&Math.abs(yujin[0].targetFraction-1/3)<1e-9,xushuBranchPreserved:xushu.length===1&&Math.abs(xushu[0].chance-.5)<1e-9}}}
+function nonBlockingAdmission(){return{disarm:{status:'HOLD_DIAGNOSTIC_ONLY',reason:'blocks normal attack entry; pursuit impact depends on disarm-ignoring basic drivers, friendly-fire applications, duration and target identity; semantic ablation degraded both canary banks',scoreContribution:0},confusion:{status:'HOLD_TOPOLOGY_REQUIRED',reason:'does not remove actions; basic/pursuit/active choose targets indiscriminately, requiring offensive-vs-support target topology and friendly-fire value',scoreContribution:0},taunt:{status:'HOLD_TOPOLOGY_REQUIRED',reason:'redirects ordinary attacks only; value depends on taunter durability/counter/intercept and attacker target-priority topology',scoreContribution:0}}}
+function health(){const p=buildPlan(),c=externalCanary(),h=independentHoldout(),f=parserFixtures(),overall=window.__AUDIT10637__?.health?.(),rows=p.squads||[],adm=nonBlockingAdmission(),checks={moduleReady:true,environment13:p.environmentCount===13,rowsPresent:rows.length>0,sourceScoreZero:rows.every(r=>(+r.sourceScoreContribution||0)===0),parserAntisymmetry:c.parser47AntisymmetryMaxError<1e-9,canaryNotDegraded:c.parser47.directionPass>=c.typedActionLock.directionPass,holdoutNotDegraded:!h||h.pass>=5,canaryScoreZero:c.scoreContribution===0,noCanaryFit:c.coefficientFitToCanary===false,overallRegression:!!overall?.pass,metaRouteUnchanged:window.__AUDIT10636__===A43,...f.checks,nonBlockingControlsStillZero:Object.values(adm).every(x=>x.scoreContribution===0)};return{version:'Audit106.47-exp1',pass:Object.values(checks).every(Boolean),checks,canary:{a10646:c.typedActionLock,a10647:c.parser47,antisymmetry:c.parser47AntisymmetryMaxError},independentHoldout:h,fixtures:f,admission:adm,pack:{count:rows.length,runtimeMs:p.runtimeMs},policy:{experimental:true,parserHardening:true,metaCoverageHold:true,scoredControls:['침묵','공포'],diagnosticOnlyControls:['무장 해제','혼란','조롱'],controlCoefficient:.85,sourceTierDeckNameScoreContribution:0,externalCanaryScoreContribution:0,independentHoldoutScoreContribution:0,noCoefficientFitToCanary:true,autoCommitAllowed:false}}}
+const API={version:'Audit106.47-control-parser-hardening-exp1',parseSource,controlPressure,typedLockEffect,interactionParser47,environmentRows,coverage,representatives,buildPlan,externalCanary,independentHoldout,parserFixtures,nonBlockingAdmission,health,reset:()=>{planCache={key:null,pack:null}},policy:{experimental:true,validationOnly:true,parserHardening:true,metaRouteUnchanged:true,diagnosticOnlyControls:['무장 해제','혼란','조롱'],sourceTierDeckNameScoreContribution:0,noCoefficientFitToCanary:true,autoCommitAllowed:false}};
+window.__AUDIT10647__=API;
+})();
+</script>
+
+<script>
+/* Audit106.48 EXP1 — cleanse/control cross-module consistency.
+ * A106.43 discounted action-dependent cleanse by the old A106.36 hard-denial aggregate.
+ * After A106.47 parser hardening, that old aggregate can overstate/duplicate action lock.
+ * This module uses A106.47 typed silence+fear enemy coverage for cleanse availability and
+ * channel-specific cleanse vulnerability (silence -> active only, fear -> active+pursuit).
+ * No coefficient fit, no meta route change.
+ */
+(function(){
+'use strict';
+const A47=window.__AUDIT10647__,A46=window.__AUDIT10646__,A43=window.__AUDIT10643__,A45=window.__AUDIT10645__,A29=window.__AUDIT10629__,A17=window.__AUDIT10617__,A95=window.__AUDIT95__;
+if(!A47||!A46||!A43||!A29||!A17||!A95)return;
+const ST=A95.state,LOCK=new Set(['침묵','공포','혼란']),PERSIST=new Set(['화공','홍수','폭풍','연소','요술']);
+const clamp=x=>Math.max(0,Math.min(1,+x||0)),sig=t=>[...(t||[])].sort().join('|'),flat=b=>Object.values(b||{}).flat();let planCache={key:null,pack:null};
+function typedActionDenial(attacker){const p=A47.controlPressure(attacker);return{value:clamp(p['침묵']+p['공포']),silence:p['침묵'],fear:p['공포'],pressure:p}}
+function applicableCoverage(cleanser,statusTerm,attacker=null){const p=A43.cleanseProfile(cleanser);let miss=1,used=[];const enemyDenial=attacker?typedActionDenial(attacker).value:0;for(const n of p.nodes){if(LOCK.has(statusTerm)&&n.actionDependent)continue;const availability=n.actionDependent?(1-enemyDenial):1,effectiveCoverage=clamp(n.perTurnCoverage*availability);miss*=1-effectiveCoverage;used.push({...n,availability,effectiveCoverage})}return{coverage:clamp(1-miss),nodes:used,allNodes:p.nodes,enemyTypedActionDenial:enemyDenial}}
+function vulnerability(defender,attacker,node){const l=A46.actionLoads(defender),term=node.term;if(term==='침묵')return{value:l.active,channel:'active',consumers:[]};if(term==='공포')return{value:l.action,channel:'active+pursuit',consumers:[]};if(term==='혼란')return{value:0,channel:'target-distortion-hold',consumers:[]};if(term==='무장 해제')return{value:l.pursuit,channel:'pursuit-entry-diagnostic',consumers:[]};if(PERSIST.has(term)){const z=A43.persistentConsumerReliance(attacker,term,node.source);return{value:z.value,channel:'persistent-consumer',consumers:z.entries}}return{value:0,channel:'none',consumers:[]}}
+function cleanseDefense(defender,attacker){const ex=A43.statusExposure(attacker),contrib=[];let total=0;for(const n of ex.nodes){const cov=applicableCoverage(defender,n.term,attacker),saved=A43.savedExposureFraction(n.duration,cov.coverage),vv=vulnerability(defender,attacker,n),value=n.occupancy*saved*vv.value;if(value>0){total+=value;contrib.push({...n,cleanseCoverage:cov.coverage,savedFraction:saved,vulnerability:vv.value,vulnerabilityChannel:vv.channel,value,cleanseNodes:cov.nodes.map(x=>x.source),consumerNodes:vv.consumers})}}return{value:total,contrib,cleanse:A43.cleanseProfile(defender),attackerExposure:ex}}
+function interactionCleanse48(a,b){const newA=cleanseDefense(a,b).value,oldA=A43.cleanseDefense(a,b).value,newB=cleanseDefense(b,a).value,oldB=A43.cleanseDefense(b,a).value;return A47.interactionParser47(a,b)+(newA-oldA)-(newB-oldB)}
+function environmentRows(){return A47.environmentRows()}
+function median(v){if(!v.length)return 0;const a=[...v].sort((x,y)=>x-y),n=a.length;return n%2?a[(n-1)/2]:(a[n/2-1]+a[n/2])/2}
+function coverage(row){const env=environmentRows(),vals=env.map(x=>({deck:x.meta.deck,score:interactionCleanse48(row,x.row),profile:x.profile,activeHeroes:x.activeHeroes})),sorted=vals.map(x=>x.score).sort((a,b)=>a-b);if(!sorted.length)return{count:0,median:0,bottomQuartile:0,worst:0,positiveRate:0,volatility:0};const q=Math.max(1,Math.ceil(sorted.length*.25)),bottom=sorted.slice(0,q),avg=a=>a.reduce((x,y)=>x+y,0)/Math.max(1,a.length),mu=avg(sorted),variance=avg(sorted.map(x=>(x-mu)*(x-mu)));return{count:sorted.length,median:median(sorted),bottomQuartile:avg(bottom),worst:sorted[0],positiveRate:sorted.filter(x=>x>0).length/sorted.length,volatility:Math.sqrt(Math.max(0,variance)),values:vals}}
+function cacheKey(){const p=A17.resourcePool(),locks=((ST.lockedTeams||{})[ST.season]||[]);return[ST.season,[...p.heroes].sort().join(','),[...p.tactics].sort().join(','),locks.map(x=>sig(x.team)+'#'+flat(x.builds).sort().join(',')).sort().join(';')].join('|')}
+function decorate(row,label,cov){const r={...row};r.overallSurfaceLabel=label;r.audit10648Coverage=cov;r.audit10647Coverage=cov;r.audit10646Coverage=cov;r.audit10643Coverage=cov;r.audit10642Coverage=cov;r.audit10636Coverage=cov;r.audit10634Coverage=cov;r.objectiveTag='meta_coverage';r.choiceOrigin='matchup_coverage_cleanse_typed_denial_consistent_exp';r.sourceScoreContribution=0;r.sourceRecommendScoreIgnored=true;r.alternativeCandidate=true;r.reasons=[label+' · KR S2 동일가중 structural opponent bank',`정화×제어 일관성 보정 · 중앙 ${cov.median>=0?'+':''}${cov.median.toFixed(3)} · 하위25 ${cov.bottomQuartile>=0?'+':''}${cov.bottomQuartile.toFixed(3)} · 최악 ${cov.worst>=0?'+':''}${cov.worst.toFixed(3)}`,'액티브 정화 가용성은 A106.47 침묵+공포 typed coverage 사용','침묵 정화가치는 active만 / 공포는 active+추격 · 혼란 target-distortion은 0','외부/독립 상성표 점수 기여 0 · coefficient fitting 0'].concat(r.reasons||[]);return r}
+function representatives(rows,limit=12){const xs=(rows||[]).map(r=>({r,cov:coverage(r),role:A29.roleVector(r)})).filter(x=>x.cov.count>0);if(!xs.length)return{rows:[],evaluated:0,raw:[],pareto:[]};const maxFloor=Math.max(...xs.map(x=>x.role.floor),1),pareto=xs.filter(x=>!xs.some(y=>y!==x&&y.role.floor>=x.role.floor&&y.cov.bottomQuartile>=x.cov.bottomQuartile&&(y.role.floor>x.role.floor||y.cov.bottomQuartile>x.cov.bottomQuartile)));pareto.sort((a,b)=>b.cov.bottomQuartile-a.cov.bottomQuartile||b.role.floor-a.role.floor||b.cov.median-a.cov.median);const bestCoverage=Math.max(...pareto.map(x=>x.cov.bottomQuartile)),bestFloor=Math.max(...pareto.map(x=>x.role.floor));const out=pareto.slice(0,limit).map(x=>{let label='균형 트레이드오프';if(x.cov.bottomQuartile===bestCoverage)label='상성 최우선';if(x.role.floor===bestFloor)label=label==='상성 최우선'?'2축 동시 최선':'블라인드 저점 보존';const r=decorate(x.r,label,x.cov);r.audit10648Pareto=true;r.audit10635Pareto=true;r.audit10635Layer1={floor:x.role.floor,median:x.role.median,ceiling:x.role.ceiling,ratio:x.role.floor/maxFloor};return r});return{rows:out,evaluated:xs.length,raw:xs,pareto}}
+function buildPlan(){const key=cacheKey();if(planCache.key===key&&planCache.pack)return planCache.pack;if(ST.season!=='S2'){const z={squads:[],capacity:0,objectiveTag:'meta_coverage',audit10648Status:'KR_S2_ONLY'};planCache={key,pack:z};return z}const t0=performance.now(),base=A29.buildPlan(),rep=representatives(base.squads||[],12),rows=rep.rows;const pack={squads:rows,capacity:base.capacity,candidateCount:base.candidateCount,evaluatedCount:rep.evaluated,objectiveTag:'meta_coverage',audit10648:true,audit10648Status:rows.length?'EXPERIMENT_CLEANSE_TYPED_DENIAL_CONSISTENT':'NO_COVERAGE_ROWS',environmentCount:environmentRows().length,sourceScoreContribution:0,encounterWeights:null,runtimeMs:performance.now()-t0,overallStrategy:'layer1_role_floor_x_layer2_cleanse_typed_denial_bottom_quartile_pareto'};planCache={key,pack};return pack}
+const ALIAS_TO_DECK={'조감초':'감부인·조운·초선','선등여포':'여포·진궁·악진','악순주':'주순악','주태황개주유':'주황주','주태원소마초':'마초·주태·원소','쌍황육손':'쌍황륙','손노육':'노숙·손권·육손','순욱태위':'조조·순욱·사마의'};
+function externalCanary(){const base=A47.externalCanary(),bank=environmentRows(),by={};for(const a of base.mappedDecks){const x=bank.find(x=>x.meta.deck===ALIAS_TO_DECK[a]);if(x)by[a]=x.row}const pairs=base.pairs.map(p=>({...p,cleanse48:interactionCleanse48(by[p.a],by[p.b])}));function metric(key){const nt=pairs.filter(x=>x.expected!==0),strong=nt.filter(x=>Math.abs(x.expected)===2),weak=nt.filter(x=>Math.abs(x.expected)===1),ok=x=>Math.sign(x[key])===Math.sign(x.expected);return{nonTieCount:nt.length,directionPass:nt.filter(ok).length,directionRate:nt.filter(ok).length/Math.max(1,nt.length),strongCount:strong.length,strongPass:strong.filter(ok).length,strongRate:strong.filter(ok).length/Math.max(1,strong.length),weakCount:weak.length,weakPass:weak.filter(ok).length,weakRate:weak.filter(ok).length/Math.max(1,weak.length)}}let anti=0;for(const a of base.mappedDecks)for(const b of base.mappedDecks)if(a<b)anti=Math.max(anti,Math.abs(interactionCleanse48(by[a],by[b])+interactionCleanse48(by[b],by[a])));return{...base,cleanse48:metric('cleanse48'),cleanse48AntisymmetryMaxError:anti,pairs,scoreContribution:0,coefficientFitToCanary:false}}
+function independentHoldout(){return A45&&A45.evaluate?A45.evaluate(interactionCleanse48):null}
+function fixtures(){const env=environmentRows(),get=d=>(env.find(x=>x.meta.deck===d)||{}).row,son=get('노숙·손권·육손'),sy=get('주순악'),oldCov=(son&&sy)?A43.applicableCoverage(sy,'화공',son):null,newCov=(son&&sy)?applicableCoverage(sy,'화공',son):null,oldDenial=oldCov&&oldCov.enemyHardActiveDenial,newDenial=son?typedActionDenial(son):null;return{oldCoverage:oldCov,newCoverage:newCov,oldDenial,newDenial,checks:{typedDenialLowerThanLegacy:!!newDenial&&oldDenial!=null&&newDenial.value<oldDenial,activeCleanseLessOverDiscounted:!!oldCov&&!!newCov&&newCov.coverage>oldCov.coverage,confusionCleanseVulnerabilityZero:sy&&son?vulnerability(sy,son,{term:'혼란'}).value===0:true}}}
+function health(){const p=buildPlan(),c=externalCanary(),h=independentHoldout(),f=fixtures(),overall=window.__AUDIT10637__?.health?.(),rows=p.squads||[],checks={moduleReady:true,environment13:p.environmentCount===13,rowsPresent:rows.length>0,sourceScoreZero:rows.every(r=>(+r.sourceScoreContribution||0)===0),cleanse48Antisymmetry:c.cleanse48AntisymmetryMaxError<1e-9,canaryNotDegraded:c.cleanse48.directionPass>=c.parser47.directionPass,holdoutNotDegraded:!h||h.pass>=5,canaryScoreZero:c.scoreContribution===0,noCanaryFit:c.coefficientFitToCanary===false,overallRegression:!!overall?.pass,metaRouteUnchanged:window.__AUDIT10636__===A43,...f.checks};return{version:'Audit106.48-exp1',pass:Object.values(checks).every(Boolean),checks,canary:{a10647:c.parser47,a10648:c.cleanse48,antisymmetry:c.cleanse48AntisymmetryMaxError},independentHoldout:h,fixtures:f,pack:{count:rows.length,runtimeMs:p.runtimeMs},policy:{experimental:true,crossModuleConsistency:true,metaCoverageHold:true,typedCleanseDenialSource:'A106.47 silence+fear coverage',silenceCleanseVulnerability:'active_only',fearCleanseVulnerability:'active_plus_pursuit',confusionCleanseVulnerability:0,sourceTierDeckNameScoreContribution:0,externalCanaryScoreContribution:0,independentHoldoutScoreContribution:0,noCoefficientFitToCanary:true,autoCommitAllowed:false}}}
+const API={version:'Audit106.48-cleanse-typed-denial-consistency-exp1',typedActionDenial,applicableCoverage,vulnerability,cleanseDefense,interactionCleanse48,environmentRows,coverage,representatives,buildPlan,externalCanary,independentHoldout,fixtures,health,reset:()=>{planCache={key:null,pack:null}},policy:{experimental:true,validationOnly:true,crossModuleConsistency:true,metaRouteUnchanged:true,sourceTierDeckNameScoreContribution:0,noCoefficientFitToCanary:true,autoCommitAllowed:false}};
+window.__AUDIT10648__=API;
+})();
+</script>
+
+
+<script>
+/* Audit106.49 RC1 — consolidated Layer2 semantic release facade.
+ * One RC API/routing surface over the verified A106.42→48 semantic stack.
+ * No new score coefficient. No external/holdout fitting. No auto-commit.
+ */
+(function(){
+'use strict';
+const A42=window.__AUDIT10642__,A43=window.__AUDIT10643__,A46=window.__AUDIT10646__,A47=window.__AUDIT10647__,A48=window.__AUDIT10648__,A37=window.__AUDIT10637__,A29=window.__AUDIT10629__,A17=window.__AUDIT10617__,A95=window.__AUDIT95__;
+if(!A42||!A43||!A46||!A47||!A48||!A37||!A29||!A17||!A95)return;
+const ST=A95.state,flat=b=>Object.values(b||{}).flat(),sig=t=>[...(t||[])].sort().join('|');
+function cloneRow(r){const z={...r};z.audit10649=true;z.audit10649Pareto=true;z.audit10649Coverage=r.audit10648Coverage||A48.coverage(r);z.objectiveTag='meta_coverage';z.choiceOrigin='matchup_coverage_semantic_consolidated_rc1';z.sourceScoreContribution=0;z.sourceRecommendScoreIgnored=true;z.reasons=['A106.49 RC1 · Layer2 semantic consolidated','typed 병기/책략 감피 · duration-aware 정화 · action-channel 침묵/공포','parser hardening · 정화×제어 cross-module 일관성','무장해제/혼란/조롱 점수 0 · 외부/독립 canary 점수 0 · coefficient fitting 0'].concat(r.reasons||[]);return z}
+function interactionSemantic(a,b){return A48.interactionCleanse48(a,b)}
+function environmentRows(){return A48.environmentRows()}
+function coverage(r){return A48.coverage(r)}
+function representatives(rows,limit=12){const x=A48.representatives(rows,limit);return{...x,rows:(x.rows||[]).map(cloneRow)}}
+let planCache={key:null,pack:null};
+function cacheKey(){const p=A17.resourcePool(),locks=((ST.lockedTeams||{})[ST.season]||[]);return[ST.season,[...(p.heroes||[])].sort().join(','),[...(p.tactics||[])].sort().join(','),locks.map(x=>sig(x.team)+'#'+flat(x.builds).sort().join(',')).sort().join(';')].join('|')}
+function buildPlan(){const k=cacheKey();if(planCache.key===k&&planCache.pack)return planCache.pack;const t0=performance.now(),base=A48.buildPlan(),rows=(base.squads||[]).map(cloneRow);const pack={...base,squads:rows,audit10649:true,audit10649Status:rows.length?'RC1_SEMANTIC_CONSOLIDATED':'NO_COVERAGE_ROWS',runtimeMs:performance.now()-t0,sourceScoreContribution:0,overallStrategy:'layer1_role_floor_x_layer2_semantic_consolidated_bottom_quartile_pareto'};planCache={key:k,pack};return pack}
+function externalCanary(){return A48.externalCanary()}
+function independentHoldout(){return A48.independentHoldout()}
+function semanticFixtures(){return{a47:A47.parserFixtures(),a48:A48.fixtures()}}
+function legacyA48Health(){const old36=window.__AUDIT10636__,old34=window.__AUDIT10634__;try{window.__AUDIT10636__=A43;window.__AUDIT10634__=A43;A48.reset&&A48.reset();return A48.health()}finally{window.__AUDIT10636__=old36;window.__AUDIT10634__=old34}}
+function health(){const base=legacyA48Health(),p=buildPlan(),c=externalCanary(),h=independentHoldout(),fx=A47.parserFixtures(),rows=p.squads||[],contracts=rows.map(r=>A29.contract(r)),m=c.cleanse48||{},anti=+c.cleanse48AntisymmetryMaxError||0;const checks={moduleReady:true,a42Present:/Audit106\.42/.test(A42.version||''),a43Present:/Audit106\.43/.test(A43.version||''),a46Present:/Audit106\.46/.test(A46.version||''),a47Present:/Audit106\.47/.test(A47.version||''),a48Present:/Audit106\.48/.test(A48.version||''),a48Regression:base.pass===true,parserFixturesPass:Object.values(fx.checks||{}).every(Boolean),environment13:p.environmentCount===13,rowsPresent:rows.length>0,contractsPass:contracts.every(x=>x&&x.pass),sourceScoreZero:rows.every(r=>(+r.sourceScoreContribution||0)===0),externalDirection16of23:(m.directionPass||0)>=16&&(m.nonTieCount||0)===23,strong7of8:(m.strongPass||0)>=7&&(m.strongCount||0)===8,weak9of15:(m.weakPass||0)>=9&&(m.weakCount||0)===15,holdout5of6:!h||(h.pass>=5&&h.mapped===6),antisymmetry:anti<1e-9,canaryScoreZero:c.scoreContribution===0,noCanaryFit:c.coefficientFitToCanary===false,routeA10649:window.__AUDIT10636__===API&&window.__AUDIT10634__===API,nonBlockingControlsStillDiagnostic:(A46.policy?.diagnosticOnlyControls||[]).includes('무장 해제')&&(A46.policy?.diagnosticOnlyControls||[]).includes('혼란')&&(A46.policy?.diagnosticOnlyControls||[]).includes('조롱')};return{version:'Audit106.49-RC1',pass:Object.values(checks).every(Boolean),checks,a10648Regression:base,canary:{directionPass:m.directionPass,directionRate:m.directionRate,strongPass:m.strongPass,strongRate:m.strongRate,weakPass:m.weakPass,weakRate:m.weakRate,antisymmetry:anti},independentHoldout:h,fixtures:fx,pack:{count:rows.length,runtimeMs:p.runtimeMs,teams:rows.map(r=>r.team)},policy:API.policy}}
+const API={version:'Audit106.49-layer2-semantic-consolidated-RC1',interactionSemantic,interactionCleanse48:interactionSemantic,environmentRows,coverage,representatives,buildPlan,externalCanary,independentHoldout,semanticFixtures,health,reset:()=>{planCache={key:null,pack:null};A48.reset&&A48.reset()},policy:{releaseCandidate:true,experimental:false,metaCoverageReleaseCandidate:true,semanticSource:'A106.48 verified stack',typedMitigation:true,durationAwareCleanse:true,typedActionControl:true,parserHardening:true,crossModuleConsistency:true,scoredControls:['침묵','공포'],diagnosticOnlyControls:['무장 해제','혼란','조롱'],controlCoefficient:.85,sourceTierDeckNameScoreContribution:0,externalCanaryScoreContribution:0,independentHoldoutScoreContribution:0,noCoefficientFitToCanary:true,globalWeightedScalar:false,pioneerIsolation:true,autoCommitAllowed:false}};
+window.__AUDIT10649__=API;window.__AUDIT10636__=API;window.__AUDIT10634__=API;
+})();
+</script>
 </body></html>
