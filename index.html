@@ -65,7 +65,7 @@
 </style>
 </head>
 <body>
-<header class="top"><div class="topin"><div class="brand"><div class="logo">결</div><div><b>천하결전 덱랩</b><small>검증 추천 · 맞춤 추천 · 참고 덱 · v6.0 · A106.41 BOUNDED ALLOCATOR RC1</small></div></div><div class="seasons"><button class="season" data-season="S1">S1</button><button class="season on" data-season="S2">S2</button></div><div class="spacer"></div><label class="search"><input id="search" placeholder="덱 · 장수 · 전법 검색"/></label><button class="ownedBtn" id="openOwned">보유 목록</button><button class="ownedBtn quickHeroBtn" id="openHeroQuick">장수 검색</button><button class="lockedBtn" id="openLocked">확정 부대 <span id="lockedCountTop">0</span>/5</button></div><nav class="tabs"><button class="tab on" data-tab="meta">검증 추천</button><button class="tab" data-tab="independent">맞춤 추천</button><button class="tab" data-tab="pioneer">개척 추천</button><button class="tab" data-tab="yeonmu">연무덱</button><button class="tab" data-tab="external">참고 덱</button><button class="tab" data-tab="counter">덱 상성</button></nav><div class="visualLegend" style="display:flex;gap:8px;align-items:center;justify-content:flex-end;max-width:1180px;margin:0 auto;padding:0 22px 6px;color:#7a8496;font-size:8px"><span>● 동그라미=진영</span><span class="rarity legendary">전설</span><span class="rarity heroic">영웅</span><span>= 장수 등급</span></div></header>
+<header class="top"><div class="topin"><div class="brand"><div class="logo">결</div><div><b>천하결전 덱랩</b><small>검증 추천 · 맞춤 추천 · 참고 덱 · v6.0.1 · A106.50 전설병법 HOTFIX</small></div></div><div class="seasons"><button class="season" data-season="S1">S1</button><button class="season on" data-season="S2">S2</button></div><div class="spacer"></div><label class="search"><input id="search" placeholder="덱 · 장수 · 전법 검색"/></label><button class="ownedBtn" id="openOwned">보유 목록</button><button class="ownedBtn quickHeroBtn" id="openHeroQuick">장수 검색</button><button class="lockedBtn" id="openLocked">확정 부대 <span id="lockedCountTop">0</span>/5</button></div><nav class="tabs"><button class="tab on" data-tab="meta">검증 추천</button><button class="tab" data-tab="independent">맞춤 추천</button><button class="tab" data-tab="pioneer">개척 추천</button><button class="tab" data-tab="yeonmu">연무덱</button><button class="tab" data-tab="external">참고 덱</button><button class="tab" data-tab="counter">덱 상성</button></nav><div class="visualLegend" style="display:flex;gap:8px;align-items:center;justify-content:flex-end;max-width:1180px;margin:0 auto;padding:0 22px 6px;color:#7a8496;font-size:8px"><span>● 동그라미=진영</span><span class="rarity legendary">전설</span><span class="rarity heroic">영웅</span><span>= 장수 등급</span></div></header>
 <div class="appError" id="appError"></div>
 <main class="wrap">
 <section class="lockedDock" id="lockedDock"><div class="lockedDockHead"><div><h3>확정 부대 <span id="lockedCount">0/5</span></h3><p>확정한 부대의 장수 3명과 사용 전법 6개는 이후 추천에서 자동 제외됩니다.</p></div><button class="btn" id="clearLocked">전체 확정 해제</button></div><div class="lockedList" id="lockedList"><div class="lockedEmpty">아직 확정한 부대가 없습니다.</div></div></section>
@@ -2471,6 +2471,64 @@ window.__A96_SQUAD__=squadCombatPlan;window.__A96_POOL__=audit90TacticPool;windo
  function audit10637Health(){const old=state.recommendTag;state.recommendTag='overall';audit10637OverallCache={key:null,pack:null};const p=audit10637BuildOverall(),rows=p.squads||[],dup=audit10637DuplicateStats(rows),checks={rowsPresent:rows.length>=7,pioneerScoreZero:p.pioneerScoreContribution===0,validationRoleScoreZero:p.validationRoleScoreContribution===0,verifiedIntegrityScoreZero:p.verifiedIntegrityScoreContribution===0,validationContractScoreZero:p.validationContractScoreContribution===0,sourceScoreZero:rows.every(r=>(+r.sourceScoreContribution||0)===0),landFactorNeutral:rows.every(r=>Math.abs((audit10637Combat(r).landFactor||1)-1)<1e-9),pvpStabilityIndependent:rows.every(r=>audit10637Combat(r).stabilityScore!=null),finishModelDeduplicated:rows.every(r=>audit10637Combat(r).finishModel&&audit10637Combat(r).legacyFinishReliability!=null),topHeroNotCollapsed:dup.topHeroRate<=.50,topPairNotCollapsed:!(dup.topPair&&dup.topPair[1]>2),noHardSlotMismatch:rows.every(r=>r.audit10637Metrics.hardMismatch===0)};state.recommendTag=old;return{version:'Audit106.41-rc1',pass:Object.values(checks).every(Boolean),checks,duplicateStats:dup,rows:rows.map(r=>({team:r.team,stability:r.audit10637Metrics.pvp,finish:Math.round(r.audit10637Metrics.finish*100),legacyFinish:Math.round((audit10637Combat(r).legacyFinishReliability||0)*100),drawSafety:Math.round(r.audit10637Metrics.drawSafety*100),relation:r.validationRelation.label,contractDiagnostic:r.audit10637ContractDiagnostic.passCount})),policy:{sourceScoreContribution:0,pioneerScoreContribution:0,validationRoleScoreContribution:0,verifiedIntegrityScoreContribution:0,validationContractScoreContribution:0,contractValidationOnly:true,metaCoverageStillExperimental:true}}}
  window.__AUDIT10637__={version:'Audit106.41-resource-scarcity-bounded-allocator-rc1',pvpStability:audit10637PvpStability,metrics:audit10637Metrics,relation:audit10637Relation,diversified:audit10637Diversified,strictDiversified:audit10637StrictDiversified,validatedOwnedCandidates:()=>audit10637ValidatedOwnedCandidateRows(resourcePool()),candidatePipeline:audit10637CandidatePipeline,boundedAllocator:audit10641BoundedFixedTeam,slotPool:audit10641SlotPool,overallRows:audit10637OverallRows,buildOverall:audit10637BuildOverall,tagScore:audit10637TagScore,taggedPipeline:audit10637TaggedPipeline,buildTagged:audit10637BuildTagged,tagHealth:audit10637TagHealth,duplicateStats:audit10637DuplicateStats,health:audit10637Health,reset:()=>{audit10637OverallCache={key:null,pack:null};audit10637TagCache=new Map();audit10630Cache=new Map();independentPlanCache={key:null,pack:null}},policy:{experimental:false,releaseCandidate:true,sourceScoreContribution:0,verifiedIntegrityScoreContribution:0,pioneerScoreContribution:0,validationRoleScoreContribution:0,validationContractScoreContribution:0,contractValidationOnly:true,diversityGuard:true,pvpStabilityDefinition:'finish28/drawSafety25/frontline20/burstConfidence12/structural15 geometric mean',finishModel:'output36/channelReliability26/tacticFit20/burstConfidence18 geometric mean + <=6% redundancy reliability',metaCoverageHold:true,autoCommitAllowed:false,a10641BoundedAllocator:true}};
 }
+
+
+
+/* Audit106.50 HOTFIX — legendary law legality.
+ * Rule: a hero may equip at most ONE legendary(unique) law.
+ * Auto/source plans are normalized to max 1 unique law; extra unique laws are
+ * preserved as mutually-exclusive alternatives. No combat weight changes.
+ */
+const AUDIT10650_LAW_LIMIT_MESSAGE='전설 병법은 장수당 1개만 선택할 수 있습니다.';
+const audit10650BaseFullPlanForHero=fullPlanForHero;
+const audit10650BaseFullPlanHtml=fullPlanHtml;
+function audit10650IsUniqueLaw(name){return !!name&&lawInfo(name).kind==='unique'}
+function audit10650UniqueOwners(name){const x=lawInfo(name);return Array.isArray(x.uniqueHeroes)?x.uniqueHeroes:[]}
+function audit10650LawBelongsToHero(name,hero){const owners=audit10650UniqueOwners(name);return !audit10650IsUniqueLaw(name)||!owners.length||owners.includes(hero)}
+function audit10650ObservedPublicLaws(hero){
+ const score=new Map(),seasons=(META&&META.seasons)||{};
+ for(const sd of Object.values(seasons))for(const d of (sd&&sd.decks)||[])for(const st of d.setups||[]){
+  const hx=st&&st.heroes&&st.heroes[hero];if(!hx)continue;
+  for(const z of hx.laws||[]){const n=(z&&typeof z==='object')?(z.primary||z.raw):z;if(!n||lawInfo(n).kind!=='public')continue;score.set(n,(score.get(n)||0)+1)}
+ }
+ return [...score.entries()].sort((a,b)=>b[1]-a[1]||String(a[0]).localeCompare(String(b[0]),'ko')).map(x=>x[0])
+}
+function audit10650NormalizeHeroLaws(hero,laws){
+ const input=[];for(const n of laws||[])if(n&&!input.includes(n)&&audit10650LawBelongsToHero(n,hero))input.push(n);
+ const uniques=input.filter(audit10650IsUniqueLaw),selectedUnique=uniques[0]||null,alternatives=uniques.slice(1),nonUnique=input.filter(n=>!audit10650IsUniqueLaw(n));
+ const normalized=[];if(selectedUnique)normalized.push(selectedUnique);for(const n of nonUnique)if(normalized.length<3&&!normalized.includes(n))normalized.push(n);
+ if(normalized.length<3){for(const n of audit10650ObservedPublicLaws(hero))if(normalized.length<3&&!normalized.includes(n))normalized.push(n)}
+ return{hero,input,laws:normalized.slice(0,3),selectedUnique,uniqueAlternatives:alternatives,conflictCount:Math.max(0,uniques.length-1),ruleApplied:uniques.length>1,message:AUDIT10650_LAW_LIMIT_MESSAGE}
+}
+function audit10650CanSelectLaw(hero,currentLaws,candidate){
+ if(!audit10650IsUniqueLaw(candidate))return{allowed:true,message:null};
+ if(!audit10650LawBelongsToHero(candidate,hero))return{allowed:false,message:'이 전설 병법은 '+hero+'의 고유 병법이 아닙니다.'};
+ const selected=(currentLaws||[]).filter(n=>n!==candidate&&audit10650IsUniqueLaw(n));
+ if(selected.length)return{allowed:false,message:AUDIT10650_LAW_LIMIT_MESSAGE,selectedUnique:selected[0],candidate};
+ return{allowed:true,message:null}
+}
+fullPlanForHero=function(name,sourceHero,useSource){
+ const p=audit10650BaseFullPlanForHero(name,sourceHero,useSource),n=audit10650NormalizeHeroLaws(name,p.laws||[]);
+ return{...p,hero:name,laws:n.laws,uniqueLawSelected:n.selectedUnique,uniqueLawAlternatives:n.uniqueAlternatives,uniqueLawRuleApplied:n.ruleApplied,uniqueLawRuleMessage:n.message}
+};
+fullPlanHtml=function(plan){
+ const adv=plan.advancedTroop||{text:'기본 병종 유지',source:'safe_base'},alts=plan.uniqueLawAlternatives||[],chosen=plan.uniqueLawSelected||null;
+ const lawTip=alts.length?'<div class="setupLine"><strong>전설 병법 규칙</strong><div><span class="safeBase">전설 병법은 장수당 1개만 선택 가능 · '+esc(chosen||'선택')+' 선택 시 '+alts.map(esc).join(' / ')+' 동시 선택 불가</span></div></div>':'';
+ return '<div class="setupLine"><strong>병법</strong><div class="autoRec">'+itemList(plan.laws||[],'law')+recSourceTag(plan.lawSource)+'</div></div>'+lawTip+'<div class="setupLine"><strong>스탯</strong><div class="autoRec"><span class="autoRecText">'+esc(plan.stat||'—')+'</span>'+recSourceTag(plan.statSource)+'</div></div><div class="setupLine"><strong>고급병종</strong><div class="autoRec"><span class="autoRecText">'+esc(adv.text||'기본 병종 유지')+'</span>'+recSourceTag(adv.source)+'</div></div>'+gearPlanLines('장비',plan.equipment,'equipment')+gearPlanLines('말',plan.horse,'horses')
+};
+function audit10650AuditPlans(){
+ const rows=[];for(const hero of Object.keys(EXTENDED_RECOMMENDATIONS||{})){const raw=(EXTENDED_RECOMMENDATIONS[hero]||{}).laws||[],n=audit10650NormalizeHeroLaws(hero,raw);rows.push({hero,raw,normalized:n.laws,selectedUnique:n.selectedUnique,alternatives:n.uniqueAlternatives,rawUniqueCount:raw.filter(audit10650IsUniqueLaw).length,normalizedUniqueCount:n.laws.filter(audit10650IsUniqueLaw).length})}return rows
+}
+function audit10650SourceExactNoDoubleLegendary(){
+ for(const sd of Object.values((META&&META.seasons)||{}))for(const d of (sd&&sd.decks)||[])for(const st of d.setups||[])for(const [hero,hx] of Object.entries(st.heroes||{})){const names=(hx.laws||[]).map(z=>(z&&typeof z==='object')?(z.primary||z.raw):z).filter(Boolean);if(names.filter(audit10650IsUniqueLaw).length>1)return false}return true
+}
+function audit10650Health(){
+ const rows=audit10650AuditPlans(),conflicts=rows.filter(r=>r.rawUniqueCount>1),block=audit10650CanSelectLaw('유비',['인의론'],'국지한서');
+ const checks={moduleReady:true,allAutoPlansMaxOneLegendary:rows.every(r=>r.normalizedUniqueCount<=1),allConflictsPreservedAsAlternatives:conflicts.every(r=>r.alternatives.length===r.rawUniqueCount-1),selectionGuardBlocksSecondLegendary:block.allowed===false,selectionGuardMessage:block.message===AUDIT10650_LAW_LIMIT_MESSAGE,publicLawUnaffected:audit10650CanSelectLaw('유비',['인의론'],'선용').allowed===true,sourceExactCurrentNoDoubleLegendary:audit10650SourceExactNoDoubleLegendary()};
+ return{version:'Audit106.50-hotfix1',pass:Object.values(checks).every(Boolean),checks,conflictCount:conflicts.length,conflictHeroes:conflicts.map(r=>({hero:r.hero,raw:r.raw,normalized:r.normalized,selectedUnique:r.selectedUnique,alternatives:r.alternatives})),policy:{maxLegendaryLawPerHero:1,extraLegendaryAsAlternative:true,selectionMessage:AUDIT10650_LAW_LIMIT_MESSAGE,noAlgorithmWeightChange:true,sourceExactPreserved:true}}
+}
+window.__AUDIT10650__={version:'Audit106.50-legendary-law-limit-hotfix1',normalizeHeroLaws:audit10650NormalizeHeroLaws,canSelectLaw:audit10650CanSelectLaw,observedPublicLaws:audit10650ObservedPublicLaws,auditPlans:audit10650AuditPlans,planForHero:(hero)=>fullPlanForHero(hero,null,false),health:audit10650Health,policy:{maxLegendaryLawPerHero:1,selectionMessage:AUDIT10650_LAW_LIMIT_MESSAGE,releaseHotfix:true,algorithmWeightsUnchanged:true}};
+
 
 try{fullRender();window.__TIANXIA_READY__='6.0-Audit95-exp3'}catch(e){console.error(e);showFatal(e)}
 
