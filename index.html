@@ -2917,6 +2917,27 @@ window.__A10659_UI_BRIDGE__=Object.freeze({
   onAfterMetaRender:(fn)=>{if(typeof fn==='function'&&!__a10659AfterMetaRenderHooks.includes(fn))__a10659AfterMetaRenderHooks.push(fn)},
   version:'A106.59-lexical-ui-bridge-RC4'
 });
+window.__A10661_CORE_BRIDGE__=Object.freeze({
+  getState:()=>state,
+  getMeta:()=>META,
+  getTacticMap:()=>AUDIT81_TACTIC_MAP,
+  getSourceFamilies:()=>AUDIT80_SOURCE_FAMILIES,
+  getGuideLineups:()=>AUDIT79_GUIDE_LINEUPS,
+  tacticExists:(name)=>!!T[name],
+  resourcePool:()=>resourcePool(),
+  seasonLockedTeams:()=>seasonLockedTeams(),
+  verifiedTeamMappings:(deck,pool)=>verifiedTeamMappings(deck,pool),
+  resolveVerifiedSetup:(deck,setup,pool,mapping)=>resolveVerifiedSetup(deck,setup,pool,mapping),
+  sourceCard:(row,index)=>sourceCard(row,index),
+  sourceRecommendationSearchText:(row)=>sourceRecommendationSearchText(row),
+  setRawTags:(fn)=>{if(typeof fn==='function')rawTags=fn},
+  setCurrentMeta:(rows)=>{currentPlans.meta=rows},
+  getCurrentMeta:()=>currentPlans.meta,
+  save:()=>save(),
+  esc:(x)=>esc(x),
+  koDisplay:(x)=>koDisplay(x),
+  version:'A106.61-core-bridge'
+});
 
 try{fullRender();window.__TIANXIA_READY__='6.0-Audit95-exp3'}catch(e){console.error(e);showFatal(e)}
 
@@ -6302,6 +6323,123 @@ function health(){const oldMode=ST.validatedDiversityMode,oldP={...picksNow()};S
 const API={version:'A106.59-family-picker-RC5-lockfix',catalog:BASE.catalog,entry:BASE.entry,available:BASE.available,annotate:BASE.annotate,annotateRows:BASE.annotateRows,buildPlan,buildPortfolio3,familyModel:()=>model(),setPick,clearPicks,setMode,getMode:()=>ST.validatedDiversityMode,getPicks:()=>({...picksNow()}),health,reset,policy:Object.freeze({validatedOnly:true,lockedResourceIsolation:true,userVariantPreference:true,preferenceIsNotMandatoryPortfolioInclusion:true,sharedCoreAutoGrouping:true,unifiedMetaValidatedCatalog:true,intrinsicCoverageSelection:true,qualityFloorBeforeDiversity:true,sourceTierDeckNameScoreContribution:0,externalMatrixScoreContribution:0,diversitySelectionNotScalarScore:true})};
 window.__A10659_VALIDATED__=API;window.__A10656_VALIDATED__=API;window.__A10656_PORTFOLIO3__=Object.freeze({version:'A106.59-family-portfolio-RC5-lockfix',buildPlan:buildPortfolio3,health,reset,policy:API.policy});
 setTimeout(()=>{try{UI.invalidateIndependent();UI.invalidateVerified();UI.refreshActive()}catch(e){console.error('A10659 RC4 final refresh',e)}},0);
+})();
+</script>
+
+
+<style id="a10661-grouped-source-style">
+/* A106.61 · source-first + shared-core grouped variants + iPhone 13 Pro UX */
+.tab[data-tab="independent"],#page-independent{display:none!important}
+#a10659-family-picker,#familyPicker10659Meta{display:none!important}
+html,body{max-width:100%;overflow-x:hidden}
+.a10660Intro{grid-column:1/-1;border:1px solid #dbe4ef;background:linear-gradient(180deg,#f8fbff,#fff);border-radius:14px;padding:13px 14px;margin-bottom:2px;min-width:0}
+.a10660IntroHead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.a10660Intro h3{margin:0;font-size:15px;color:#24364c}.a10660Intro p{margin:5px 0 0;font-size:10px;color:#68768a;line-height:1.55}.a10660Rules{display:flex;gap:5px;flex-wrap:wrap;margin-top:9px}.a10660Rule{font-size:9px;padding:4px 7px;border-radius:999px;background:#eef4fb;color:#47617e;font-weight:850}.a10660Rule.strong{background:#eaf7ef;color:#2f7550}
+.a10660FilterBar{display:flex;gap:5px;flex-wrap:wrap;min-width:0}.a10660Filter{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:900;color:#687386}.a10660Filter.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.a10660Origin{font-size:9px;color:#6d7b8f;margin:5px 0 0}.a10660Origin b{color:#354a62}.a10660Ambiguous{background:#fff5df!important;color:#865f17!important;border-color:#ead39a!important}.a10660Mapped{background:#edf7ef!important;color:#34704a!important;border-color:#d5eadb!important}
+.a10661Family{margin:10px 0 4px;padding:10px;border:1px solid #d8e1ec;border-radius:12px;background:#f8fbff;min-width:0}.a10661FamilyHead{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}.a10661FamilyHead>div{min-width:0}.a10661FamilyHead b{display:block;font-size:9px;color:#6b7890}.a10661FamilyCore{display:block;margin-top:2px;font-size:12px;font-weight:950;color:#273a52;overflow-wrap:anywhere}.a10661FamilyHead small{flex:0 0 auto;font-size:8px;color:#718096;background:#fff;border:1px solid #e0e6ee;border-radius:999px;padding:3px 6px;white-space:nowrap}.a10661Options{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.a10661Option{appearance:none;-webkit-appearance:none;flex:1 1 92px;min-width:0;border:1px solid #d5deea;background:#fff;border-radius:10px;padding:7px 8px;text-align:left;color:#526176;cursor:pointer}.a10661Option b{display:block;font-size:11px;color:#34465e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.a10661Option small{display:block;margin-top:2px;font-size:8px;color:#8390a1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.a10661Option.on{border-color:#294b79;background:#edf4fd;box-shadow:inset 0 0 0 1px #294b79}.a10661Option.on b{color:#17365f}.a10661Current{display:flex;gap:5px;flex-wrap:wrap;align-items:center;margin-top:7px;font-size:8.5px;color:#6f7d8f}.a10661Current strong{color:#40536b}.a10661SwapHint{display:inline-flex;padding:2px 5px;border-radius:999px;background:#eaf7ef;color:#347250;font-weight:850}.a10661GroupBadge{background:#edf4fd!important;color:#365f91!important}.a10661SourceGap{background:#fff8e7;border-color:#ead49b;color:#755d23}
+.a10661MobileAudit{display:none}
+@media(max-width:640px){
+ .wrap,.topin,.tabs{padding-left:9px!important;padding-right:9px!important}
+ .topin{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px!important;align-items:center!important}
+ .topin .brand{grid-column:1/3;min-width:0;margin:0!important}.topin .brand b{font-size:15px}.topin .brand .logo{width:30px;height:30px}.topin .brand small{display:none!important}
+ .topin .seasons{grid-column:3/4;justify-self:end;min-width:0}.topin .season{padding:5px 9px;font-size:10px}
+ .topin .spacer,.topin .search{display:none!important}
+ #openOwned,#openHeroQuick,#openLocked{width:100%;min-width:0;margin:0!important;padding:7px 3px!important;font-size:9.5px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #openOwned{grid-column:1}#openHeroQuick{grid-column:2}#openLocked{grid-column:3}
+ .tabs{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px!important;overflow:visible!important}
+ .tab{min-width:0!important;padding:8px 2px!important;font-size:9.5px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .visualLegend{padding-left:10px!important;padding-right:10px!important;flex-wrap:wrap!important;gap:4px!important;font-size:7.5px!important}
+ .a10660IntroHead{flex-direction:column}.a10660Intro{padding:10px}.a10660Intro p{font-size:9.5px}.a10660Rules{gap:4px}.a10660Rule{font-size:8px;padding:3px 6px}
+ .a10660FilterBar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:5px}.a10660Filter{min-width:0;width:100%;padding:6px 4px;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .a10661Family{padding:9px;margin-top:8px}.a10661FamilyHead{flex-direction:column;gap:5px}.a10661FamilyHead small{white-space:normal}.a10661Options{gap:5px}.a10661Option{flex-basis:calc(50% - 3px);padding:7px}.a10661Option b{font-size:10.5px}.a10661Option small{font-size:7.5px}
+ #metaGrid.indGrid{grid-template-columns:minmax(0,1fr)!important;width:100%}.card,.metaHybridCard{min-width:0;max-width:100%}.algoTop{min-width:0}.algoTop>div{min-width:0}.deckName{overflow-wrap:anywhere}
+ .metaHybridCard .team{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}.metaHybridCard .hero{min-width:0;padding-left:3px;padding-right:3px}.metaHybridCard .hero b{font-size:11px}.metaHybridCard .hero small{font-size:8px}
+ .metaHybridCard .actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.metaHybridCard .actions .btn{min-width:0;padding:8px 3px;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .metaHybridCard .metaDetailsAlways{display:none!important}
+ .metaStats{gap:4px}.metaStats span{min-width:0;font-size:8px;padding:3px 5px}.setupLine{grid-template-columns:42px minmax(0,1fr)}.setupLine>div,.setupLine>span{min-width:0;overflow-wrap:anywhere}
+ .lockedDock,.coverage,.matrixBox,.ymBoost,.yeonmuPoolBar{max-width:100%;min-width:0}
+}
+@media(max-width:380px){.tabs{grid-template-columns:repeat(3,minmax(0,1fr));}.tab{font-size:9px}.a10661Option{flex-basis:100%}}
+</style>
+<script id="a10661-grouped-source-script">
+(function(){
+'use strict';
+const V='A106.61-grouped-variants-mobile';
+const CORE=window.__A10661_CORE_BRIDGE__;if(!CORE){console.error(V,'core bridge missing');return}
+const state=CORE.getState(),META=CORE.getMeta(),AUDIT81_TACTIC_MAP=CORE.getTacticMap(),AUDIT80_SOURCE_FAMILIES=CORE.getSourceFamilies(),AUDIT79_GUIDE_LINEUPS=CORE.getGuideLineups();
+const esc=CORE.esc,koDisplay=CORE.koDisplay,resourcePool=CORE.resourcePool,seasonLockedTeams=CORE.seasonLockedTeams,verifiedTeamMappings=CORE.verifiedTeamMappings,resolveVerifiedSetup=CORE.resolveVerifiedSetup,sourceCard=CORE.sourceCard,sourceRecommendationSearchText=CORE.sourceRecommendationSearchText,save=CORE.save;
+const CONFIRMED_CN_KR={
+ '伏兵四起':'퇴로 매복','任人择势':'인재 기용','披坚执锐':'결사의 다짐','铸甲销戈':'전쟁 종식',
+ '穷追不舍':'투혼의 추격','咏歌尝酒':'전장의 노래','洞若观火':'예리한 판단','百战不殆':'백전불태'
+};
+const AMBIGUOUS_CN={'百谋不殆':'한국 공식 전법명 미확정','待甲卸戈':'원문/OCR 변형 가능성 · 한국 공식명 미확정'};
+try{Object.entries(CONFIRMED_CN_KR).forEach(([raw,kr])=>{if(typeof AUDIT81_TACTIC_MAP==='object'&&CORE.tacticExists(kr))AUDIT81_TACTIC_MAP[raw]={kr,confidence:1,basis:'web_effect_crosscheck'}})}catch(e){}
+function tacticDisplay(raw){
+ if(CONFIRMED_CN_KR[raw])return{label:CONFIRMED_CN_KR[raw],mapped:true,ambiguous:false,raw};
+ try{const r=AUDIT81_TACTIC_MAP&&AUDIT81_TACTIC_MAP[raw];if(r&&r.kr&&CORE.tacticExists(r.kr))return{label:r.kr,mapped:true,ambiguous:false,raw}}catch(e){}
+ if(AMBIGUOUS_CN[raw])return{label:raw+' · 미확정',mapped:false,ambiguous:true,raw};
+ const z=koDisplay(raw);return{label:z,mapped:z!==raw,ambiguous:false,raw};
+}
+CORE.setRawTags(function(a,alt){return(a||[]).map(function(x){const d=tacticDisplay(x),cls=d.ambiguous?' a10660Ambiguous':d.mapped?' a10660Mapped':'';const title=d.ambiguous?(AMBIGUOUS_CN[x]||'한국명 미확정'):(d.mapped&&d.raw!==d.label?'원문 '+d.raw+' → 한국 전법 '+d.label:'');return '<span class="rawTag '+(alt?'rawAlt':'')+cls+'"'+(title?' title="'+esc(title)+'"':'')+'>'+esc(d.label)+(d.mapped&&d.raw!==d.label?' <small>KR</small>':'')+'</span>'}).join('')});
+
+state.a10660Filter=state.a10660Filter||'all';
+state.a10661FamilyPicks=state.a10661FamilyPicks||{};state.a10661FamilyPicks[state.season]=state.a10661FamilyPicks[state.season]||{};
+if(state.tab==='independent'){state.tab='meta';try{save()}catch(e){}}
+const metaTab=document.querySelector('.tab[data-tab="meta"]');if(metaTab)metaTab.textContent='추천';
+const metaTitle=document.querySelector('#page-meta .title h2');if(metaTitle)metaTitle.textContent='실전 추천 · 검증 원형 그룹';
+const metaDesc=document.querySelector('#page-meta .title p');if(metaDesc)metaDesc.innerHTML='외부·검증 추천 원형을 기준으로 하되, <b>같은 2장수 코어의 변형은 카드 하나에서 옵션으로 전환</b>합니다. 옵션을 바꾸면 장수·전법·진형·세부 세팅도 함께 바뀝니다.';
+const brand=document.querySelector('.brand small');if(brand)brand.textContent='실전 추천 · 개척 추천 · 연무덱 · 참고 덱 · '+V;
+
+const sig=team=>[...(team||[])].sort().join('|');
+const pairs=team=>{const t=[...(team||[])].sort();return t.length===3?[t[0]+'|'+t[1],t[0]+'|'+t[2],t[1]+'|'+t[2]]:[]};
+const sourceTeam=r=>[...((r&&r.deck&&r.deck.team)||r.team||[])];
+const sourceSig=r=>sig(sourceTeam(r));
+const rowKind=r=>r.heroReplacementCount?'hero':(((r.algorithmFallbackCount||0)+(r.autoFillCount||0))?'tactic':'exact');
+const tierWeight=raw=>{const m=String(raw||'').match(/(?:T\s*)?(0\.3|0\.5|0\.8|1\.2|1(?:\.0)?)/i),n=m?parseFloat(m[1]):1;return n<=.3?100:n<=.5?92:n<=.8?80:n<=1?68:58};
+function canonicalTactic(raw){if(!raw)return null;const d=tacticDisplay(raw);return CORE.tacticExists(d.label)?d.label:(CORE.tacticExists(raw)?raw:null)}
+function sourceTacticObj(raw,alts){const p=canonicalTactic(raw),aa=(alts||[]).flat().map(canonicalTactic).filter(Boolean).filter(x=>x!==p);return p?{raw,primary:p,alternatives:[...new Set(aa)],status:'external_verified'}:null}
+function troopObj(raw){if(!raw)return{status:'not_provided'};const a=String(raw).split('-');return{status:'source_reference',troop:a[0]||raw,specialization:a[1]||null,raw}}
+function fixtureFor(team){try{return((window.__AUDIT104__&&window.__AUDIT104__.fixture3Ticket)||[]).find(x=>x.purpose==='war'&&sig(x.team)===sig(team))||null}catch(e){return null}}
+function familySetup(f){
+ const fx=fixtureFor(f.team||[]);if(fx){const heroes={};for(const h of fx.team||[])heroes[h]={tactics:((fx.builds||{})[h]||[]).map(x=>sourceTacticObj(x,[])).filter(Boolean),advancedTroop:troopObj((fx.troops||{})[h]),statPlan:{status:'not_provided'},laws:[],equipment:{status:'not_provided'},horse:{status:'not_provided'}};return{id:'account_verified_fixture',sourceKey:'ACCOUNT_WAR_FIXTURE',sourceType:'account_verified_reference',status:'verified_fixture',applicableSeason:state.season,formation:fx.formation||f.formation||null,heroes,description:'기존 전쟁 포트폴리오 검증 세팅'} }
+ const d=f.detail;if(!d||!d.heroes)return null;const heroes={};for(const [h,x] of Object.entries(d.heroes||{})){const ts=(x.tactics||x.tacticCandidates||[]),alts=x.alternatives||[];heroes[h]={tactics:ts.slice(0,2).map((raw,i)=>sourceTacticObj(raw,alts[i]||[])).filter(Boolean),statPlan:x.add?{raw:x.add,status:'source_reference'}:{status:'not_provided'},laws:[],advancedTroop:{status:'not_provided'},equipment:{status:'not_provided'},horse:{status:'not_provided'}}}return{id:'external_family_detail',sourceKey:'DIAOCHAN_GUIDE_20260903',sourceType:'user_supplied_reference',status:d.status||f.status||'source_reference',applicableSeason:state.season,formation:d.formation||f.formation||null,heroes,description:d.note||f.note||'외부 공략 세팅'}
+}
+function supplementalDecks(base){
+ const out=[],seen=new Set(base.map(d=>sig(d.team)));
+ let fams=[];try{if(typeof AUDIT80_SOURCE_FAMILIES!=='undefined')fams=AUDIT80_SOURCE_FAMILIES}catch(e){}
+ for(const f of fams){if(f.season!==state.season||!Array.isArray(f.team)||f.team.length!==3||seen.has(sig(f.team)))continue;const setup=familySetup(f);if(!setup)continue;const known=Object.values(setup.heroes||{}).reduce((n,x)=>n+(x.tactics||[]).length,0);if(known<3)continue;let prof='general';try{if(typeof AUDIT79_GUIDE_LINEUPS!=='undefined'){const g=AUDIT79_GUIDE_LINEUPS.find(x=>x.season===state.season&&sig(x.team)===sig(f.team));if(g&&g.profile)prof=g.profile}}catch(e){}
+   out.push({id:'a10661_'+f.id,name:f.name,season:state.season,category:'외부 검증',profile:prof,team:[...f.team],weight:tierWeight(f.tierRaw),summary:(f.detail&&f.detail.note)||f.note||'외부 검증 원형. 확인된 세팅을 우선하고 부족분만 보완합니다.',counter:'외부 원문 기준',formation:setup.formation||f.formation||null,sourceKeys:[setup.sourceKey],setups:[setup],setupStatus:setup.status,a10661Supplemental:true});seen.add(sig(f.team))
+ }
+ return out
+}
+function sourceDeckList(){const base=(META.seasons[state.season].decks||[]).filter(d=>d.category!=='개척'&&!d.pioneerOnly&&d.phase!=='opening');return base.concat(supplementalDecks(base))}
+let cache={key:null,rows:[]};
+function sourcePool(){
+ const p=resourcePool(),key=[state.season,[...(p.heroes||[])].sort().join(','),[...(p.tactics||[])].sort().join(','),seasonLockedTeams().length].join('|');if(cache.key===key)return cache.rows;
+ let rows=[];for(const d of sourceDeckList()){const mappings=verifiedTeamMappings(d,p).filter(m=>(m.heroReplacementCount||0)<=1),setups=(d.setups&&d.setups.length)?d.setups:[null];let best=null;for(const m of mappings)for(const setup of setups){const r=resolveVerifiedSetup(d,setup,p,m);if(!r)continue;const auto=(r.algorithmFallbackCount||0)+(r.autoFillCount||0);if(auto>3)continue;if(!best||r.recommendScore>best.recommendScore)best=r}if(best)rows.push(best)}
+ rows.sort((a,b)=>{const tier=x=>rowKind(x)==='exact'?0:rowKind(x)==='tactic'?1:2;return tier(a)-tier(b)||b.sourceFidelity-a.sourceFidelity||b.weight-a.weight||b.recommendScore-a.recommendScore||a.deck.name.localeCompare(b.deck.name,'ko')});
+ const top=Math.max(...rows.map(x=>x.evaluation&&x.evaluation.score||0),1);rows.forEach(r=>{r.scoreRatio=Math.max(0,(r.evaluation.score||0)/top);r.a10660SourceFirst=true;r.a10660ReplacementKind=rowKind(r)});cache={key,rows};return rows
+}
+function familyModel(rows){const cnt=new Map();for(const r of rows)for(const p of pairs(sourceTeam(r)))cnt.set(p,(cnt.get(p)||0)+1);const bySig={},groups=new Map();for(const r of rows){const rs=sourceSig(r),ps=pairs(sourceTeam(r)).filter(p=>(cnt.get(p)||0)>=2).sort((a,b)=>(cnt.get(b)||0)-(cnt.get(a)||0)||a.localeCompare(b,'ko'));if(!ps.length)continue;const k=ps[0];bySig[rs]=k;if(!groups.has(k))groups.set(k,[]);groups.get(k).push(r)}for(const [k,v] of [...groups])if(v.length<2)groups.delete(k);for(const rs of Object.keys(bySig))if(!groups.has(bySig[rs]))delete bySig[rs];return{groups:[...groups].map(([key,variants])=>({key,core:key.split('|'),variants})),bySig}}
+function filterMatch(r,f){return f==='all'||rowKind(r)===f}
+function pickedMap(){state.a10661FamilyPicks=state.a10661FamilyPicks||{};return state.a10661FamilyPicks[state.season]||(state.a10661FamilyPicks[state.season]={})}
+function buildUnits(all,filter){const fm=familyModel(all),allowed=all.filter(r=>filterMatch(r,filter)),allowSet=new Set(allowed.map(sourceSig)),seen=new Set(),units=[];for(const r of all){const rs=sourceSig(r);if(!allowSet.has(rs))continue;const fk=fm.bySig[rs];if(fk){if(seen.has('f:'+fk))continue;const g=fm.groups.find(x=>x.key===fk),variants=(g?g.variants:[]).filter(x=>allowSet.has(sourceSig(x)));if(!variants.length)continue;const chosen=pickedMap()[fk],selected=variants.find(x=>sourceSig(x)===chosen)||variants[0];units.push({kind:'family',key:fk,core:g.core,variants,selected});seen.add('f:'+fk)}else{units.push({kind:'flat',key:rs,variants:[r],selected:r});seen.add('r:'+rs)}}return units}
+function optionHero(r,core){const rest=sourceTeam(r).filter(h=>!core.includes(h));return rest.join(' · ')||r.deck.name}
+function familyHtml(u){return '<div class="a10661Family"><div class="a10661FamilyHead"><div><b>공통 2장수 코어</b><span class="a10661FamilyCore">'+u.core.map(esc).join(' · ')+'</span></div><small>옵션 변경 → 전체 세팅 자동 전환</small></div><div class="a10661Options" role="tablist" aria-label="'+esc(u.core.join('·'))+' 코어 변형">'+u.variants.map(v=>{const on=sourceSig(v)===sourceSig(u.selected);return '<button type="button" class="a10661Option '+(on?'on':'')+'" role="tab" aria-selected="'+(on?'true':'false')+'" data-a10661-family="'+esc(u.key)+'" data-a10661-sig="'+esc(sourceSig(v))+'"><b>'+esc(optionHero(v,u.core))+'</b><small>'+esc(v.deck.name)+' · '+(rowKind(v)==='exact'?'원형':rowKind(v)==='tactic'?'전법 대체':'장수 대체')+'</small></button>'}).join('')+'</div><div class="a10661Current"><span class="a10661SwapHint">현재 선택</span><strong>'+esc(u.selected.deck.name)+'</strong><span>· '+esc((u.selected.formation&&u.selected.formation.name)||'진형 미제공')+'</span><span>· 전법/병법/병종/스탯은 이 변형 기준</span></div></div>'}
+function card(r,i,u){let h=sourceCard(r,i);const kind=rowKind(r)==='exact'?'원형 그대로':rowKind(r)==='tactic'?'전법만 대체':'장수 1명 대체';h=h.replace('검증 원본 장수 유지 · 자동 전법 보완 최대 2칸','외부 추천 원형 기반 · 없는 자원만 최소 대체');h=h.replace('<div class="summaryText">','<div class="a10660Origin"><b>'+esc(kind)+'</b> · 새 장수 조합 생성 없음</div><div class="summaryText">');h=h.replace('>장수·전법 상세</button>','>전체 세팅</button>');if(u&&u.kind==='family'){h=h.replace(/<div class="deckName">.*?<\/div>/,'<div class="deckName">'+u.core.map(esc).join(' · ')+' 코어</div>');h=h.replace('<div class="summaryText">',familyHtml(u)+'<div class="summaryText">');h=h.replace('<div class="badges">','<div class="badges"><span class="badge a10661GroupBadge">변형 '+u.variants.length+'개</span>')}return h}
+function counts(all){return['all','exact','tactic','hero'].reduce((o,k)=>(o[k]=buildUnits(all,k).length,o),{})}
+function renderUnified(){
+ const grid=document.getElementById('metaGrid'),filters=document.getElementById('metaFilters');if(!grid||!filters)return;const all=sourcePool(),f=state.a10660Filter||'all',c=counts(all);let units=buildUnits(all,f),q=(document.getElementById('search')?.value||'').trim().toLowerCase();if(q)units=units.filter(u=>u.core&&u.core.join(' ').toLowerCase().includes(q)||u.variants.some(r=>sourceRecommendationSearchText(r).includes(q)));units=units.slice(0,12);CORE.setCurrentMeta(units.map(u=>u.selected));
+ filters.innerHTML='<div class="a10660FilterBar">'+[['all','전체 '+c.all],['exact','원형 그대로 '+c.exact],['tactic','전법 대체 '+c.tactic],['hero','장수 1명 대체 '+c.hero]].map(([k,l])=>'<button class="a10660Filter '+(f===k?'on':'')+'" data-a10660-filter="'+k+'">'+l+'</button>').join('')+'</div>';
+ const intro='<section class="a10660Intro"><div class="a10660IntroHead"><div><h3>한 카드에서 같은 코어의 변형을 고릅니다</h3><p><b>손권·노숙 + 육손/관우</b>처럼 공통 장수 2명이 같은 검증 원형은 카드 하나로 합칩니다. 옵션을 누르는 즉시 해당 원형의 장수·전법·진형·세부 세팅으로 다시 구성되며, 부대 확정도 현재 선택된 변형을 저장합니다.</p></div><span class="badge green">SOURCE GROUP</span></div><div class="a10660Rules"><span class="a10660Rule strong">개척덱 제외</span><span class="a10660Rule">공통 2장수 자동 묶음</span><span class="a10660Rule">변형 선택 시 전체 세팅 전환</span><span class="a10660Rule">부족 자원만 대체</span></div></section>';
+ grid.innerHTML=intro+(units.length?units.map((u,i)=>card(u.selected,i,u)).join(''):'<div class="empty" style="grid-column:1/-1"><b>현재 남은 보유 자원으로 만들 수 있는 검증 원형이 없습니다.</b>확정 부대와 보유 목록을 확인해 주세요.</div>');const fp=document.getElementById('familyPicker10659Meta');if(fp)fp.style.display='none';
+}
+function persist(){try{save()}catch(e){}}
+document.addEventListener('click',e=>{const f=e.target.closest('[data-a10661-family]');if(f){const map=pickedMap();map[f.dataset.a10661Family]=f.dataset.a10661Sig;persist();renderUnified();return}const b=e.target.closest('[data-a10660-filter]');if(b){state.a10660Filter=b.dataset.a10660Filter;persist();renderUnified()}});
+try{const UI=window.__A10659_UI_BRIDGE__;if(UI&&UI.onAfterMetaRender)UI.onAfterMetaRender(renderUnified)}catch(e){}
+setTimeout(()=>{try{if(state.tab==='meta')renderUnified()}catch(e){console.error(V,e)}},0);
+function mobileAudit(){const w=window.innerWidth||document.documentElement.clientWidth,sw=Math.max(document.documentElement.scrollWidth,document.body.scrollWidth),bad=[...document.querySelectorAll('#page-meta *')].filter(el=>{const r=el.getBoundingClientRect();return r.right>w+1||r.left<-1}).slice(0,20).map(el=>({tag:el.tagName,cls:el.className,id:el.id,right:Math.round(el.getBoundingClientRect().right),left:Math.round(el.getBoundingClientRect().left)}));return{viewport:w,scrollWidth:sw,horizontalOverflow:sw>w+1,overflowElements:bad,groupCount:buildUnits(sourcePool(),'all').filter(x=>x.kind==='family').length,planCount:(CORE.getCurrentMeta()||[]).length}}
+window.__A10661__={version:V,sourcePool,sourceDeckList,familyModel,buildUnits,renderUnified,mobileAudit,confirmedCnKr:{...CONFIRMED_CN_KR},ambiguousCn:{...AMBIGUOUS_CN},policy:{sourceFirst:true,noFreeformTeamGeneration:true,maxHeroReplacement:1,maxAutoTacticReplacement:3,pioneerExcluded:true,sharedCoreGrouped:true,variantSwitchChangesWholeResolvedRow:true,mobileNoBodyHorizontalScroll:true}};
 })();
 </script>
 
