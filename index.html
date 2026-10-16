@@ -128,11 +128,10 @@
   <dialog id="preset-dialog" class="modal wide" aria-labelledby="preset-title">
     <header class="modal-head"><h2 id="preset-title">추천덱 불러오기</h2><button class="icon-btn" type="button" data-close="preset-dialog" aria-label="닫기">✕</button></header>
     <div class="modal-body">
-      <p class="modal-copy">과거 시트·한국 참고 자료를 현재 게임 ID로 연결한 편성 초안입니다. 현재 시즌의 성능 순위가 아니며, 불러온 뒤 직접 다듬는 출발점으로 쓰세요.</p>
+      <p class="modal-copy">편성 초안입니다. 시즌과 관계없이 모두 불러올 수 있고, 지금 시즌에 없는 무장·전법은 비우거나 임시 무장으로 채웁니다. 불러온 뒤 직접 다듬어 테스트하세요.</p>
       <div class="preset-filters">
         <input id="preset-search" type="search" placeholder="덱 이름, 무장, 전법으로 검색" aria-label="추천덱 검색">
-        <select id="preset-source" aria-label="자료 출처"><option value="google_sheet_archive">시트 추천덱</option><option value="kr_reference_archive">한국 참고 편성</option><option value="all">모든 출처</option></select>
-        <select id="preset-status" aria-label="표시 범위"><option value="ready">이 시즌에 불러올 수 있는 것</option><option value="all">미확정 자료 포함</option></select>
+        <div id="preset-seasons" class="seg" role="group" aria-label="시즌"></div>
       </div>
       <p id="preset-count" class="muted-note"></p>
       <div class="preset-layout">
