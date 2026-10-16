@@ -1,0 +1,2428 @@
+{
+  "report_id": "199b3b47f19b4dd9a6c2e55d5e73ad87",
+  "data_version": "kr-editor-10a0bc018ceefbcf",
+  "code_data_versions": {
+    "left": "kr-editor-10a0bc018ceefbcf",
+    "right": "kr-editor-10a0bc018ceefbcf"
+  },
+  "season": 3,
+  "result": "draw",
+  "turns": 8,
+  "estimated": true,
+  "limited_support": true,
+  "armies": {
+    "left": {
+      "name": "유관장",
+      "initial_troops": 30000,
+      "remaining_troops": 26287,
+      "damage": 20666,
+      "healing": 0,
+      "heroes": [
+        {
+          "hero_id": 2022,
+          "slot": 1,
+          "name": "SP 제갈량",
+          "initial_troops": 10000,
+          "remaining_troops": 9111,
+          "damage": 9171,
+          "healing": 0,
+          "normal_attacks": 8,
+          "tactics": [
+            {
+              "id": 202201,
+              "category": "tactic",
+              "name": "성운 대열",
+              "casts": 1,
+              "activations": 8,
+              "damage": 7689,
+              "healing": 0
+            }
+          ]
+        },
+        {
+          "hero_id": 2001,
+          "slot": 2,
+          "name": "관우",
+          "initial_troops": 10000,
+          "remaining_troops": 8814,
+          "damage": 8863,
+          "healing": 0,
+          "normal_attacks": 8,
+          "tactics": [
+            {
+              "id": 200101,
+              "category": "tactic",
+              "name": "화하 진압",
+              "casts": 6,
+              "activations": 0,
+              "damage": 7259,
+              "healing": 0
+            }
+          ]
+        },
+        {
+          "hero_id": 2002,
+          "slot": 3,
+          "name": "장비",
+          "initial_troops": 10000,
+          "remaining_troops": 8362,
+          "damage": 2632,
+          "healing": 0,
+          "normal_attacks": 8,
+          "tactics": [
+            {
+              "id": 200201,
+              "category": "tactic",
+              "name": "만인지적",
+              "casts": 1,
+              "activations": 0,
+              "damage": 899,
+              "healing": 0
+            }
+          ]
+        }
+      ]
+    },
+    "right": {
+      "name": "조곽순",
+      "initial_troops": 30000,
+      "remaining_troops": 10792,
+      "damage": 3713,
+      "healing": 1458,
+      "heroes": [
+        {
+          "hero_id": 1000,
+          "slot": 1,
+          "name": "조조",
+          "initial_troops": 10000,
+          "remaining_troops": 4924,
+          "damage": 1547,
+          "healing": 1258,
+          "normal_attacks": 8,
+          "tactics": [
+            {
+              "id": 100001,
+              "category": "tactic",
+              "name": "난세의 간웅",
+              "casts": 1,
+              "activations": 9,
+              "damage": 0,
+              "healing": 1146
+            }
+          ]
+        },
+        {
+          "hero_id": 1005,
+          "slot": 2,
+          "name": "곽가",
+          "initial_troops": 10000,
+          "remaining_troops": 2624,
+          "damage": 1034,
+          "healing": 84,
+          "normal_attacks": 8,
+          "tactics": [
+            {
+              "id": 100501,
+              "category": "tactic",
+              "name": "주도면밀",
+              "casts": 1,
+              "activations": 0,
+              "damage": 0,
+              "healing": 0
+            }
+          ]
+        },
+        {
+          "hero_id": 1008,
+          "slot": 3,
+          "name": "순욱",
+          "initial_troops": 10000,
+          "remaining_troops": 3244,
+          "damage": 1132,
+          "healing": 116,
+          "normal_attacks": 8,
+          "tactics": [
+            {
+              "id": 100801,
+              "category": "tactic",
+              "name": "인재 등용",
+              "casts": 1,
+              "activations": 2,
+              "damage": 0,
+              "healing": 22
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "timeline": [
+    {
+      "turn": 1,
+      "order": 1,
+      "kind": "turn",
+      "text": "1턴 시작",
+      "actor": null,
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 2,
+      "kind": "action",
+      "text": "조조 행동 시작",
+      "actor": "right:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 3,
+      "kind": "attack",
+      "text": "조조 → 장비: 일반 공격",
+      "actor": "right:1",
+      "target": "left:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 4,
+      "kind": "damage",
+      "text": "조조 → 장비: 일반 공격, 피해 197",
+      "actor": "right:1",
+      "target": "left:3",
+      "amount": 197,
+      "remaining_troops": 9803
+    },
+    {
+      "turn": 1,
+      "order": 5,
+      "kind": "heal",
+      "text": "조조 → 조조: 일반 공격, 회복 0",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 0,
+      "remaining_troops": 10000
+    },
+    {
+      "turn": 1,
+      "order": 6,
+      "kind": "action",
+      "text": "관우 행동 시작",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 7,
+      "kind": "cast",
+      "text": "관우: 화하 진압 시전",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 8,
+      "kind": "damage",
+      "text": "관우 → 조조: 화하 진압, 피해 309",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": 309,
+      "remaining_troops": 9691
+    },
+    {
+      "turn": 1,
+      "order": 9,
+      "kind": "damage",
+      "text": "관우 → 곽가: 화하 진압, 피해 432",
+      "actor": "left:2",
+      "target": "right:2",
+      "amount": 432,
+      "remaining_troops": 9568
+    },
+    {
+      "turn": 1,
+      "order": 10,
+      "kind": "damage",
+      "text": "관우 → 순욱: 화하 진압, 피해 408",
+      "actor": "left:2",
+      "target": "right:3",
+      "amount": 408,
+      "remaining_troops": 9592
+    },
+    {
+      "turn": 1,
+      "order": 11,
+      "kind": "attack",
+      "text": "관우 → 순욱: 일반 공격",
+      "actor": "left:2",
+      "target": "right:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 12,
+      "kind": "damage",
+      "text": "관우 → 순욱: 일반 공격, 피해 246",
+      "actor": "left:2",
+      "target": "right:3",
+      "amount": 246,
+      "remaining_troops": 9346
+    },
+    {
+      "turn": 1,
+      "order": 13,
+      "kind": "action",
+      "text": "장비 행동 시작",
+      "actor": "left:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 14,
+      "kind": "attack",
+      "text": "장비 → 곽가: 일반 공격",
+      "actor": "left:3",
+      "target": "right:2",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 15,
+      "kind": "damage",
+      "text": "장비 → 곽가: 일반 공격, 피해 215",
+      "actor": "left:3",
+      "target": "right:2",
+      "amount": 215,
+      "remaining_troops": 9353
+    },
+    {
+      "turn": 1,
+      "order": 16,
+      "kind": "action",
+      "text": "곽가 행동 시작",
+      "actor": "right:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 17,
+      "kind": "attack",
+      "text": "곽가 → 관우: 일반 공격",
+      "actor": "right:2",
+      "target": "left:2",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 18,
+      "kind": "damage",
+      "text": "곽가 → 관우: 일반 공격, 피해 162",
+      "actor": "right:2",
+      "target": "left:2",
+      "amount": 162,
+      "remaining_troops": 9838
+    },
+    {
+      "turn": 1,
+      "order": 19,
+      "kind": "heal",
+      "text": "곽가 → 곽가: 일반 공격, 회복 13",
+      "actor": "right:2",
+      "target": "right:2",
+      "amount": 13,
+      "remaining_troops": 9366
+    },
+    {
+      "turn": 1,
+      "order": 20,
+      "kind": "action",
+      "text": "SP 제갈량 행동 시작",
+      "actor": "left:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 21,
+      "kind": "damage",
+      "text": "SP 제갈량 → 조조: 성운 대열, 피해 813",
+      "actor": "left:1",
+      "target": "right:1",
+      "amount": 813,
+      "remaining_troops": 8878
+    },
+    {
+      "turn": 1,
+      "order": 22,
+      "kind": "heal",
+      "text": "조조 → 조조: 난세의 간웅, 회복 128",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 128,
+      "remaining_troops": 9006
+    },
+    {
+      "turn": 1,
+      "order": 23,
+      "kind": "damage",
+      "text": "SP 제갈량 → 곽가: 성운 대열, 피해 684",
+      "actor": "left:1",
+      "target": "right:2",
+      "amount": 684,
+      "remaining_troops": 8682
+    },
+    {
+      "turn": 1,
+      "order": 24,
+      "kind": "attack",
+      "text": "SP 제갈량 → 조조: 일반 공격",
+      "actor": "left:1",
+      "target": "right:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 25,
+      "kind": "damage",
+      "text": "SP 제갈량 → 조조: 일반 공격, 피해 161",
+      "actor": "left:1",
+      "target": "right:1",
+      "amount": 161,
+      "remaining_troops": 8845
+    },
+    {
+      "turn": 1,
+      "order": 26,
+      "kind": "heal",
+      "text": "조조 → 조조: 난세의 간웅, 회복 128",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 128,
+      "remaining_troops": 8973
+    },
+    {
+      "turn": 1,
+      "order": 27,
+      "kind": "action",
+      "text": "순욱 행동 시작",
+      "actor": "right:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 28,
+      "kind": "attack",
+      "text": "순욱 → 관우: 일반 공격",
+      "actor": "right:3",
+      "target": "left:2",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 1,
+      "order": 29,
+      "kind": "damage",
+      "text": "순욱 → 관우: 일반 공격, 피해 159",
+      "actor": "right:3",
+      "target": "left:2",
+      "amount": 159,
+      "remaining_troops": 9679
+    },
+    {
+      "turn": 1,
+      "order": 30,
+      "kind": "heal",
+      "text": "순욱 → 순욱: 일반 공격, 회복 13",
+      "actor": "right:3",
+      "target": "right:3",
+      "amount": 13,
+      "remaining_troops": 9359
+    },
+    {
+      "turn": 2,
+      "order": 31,
+      "kind": "turn",
+      "text": "2턴 시작",
+      "actor": null,
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 32,
+      "kind": "action",
+      "text": "관우 행동 시작",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 33,
+      "kind": "attack",
+      "text": "관우 → 조조: 일반 공격",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 34,
+      "kind": "damage",
+      "text": "관우 → 조조: 일반 공격, 피해 173",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": 173,
+      "remaining_troops": 8800
+    },
+    {
+      "turn": 2,
+      "order": 35,
+      "kind": "heal",
+      "text": "조조 → 조조: 난세의 간웅, 회복 128",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 128,
+      "remaining_troops": 8928
+    },
+    {
+      "turn": 2,
+      "order": 36,
+      "kind": "action",
+      "text": "장비 행동 시작",
+      "actor": "left:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 37,
+      "kind": "cast",
+      "text": "장비: 만인지적 시전",
+      "actor": "left:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 38,
+      "kind": "damage",
+      "text": "장비 → 조조: 만인지적, 피해 253",
+      "actor": "left:3",
+      "target": "right:1",
+      "amount": 253,
+      "remaining_troops": 8675
+    },
+    {
+      "turn": 2,
+      "order": 39,
+      "kind": "heal",
+      "text": "조조 → 조조: 난세의 간웅, 회복 127",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 127,
+      "remaining_troops": 8802
+    },
+    {
+      "turn": 2,
+      "order": 40,
+      "kind": "damage",
+      "text": "장비 → 곽가: 만인지적, 피해 335",
+      "actor": "left:3",
+      "target": "right:2",
+      "amount": 335,
+      "remaining_troops": 8347
+    },
+    {
+      "turn": 2,
+      "order": 41,
+      "kind": "damage",
+      "text": "장비 → 순욱: 만인지적, 피해 311",
+      "actor": "left:3",
+      "target": "right:3",
+      "amount": 311,
+      "remaining_troops": 9048
+    },
+    {
+      "turn": 2,
+      "order": 42,
+      "kind": "attack",
+      "text": "장비 → 조조: 일반 공격",
+      "actor": "left:3",
+      "target": "right:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 43,
+      "kind": "damage",
+      "text": "장비 → 조조: 일반 공격, 피해 207",
+      "actor": "left:3",
+      "target": "right:1",
+      "amount": 207,
+      "remaining_troops": 8595
+    },
+    {
+      "turn": 2,
+      "order": 44,
+      "kind": "action",
+      "text": "조조 행동 시작",
+      "actor": "right:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 45,
+      "kind": "attack",
+      "text": "조조 → SP 제갈량: 일반 공격",
+      "actor": "right:1",
+      "target": "left:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 46,
+      "kind": "damage",
+      "text": "조조 → SP 제갈량: 일반 공격, 피해 208",
+      "actor": "right:1",
+      "target": "left:1",
+      "amount": 208,
+      "remaining_troops": 9792
+    },
+    {
+      "turn": 2,
+      "order": 47,
+      "kind": "heal",
+      "text": "조조 → 조조: 일반 공격, 회복 17",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 17,
+      "remaining_troops": 8612
+    },
+    {
+      "turn": 2,
+      "order": 48,
+      "kind": "action",
+      "text": "SP 제갈량 행동 시작",
+      "actor": "left:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 49,
+      "kind": "damage",
+      "text": "SP 제갈량 → 곽가: 성운 대열, 피해 727",
+      "actor": "left:1",
+      "target": "right:2",
+      "amount": 727,
+      "remaining_troops": 7620
+    },
+    {
+      "turn": 2,
+      "order": 50,
+      "kind": "damage",
+      "text": "SP 제갈량 → 순욱: 성운 대열, 피해 701",
+      "actor": "left:1",
+      "target": "right:3",
+      "amount": 701,
+      "remaining_troops": 8347
+    },
+    {
+      "turn": 2,
+      "order": 51,
+      "kind": "attack",
+      "text": "SP 제갈량 → 순욱: 일반 공격",
+      "actor": "left:1",
+      "target": "right:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 52,
+      "kind": "damage",
+      "text": "SP 제갈량 → 순욱: 일반 공격, 피해 232",
+      "actor": "left:1",
+      "target": "right:3",
+      "amount": 232,
+      "remaining_troops": 8115
+    },
+    {
+      "turn": 2,
+      "order": 53,
+      "kind": "action",
+      "text": "곽가 행동 시작",
+      "actor": "right:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 54,
+      "kind": "attack",
+      "text": "곽가 → 장비: 일반 공격",
+      "actor": "right:2",
+      "target": "left:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 55,
+      "kind": "damage",
+      "text": "곽가 → 장비: 일반 공격, 피해 150",
+      "actor": "right:2",
+      "target": "left:3",
+      "amount": 150,
+      "remaining_troops": 9653
+    },
+    {
+      "turn": 2,
+      "order": 56,
+      "kind": "heal",
+      "text": "곽가 → 곽가: 일반 공격, 회복 12",
+      "actor": "right:2",
+      "target": "right:2",
+      "amount": 12,
+      "remaining_troops": 7632
+    },
+    {
+      "turn": 2,
+      "order": 57,
+      "kind": "action",
+      "text": "순욱 행동 시작",
+      "actor": "right:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 58,
+      "kind": "attack",
+      "text": "순욱 → SP 제갈량: 일반 공격",
+      "actor": "right:3",
+      "target": "left:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 2,
+      "order": 59,
+      "kind": "damage",
+      "text": "순욱 → SP 제갈량: 일반 공격, 피해 168",
+      "actor": "right:3",
+      "target": "left:1",
+      "amount": 168,
+      "remaining_troops": 9624
+    },
+    {
+      "turn": 2,
+      "order": 60,
+      "kind": "heal",
+      "text": "순욱 → 순욱: 일반 공격, 회복 14",
+      "actor": "right:3",
+      "target": "right:3",
+      "amount": 14,
+      "remaining_troops": 8129
+    },
+    {
+      "turn": 3,
+      "order": 61,
+      "kind": "turn",
+      "text": "3턴 시작",
+      "actor": null,
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 62,
+      "kind": "action",
+      "text": "관우 행동 시작",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 63,
+      "kind": "cast",
+      "text": "관우: 화하 진압 시전",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 64,
+      "kind": "damage",
+      "text": "관우 → 조조: 화하 진압, 피해 373",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": 373,
+      "remaining_troops": 8239
+    },
+    {
+      "turn": 3,
+      "order": 65,
+      "kind": "heal",
+      "text": "조조 → 조조: 난세의 간웅, 회복 127",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 127,
+      "remaining_troops": 8366
+    },
+    {
+      "turn": 3,
+      "order": 66,
+      "kind": "damage",
+      "text": "관우 → 곽가: 화하 진압, 피해 452",
+      "actor": "left:2",
+      "target": "right:2",
+      "amount": 452,
+      "remaining_troops": 7180
+    },
+    {
+      "turn": 3,
+      "order": 67,
+      "kind": "damage",
+      "text": "관우 → 순욱: 화하 진압, 피해 465",
+      "actor": "left:2",
+      "target": "right:3",
+      "amount": 465,
+      "remaining_troops": 7664
+    },
+    {
+      "turn": 3,
+      "order": 68,
+      "kind": "attack",
+      "text": "관우 → 곽가: 일반 공격",
+      "actor": "left:2",
+      "target": "right:2",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 69,
+      "kind": "damage",
+      "text": "관우 → 곽가: 일반 공격, 피해 238",
+      "actor": "left:2",
+      "target": "right:2",
+      "amount": 238,
+      "remaining_troops": 6942
+    },
+    {
+      "turn": 3,
+      "order": 70,
+      "kind": "action",
+      "text": "조조 행동 시작",
+      "actor": "right:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 71,
+      "kind": "attack",
+      "text": "조조 → 장비: 일반 공격",
+      "actor": "right:1",
+      "target": "left:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 72,
+      "kind": "damage",
+      "text": "조조 → 장비: 일반 공격, 피해 197",
+      "actor": "right:1",
+      "target": "left:3",
+      "amount": 197,
+      "remaining_troops": 9456
+    },
+    {
+      "turn": 3,
+      "order": 73,
+      "kind": "heal",
+      "text": "조조 → 조조: 일반 공격, 회복 16",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 16,
+      "remaining_troops": 8382
+    },
+    {
+      "turn": 3,
+      "order": 74,
+      "kind": "action",
+      "text": "장비 행동 시작",
+      "actor": "left:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 75,
+      "kind": "attack",
+      "text": "장비 → 조조: 일반 공격",
+      "actor": "left:3",
+      "target": "right:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 76,
+      "kind": "damage",
+      "text": "장비 → 조조: 일반 공격, 피해 204",
+      "actor": "left:3",
+      "target": "right:1",
+      "amount": 204,
+      "remaining_troops": 8178
+    },
+    {
+      "turn": 3,
+      "order": 77,
+      "kind": "action",
+      "text": "SP 제갈량 행동 시작",
+      "actor": "left:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 78,
+      "kind": "damage",
+      "text": "SP 제갈량 → 곽가: 성운 대열, 피해 719",
+      "actor": "left:1",
+      "target": "right:2",
+      "amount": 719,
+      "remaining_troops": 6223
+    },
+    {
+      "turn": 3,
+      "order": 79,
+      "kind": "damage",
+      "text": "SP 제갈량 → 조조: 성운 대열, 피해 822",
+      "actor": "left:1",
+      "target": "right:1",
+      "amount": 822,
+      "remaining_troops": 7356
+    },
+    {
+      "turn": 3,
+      "order": 80,
+      "kind": "heal",
+      "text": "조조 → 조조: 난세의 간웅, 회복 127",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 127,
+      "remaining_troops": 7483
+    },
+    {
+      "turn": 3,
+      "order": 81,
+      "kind": "attack",
+      "text": "SP 제갈량 → 곽가: 일반 공격",
+      "actor": "left:1",
+      "target": "right:2",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 82,
+      "kind": "damage",
+      "text": "SP 제갈량 → 곽가: 일반 공격, 피해 207",
+      "actor": "left:1",
+      "target": "right:2",
+      "amount": 207,
+      "remaining_troops": 6016
+    },
+    {
+      "turn": 3,
+      "order": 83,
+      "kind": "action",
+      "text": "곽가 행동 시작",
+      "actor": "right:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 84,
+      "kind": "attack",
+      "text": "곽가 → 관우: 일반 공격",
+      "actor": "right:2",
+      "target": "left:2",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 85,
+      "kind": "damage",
+      "text": "곽가 → 관우: 일반 공격, 피해 137",
+      "actor": "right:2",
+      "target": "left:2",
+      "amount": 137,
+      "remaining_troops": 9542
+    },
+    {
+      "turn": 3,
+      "order": 86,
+      "kind": "heal",
+      "text": "곽가 → 곽가: 일반 공격, 회복 11",
+      "actor": "right:2",
+      "target": "right:2",
+      "amount": 11,
+      "remaining_troops": 6027
+    },
+    {
+      "turn": 3,
+      "order": 87,
+      "kind": "action",
+      "text": "순욱 행동 시작",
+      "actor": "right:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 88,
+      "kind": "attack",
+      "text": "순욱 → 관우: 일반 공격",
+      "actor": "right:3",
+      "target": "left:2",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 3,
+      "order": 89,
+      "kind": "damage",
+      "text": "순욱 → 관우: 일반 공격, 피해 155",
+      "actor": "right:3",
+      "target": "left:2",
+      "amount": 155,
+      "remaining_troops": 9387
+    },
+    {
+      "turn": 3,
+      "order": 90,
+      "kind": "heal",
+      "text": "순욱 → 순욱: 일반 공격, 회복 13",
+      "actor": "right:3",
+      "target": "right:3",
+      "amount": 13,
+      "remaining_troops": 7677
+    },
+    {
+      "turn": 4,
+      "order": 91,
+      "kind": "turn",
+      "text": "4턴 시작",
+      "actor": null,
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 92,
+      "kind": "action",
+      "text": "관우 행동 시작",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 93,
+      "kind": "cast",
+      "text": "관우: 화하 진압 시전",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 94,
+      "kind": "damage",
+      "text": "관우 → 조조: 화하 진압, 피해 352",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": 352,
+      "remaining_troops": 7131
+    },
+    {
+      "turn": 4,
+      "order": 95,
+      "kind": "heal",
+      "text": "조조 → 조조: 난세의 간웅, 회복 127",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 127,
+      "remaining_troops": 7258
+    },
+    {
+      "turn": 4,
+      "order": 96,
+      "kind": "damage",
+      "text": "관우 → 곽가: 화하 진압, 피해 419",
+      "actor": "left:2",
+      "target": "right:2",
+      "amount": 419,
+      "remaining_troops": 5608
+    },
+    {
+      "turn": 4,
+      "order": 97,
+      "kind": "damage",
+      "text": "관우 → 순욱: 화하 진압, 피해 460",
+      "actor": "left:2",
+      "target": "right:3",
+      "amount": 460,
+      "remaining_troops": 7217
+    },
+    {
+      "turn": 4,
+      "order": 98,
+      "kind": "attack",
+      "text": "관우 → 조조: 일반 공격",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 99,
+      "kind": "damage",
+      "text": "관우 → 조조: 일반 공격, 피해 186",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": 186,
+      "remaining_troops": 7072
+    },
+    {
+      "turn": 4,
+      "order": 100,
+      "kind": "action",
+      "text": "조조 행동 시작",
+      "actor": "right:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 101,
+      "kind": "attack",
+      "text": "조조 → 관우: 일반 공격",
+      "actor": "right:1",
+      "target": "left:2",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 102,
+      "kind": "damage",
+      "text": "조조 → 관우: 일반 공격, 피해 189",
+      "actor": "right:1",
+      "target": "left:2",
+      "amount": 189,
+      "remaining_troops": 9198
+    },
+    {
+      "turn": 4,
+      "order": 103,
+      "kind": "heal",
+      "text": "조조 → 조조: 일반 공격, 회복 16",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 16,
+      "remaining_troops": 7088
+    },
+    {
+      "turn": 4,
+      "order": 104,
+      "kind": "action",
+      "text": "장비 행동 시작",
+      "actor": "left:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 105,
+      "kind": "attack",
+      "text": "장비 → 조조: 일반 공격",
+      "actor": "left:3",
+      "target": "right:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 106,
+      "kind": "damage",
+      "text": "장비 → 조조: 일반 공격, 피해 182",
+      "actor": "left:3",
+      "target": "right:1",
+      "amount": 182,
+      "remaining_troops": 6906
+    },
+    {
+      "turn": 4,
+      "order": 107,
+      "kind": "action",
+      "text": "곽가 행동 시작",
+      "actor": "right:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 108,
+      "kind": "attack",
+      "text": "곽가 → 장비: 일반 공격",
+      "actor": "right:2",
+      "target": "left:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 109,
+      "kind": "damage",
+      "text": "곽가 → 장비: 일반 공격, 피해 143",
+      "actor": "right:2",
+      "target": "left:3",
+      "amount": 143,
+      "remaining_troops": 9313
+    },
+    {
+      "turn": 4,
+      "order": 110,
+      "kind": "heal",
+      "text": "곽가 → 곽가: 일반 공격, 회복 12",
+      "actor": "right:2",
+      "target": "right:2",
+      "amount": 12,
+      "remaining_troops": 5620
+    },
+    {
+      "turn": 4,
+      "order": 111,
+      "kind": "action",
+      "text": "SP 제갈량 행동 시작",
+      "actor": "left:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 112,
+      "kind": "damage",
+      "text": "SP 제갈량 → 순욱: 성운 대열, 피해 645",
+      "actor": "left:1",
+      "target": "right:3",
+      "amount": 645,
+      "remaining_troops": 6572
+    },
+    {
+      "turn": 4,
+      "order": 113,
+      "kind": "attack",
+      "text": "SP 제갈량 → 순욱: 일반 공격",
+      "actor": "left:1",
+      "target": "right:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 114,
+      "kind": "damage",
+      "text": "SP 제갈량 → 순욱: 일반 공격, 피해 190",
+      "actor": "left:1",
+      "target": "right:3",
+      "amount": 190,
+      "remaining_troops": 6382
+    },
+    {
+      "turn": 4,
+      "order": 115,
+      "kind": "action",
+      "text": "순욱 행동 시작",
+      "actor": "right:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 116,
+      "kind": "attack",
+      "text": "순욱 → 장비: 일반 공격",
+      "actor": "right:3",
+      "target": "left:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 4,
+      "order": 117,
+      "kind": "damage",
+      "text": "순욱 → 장비: 일반 공격, 피해 159",
+      "actor": "right:3",
+      "target": "left:3",
+      "amount": 159,
+      "remaining_troops": 9154
+    },
+    {
+      "turn": 4,
+      "order": 118,
+      "kind": "heal",
+      "text": "순욱 → 순욱: 일반 공격, 회복 13",
+      "actor": "right:3",
+      "target": "right:3",
+      "amount": 13,
+      "remaining_troops": 6395
+    },
+    {
+      "turn": 4,
+      "order": 119,
+      "kind": "heal",
+      "text": "순욱 → 순욱: 인재 등용, 회복 13",
+      "actor": "right:3",
+      "target": "right:3",
+      "amount": 13,
+      "remaining_troops": 6408
+    },
+    {
+      "turn": 5,
+      "order": 120,
+      "kind": "turn",
+      "text": "5턴 시작",
+      "actor": null,
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 121,
+      "kind": "action",
+      "text": "관우 행동 시작",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 122,
+      "kind": "cast",
+      "text": "관우: 화하 진압 시전",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 123,
+      "kind": "damage",
+      "text": "관우 → 조조: 화하 진압, 피해 328",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": 328,
+      "remaining_troops": 6578
+    },
+    {
+      "turn": 5,
+      "order": 124,
+      "kind": "damage",
+      "text": "관우 → 곽가: 화하 진압, 피해 423",
+      "actor": "left:2",
+      "target": "right:2",
+      "amount": 423,
+      "remaining_troops": 5197
+    },
+    {
+      "turn": 5,
+      "order": 125,
+      "kind": "damage",
+      "text": "관우 → 순욱: 화하 진압, 피해 443",
+      "actor": "left:2",
+      "target": "right:3",
+      "amount": 443,
+      "remaining_troops": 5965
+    },
+    {
+      "turn": 5,
+      "order": 126,
+      "kind": "attack",
+      "text": "관우 → 조조: 일반 공격",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 127,
+      "kind": "damage",
+      "text": "관우 → 조조: 일반 공격, 피해 194",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": 194,
+      "remaining_troops": 6384
+    },
+    {
+      "turn": 5,
+      "order": 128,
+      "kind": "heal",
+      "text": "조조 → 조조: 난세의 간웅, 회복 127",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 127,
+      "remaining_troops": 6511
+    },
+    {
+      "turn": 5,
+      "order": 129,
+      "kind": "action",
+      "text": "장비 행동 시작",
+      "actor": "left:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 130,
+      "kind": "attack",
+      "text": "장비 → 곽가: 일반 공격",
+      "actor": "left:3",
+      "target": "right:2",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 131,
+      "kind": "damage",
+      "text": "장비 → 곽가: 일반 공격, 피해 234",
+      "actor": "left:3",
+      "target": "right:2",
+      "amount": 234,
+      "remaining_troops": 4963
+    },
+    {
+      "turn": 5,
+      "order": 132,
+      "kind": "action",
+      "text": "SP 제갈량 행동 시작",
+      "actor": "left:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 133,
+      "kind": "damage",
+      "text": "SP 제갈량 → 곽가: 성운 대열, 피해 672",
+      "actor": "left:1",
+      "target": "right:2",
+      "amount": 672,
+      "remaining_troops": 4291
+    },
+    {
+      "turn": 5,
+      "order": 134,
+      "kind": "attack",
+      "text": "SP 제갈량 → 곽가: 일반 공격",
+      "actor": "left:1",
+      "target": "right:2",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 135,
+      "kind": "damage",
+      "text": "SP 제갈량 → 곽가: 일반 공격, 피해 183",
+      "actor": "left:1",
+      "target": "right:2",
+      "amount": 183,
+      "remaining_troops": 4108
+    },
+    {
+      "turn": 5,
+      "order": 136,
+      "kind": "action",
+      "text": "조조 행동 시작",
+      "actor": "right:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 137,
+      "kind": "attack",
+      "text": "조조 → 장비: 일반 공격",
+      "actor": "right:1",
+      "target": "left:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 138,
+      "kind": "damage",
+      "text": "조조 → 장비: 일반 공격, 피해 190",
+      "actor": "right:1",
+      "target": "left:3",
+      "amount": 190,
+      "remaining_troops": 8964
+    },
+    {
+      "turn": 5,
+      "order": 139,
+      "kind": "heal",
+      "text": "조조 → 조조: 일반 공격, 회복 16",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 16,
+      "remaining_troops": 6527
+    },
+    {
+      "turn": 5,
+      "order": 140,
+      "kind": "action",
+      "text": "곽가 행동 시작",
+      "actor": "right:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 141,
+      "kind": "attack",
+      "text": "곽가 → 장비: 일반 공격",
+      "actor": "right:2",
+      "target": "left:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 142,
+      "kind": "damage",
+      "text": "곽가 → 장비: 일반 공격, 피해 114",
+      "actor": "right:2",
+      "target": "left:3",
+      "amount": 114,
+      "remaining_troops": 8850
+    },
+    {
+      "turn": 5,
+      "order": 143,
+      "kind": "heal",
+      "text": "곽가 → 곽가: 일반 공격, 회복 9",
+      "actor": "right:2",
+      "target": "right:2",
+      "amount": 9,
+      "remaining_troops": 4117
+    },
+    {
+      "turn": 5,
+      "order": 144,
+      "kind": "action",
+      "text": "순욱 행동 시작",
+      "actor": "right:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 145,
+      "kind": "attack",
+      "text": "순욱 → 장비: 일반 공격",
+      "actor": "right:3",
+      "target": "left:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 5,
+      "order": 146,
+      "kind": "damage",
+      "text": "순욱 → 장비: 일반 공격, 피해 150",
+      "actor": "right:3",
+      "target": "left:3",
+      "amount": 150,
+      "remaining_troops": 8700
+    },
+    {
+      "turn": 5,
+      "order": 147,
+      "kind": "heal",
+      "text": "순욱 → 순욱: 일반 공격, 회복 12",
+      "actor": "right:3",
+      "target": "right:3",
+      "amount": 12,
+      "remaining_troops": 5977
+    },
+    {
+      "turn": 6,
+      "order": 148,
+      "kind": "turn",
+      "text": "6턴 시작",
+      "actor": null,
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 149,
+      "kind": "action",
+      "text": "관우 행동 시작",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 150,
+      "kind": "cast",
+      "text": "관우: 화하 진압 시전",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 151,
+      "kind": "damage",
+      "text": "관우 → 조조: 화하 진압, 피해 341",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": 341,
+      "remaining_troops": 6186
+    },
+    {
+      "turn": 6,
+      "order": 152,
+      "kind": "heal",
+      "text": "조조 → 조조: 난세의 간웅, 회복 127",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 127,
+      "remaining_troops": 6313
+    },
+    {
+      "turn": 6,
+      "order": 153,
+      "kind": "damage",
+      "text": "관우 → 곽가: 화하 진압, 피해 417",
+      "actor": "left:2",
+      "target": "right:2",
+      "amount": 417,
+      "remaining_troops": 3700
+    },
+    {
+      "turn": 6,
+      "order": 154,
+      "kind": "damage",
+      "text": "관우 → 순욱: 화하 진압, 피해 444",
+      "actor": "left:2",
+      "target": "right:3",
+      "amount": 444,
+      "remaining_troops": 5533
+    },
+    {
+      "turn": 6,
+      "order": 155,
+      "kind": "attack",
+      "text": "관우 → 조조: 일반 공격",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 156,
+      "kind": "damage",
+      "text": "관우 → 조조: 일반 공격, 피해 185",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": 185,
+      "remaining_troops": 6128
+    },
+    {
+      "turn": 6,
+      "order": 157,
+      "kind": "action",
+      "text": "장비 행동 시작",
+      "actor": "left:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 158,
+      "kind": "attack",
+      "text": "장비 → 조조: 일반 공격",
+      "actor": "left:3",
+      "target": "right:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 159,
+      "kind": "damage",
+      "text": "장비 → 조조: 일반 공격, 피해 187",
+      "actor": "left:3",
+      "target": "right:1",
+      "amount": 187,
+      "remaining_troops": 5941
+    },
+    {
+      "turn": 6,
+      "order": 160,
+      "kind": "action",
+      "text": "조조 행동 시작",
+      "actor": "right:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 161,
+      "kind": "attack",
+      "text": "조조 → SP 제갈량: 일반 공격",
+      "actor": "right:1",
+      "target": "left:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 162,
+      "kind": "damage",
+      "text": "조조 → SP 제갈량: 일반 공격, 피해 203",
+      "actor": "right:1",
+      "target": "left:1",
+      "amount": 203,
+      "remaining_troops": 9421
+    },
+    {
+      "turn": 6,
+      "order": 163,
+      "kind": "heal",
+      "text": "조조 → 조조: 일반 공격, 회복 17",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 17,
+      "remaining_troops": 5958
+    },
+    {
+      "turn": 6,
+      "order": 164,
+      "kind": "action",
+      "text": "SP 제갈량 행동 시작",
+      "actor": "left:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 165,
+      "kind": "damage",
+      "text": "SP 제갈량 → 순욱: 성운 대열, 피해 611",
+      "actor": "left:1",
+      "target": "right:3",
+      "amount": 611,
+      "remaining_troops": 4922
+    },
+    {
+      "turn": 6,
+      "order": 166,
+      "kind": "attack",
+      "text": "SP 제갈량 → 순욱: 일반 공격",
+      "actor": "left:1",
+      "target": "right:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 167,
+      "kind": "damage",
+      "text": "SP 제갈량 → 순욱: 일반 공격, 피해 183",
+      "actor": "left:1",
+      "target": "right:3",
+      "amount": 183,
+      "remaining_troops": 4739
+    },
+    {
+      "turn": 6,
+      "order": 168,
+      "kind": "action",
+      "text": "곽가 행동 시작",
+      "actor": "right:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 169,
+      "kind": "attack",
+      "text": "곽가 → 장비: 일반 공격",
+      "actor": "right:2",
+      "target": "left:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 170,
+      "kind": "damage",
+      "text": "곽가 → 장비: 일반 공격, 피해 123",
+      "actor": "right:2",
+      "target": "left:3",
+      "amount": 123,
+      "remaining_troops": 8577
+    },
+    {
+      "turn": 6,
+      "order": 171,
+      "kind": "heal",
+      "text": "곽가 → 곽가: 일반 공격, 회복 10",
+      "actor": "right:2",
+      "target": "right:2",
+      "amount": 10,
+      "remaining_troops": 3710
+    },
+    {
+      "turn": 6,
+      "order": 172,
+      "kind": "action",
+      "text": "순욱 행동 시작",
+      "actor": "right:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 173,
+      "kind": "attack",
+      "text": "순욱 → SP 제갈량: 일반 공격",
+      "actor": "right:3",
+      "target": "left:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 6,
+      "order": 174,
+      "kind": "damage",
+      "text": "순욱 → SP 제갈량: 일반 공격, 피해 128",
+      "actor": "right:3",
+      "target": "left:1",
+      "amount": 128,
+      "remaining_troops": 9293
+    },
+    {
+      "turn": 6,
+      "order": 175,
+      "kind": "heal",
+      "text": "순욱 → 순욱: 일반 공격, 회복 11",
+      "actor": "right:3",
+      "target": "right:3",
+      "amount": 11,
+      "remaining_troops": 4750
+    },
+    {
+      "turn": 7,
+      "order": 176,
+      "kind": "turn",
+      "text": "7턴 시작",
+      "actor": null,
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 177,
+      "kind": "action",
+      "text": "관우 행동 시작",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 178,
+      "kind": "cast",
+      "text": "관우: 화하 진압 시전",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 179,
+      "kind": "damage",
+      "text": "관우 → 조조: 화하 진압, 피해 356",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": 356,
+      "remaining_troops": 5602
+    },
+    {
+      "turn": 7,
+      "order": 180,
+      "kind": "damage",
+      "text": "관우 → 곽가: 화하 진압, 피해 424",
+      "actor": "left:2",
+      "target": "right:2",
+      "amount": 424,
+      "remaining_troops": 3286
+    },
+    {
+      "turn": 7,
+      "order": 181,
+      "kind": "damage",
+      "text": "관우 → 순욱: 화하 진압, 피해 413",
+      "actor": "left:2",
+      "target": "right:3",
+      "amount": 413,
+      "remaining_troops": 4337
+    },
+    {
+      "turn": 7,
+      "order": 182,
+      "kind": "attack",
+      "text": "관우 → 조조: 일반 공격",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 183,
+      "kind": "damage",
+      "text": "관우 → 조조: 일반 공격, 피해 189",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": 189,
+      "remaining_troops": 5413
+    },
+    {
+      "turn": 7,
+      "order": 184,
+      "kind": "action",
+      "text": "장비 행동 시작",
+      "actor": "left:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 185,
+      "kind": "attack",
+      "text": "장비 → 순욱: 일반 공격",
+      "actor": "left:3",
+      "target": "right:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 186,
+      "kind": "damage",
+      "text": "장비 → 순욱: 일반 공격, 피해 251",
+      "actor": "left:3",
+      "target": "right:3",
+      "amount": 251,
+      "remaining_troops": 4086
+    },
+    {
+      "turn": 7,
+      "order": 187,
+      "kind": "action",
+      "text": "조조 행동 시작",
+      "actor": "right:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 188,
+      "kind": "attack",
+      "text": "조조 → 관우: 일반 공격",
+      "actor": "right:1",
+      "target": "left:2",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 189,
+      "kind": "damage",
+      "text": "조조 → 관우: 일반 공격, 피해 181",
+      "actor": "right:1",
+      "target": "left:2",
+      "amount": 181,
+      "remaining_troops": 9017
+    },
+    {
+      "turn": 7,
+      "order": 190,
+      "kind": "heal",
+      "text": "조조 → 조조: 일반 공격, 회복 15",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 15,
+      "remaining_troops": 5428
+    },
+    {
+      "turn": 7,
+      "order": 191,
+      "kind": "action",
+      "text": "SP 제갈량 행동 시작",
+      "actor": "left:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 192,
+      "kind": "damage",
+      "text": "SP 제갈량 → 순욱: 성운 대열, 피해 616",
+      "actor": "left:1",
+      "target": "right:3",
+      "amount": 616,
+      "remaining_troops": 3470
+    },
+    {
+      "turn": 7,
+      "order": 193,
+      "kind": "attack",
+      "text": "SP 제갈량 → 조조: 일반 공격",
+      "actor": "left:1",
+      "target": "right:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 194,
+      "kind": "damage",
+      "text": "SP 제갈량 → 조조: 일반 공격, 피해 163",
+      "actor": "left:1",
+      "target": "right:1",
+      "amount": 163,
+      "remaining_troops": 5265
+    },
+    {
+      "turn": 7,
+      "order": 195,
+      "kind": "action",
+      "text": "곽가 행동 시작",
+      "actor": "right:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 196,
+      "kind": "attack",
+      "text": "곽가 → 장비: 일반 공격",
+      "actor": "right:2",
+      "target": "left:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 197,
+      "kind": "damage",
+      "text": "곽가 → 장비: 일반 공격, 피해 112",
+      "actor": "right:2",
+      "target": "left:3",
+      "amount": 112,
+      "remaining_troops": 8465
+    },
+    {
+      "turn": 7,
+      "order": 198,
+      "kind": "heal",
+      "text": "곽가 → 곽가: 일반 공격, 회복 9",
+      "actor": "right:2",
+      "target": "right:2",
+      "amount": 9,
+      "remaining_troops": 3295
+    },
+    {
+      "turn": 7,
+      "order": 199,
+      "kind": "action",
+      "text": "순욱 행동 시작",
+      "actor": "right:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 200,
+      "kind": "attack",
+      "text": "순욱 → 관우: 일반 공격",
+      "actor": "right:3",
+      "target": "left:2",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 7,
+      "order": 201,
+      "kind": "damage",
+      "text": "순욱 → 관우: 일반 공격, 피해 110",
+      "actor": "right:3",
+      "target": "left:2",
+      "amount": 110,
+      "remaining_troops": 8907
+    },
+    {
+      "turn": 7,
+      "order": 202,
+      "kind": "heal",
+      "text": "순욱 → 순욱: 일반 공격, 회복 9",
+      "actor": "right:3",
+      "target": "right:3",
+      "amount": 9,
+      "remaining_troops": 3479
+    },
+    {
+      "turn": 8,
+      "order": 203,
+      "kind": "turn",
+      "text": "8턴 시작",
+      "actor": null,
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 8,
+      "order": 204,
+      "kind": "action",
+      "text": "관우 행동 시작",
+      "actor": "left:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 8,
+      "order": 205,
+      "kind": "attack",
+      "text": "관우 → 조조: 일반 공격",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 8,
+      "order": 206,
+      "kind": "damage",
+      "text": "관우 → 조조: 일반 공격, 피해 193",
+      "actor": "left:2",
+      "target": "right:1",
+      "amount": 193,
+      "remaining_troops": 5072
+    },
+    {
+      "turn": 8,
+      "order": 207,
+      "kind": "action",
+      "text": "장비 행동 시작",
+      "actor": "left:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 8,
+      "order": 208,
+      "kind": "attack",
+      "text": "장비 → 순욱: 일반 공격",
+      "actor": "left:3",
+      "target": "right:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 8,
+      "order": 209,
+      "kind": "damage",
+      "text": "장비 → 순욱: 일반 공격, 피해 253",
+      "actor": "left:3",
+      "target": "right:3",
+      "amount": 253,
+      "remaining_troops": 3226
+    },
+    {
+      "turn": 8,
+      "order": 210,
+      "kind": "action",
+      "text": "조조 행동 시작",
+      "actor": "right:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 8,
+      "order": 211,
+      "kind": "attack",
+      "text": "조조 → SP 제갈량: 일반 공격",
+      "actor": "right:1",
+      "target": "left:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 8,
+      "order": 212,
+      "kind": "damage",
+      "text": "조조 → SP 제갈량: 일반 공격, 피해 182",
+      "actor": "right:1",
+      "target": "left:1",
+      "amount": 182,
+      "remaining_troops": 9111
+    },
+    {
+      "turn": 8,
+      "order": 213,
+      "kind": "heal",
+      "text": "조조 → 조조: 일반 공격, 회복 15",
+      "actor": "right:1",
+      "target": "right:1",
+      "amount": 15,
+      "remaining_troops": 5087
+    },
+    {
+      "turn": 8,
+      "order": 214,
+      "kind": "action",
+      "text": "SP 제갈량 행동 시작",
+      "actor": "left:1",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 8,
+      "order": 215,
+      "kind": "damage",
+      "text": "SP 제갈량 → 곽가: 성운 대열, 피해 679",
+      "actor": "left:1",
+      "target": "right:2",
+      "amount": 679,
+      "remaining_troops": 2616
+    },
+    {
+      "turn": 8,
+      "order": 216,
+      "kind": "attack",
+      "text": "SP 제갈량 → 조조: 일반 공격",
+      "actor": "left:1",
+      "target": "right:1",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 8,
+      "order": 217,
+      "kind": "damage",
+      "text": "SP 제갈량 → 조조: 일반 공격, 피해 163",
+      "actor": "left:1",
+      "target": "right:1",
+      "amount": 163,
+      "remaining_troops": 4924
+    },
+    {
+      "turn": 8,
+      "order": 218,
+      "kind": "action",
+      "text": "곽가 행동 시작",
+      "actor": "right:2",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 8,
+      "order": 219,
+      "kind": "attack",
+      "text": "곽가 → 관우: 일반 공격",
+      "actor": "right:2",
+      "target": "left:2",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 8,
+      "order": 220,
+      "kind": "damage",
+      "text": "곽가 → 관우: 일반 공격, 피해 93",
+      "actor": "right:2",
+      "target": "left:2",
+      "amount": 93,
+      "remaining_troops": 8814
+    },
+    {
+      "turn": 8,
+      "order": 221,
+      "kind": "heal",
+      "text": "곽가 → 곽가: 일반 공격, 회복 8",
+      "actor": "right:2",
+      "target": "right:2",
+      "amount": 8,
+      "remaining_troops": 2624
+    },
+    {
+      "turn": 8,
+      "order": 222,
+      "kind": "action",
+      "text": "순욱 행동 시작",
+      "actor": "right:3",
+      "target": null,
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 8,
+      "order": 223,
+      "kind": "attack",
+      "text": "순욱 → 장비: 일반 공격",
+      "actor": "right:3",
+      "target": "left:3",
+      "amount": null,
+      "remaining_troops": null
+    },
+    {
+      "turn": 8,
+      "order": 224,
+      "kind": "damage",
+      "text": "순욱 → 장비: 일반 공격, 피해 103",
+      "actor": "right:3",
+      "target": "left:3",
+      "amount": 103,
+      "remaining_troops": 8362
+    },
+    {
+      "turn": 8,
+      "order": 225,
+      "kind": "heal",
+      "text": "순욱 → 순욱: 일반 공격, 회복 9",
+      "actor": "right:3",
+      "target": "right:3",
+      "amount": 9,
+      "remaining_troops": 3235
+    },
+    {
+      "turn": 8,
+      "order": 226,
+      "kind": "heal",
+      "text": "순욱 → 순욱: 인재 등용, 회복 9",
+      "actor": "right:3",
+      "target": "right:3",
+      "amount": 9,
+      "remaining_troops": 3244
+    }
+  ],
+  "notices": [
+    "추정 결과이며 실제 게임 전보와 다를 수 있습니다.",
+    "시전·등록 횟수와 효과 발생 횟수는 구분하며 게임 UI의 발동 횟수와 동일하다고 검증하지 않았습니다.",
+    "선택한 편성에 반영 범위가 제한된 효과가 포함되어 있습니다.",
+    "성운 대열의 진형별 효과를 추정 반영했습니다. 치유량 연동·대상 선정·효과 순서는 실측 보정 전입니다.",
+    "한국 시즌3은 시험 지원입니다. 신규 데이터와 변경 수치는 확인 중입니다."
+  ]
+}

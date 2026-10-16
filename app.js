@@ -1,0 +1,718 @@
+/* 천하결전 덱 시뮬레이터 — 화면 계층
+ * 전투 계산·암호화 키·비공개 데이터는 없습니다. 공개 편성 규칙(editor.js), 공개 코드(army-code.js),
+ * 공개 API 2개(api-client.js)만 사용합니다. 이 파일은 화면과 상호작용만 담당합니다. */
+import {BattleApi,encodeArmyCode,decodeArmyCode} from './api-client.js';
+import {normalizeArmy} from './army-code.js';
+import {STAT_FIELDS,armFor,bookChoices,tacticChoices,validateArmy} from './editor.js';
+import {API_BASE_URL} from './config.js';
+import {loadRecommendedDecks,filterRecommendedDecks,templateAvailability,armyFromRecommendedDeck} from './recommended-decks.js';
+
+/* ── 기본 도구 ─────────────────────────────────────────── */
+const $=id=>document.getElementById(id);
+const SIDES=['left','right'];
+const SIDE_NAME={left:'아군',right:'상대'};
+const SIDE_CLASS={left:'ally',right:'enemy'};
+const KEYS={api:'cheonha-sample-api',draft:'cheonha-draft-v1',theme:'cheonha-theme'};
+const fmt=n=>Number(n??0).toLocaleString('ko-KR');
+const clone=v=>structuredClone(v);
+const reduceMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+const store={
+  get(k){try{return localStorage.getItem(k);}catch{return null;}},
+  set(k,v){try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v);}catch{}}
+};
+const PROPS=new Set(['value','checked','disabled','open','hidden','readOnly','min','max','step','type','maxLength','title','id','name','placeholder']);
+function h(tag,attrs,...kids){
+  const el=document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs||{})){
+    if(v==null||v===false)continue;
+    if(k==='class')el.className=v;
+    else if(k==='text')el.textContent=v;
+    else if(k==='dataset')Object.assign(el.dataset,v);
+    else if(k.startsWith('on')&&typeof v==='function')el.addEventListener(k.slice(2),v);
+    else if(PROPS.has(k))el[k]=v;
+    else el.setAttribute(k,v===true?'':String(v));
+  }
+  for(const kid of kids.flat(Infinity)){if(kid==null||kid===false)continue;el.append(kid instanceof Node?kid:String(kid));}
+  return el;
+}
+/** replaceChildren은 배열을 펼치지 않으므로 배열·null을 정리해서 넣습니다. */
+const fill=(el,...kids)=>el.replaceChildren(...kids.flat(Infinity).filter(k=>k!=null&&k!==false));
+const SVGNS='http://www.w3.org/2000/svg';
+function sv(tag,attrs={},...kids){const el=document.createElementNS(SVGNS,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,v);for(const kid of kids)if(kid!=null)el.append(kid instanceof Node?kid:String(kid));return el;}
+const chevron=()=>{const s=sv('svg',{viewBox:'0 0 16 16','aria-hidden':'true'});s.append(sv('path',{d:'M4 6l4 4 4-4'}));return s;};
+
+let toastTimer;
+function notify(text,error=false){clearTimeout(toastTimer);const t=$('toast');t.textContent=text;t.classList.toggle('error',error);t.hidden=false;toastTimer=setTimeout(()=>t.hidden=true,error?7000:3200);}
+function message(error){
+  if(error?.name==='AbortError')return '요청을 취소했습니다.';
+  if(error instanceof TypeError&&/fetch|network|load failed/i.test(error.message))return '서버에 닿지 못했습니다. API 주소, 서버 실행 상태, CORS 허용 주소를 확인하세요.';
+  if(error instanceof TypeError)console.error(error);
+  let text=error?.message||'알 수 없는 오류가 발생했습니다.';
+  if(error?.status===429)text+=error.retryAfter?` ${error.retryAfter}초 뒤에 다시 시도하세요.`:' 잠시 뒤에 다시 시도하세요.';
+  if(error?.requestId)text+=` (요청 ID ${error.requestId})`;
+  return text;
+}
+async function copyText(text){
+  try{await navigator.clipboard.writeText(text);return true;}
+  catch{const ta=h('textarea',{value:text,readOnly:true,style:'position:fixed;opacity:0'});document.body.append(ta);ta.select();const ok=document.execCommand?.('copy');ta.remove();if(!ok)throw new Error('클립보드에 접근할 수 없습니다. 코드를 직접 선택해 복사하세요.');return true;}
+}
+
+/* ── 상태 ─────────────────────────────────────────────── */
+const state={season:2,data:null,idx:null,api:null,armies:{left:null,right:null},busy:false,open:new Set(),tabs:new Map(),report:null,sample:false,dirty:false,view:'left',battleAbort:null};
+
+function indexData(d){
+  const map=rows=>new Map(rows.map(r=>[r.id,r]));
+  return {hero:map(d.heroes),tactic:map(d.tactics),book:map(d.warbooks),arm:map(d.arms),prof:map(d.proficiencies),formation:map(d.formations)};
+}
+async function localData(season){
+  const res=await fetch(`./data/editor-s${season}.json`);
+  if(!res.ok)throw new Error('기본 편성 데이터를 불러오지 못했습니다. data 폴더가 함께 배포됐는지 확인하세요.');
+  return res.json();
+}
+function examplesFrom(data){return SIDES.map((_,i)=>normalizeArmy(clone(data.examples[i])));}
+function acceptData(data,{reset=false}={}){
+  if(data.season!==state.season||!Array.isArray(data.heroes)||!data.rules||!data.examples?.length)throw new Error('이 화면과 호환되지 않는 편성 데이터입니다.');
+  if(!reset&&state.armies.left){for(const s of SIDES)validateArmy(data,state.armies[s]);}
+  state.data=data;state.idx=indexData(data);
+  if(reset||!state.armies.left){[state.armies.left,state.armies.right]=examplesFrom(data);state.open.clear();state.tabs.clear();}
+}
+/** 서버 데이터를 받되, 현재 편성이 맞지 않으면 예시로 바꾸고 알립니다. */
+function adoptServerData(data){
+  try{acceptData(data);return true;}
+  catch(error){acceptData(data,{reset:true});notify(`현재 편성이 서버 데이터와 맞지 않아 예시 편성으로 바꿨습니다. (${error.message})`,true);return false;}
+}
+
+/* ── 테마 ─────────────────────────────────────────────── */
+function applyTheme(){const t=store.get(KEYS.theme);if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;else delete document.documentElement.dataset.theme;}
+function toggleTheme(){
+  const current=document.documentElement.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  store.set(KEYS.theme,current==='dark'?'light':'dark');applyTheme();
+}
+
+/* ── 바쁨·작업 ─────────────────────────────────────────── */
+function busy(on){
+  state.busy=on;
+  $('armies').querySelectorAll('.army').forEach(a=>{a.inert=on;a.setAttribute('aria-busy',String(on));});
+  document.querySelectorAll('#season-switch input,[data-action],#open-connection,#connect-submit,#example-report').forEach(el=>el.disabled=on);
+  $('battle').disabled=on||!state.data;
+}
+async function task(work,errorTarget){
+  if(state.busy)return;busy(true);
+  try{return await work();}
+  catch(error){if(errorTarget)$(errorTarget).textContent=message(error);else notify(message(error),true);}
+  finally{busy(false);}
+}
+
+/* ── 연결 ─────────────────────────────────────────────── */
+const savedUrl=()=>store.get(KEYS.api)||API_BASE_URL||'';
+function updateConnection(){
+  const pill=$('open-connection');pill.classList.toggle('connected',Boolean(state.api));
+  $('connection-label').textContent=state.api?'서버 연결됨':'편성 모드';
+  pill.title=state.api?state.api.baseUrl:'전투 서버가 연결되지 않았습니다';
+  if(!state.battleAbort)$('battle-hint').textContent=state.api?`한국 시즌 ${state.season} 추정 전투를 계산합니다.`:'편성·공유는 지금 바로 쓸 수 있고, 전투는 서버 연결 뒤 진행됩니다.';
+}
+function openConnection(){$('api-url').value=state.api?.baseUrl||savedUrl();$('connection-error').textContent='';$('connection-dialog').showModal();}
+
+/* ── 초안 자동 저장 ─────────────────────────────────────── */
+let draftTimer;
+function saveDraft(){clearTimeout(draftTimer);draftTimer=setTimeout(()=>store.set(KEYS.draft,JSON.stringify({v:1,season:state.season,left:state.armies.left,right:state.armies.right})),400);}
+function readDraft(){try{const d=JSON.parse(store.get(KEYS.draft)||'null');return d?.v===1&&[1,2,3].includes(d.season)&&d.left&&d.right?d:null;}catch{return null;}}
+function restoreDraft(draft){
+  try{const left=normalizeArmy(draft.left),right=normalizeArmy(draft.right);validateArmy(state.data,left);validateArmy(state.data,right);state.armies.left=left;state.armies.right=right;return true;}
+  catch{return false;}
+}
+
+/* ── 렌더링 ───────────────────────────────────────────── */
+/** data_version은 서버 간 정합용이라 화면에 표시하지 않고 코드에만 담습니다. */
+const codeOpts=()=>({data_version:state.data?.data_version??null});
+const totalTroops=army=>army.heroes.reduce((s,x)=>s+Number(x.troops||0),0);
+function dirty(){
+  state.dirty=true;
+  const chip=$('report-stale');if(chip)chip.hidden=state.sample;
+  saveDraft();
+}
+let renderQueued=false;
+/** change 이벤트 뒤 포커스가 다음 칸으로 옮겨간 다음에 다시 그립니다(Tab 이동 유지). */
+function scheduleRender(){if(renderQueued)return;renderQueued=true;setTimeout(()=>{renderQueued=false;render();},0);}
+function render(){
+  const key=document.activeElement?.dataset?.focus;
+  for(const s of SIDES)renderArmy(s);
+  updateSummary();updateConnection();updateTabs();
+  if(key)document.querySelector(`[data-focus="${CSS.escape(key)}"]`)?.focus({preventScroll:true});
+}
+function updateSummary(){
+  if(!state.data)return;
+  for(const s of SIDES){const n=fmt(totalTroops(state.armies[s]));$(`${s}-total`).textContent=n;$(`tab-${s}-total`).textContent=n;}
+}
+function updateTabs(){
+  for(const s of SIDES){const on=state.view===s;$(`tab-${s}`).setAttribute('aria-selected',String(on));$(s).classList.toggle('is-active',on);}
+}
+function sel(rows,value,attrs={},{empty=false,group}={}){
+  const el=h('select',attrs);
+  if(empty)el.append(h('option',{value:'',text:'선택 안 함'}));
+  if(group){
+    const groups=new Map();for(const r of rows){const g=group(r);if(!groups.has(g))groups.set(g,[]);groups.get(g).push(r);}
+    for(const [g,list] of groups)el.append(h('optgroup',{label:g},list.map(r=>h('option',{value:String(r.id),text:r.name}))));
+  }else for(const r of rows)el.append(h('option',{value:String(r.id),text:r.name}));
+  el.value=value==null?'':String(value);
+  return el;
+}
+const num=(value,attrs)=>h('input',{type:'number',inputMode:'decimal',step:'any',value:value??'',...attrs});
+const fkey=(side,slot,path)=>`${side}|${slot}|${path}`;
+
+function renderArmy(side){
+  const army=state.armies[side],host=$(side);
+  host.replaceChildren(
+    armyHead(side,army),
+    formationBlock(side,army),
+    h('div',{class:'hero-stack'},[...army.heroes].sort((a,b)=>a.slot-b.slot).map(hero=>heroCard(side,army,hero))),
+    armyFoot(side,army)
+  );
+}
+function armyHead(side,army){
+  return h('header',{class:'army-head'},
+    h('div',{class:'army-ident'},
+      h('span',{class:'army-side',text:`${SIDE_NAME[side]} 부대`}),
+      h('input',{class:'army-name',type:'text',maxLength:80,value:army.name,'aria-label':`${SIDE_NAME[side]} 부대 이름`,dataset:{path:'army.name',focus:fkey(side,'army','name')}})),
+    h('div',{class:'army-tools'},
+      h('button',{class:'ghost-btn small preset-btn',type:'button',dataset:{presetSide:side},text:'추천덱'}),
+      h('button',{class:'ghost-btn small',type:'button',dataset:{codeMode:'import',side},text:'코드 불러오기'}),
+      h('button',{class:'ghost-btn small',type:'button',dataset:{codeMode:'share',side},text:'공유'}))
+  );
+}
+function formationBlock(side,army){
+  const f=state.idx.formation.get(army.formation_id);
+  const rowOf=slot=>f?.positions.find(p=>p.slot===slot)?.row;
+  const map=h('div',{class:'formation-map','aria-hidden':'true'},
+    ['front','back'].map(row=>h('div',{class:'row'},h('span',{text:row==='front'?'전열':'후열'}),[1,2,3].map(slot=>h('span',{class:'cell'+(rowOf(slot)===row?' on':''),text:rowOf(slot)===row?slot:''})))));
+  return h('div',{class:'formation'},
+    h('label',{class:'field'},'진형',sel(state.data.formations,army.formation_id,{dataset:{path:'army.formation_id',focus:fkey(side,'army','formation')}})),
+    map,
+    f?.description?h('p',{class:'formation-desc',text:f.description}):null);
+}
+function heroCard(side,army,hero){
+  const d=state.data,ix=state.idx,row=ix.hero.get(hero.hero_id),arm=armFor(d,hero);
+  const pos=ix.formation.get(army.formation_id)?.positions.find(p=>p.slot===hero.slot)?.row;
+  const key=`${side}:${hero.slot}`;
+  const top=h('div',{class:'hc-top'},
+    h('span',{class:'slot-badge'+(pos==='back'?' back':''),'aria-label':`${hero.slot}번 위치, ${pos==='back'?'후열':'전열'}`},h('b',{text:hero.slot}),h('small',{text:pos==='back'?'후열':'전열'})),
+    h('button',{class:'hero-pick',type:'button','aria-label':`${SIDE_NAME[side]} ${hero.slot}번 무장 ${row.name}, 바꾸기`,dataset:{pick:'hero',focus:fkey(side,hero.slot,'pick-hero')}},
+      h('span',{class:'name'},h('span',{text:row.name}),chevron()),
+      h('span',{class:'meta',text:[row.faction_name,row.rarity_name&&`${row.rarity_name}등급`,arm?.name||'병종 미상',`Lv${hero.level}`].filter(Boolean).join(' · ')})),
+    h('label',{class:'troops-field'},'병력',num(hero.troops,{min:1,max:50000,step:1,dataset:{path:'troops',focus:fkey(side,hero.slot,'troops')}}))
+  );
+  const innate=h('details',{class:'innate'},
+    h('summary',{dataset:{focus:fkey(side,hero.slot,'innate')}},'고유 ',h('b',{text:row.innate.name}),row.innate.effect_status==='not_implemented'?h('span',{class:'tag warn',text:'효과 미반영'}):null),
+    h('p',{text:row.innate.description}));
+  const tactics=h('div',{class:'tactic-row'});
+  hero.learned.forEach((s,i)=>{const t=ix.tactic.get(s.skill_id);tactics.append(h('button',{class:'tactic-btn',type:'button',dataset:{pick:'tactic',index:i,focus:fkey(side,hero.slot,`pick-tactic-${i}`)},'aria-label':`학습 전법 ${i+1}: ${t?.name||'알 수 없음'}, 바꾸기`},
+    h('span',{class:'t-name',text:t?.name||`ID ${s.skill_id}`}),
+    h('span',{class:'t-meta'},t?h('span',{class:`tag type-${t.type_name}`,text:t.type_name}):null,`Lv${s.level} · ${s.grade}승`)));});
+  if(hero.learned.length<2)tactics.append(h('button',{class:'tactic-btn empty',type:'button',dataset:{pick:'tactic',index:hero.learned.length,focus:fkey(side,hero.slot,`pick-tactic-${hero.learned.length}`)},text:'+ 전법 추가'}));
+  const slots=row.warbook_slots.length;
+  const adv=h('details',{class:'advanced',open:state.open.has(key),dataset:{openKey:key}},
+    h('summary',{dataset:{focus:fkey(side,hero.slot,'adv')}},'상세 설정',h('span',{class:'adv-meta',text:`병법 ${hero.warbook_slots.length}/${slots} · 정통 ${hero.arms_skill_ids.length}/3${hero.total_stats?' · 총능력치 입력':''}`})),
+    state.open.has(key)?advancedBody(side,army,hero,row,arm,key):null);
+  return h('article',{class:'hero-card',dataset:{slot:hero.slot}},top,innate,tactics,adv);
+}
+const TABS=[['basic','기본'],['books','병법'],['arms','병종'],['stats','능력치']];
+function advancedBody(side,army,hero,row,arm,key){
+  const tab=state.tabs.get(key)||'basic',d=state.data,ix=state.idx,F=p=>fkey(side,hero.slot,p);
+  const tabs=h('div',{class:'adv-tabs',role:'tablist','aria-label':'상세 설정 분류'},TABS.map(([id,name])=>h('button',{type:'button',role:'tab','aria-selected':String(id===tab),dataset:{tab:id,focus:F(`tab-${id}`)},text:name})));
+  const panel=h('div',{class:'adv-panel',role:'tabpanel'});
+  if(tab==='basic'){
+    panel.append(h('div',{class:'grid-4'},
+      h('label',{class:'field'},'위치',sel([1,2,3].map(id=>({id,name:`${id}번`})),hero.slot,{dataset:{path:'position_slot',focus:F('position')}})),
+      h('label',{class:'field'},'무장 레벨',num(hero.level,{min:1,max:50,step:1,dataset:{path:'level',focus:F('level')}})),
+      h('label',{class:'field'},'고유 전법 Lv',num(hero.innate.level,{min:1,max:10,step:1,dataset:{path:'innate.level',focus:F('innate.level')}})),
+      h('label',{class:'field'},'고유 승급',num(hero.innate.grade,{min:0,max:5,step:1,dataset:{path:'innate.grade',focus:F('innate.grade')}}))));
+    hero.learned.forEach((s,i)=>panel.append(
+      h('p',{class:'sub-head'},ix.tactic.get(s.skill_id)?.name||'학습 전법',h('span',{text:`학습 전법 ${i+1}`})),
+      h('div',{class:'grid-2'},
+        h('label',{class:'field'},'레벨',num(s.level,{min:1,max:10,step:1,dataset:{path:`learned_upgrade.${i}.level`,focus:F(`lu${i}l`)}})),
+        h('label',{class:'field'},'승급',num(s.grade,{min:0,max:5,step:1,dataset:{path:`learned_upgrade.${i}.grade`,focus:F(`lu${i}g`)}})))));
+    panel.append(h('p',{class:'muted-note',text:'위치를 바꾸면 해당 위치의 무장과 자리를 맞바꿉니다. 레벨을 낮추면 해금되지 않은 병법 슬롯은 비워집니다.'}));
+  }else if(tab==='books'){
+    for(const rule of row.warbook_slots){
+      const current=hero.warbook_slots.find(s=>s.slot===rule.slot),locked=hero.level<rule.unlock_level;
+      const choices=[...bookChoices(d,hero,rule.slot)].sort((a,b)=>b.quality-a.quality||a.id-b.id);
+      const book=current&&ix.book.get(current.warbook_id);
+      panel.append(h('div',{class:'field'},
+        h('label',{class:'sub-head',for:`wb-${side}-${hero.slot}-${rule.slot}`},`슬롯 ${rule.slot}`,h('span',{text:locked?`Lv${rule.unlock_level}에 해금`:`Lv${rule.unlock_level} 해금 · ${choices.length}개 선택 가능`})),
+        sel(choices,current?.warbook_id,{id:`wb-${side}-${hero.slot}-${rule.slot}`,disabled:locked,dataset:{path:`warbook.${rule.slot}`,focus:F(`wb${rule.slot}`)}},{empty:true,group:b=>b.quality_name}),
+        book?h('p',{class:'desc-box'},h('span',{class:'tag'+(book.quality===3?' legend':''),text:book.quality_name}),' ',book.description):null));
+    }
+    if(!row.warbook_slots.length)panel.append(h('p',{class:'muted-note',text:'이 무장은 병법 슬롯 정보가 없습니다.'}));
+    panel.append(h('p',{class:'muted-note',text:'전설 병법은 무장당 1개, 같은 그룹 병법은 중복 불가입니다. 고를 수 있는 것만 표시합니다. 계정 보유 여부는 반영하지 않습니다.'}));
+  }else if(tab==='arms'){
+    const profRows=i=>d.proficiencies.filter(p=>arm.proficiency_ids.includes(p.id)&&(hero.arms_skill_ids[i]===p.id||!hero.arms_skill_ids.includes(p.id)));
+    panel.append(
+      h('label',{class:'field'},'병종',sel(d.arms,arm?.id,{dataset:{path:'advanced_arms_id',focus:F('arms')}})),
+      arm?.description?h('p',{class:'desc-box',text:arm.description}):null,
+      h('div',{class:'grid-3'},[0,1,2].map(i=>h('label',{class:'field'},`정통 ${i+1}`,sel(profRows(i),hero.arms_skill_ids[i],{dataset:{path:`proficiency.${i}`,focus:F(`prof${i}`)}},{empty:true})))),
+      hero.arms_skill_ids.length?h('div',{class:'desc-box'},hero.arms_skill_ids.map(id=>{const p=ix.prof.get(id);return p?h('div',null,h('b',{text:p.name}),` · ${p.description}`):null;})):null,
+      h('p',{class:'muted-note',text:'병종을 바꾸면 정통 선택이 초기화됩니다.'}));
+  }else{
+    for(const [k,label] of [['allocation','능력치 배분'],['equipment','장비 능력치 합계'],['horse','말 능력치 합계']])
+      panel.append(h('p',{class:'sub-head',text:label}),statGrid(hero[k],k,F));
+    panel.append(h('p',{class:'muted-note',text:'장비와 말은 능력치 합계로 입력합니다. 특수 효과는 반영하지 않습니다.'}),
+      h('label',{class:'check-row'},h('input',{type:'checkbox',checked:hero.total_stats!==null,dataset:{path:'use_total_stats',focus:F('use_total')}}),'총 능력치 직접 입력'));
+    if(hero.total_stats)panel.append(statGrid(hero.total_stats,'total_stats',F),h('p',{class:'muted-note',text:'진형·전법 적용 전 수치입니다. 위의 레벨·배분·장비·말 합계 대신 사용됩니다.'}));
+  }
+  return h('div',null,tabs,panel);
+}
+function statGrid(stats,prefix,F){return h('div',{class:'grid-4'},STAT_FIELDS.map(([k,name])=>h('label',{class:'field'},name,num(stats[k],{min:0,max:2000,dataset:{path:`${prefix}.${k}`,focus:F(`${prefix}.${k}`)}}))));}
+function armyFoot(side,army){
+  let status;
+  try{validateArmy(state.data,army);status=h('p',{class:'army-status ok',text:'편성 규칙을 통과했습니다. 최종 검증은 전투 때 서버가 합니다.'});}
+  catch(e){status=h('p',{class:'army-status bad',role:'status',text:e.message});}
+  return h('footer',{class:'army-foot'},
+    h('span',{class:'army-total'},'총 병력',h('b',{text:fmt(totalTroops(army))})),
+    h('label',{class:'supply-field'},'보급',num(army.supply,{min:0,max:100,step:1,dataset:{path:'army.supply',focus:fkey(side,'army','supply')}})),
+    status);
+}
+
+/* ── 편집 ─────────────────────────────────────────────── */
+function setPath(obj,path,value){const keys=path.split('.');let t=obj;for(const k of keys.slice(0,-1))t=t[k];t[keys.at(-1)]=value;}
+function applyEdit(side,slot,path,value){
+  const army=state.armies[side],hero=army.heroes.find(x=>x.slot===slot);
+  if(path.startsWith('army.'))setPath(army,path.slice(5),value);
+  else if(path==='position_slot'){const other=army.heroes.find(x=>x.slot===value);if(other&&other!==hero){other.slot=hero.slot;hero.slot=value;}}
+  else if(path==='hero_id'){hero.hero_id=value;hero.warbook_slots=[];hero.advanced_arms_id=null;hero.arms_skill_ids=[];hero.total_stats=null;hero.innate={level:10,grade:0};}
+  else if(path.startsWith('learned.')){const i=Number(path.split('.')[1]);if(value)hero.learned[i]={skill_id:value,level:hero.learned[i]?.level||10,grade:hero.learned[i]?.grade||0};else hero.learned.splice(i,1);hero.learned=hero.learned.filter(Boolean);}
+  else if(path.startsWith('learned_upgrade.'))setPath(hero,'learned.'+path.slice(16),value);
+  else if(path.startsWith('warbook.')){const s=Number(path.split('.')[1]);hero.warbook_slots=hero.warbook_slots.filter(x=>x.slot!==s);if(value)hero.warbook_slots.push({slot:s,warbook_id:value});}
+  else if(path==='advanced_arms_id'){hero.advanced_arms_id=value;hero.arms_skill_ids=[];}
+  else if(path.startsWith('proficiency.')){const i=Number(path.split('.')[1]);if(value)hero.arms_skill_ids[i]=value;else hero.arms_skill_ids.splice(i,1);hero.arms_skill_ids=hero.arms_skill_ids.filter(Boolean);}
+  else if(path==='use_total_stats')hero.total_stats=value?Object.fromEntries(STAT_FIELDS.map(([k])=>[k,0])):null;
+  else setPath(hero,path,value);
+  if(path==='level'&&hero){const row=state.idx.hero.get(hero.hero_id);hero.warbook_slots=hero.warbook_slots.filter(s=>hero.level>=(row.warbook_slots.find(r=>r.slot===s.slot)?.unlock_level??99));}
+  dirty();scheduleRender();
+}
+function onChange(event){
+  if(state.busy)return;const c=event.target,path=c.dataset.path;if(!path)return;
+  const side=c.closest('.army').dataset.side,slot=Number(c.closest('[data-slot]')?.dataset.slot);
+  const value=c.type==='checkbox'?c.checked:(c.type==='number'||c.tagName==='SELECT')?(c.value===''?null:Number(c.value)):c.value;
+  applyEdit(side,slot,path,value);
+}
+
+/* ── 무장·전법 선택 창 ─────────────────────────────────── */
+const picker={items:[],groups:[],sel:{},current:null,onPick:null,focusKey:null};
+function openPicker({title,sub,items,groups,current,allowClear,onPick,focusKey}){
+  groups=groups.filter(g=>g.options.length>1);
+  Object.assign(picker,{items,groups,sel:Object.fromEntries(groups.map(g=>[g.key,'all'])),current,onPick,focusKey});
+  $('picker-title').textContent=title;$('picker-sub').textContent=sub||'';$('picker-search').value='';$('picker-clear').hidden=!allowClear;
+  fill($('picker-chips'),groups.map(g=>h('div',{class:'chip-row',role:'group','aria-label':g.label},
+    h('span',{class:'chip-label',text:g.label}),
+    [['all','전체'],...g.options.map(o=>[o,o])].map(([v,t])=>h('button',{type:'button','aria-pressed':String(v==='all'),dataset:{group:g.key,chip:v},text:t})))));
+  $('picker-chips').hidden=!groups.length;
+  renderPicker();$('picker-dialog').showModal();
+  if(matchMedia('(pointer:fine)').matches)$('picker-search').focus();
+  else $('picker-list').querySelector('[aria-selected="true"]')?.scrollIntoView({block:'center'});
+}
+function renderPicker(){
+  const q=$('picker-search').value.replace(/\s/g,'').toLowerCase();
+  const rows=picker.items.filter(it=>Object.entries(picker.sel).every(([k,v])=>v==='all'||it.facets[k]===v)&&(!q||it.search.includes(q)));
+  rows.sort((a,b)=>Number(a.disabled)-Number(b.disabled));
+  $('picker-list').replaceChildren(...rows.map(it=>h('button',{class:'pick-opt',type:'button',role:'option','aria-selected':String(it.id===picker.current),disabled:it.disabled,dataset:{id:it.id}},
+    h('span',{class:'row1'},h('span',{class:'nm',text:it.name}),it.tags),
+    it.desc?h('span',{class:'ds',text:it.desc}):null,
+    it.disabled&&it.why?h('span',{class:'why',text:it.why}):null)));
+  if(!rows.length)$('picker-list').append(h('p',{class:'muted-note',style:'padding:20px;text-align:center',text:'조건에 맞는 항목이 없습니다. 검색어나 분류를 바꿔 보세요.'}));
+  $('picker-count').textContent=`${rows.filter(r=>!r.disabled).length}개 선택 가능`;
+}
+function finishPick(id){
+  $('picker-dialog').close();const key=picker.focusKey;picker.onPick?.(id);
+  if(key)requestAnimationFrame(()=>document.querySelector(`[data-focus="${CSS.escape(key)}"]`)?.focus());
+}
+function pickHero(side,slot){
+  const army=state.armies[side],hero=army.heroes.find(x=>x.slot===slot),d=state.data,ix=state.idx;
+  const heroes=[...d.heroes].sort((a,b)=>(a.faction??9)-(b.faction??9)||(b.rarity??0)-(a.rarity??0)||a.id-b.id);
+  const items=heroes.map(r=>{
+    const arm=ix.arm.get(r.default_arms_id),taken=r.id!==hero.hero_id&&army.heroes.some(x=>x.hero_id===r.id);
+    const tags=[
+      r.faction_name?h('span',{class:`tag faction-${r.faction}`,text:r.faction_name}):null,
+      r.rarity_name?h('span',{class:'tag'+(r.rarity>=5?' legend':''),text:`${r.rarity_name}등급`}):null,
+      arm?h('span',{class:'tag',text:arm.name}):null,
+      r.innate.effect_status==='not_implemented'?h('span',{class:'tag warn',text:'고유 효과 미반영'}):null];
+    return {id:r.id,name:r.name,tags,facets:{faction:r.faction_name,rarity:r.rarity_name&&`${r.rarity_name}등급`},desc:`${r.innate.name} — ${r.innate.description}`,
+      search:[r.name,r.base_name,r.faction_name,r.rarity_name,r.innate.name,r.innate.description,arm?.name].join('').replace(/\s/g,'').toLowerCase(),disabled:taken,why:taken?'이미 이 부대에 있는 무장입니다.':''};
+  });
+  const uniq=(rows,key,val)=>[...new Map(rows.filter(r=>r[key]!=null).map(r=>[r[key],val(r)])).entries()];
+  const groups=[
+    {key:'faction',label:'진영',options:uniq(heroes,'faction',r=>r.faction_name).sort((a,b)=>a[0]-b[0]).map(x=>x[1])},
+    {key:'rarity',label:'등급',options:uniq(heroes,'rarity',r=>`${r.rarity_name}등급`).sort((a,b)=>b[0]-a[0]).map(x=>x[1])}];
+  openPicker({title:`${SIDE_NAME[side]} ${slot}번 무장`,sub:`${d.heroes.length}명 · 무장을 바꾸면 병법·병종·정통 설정이 초기화됩니다.`,items,groups,current:hero.hero_id,allowClear:false,focusKey:fkey(side,slot,'pick-hero'),onPick:id=>{if(id!==hero.hero_id)applyEdit(side,slot,'hero_id',id);}});
+}
+function pickTactic(side,slot,index){
+  const army=state.armies[side],hero=army.heroes.find(x=>x.slot===slot),d=state.data;
+  const allowed=new Set(tacticChoices(d,army,hero,index).map(t=>t.id));
+  const items=d.tactics.map(t=>{
+    const own=hero.learned.some((s,i)=>i!==index&&s.skill_id===t.id),dis=!allowed.has(t.id);
+    return {id:t.id,name:t.name,tags:[h('span',{class:`tag type-${t.type_name}`,text:t.type_name}),t.max_per_army>1?h('span',{class:'tag',text:`부대당 ${t.max_per_army}개`}):null],facets:{type:t.type_name},desc:t.description,search:(t.name+t.description+t.type_name).replace(/\s/g,'').toLowerCase(),disabled:dis,why:dis?(own?'이 무장이 이미 배웠습니다.':`부대 내 사용 한도(${t.max_per_army}개)에 도달했습니다.`):''};
+  });
+  const order=['액티브','패시브','지휘','추격'];
+  const groups=[{key:'type',label:'유형',options:[...new Set(d.tactics.map(t=>t.type_name))].sort((a,b)=>(order.indexOf(a)+1||9)-(order.indexOf(b)+1||9))}];
+  const row=state.idx.hero.get(hero.hero_id);
+  openPicker({title:`${row.name} · 학습 전법 ${index+1}`,sub:`설명은 Lv${d.rules.description_skill_level}·${d.rules.description_skill_grade}승 기준입니다.`,items,current:hero.learned[index]?.skill_id,groups,allowClear:index<hero.learned.length,focusKey:fkey(side,slot,`pick-tactic-${Math.min(index,1)}`),onPick:id=>applyEdit(side,slot,`learned.${index}`,id)});
+}
+
+/* ── 추천덱 ───────────────────────────────────────────── */
+let presets=null,presetSide='left',presetSelection=null;
+async function showPresets(side){
+  if(!presets)presets=await loadRecommendedDecks();
+  presetSide=side;presetSelection=null;$('preset-search').value='';$('preset-error').textContent='';
+  $('preset-title').textContent=`${SIDE_NAME[side]} 부대에 추천덱 불러오기`;
+  renderPresets();$('preset-dialog').showModal();
+}
+function renderPresets(){
+  const rows=filterRecommendedDecks(presets,{season:state.season,editor:state.data,source:$('preset-source').value,query:$('preset-search').value,includeBlocked:$('preset-status').value==='all'});
+  rows.sort((x,y)=>Number(y.source_kr_season===state.season)-Number(x.source_kr_season===state.season)||(y.applied_tactics||0)-(x.applied_tactics||0));
+  $('preset-count').textContent=`한국 시즌 ${state.season} · ${rows.length}개 · 이전 시즌 자료는 현재 시즌의 성능 순위가 아닙니다. 원문 티어 표기는 참고용입니다.`;
+  if(!rows.some(t=>t.id===presetSelection))presetSelection=rows[0]?.id||null;
+  const list=$('preset-list');
+  list.replaceChildren(...rows.map(t=>{
+    const av=templateAvailability(t,state.season,state.data);
+    return h('button',{class:'preset-opt',type:'button',role:'option','aria-selected':String(t.id===presetSelection),dataset:{templateId:t.id}},
+      h('strong',{text:t.name}),
+      h('span',{class:'heroes',text:t.heroes.map(x=>x.name||x.raw_name).join(' · ')||'무장 선택 필요'}),
+      h('span',{class:'meta'},
+        h('span',{class:'tag',text:t.source_kr_season?`출처 KR S${t.source_kr_season}`:'한국 시즌 미확인'}),
+        t.tier_text?h('span',{class:'tag',text:`원문 ${t.tier_text}`}):null,
+        !av.can_import?h('span',{class:'tag warn',text:'불러오기 보류'}):t.applied_tactics?h('span',{class:'tag',text:`전법 ${t.applied_tactics}/6 입력`}):h('span',{class:'tag',text:'전법 직접 선택'})));
+  }));
+  if(!rows.length)list.append(h('p',{class:'muted-note',text:'검색 조건에 맞는 자료가 없습니다. 출처나 표시 범위를 바꿔 보세요.'}));
+  renderPresetPreview();
+}
+function renderPresetPreview(){
+  const host=$('preset-preview');$('preset-error').textContent='';$('preset-apply').disabled=true;
+  const t=presets.templates.find(x=>x.id===presetSelection);
+  if(!t){host.replaceChildren(h('p',{class:'muted-note',text:'왼쪽 목록에서 편성을 고르면 구성이 여기에 표시됩니다.'}));return;}
+  const av=templateAvailability(t,state.season,state.data);
+  const line=(label,text)=>h('p',null,h('b',{text:`${label} `}),text);
+  fill(host,
+    h('h3',{text:t.name}),
+    h('p',{class:'muted-note',text:`${t.source.kind==='google_sheet_archive'?'시트 보관본':'한국 참고 편성'} · 원문 시즌 ${t.source_season||'미상'}${t.tier_text?` · 원문 표기 ${t.tier_text}`:''}`}),
+    t.formation?.raw_name?line('진형',t.formation.name||t.formation.raw_name):null,
+    t.heroes.map(x=>h('div',{class:'preset-member'},
+      h('strong',null,x.name||x.raw_name,x.faction_name?h('span',{class:'muted-note',text:` ${x.faction_name} · ${x.rarity_name}등급`}):null),
+      x.candidates?.length?line('후보',x.candidates.map(c=>`${c.faction_name} ${c.rarity_name}등급${c.available_seasons?.includes(state.season)?'':' (이 시즌 선택 불가)'}`).join(' / ')+' — 동명 무장이라 직접 선택'):null,
+      line('전법',x.learned_tactics.map(s=>(s.name||s.raw_name)+(s.applied_to_army?'':' (직접 선택)')).join(' / ')||'직접 선택 필요'),
+      x.tactic_candidates.length?line('후보',x.tactic_candidates.map(s=>s.name||s.raw_name).join(', ')):null,
+      x.warbooks.length?line('병법',x.warbooks.map(b=>(b.name||b.raw_name)+(b.id?'':' (품질·권차 확인)')).join(', ')):null,
+      x.stat_plan?line('스탯',x.stat_plan):null,
+      x.equipment_note?.raw&&x.equipment_note.raw!=='-'?line('장비',x.equipment_note.raw):null,
+      x.note?h('p',{text:x.note}):null)),
+    (t.note||t.warnings?.length)?h('details',{class:'preset-notes'},h('summary',{text:`원문 메모 · 검토 사항 ${t.warnings?.length||0}건`}),t.note?h('p',{text:t.note}):null,(t.warnings||[]).map(w=>h('p',{text:w}))):null,
+    h('p',{class:'preset-defaults',text:presets.defaults_notice||'수치 미기재 항목은 기본값으로 시작합니다.'}),
+    av.can_import?null:h('p',{class:'form-error',text:av.reason}));
+  $('preset-apply').disabled=!av.can_import;
+}
+
+/* ── 공유 코드·링크 ────────────────────────────────────── */
+let codeSide='left',codeMode='share',codeValue='';
+const shareUrl=params=>{const u=new URL(location.href);u.search='';u.hash=new URLSearchParams(params).toString();return u.toString();};
+async function showCode(side,mode){
+  codeSide=side;codeMode=mode;$('code-error').textContent='';
+  const ta=$('army-code');
+  if(mode==='share'){
+    codeValue=await encodeArmyCode(validateArmy(state.data,state.armies[side]),state.season,codeOpts());
+    $('code-title').textContent=`${SIDE_NAME[side]} 부대 공유`;
+    $('code-help').textContent='코드나 링크를 받은 사람은 같은 편성을 불러와 수정할 수 있습니다. 편성을 바꾸면 새로 공유하세요.';
+    ta.readOnly=true;ta.value=codeValue;$('code-submit').textContent='코드 복사';$('code-secondary').hidden=false;
+  }else{
+    $('code-title').textContent=`${SIDE_NAME[side]} 부대에 코드 불러오기`;
+    $('code-help').textContent=`TC1 코드나 공유 링크를 붙여넣으세요. 코드의 시즌이 지금(S${state.season})과 다르면 시즌을 바꾼 뒤 불러옵니다.`;
+    ta.readOnly=false;ta.value='';$('code-submit').textContent='편성 불러오기';$('code-secondary').hidden=true;
+  }
+  $('code-dialog').showModal();if(mode==='import')ta.focus();else ta.select();
+}
+function extractCode(input){
+  const text=input.trim();
+  if(text.startsWith('TC1.'))return text;
+  try{const p=new URLSearchParams(new URL(text).hash.slice(1));const c=p.get('a')||p.get('b');if(c)return c;}catch{}
+  return text;
+}
+async function applyCode(){
+  if(codeMode==='share'){await copyText(codeValue);notify('공유 코드를 복사했습니다.');return;}
+  const decoded=await decodeArmyCode(extractCode($('army-code').value));
+  if(decoded.season!==state.season)await switchSeason(decoded.season,{keep:true});
+  state.armies[codeSide]=validateArmy(state.data,decoded.army);
+  state.view=codeSide;dirty();render();$('code-dialog').close();notify(`${SIDE_NAME[codeSide]} 부대에 편성을 불러왔습니다.`);
+}
+async function shareMatch(){
+  for(const s of SIDES){try{validateArmy(state.data,state.armies[s]);}catch(e){throw new Error(`${SIDE_NAME[s]} 부대: ${e.message}`);}}
+  const [a,b]=await Promise.all(SIDES.map(s=>encodeArmyCode(state.armies[s],state.season,codeOpts())));
+  await copyText(shareUrl({s:state.season,a,b}));notify('두 부대가 담긴 대전 링크를 복사했습니다.');
+}
+function readHashCodes(){
+  if(!location.hash||location.hash.length<6)return null;
+  const p=new URLSearchParams(location.hash.slice(1));const a=p.get('a'),b=p.get('b');
+  return a||b?{a,b}:null;
+}
+
+/* ── 시즌 전환 ────────────────────────────────────────── */
+function syncSeasonUI(){for(const r of document.querySelectorAll('#season-switch input'))r.checked=Number(r.value)===state.season;}
+async function switchSeason(season,{keep=false}={}){
+  const prev=state.season,prevData=state.data,prevIdx=state.idx;state.season=season;
+  try{
+    const data=state.api?await state.api.editor(season):await localData(season);
+    let kept=false;
+    if(!keep){try{acceptData(data);kept=true;}catch{acceptData(data,{reset:true});}}
+    else{state.data=data;state.idx=indexData(data);const ex=examplesFrom(data);SIDES.forEach((s,i)=>{try{validateArmy(data,state.armies[s]);}catch{state.armies[s]=ex[i];}});}
+    syncSeasonUI();return kept;
+  }catch(e){state.season=prev;state.data=prevData;state.idx=prevIdx;syncSeasonUI();throw e;}
+}
+
+/* ── 전투 ─────────────────────────────────────────────── */
+function setRunning(on){
+  const b=$('battle');b.classList.toggle('running',on);
+  b.replaceChildren(...(on?['계산','중…']:['전투','개시']).map(t=>h('span',{text:t})));
+  b.setAttribute('aria-label',on?'전투 계산 중':'전투 개시');
+  $('cancel-battle').hidden=!on;
+}
+async function battle(){
+  if(!state.api){openConnection();notify('전투를 계산하려면 서버를 먼저 연결하세요.');return;}
+  for(const s of SIDES){try{validateArmy(state.data,state.armies[s]);}catch(e){state.view=s;updateTabs();throw new Error(`${SIDE_NAME[s]} 부대: ${e.message}`);}}
+  const [l,r]=await Promise.all(SIDES.map(s=>encodeArmyCode(state.armies[s],state.season,codeOpts())));
+  const ctrl=new AbortController();state.battleAbort=ctrl;setRunning(true);
+  $('battle-hint').textContent='서버에서 전투를 계산하고 있습니다.';
+  const slow=setTimeout(()=>{$('battle-hint').textContent='응답이 늦습니다. 서버가 잠에서 깨는 중일 수 있으니 조금만 기다려 주세요.';notify('서버 응답을 기다리는 중입니다.');},7000);
+  try{
+    const report=await state.api.battle(l,r,{signal:ctrl.signal});
+    showReport(report);
+    $('report-section').scrollIntoView({behavior:reduceMotion()?'instant':'smooth',block:'start'});
+    notify('전투가 끝났습니다.');
+  }catch(e){if(ctrl.signal.aborted){notify('전투 요청을 취소했습니다.');return;}throw e;}
+  finally{clearTimeout(slow);state.battleAbort=null;setRunning(false);updateConnection();}
+}
+
+/* ── 전보 ─────────────────────────────────────────────── */
+function troopSeries(report){
+  const cur={};
+  for(const s of SIDES)for(const x of report.armies[s].heroes)cur[`${s}:${x.slot}`]=x.initial_troops;
+  const total=s=>Object.entries(cur).reduce((n,[k,v])=>k.startsWith(s+':')?n+v:n,0);
+  const series={left:[total('left')],right:[total('right')]};
+  const lines=[...report.timeline].sort((a,b)=>a.turn-b.turn||a.order-b.order);let i=0;
+  for(let t=1;t<=report.turns;t++){
+    while(i<lines.length&&lines[i].turn<=t){const l=lines[i++];if(l.target&&l.remaining_troops!=null&&l.target in cur)cur[l.target]=l.remaining_troops;}
+    series.left.push(total('left'));series.right.push(total('right'));
+  }
+  return series;
+}
+function troopChart(report){
+  const series=troopSeries(report),n=report.turns;
+  const W=640,H=240,P={l:56,r:18,t:14,b:30},iw=W-P.l-P.r,ih=H-P.t-P.b;
+  const max=Math.max(report.armies.left.initial_troops,report.armies.right.initial_troops,1);
+  const x=i=>P.l+(n?i/n:0)*iw,y=v=>P.t+ih-(v/max)*ih;
+  const svg=sv('svg',{class:'chart',viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':`턴별 총 병력. 아군 ${fmt(series.left[0])}에서 ${fmt(series.left.at(-1))}, 상대 ${fmt(series.right[0])}에서 ${fmt(series.right.at(-1))}.`});
+  for(const f of [0,.25,.5,.75,1]){const yy=y(max*f);svg.append(sv('line',{class:'grid',x1:P.l,x2:W-P.r,y1:yy,y2:yy}),sv('text',{class:'axis-label',x:P.l-8,y:yy+4,'text-anchor':'end'},fmt(Math.round(max*f))));}
+  for(let i=0;i<=n;i++)svg.append(sv('text',{class:'axis-label',x:x(i),y:H-8,'text-anchor':'middle'},i===0?'시작':`${i}`));
+  for(const s of SIDES){
+    svg.append(sv('polyline',{class:`line ${s}`,points:series[s].map((v,i)=>`${x(i)},${y(v)}`).join(' ')}));
+    series[s].forEach((v,i)=>{const c=sv('circle',{class:`pt ${s}`,cx:x(i),cy:y(v),r:3.5});c.append(sv('title',{},`${SIDE_NAME[s]} ${i===0?'시작':i+'턴 종료'}: ${fmt(v)}`));svg.append(c);});
+  }
+  return h('section',{class:'panel'},
+    h('h4',null,'턴별 총 병력',h('span',{text:'전보의 잔여 병력 기록으로 계산'})),
+    h('div',{class:'chart-wrap'},svg),
+    h('div',{class:'legend'},h('span',null,h('i',{class:'dot ally'}),`아군 ${report.armies.left.name}`),h('span',null,h('i',{class:'dot enemy'}),`상대 ${report.armies.right.name}`)));
+}
+function tableEl(headers,rows){
+  return h('div',{class:'table-wrap'},h('table',null,
+    h('thead',null,h('tr',null,headers.map(t=>h('th',{scope:'col',text:t})))),
+    h('tbody',null,rows.map(r=>h('tr',null,r.map(c=>h('td',null,c)))))));
+}
+function showReport(report,sample=false){
+  state.report=report;state.sample=sample;state.dirty=false;
+  const L=report.armies.left,R=report.armies.right;
+  const title=report.result==='draw'?'무승부':report.result==='left'?'아군 승리':'상대 승리';
+  const stamp=report.result==='draw'?'和':'勝';
+  const verdict=h('header',{class:`verdict ${report.result}`},
+    h('div',null,
+      h('p',{class:'kicker',text:`한국 시즌 ${report.season} · ${report.turns}턴`}),
+      h('h3',{text:title}),
+      h('div',{class:'chips'},
+        h('span',{class:'tag',text:sample?'예시 전보 — 현재 편성과 무관':'추정 전투'}),
+        report.limited_support?h('span',{class:'tag warn',text:'일부 효과 반영 제한'}):null,
+        h('span',{class:'tag stale',id:'report-stale',hidden:true,text:'편성이 바뀌었습니다 · 이전 결과'}))),
+    h('div',{class:'verdict-stamp','aria-hidden':'true',text:stamp}));
+  const tally=h('div',{class:'tally'},SIDES.map(s=>{
+    const a=report.armies[s],pct=Math.max(0,Math.min(100,a.remaining_troops/Math.max(1,a.initial_troops)*100));
+    return h('section',{class:`tally-side ${s}`},
+      h('h4',null,h('i',{class:'dot'}),`${SIDE_NAME[s]} · ${a.name}`),
+      h('p',{class:'tally-num'},fmt(a.remaining_troops),h('small',{text:`/ ${fmt(a.initial_troops)} 잔여 (${pct.toFixed(0)}%)`})),
+      h('div',{class:'bar'},h('span',{style:`width:${pct}%`})),
+      h('p',{class:'tally-stats'},h('span',null,'가한 피해',h('b',{text:fmt(a.damage)})),h('span',null,'회복',h('b',{text:fmt(a.healing)}))));
+  }));
+  const heroes=SIDES.flatMap(s=>report.armies[s].heroes.map(x=>({...x,side:s})));
+  const maxDmg=Math.max(1,...heroes.map(x=>x.damage));
+  const dmg=h('section',{class:'panel'},h('h4',null,'무장별 가한 피해',h('span',{text:'막대 길이는 최고 피해 대비'})),
+    h('div',{class:'dmg-list'},heroes.map(x=>h('div',{class:`dmg-row ${x.side}`},
+      h('span',{class:'who'},h('i',{class:`dot ${SIDE_CLASS[x.side]}`}),h('span',{text:x.name})),
+      h('span',{class:'track',role:'img','aria-label':`${SIDE_NAME[x.side]} ${x.name} 피해 ${fmt(x.damage)}`},h('span',{style:`width:${x.damage/maxDmg*100}%`})),
+      h('span',{class:'val',text:fmt(x.damage)})))));
+  const heroTable=h('details',{class:'report-detail'},h('summary',{text:'무장별 기록'}),h('div',{class:'inner'},
+    tableEl(['무장','잔여 병력','피해','회복','일반 공격'],heroes.map(x=>[h('span',null,h('i',{class:`dot ${SIDE_CLASS[x.side]}`}),x.name),`${fmt(x.remaining_troops)} / ${fmt(x.initial_troops)}`,fmt(x.damage),fmt(x.healing),fmt(x.normal_attacks)]))));
+  const tacticRows=heroes.flatMap(x=>x.tactics.map(t=>[h('span',null,h('i',{class:`dot ${SIDE_CLASS[x.side]}`}),`${x.name} · ${t.name}`),fmt(t.casts),fmt(t.activations),fmt(t.damage),fmt(t.healing)]));
+  const tactics=h('details',{class:'report-detail'},h('summary',{text:'전법별 발동 · 피해'}),h('div',{class:'inner'},
+    tableEl(['무장 · 전법','시전·등록','효과 발생','피해','회복'],tacticRows),
+    h('p',{class:'muted-note',text:'효과 발생 횟수는 추정 모형의 집계로, 게임 화면의 발동 횟수와 다를 수 있습니다.'})));
+  const notes=h('details',{class:'report-detail'},h('summary',{text:'추정 결과 안내'}),h('div',{class:'inner'},(report.notices||[]).map(t=>h('p',{class:'muted-note',text:t}))));
+  const card=h('article',{class:'report'+(reduceMotion()?'':' reveal')},verdict,tally,troopChart(report),dmg,timelineBlock(report),heroTable,tactics,notes);
+  $('report').replaceChildren(card);$('download-report').disabled=false;
+}
+function timelineBlock(report){
+  const turns=[...new Set(report.timeline.map(l=>l.turn))].sort((a,b)=>a-b);
+  const turnSel=sel([{id:'all',name:'모든 턴'},...turns.map(t=>({id:t,name:t===0?'전투 준비':`${t}턴`}))],'all',{'aria-label':'턴 선택'});
+  let side='all',core=true;
+  const seg=(opts,get,set,label)=>{const g=h('div',{class:'seg',role:'group','aria-label':label});const paint=()=>g.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===String(get()))));opts.forEach(([v,t])=>g.append(h('button',{type:'button',dataset:{v},text:t,onclick:()=>{set(v);paint();draw();}})));paint();return g;};
+  const sideSeg=seg([['all','전체'],['left','아군'],['right','상대']],()=>side,v=>side=v,'진영 필터');
+  const coreSeg=seg([['true','핵심만'],['false','모든 기록']],()=>core,v=>core=v==='true','기록 범위');
+  const list=h('ol',{class:'timeline'});
+  function draw(){
+    const want=turnSel.value;list.replaceChildren();let last=null;
+    for(const l of report.timeline){
+      if(want!=='all'&&String(l.turn)!==want)continue;
+      if(l.kind==='turn')continue;
+      const s=l.actor?.split(':')[0];
+      if(side!=='all'&&s!==side)continue;
+      if(core&&(l.kind==='action'||l.kind==='attack'))continue;
+      if(l.turn!==last){last=l.turn;list.append(h('li',{class:'turn-head',text:l.turn===0?'전투 준비':`${l.turn}턴`}));}
+      const amt=l.amount!=null&&(l.kind==='damage'||l.kind==='heal')?h('span',{class:`amt ${l.kind==='damage'?'dmg':'heal'}`,text:`${l.kind==='damage'?'−':'+'}${fmt(l.amount)}`}):h('span');
+      list.append(h('li',{class:`line k-${l.kind} ${s||''}`},h('span',{text:l.text}),amt));
+    }
+    if(!list.children.length)list.append(h('li',{class:'empty',text:'이 조건에 해당하는 기록이 없습니다.'}));
+  }
+  turnSel.onchange=draw;draw();
+  return h('details',{class:'report-detail',open:true},h('summary',{text:`턴별 전보 · ${report.timeline.length}줄`}),h('div',{class:'inner'},h('div',{class:'tl-filters'},turnSel,sideSeg,coreSeg),list));
+}
+
+/* ── 이벤트 ───────────────────────────────────────────── */
+$('armies').addEventListener('change',onChange);
+$('armies').addEventListener('toggle',e=>{
+  const d=e.target;if(!(d instanceof HTMLDetailsElement)||!d.dataset.openKey||!d.isConnected)return;
+  const was=state.open.has(d.dataset.openKey);
+  if(d.open===was)return;
+  d.open?state.open.add(d.dataset.openKey):state.open.delete(d.dataset.openKey);
+  if(d.open)render();
+},true);
+$('armies').addEventListener('click',e=>{
+  if(state.busy)return;
+  const t=e.target.closest('button');if(!t)return;
+  const army=t.closest('.army'),side=army?.dataset.side,slot=Number(t.closest('[data-slot]')?.dataset.slot);
+  if(t.dataset.presetSide)task(()=>showPresets(t.dataset.presetSide));
+  else if(t.dataset.codeMode)task(()=>showCode(t.dataset.side,t.dataset.codeMode));
+  else if(t.dataset.pick==='hero')pickHero(side,slot);
+  else if(t.dataset.pick==='tactic')pickTactic(side,slot,Number(t.dataset.index));
+  else if(t.dataset.tab){state.tabs.set(`${side}:${slot}`,t.dataset.tab);render();}
+});
+for(const b of document.querySelectorAll('.board-tabs [data-view]'))b.addEventListener('click',()=>{state.view=b.dataset.view;updateTabs();});
+for(const b of document.querySelectorAll('[data-close]'))b.addEventListener('click',()=>$(b.dataset.close).close());
+for(const d of document.querySelectorAll('dialog'))d.addEventListener('click',e=>{if(e.target===d)d.close();});
+
+$('theme-toggle').onclick=toggleTheme;
+$('open-connection').onclick=openConnection;
+$('connection-form').onsubmit=e=>{
+  e.preventDefault();$('connection-error').textContent='';
+  task(async()=>{
+    const api=new BattleApi($('api-url').value.trim()),data=await api.editor(state.season);
+    adoptServerData(data);state.api=api;store.set(KEYS.api,api.baseUrl);render();$('connection-dialog').close();notify('전투 서버에 연결했습니다.');
+  },'connection-error');
+};
+$('disconnect').onclick=()=>task(async()=>{
+  const data=await localData(state.season);adoptServerData(data);state.api=null;store.set(KEYS.api,null);render();$('connection-dialog').close();notify('서버 연결을 해제했습니다. 편성 모드로 계속합니다.');
+},'connection-error');
+
+$('code-submit').onclick=()=>{$('code-error').textContent='';task(applyCode,'code-error');};
+$('code-secondary').onclick=()=>task(async()=>{await copyText(shareUrl({s:state.season,a:codeValue}));notify('공유 링크를 복사했습니다. 링크를 연 사람의 아군 부대로 불러옵니다.');},'code-error');
+
+$('picker-search').oninput=renderPicker;
+$('picker-chips').onclick=e=>{
+  const b=e.target.closest('[data-chip]');if(!b)return;picker.sel[b.dataset.group]=b.dataset.chip;
+  b.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderPicker();
+};
+$('picker-list').onclick=e=>{const b=e.target.closest('.pick-opt');if(b&&!b.disabled)finishPick(Number(b.dataset.id));};
+$('picker-clear').onclick=()=>finishPick(null);
+$('picker-search').onkeydown=e=>{if(e.key==='ArrowDown'){e.preventDefault();$('picker-list').querySelector('.pick-opt:not(:disabled)')?.focus();}if(e.key==='Enter'){e.preventDefault();$('picker-list').querySelector('.pick-opt:not(:disabled)')?.click();}};
+$('picker-list').onkeydown=e=>{
+  if(!['ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();
+  const opts=[...$('picker-list').querySelectorAll('.pick-opt:not(:disabled)')],i=opts.indexOf(document.activeElement);
+  if(e.key==='ArrowUp'&&i<=0){$('picker-search').focus();return;}
+  opts[Math.min(opts.length-1,Math.max(0,i+(e.key==='ArrowDown'?1:-1)))]?.focus();
+};
+
+$('preset-search').oninput=renderPresets;$('preset-source').onchange=renderPresets;$('preset-status').onchange=renderPresets;
+$('preset-list').onclick=e=>{const b=e.target.closest('[data-template-id]');if(!b)return;presetSelection=b.dataset.templateId;$('preset-list').querySelectorAll('[data-template-id]').forEach(x=>x.setAttribute('aria-selected',String(x===b)));renderPresetPreview();};
+$('preset-list').onkeydown=e=>{
+  if(!['ArrowUp','ArrowDown','Home','End'].includes(e.key))return;
+  const bs=[...$('preset-list').querySelectorAll('[data-template-id]')];if(!bs.length)return;e.preventDefault();
+  const i=bs.indexOf(document.activeElement),n=e.key==='Home'?0:e.key==='End'?bs.length-1:Math.max(0,Math.min(bs.length-1,i+(e.key==='ArrowDown'?1:-1)));
+  bs[n].focus();bs[n].click();
+};
+$('preset-apply').onclick=()=>task(async()=>{
+  const t=presets.templates.find(x=>x.id===presetSelection);if(!t)throw new Error('불러올 편성을 고르세요.');
+  state.armies[presetSide]=armyFromRecommendedDeck(t,state.season,state.data);state.view=presetSide;dirty();render();$('preset-dialog').close();
+  notify(`${t.name}을(를) 불러왔습니다. 위치·병력·장비 수치는 직접 조정하세요.`);
+},'preset-error');
+
+for(const r of document.querySelectorAll('#season-switch input'))r.addEventListener('change',()=>task(async()=>{
+  const kept=await switchSeason(Number(r.value));dirty();render();
+  notify(kept?`한국 시즌 ${state.season}로 바꿨습니다. 현재 편성을 그대로 쓸 수 있습니다.`:`한국 시즌 ${state.season}에서 쓸 수 없는 항목이 있어 예시 편성으로 바꿨습니다.`);
+}));
+
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-action]');if(!b||state.busy)return;
+  const a=b.dataset.action;
+  if(a==='swap'){[state.armies.left,state.armies.right]=[state.armies.right,state.armies.left];state.open.clear();state.tabs.clear();dirty();render();notify('아군과 상대 편성을 맞바꿨습니다.');}
+  else if(a==='reset'){if(!state.data)return;[state.armies.left,state.armies.right]=examplesFrom(state.data);state.open.clear();state.tabs.clear();dirty();render();notify('두 부대를 예시 편성으로 되돌렸습니다.');}
+  else if(a==='share-match')task(shareMatch);
+});
+$('battle').onclick=()=>task(battle);
+$('cancel-battle').onclick=()=>state.battleAbort?.abort();
+$('example-report').onclick=()=>task(async()=>{
+  const res=await fetch('./data/report-example-s3.json');if(!res.ok)throw new Error('예시 전보를 불러오지 못했습니다.');
+  showReport(await res.json(),true);$('report-section').scrollIntoView({behavior:reduceMotion()?'instant':'smooth',block:'start'});
+});
+$('download-report').onclick=()=>{
+  if(!state.report)return;
+  const url=URL.createObjectURL(new Blob([JSON.stringify(state.report,null,2)],{type:'application/json'}));
+  const a=h('a',{href:url,download:state.sample?'sample-battle-report-s3.json':`battle-report-${state.report.report_id}.json`});
+  document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+$('page-origin').textContent=location.origin;
+
+/* ── 시작 ─────────────────────────────────────────────── */
+async function init(){
+  applyTheme();
+  await task(async()=>{
+    let shared=null;
+    const codes=readHashCodes();
+    if(codes){
+      const [a,b]=await Promise.all([codes.a,codes.b].map(c=>c?decodeArmyCode(c).catch(()=>null):null));
+      if(a||b)shared={a,b};else notify('링크에 담긴 공유 코드를 읽지 못했습니다. 기본 편성으로 시작합니다.',true);
+      history.replaceState(null,'',location.pathname+location.search);
+    }
+    const draft=shared?null:readDraft();
+    state.season=shared?(shared.a||shared.b).season:draft?.season||2;
+    syncSeasonUI();
+    acceptData(await localData(state.season),{reset:true});
+    if(shared){
+      const msgs=[];
+      for(const [k,s] of [['a','left'],['b','right']]){
+        const dec=shared[k];if(!dec)continue;
+        if(dec.season!==state.season){msgs.push(`${SIDE_NAME[s]} 코드는 다른 시즌이라 건너뛰었습니다.`);continue;}
+        try{state.armies[s]=validateArmy(state.data,dec.army);}catch(e){msgs.push(`${SIDE_NAME[s]}: ${e.message}`);}
+      }
+      notify(msgs.length?msgs.join(' '):'공유받은 편성을 불러왔습니다.',msgs.length>0);
+      saveDraft();
+    }else if(draft)restoreDraft(draft);
+    render();
+    const url=savedUrl();
+    if(url){
+      try{const probe=new BattleApi(url,{timeoutMs:12000});adoptServerData(await probe.editor(state.season));state.api=new BattleApi(probe.baseUrl);render();}
+      catch{notify('저장된 서버에 연결하지 못해 기본 편성 데이터로 시작합니다.',true);}
+    }
+    updateConnection();
+  });
+}
+init();
