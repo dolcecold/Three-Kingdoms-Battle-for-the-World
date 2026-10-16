@@ -11,10 +11,10 @@ const stats=value=>({might:0,intelligence:0,defence:0,speed:0,...value});
 export function normalizeArmy(army){
   if(!army||!Array.isArray(army.heroes)||army.heroes.length!==3)throw new Error('부대는 무장3명을 포함해야 합니다.');
   return {name:'부대',formation_id:201,supply:100,...army,heroes:army.heroes.map(h=>({
-    level:50,troops:10000,breakthrough:0,promotion:null,allocation_mode:'manual',advanced_arms_id:null,arms_skill_ids:[],warbook_slots:[],total_stats:null,...h,
+    level:50,troops:10000,breakthrough:0,promotion:null,allocation_mode:'manual',equipment_item_id:null,horse_item_id:null,advanced_arms_id:null,arms_skill_ids:[],warbook_slots:[],total_stats:null,...h,
     allocation:stats(h.allocation),equipment:stats(h.equipment),horse:stats(h.horse),
     innate:{level:10,grade:0,...h.innate},learned:(h.learned||[]).map(s=>({level:10,grade:0,breakthrough:null,...s})),
-    total_stats:h.total_stats==null?null:stats(h.total_stats)
+    total_stats:h.total_stats==null?null:{...h.total_stats}
   }))};
 }
 function canonical(value){

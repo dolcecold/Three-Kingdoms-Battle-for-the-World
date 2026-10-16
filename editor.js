@@ -1,6 +1,35 @@
 /** Public editor selection rules only; combat runs in the backend. */
 export const STAT_FIELDS=[['might','무력'],['intelligence','지력'],['defence','통솔'],['speed','선공']];
 
+/** Original client stat math only. No formation, combat, or effect calculation. */
+export function previewHeroStats(data,hero){
+  const row=data.heroes.find(h=>h.id===hero.hero_id);
+  if(!row?.base_stats||!row?.growth_stats)throw new Error('무장 기본·성장 스탯이 포함된 최신 메타데이터를 조회하세요.');
+  const values=STAT_FIELDS.map(([key])=>key);
+  if(hero.total_stats!=null){
+    if(values.some(k=>typeof hero.total_stats[k]!=='number'||!Number.isFinite(hero.total_stats[k])||hero.total_stats[k]<0||hero.total_stats[k]>2000)||!values.some(k=>hero.total_stats[k]>0))throw new Error('총 능력치는 네 속성을 모두 입력하세요. 직접 입력을 사용하지 않으면 null로 유지하세요.');
+    return {...hero.total_stats};
+  }
+  const recommended=hero.allocation_mode==='recommended',points=Math.floor(hero.level/10)*10+(hero.breakthrough??0)*10;
+  if(recommended&&!row.recommended_attribute)throw new Error('추천 배분 속성이 확인되지 않았습니다.');
+  return Object.fromEntries(values.map(key=>[key,row.base_stats[key]+row.growth_stats[key]*(hero.level-1)+(recommended?(key===row.recommended_attribute?points:0):(hero.allocation?.[key]??0))+(hero.equipment?.[key]??0)+(hero.horse?.[key]??0)]));
+}
+
+/** Migrate alias names only. Do not choose/drop a proficiency or repair total stats. */
+export function migrateProgression(army){
+  const value=structuredClone(army);
+  for(const h of value.heroes){
+    if(h.promotion!=null&&(h.innate?.grade??0)!==0&&h.promotion!==h.innate.grade)throw new Error('무장 승품과 호환 grade가 다릅니다. 입력을 확인하세요.');
+    h.promotion=h.promotion??h.innate?.grade??0;
+    if(h.innate)h.innate.grade=0;
+    for(const skill of h.learned??[]){
+      if(skill.breakthrough!=null&&(skill.grade??0)!==0&&skill.breakthrough!==skill.grade)throw new Error('전법 돌파와 호환 grade가 다릅니다. 입력을 확인하세요.');
+      skill.breakthrough=skill.breakthrough??skill.grade??0;skill.grade=0;
+    }
+  }
+  return value;
+}
+
 export function armFor(data,hero){return data.arms.find(a=>a.id===(hero.advanced_arms_id||data.heroes.find(h=>h.id===hero.hero_id)?.default_arms_id));}
 
 export function bookChoices(data,hero,slot){
@@ -41,6 +70,8 @@ export function validateArmy(data,army){
     for(const stats of [h.allocation,h.equipment,h.horse,...(h.total_stats==null?[]:[h.total_stats])]){
       if(!stats||STAT_FIELDS.some(([key])=>!range(stats[key],0,2000)))fail(`${row.name}: 능력치는 0~2,000 사이의 숫자로 입력하세요.`);
     }
+    if(h.total_stats!=null&&!STAT_FIELDS.some(([key])=>h.total_stats[key]>0))fail(`${row.name}: 총 능력치가 모두0입니다. 직접 입력을 사용하지 않으면 total_stats=null로 보내세요.`);
+    for(const [key,choices] of [['equipment_item_id',data.equipment],['horse_item_id',data.horses]])if(h[key]!=null&&!choices?.some(item=>item.id===h[key]))fail(`${row.name}: 장비·말 ID를 확인하세요.`);
     if(!Array.isArray(h.learned)||h.learned.length>2||new Set(h.learned.map(s=>s.skill_id)).size!==h.learned.length)fail(`${row.name}: 학습 전법은 중복 없이 2개까지 선택하세요.`);
     for(const s of [h.innate,...h.learned])if(!s||!integer(s.level,1,10)||!integer(s.grade,0,5)||s.breakthrough!=null&&(!integer(s.breakthrough,0,5)||(s.grade!==0&&s.grade!==s.breakthrough)))fail(`${row.name}: 전법 레벨은 1~10, 돌파는 0~5로 입력하고 호환용 grade와 일치시켜 주세요.`);
     for(const s of h.learned){
@@ -55,7 +86,9 @@ export function validateArmy(data,army){
     }
     const arm=armFor(data,h);
     if(!arm)fail(`${row.name}: 병종을 확인하세요.`);
-    if(!Array.isArray(h.arms_skill_ids)||h.arms_skill_ids.length>3||new Set(h.arms_skill_ids).size!==h.arms_skill_ids.length||h.arms_skill_ids.some(id=>!arm.proficiency_ids.includes(id)))fail(`${row.name}: 병종 정통은 해당 병종에 맞춰 중복 없이 선택하세요.`);
+    if(h.level<(arm.unlock_level??1))fail(`${row.name}: 선택 병종은 Lv${arm.unlock_level}부터 사용할 수 있습니다.`);
+    if(!Array.isArray(h.arms_skill_ids)||h.arms_skill_ids.length>(data.rules.max_proficiencies_per_hero??1)||h.arms_skill_ids.some(id=>!arm.proficiency_ids.includes(id)))fail(`${row.name}: 병종 정통은 해당 고급 병종의 후보 중1개만 선택하세요.`);
+    if(h.arms_skill_ids.length&&(data.season===1||arm.is_base||h.level<(arm.proficiency_unlock_level??40)))fail(`${row.name}: 정통은 한국 S2·S3 고급 병종에서 Lv40부터 선택하세요.`);
   }
   return army;
 }

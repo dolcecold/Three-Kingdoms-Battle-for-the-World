@@ -1,4 +1,4 @@
-# 천하결전 덱 시뮬레이터 — GitHub Pages 프런트 v0.7.0
+# 천하결전 덱 시뮬레이터 — GitHub Pages 프런트 v0.7.1
 
 부대 편성 → 공유 → 전투 → 전보 확인을 한 화면에서 하는 정적 페이지입니다. 빌드나 패키지 설치 없이 이 폴더를 그대로 올리면 됩니다.
 
@@ -39,9 +39,9 @@ export const API_BASE_URL = 'https://내앱.fastapicloud.dev';
 | `recommended-decks.js` | 추천덱 조회 헬퍼 | 변경 없음 |
 | `data/editor-s1~3.json` | 서버 연결 전 편성 스냅샷 | 변경 없음 |
 | `data/recommended-decks.json` | 추천덱 메타 v1.1.0 | 변경 없음 |
-| `data/report-example.json` | 예시 전보 (백엔드 계약 0.5.0 `examples/report-s2.json`) | 변경 없음 |
+| `data/report-example.json` | 예시 전보 (백엔드 계약 `examples/report-s2.json`) | 변경 없음 |
 
-사용 API: `GET /api/v2/editor?season=N`, `POST /api/v2/battles {left_code,right_code,max_engagements}` (백엔드 계약 0.5.0).
+사용 API: `GET /api/v2/editor?season=N`, `POST /api/v2/battles {left_code,right_code,max_engagements}` (백엔드 계약 0.5.1).
 
 ## v0.6.0 변경 사항
 
@@ -66,6 +66,15 @@ export const API_BASE_URL = 'https://내앱.fastapicloud.dev';
 - 새로 만드는 공유 코드와 전투 요청 코드에 `data_version`을 담습니다. 서버 간 정합용 값이라 화면에는 표시하지 않습니다. 버전 없는 기존 코드도 그대로 불러옵니다.
 - 추천덱의 동명 무장(예: 황보숭 A/S등급)은 후보로 보여주고 사용자가 직접 고르게 합니다. 전법이 없는 덱은 빈 슬롯으로 불러옵니다.
 - 화면에서 쓰지 않는 파일(`mapping-audit.json`, `recommended-decks.schema.json`, `RECOMMENDED_DECKS.md`)은 배포본에서 뺐습니다.
+
+## v0.7.1 변경 사항 (백엔드 계약 0.5.1)
+
+- **능력치 미리보기:** 무장 카드와 능력치 탭에 기본(Lv)·배분·장비·말 합산을 표시합니다(`previewHeroStats`). 진형·전법·전투 효과 적용 전 값이며, 표시값을 `total_stats`에 저장하지 않습니다.
+- **정통:** 무장당 1개 단일 선택으로 바꿨습니다. 기본 병종·한국 시즌 1·Lv40 미만이면 선택할 수 없고, 고급 병종은 Lv35 미만이면 고를 수 없습니다. 병종을 바꿔 기존 정통이 후보에 없으면 비우고 다시 고르도록 안내합니다.
+- **장비·말:** 능력치 탭에서 카탈로그 이름(종류·등급 필터)을 고를 수 있습니다. ID는 공유 코드에 보존되고, 능력치는 게임에 표시된 실제 옵션을 따로 입력합니다.
+- **총 능력치 직접 입력:** 켜면 네 칸이 비어 있고(자동 계산값은 회색 안내만), 끄면 `null`로 보냅니다.
+- **전법 레벨:** 설명문은 Lv10·강화0 기준임을 고유 전법 설명과 전법 선택 창에 표시합니다.
+- **옛 코드:** `migrateProgression`으로 강화 필드를 옮기고, 정통 여러 개처럼 현재 규칙에 맞지 않는 편성도 일단 불러와 부대 아래에 고칠 점을 표시합니다. 시즌에 없는 무장이 있으면 불러오지 않습니다.
 
 ## v0.7.0 변경 사항 (백엔드 계약 0.5.0)
 

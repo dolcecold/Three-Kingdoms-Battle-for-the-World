@@ -1,5 +1,5 @@
 {
-  "data_version": "kr-editor-b6399127cd097e9b",
+  "data_version": "kr-editor-4f9ef2c3b811772f",
   "season": 3,
   "experimental": true,
   "heroes": [
@@ -13,6 +13,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 71.3,
+        "intelligence": 93.3,
+        "defence": 97.52,
+        "speed": 46.79
+      },
+      "growth_stats": {
+        "might": 1.3,
+        "intelligence": 2.3,
+        "defence": 2.52,
+        "speed": 1.79
+      },
       "innate": {
         "id": 100001,
         "name": "난세의 간웅",
@@ -324,6 +336,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 103.75,
+        "intelligence": 43.43,
+        "defence": 88.64,
+        "speed": 58.6
+      },
+      "growth_stats": {
+        "might": 2.75,
+        "intelligence": 0.43,
+        "defence": 1.64,
+        "speed": 2.6
+      },
       "innate": {
         "id": 100101,
         "name": "백병 혈전",
@@ -665,6 +689,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 109.78,
+        "intelligence": 41.37,
+        "defence": 107.75,
+        "speed": 56.3
+      },
+      "growth_stats": {
+        "might": 2.78,
+        "intelligence": 0.37,
+        "defence": 1.75,
+        "speed": 2.3
+      },
       "innate": {
         "id": 100201,
         "name": "고대의 악래",
@@ -991,6 +1027,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 58.21,
+        "intelligence": 108.75,
+        "defence": 82.73,
+        "speed": 58.06
+      },
+      "growth_stats": {
+        "might": 0.21,
+        "intelligence": 2.75,
+        "defence": 1.73,
+        "speed": 2.06
+      },
       "innate": {
         "id": 100401,
         "name": "현묘한 계책",
@@ -1194,6 +1242,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 35.21,
+        "intelligence": 107.74,
+        "defence": 85.7,
+        "speed": 45.81
+      },
+      "growth_stats": {
+        "might": 0.21,
+        "intelligence": 2.74,
+        "defence": 1.7,
+        "speed": 1.81
+      },
       "innate": {
         "id": 100501,
         "name": "주도면밀",
@@ -1433,6 +1493,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 82.5,
+        "intelligence": 67.79,
+        "defence": 94.05,
+        "speed": 38.5
+      },
+      "growth_stats": {
+        "might": 1.5,
+        "intelligence": 0.79,
+        "defence": 2.05,
+        "speed": 1.5
+      },
       "innate": {
         "id": 100701,
         "name": "침착한 지휘",
@@ -1648,6 +1720,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 37.19,
+        "intelligence": 109.7,
+        "defence": 71.6,
+        "speed": 50.65
+      },
+      "growth_stats": {
+        "might": 0.19,
+        "intelligence": 2.7,
+        "defence": 1.6,
+        "speed": 1.65
+      },
       "innate": {
         "id": 100801,
         "name": "인재 등용",
@@ -1896,6 +1980,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 68.34,
+        "intelligence": 107.8,
+        "defence": 106.11,
+        "speed": 41.54
+      },
+      "growth_stats": {
+        "might": 0.34,
+        "intelligence": 2.8,
+        "defence": 2.11,
+        "speed": 1.54
+      },
       "innate": {
         "id": 100901,
         "name": "매의 응시",
@@ -2135,6 +2231,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 94.59,
+        "intelligence": 78.77,
+        "defence": 93.91,
+        "speed": 59.93
+      },
+      "growth_stats": {
+        "might": 2.59,
+        "intelligence": 0.77,
+        "defence": 1.91,
+        "speed": 1.93
+      },
       "innate": {
         "id": 101001,
         "name": "적진 돌파",
@@ -2446,6 +2554,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 86.8,
+        "intelligence": 93.1,
+        "defence": 93.73,
+        "speed": 59.75
+      },
+      "growth_stats": {
+        "might": 1.8,
+        "intelligence": 2.1,
+        "defence": 1.73,
+        "speed": 1.75
+      },
       "innate": {
         "id": 101201,
         "name": "둔전령",
@@ -2778,6 +2898,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 95.58,
+        "intelligence": 75.88,
+        "defence": 99.75,
+        "speed": 67.12
+      },
+      "growth_stats": {
+        "might": 2.58,
+        "intelligence": 0.88,
+        "defence": 1.75,
+        "speed": 2.12
+      },
       "innate": {
         "id": 101301,
         "name": "승승장구",
@@ -3089,6 +3221,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "speed",
+      "base_stats": {
+        "might": 104.35,
+        "intelligence": 52.86,
+        "defence": 96.81,
+        "speed": 83.33
+      },
+      "growth_stats": {
+        "might": 2.35,
+        "intelligence": 0.86,
+        "defence": 1.81,
+        "speed": 2.33
+      },
       "innate": {
         "id": 101401,
         "name": "선봉 정신",
@@ -3304,6 +3448,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "speed",
+      "base_stats": {
+        "might": 97.4,
+        "intelligence": 56.75,
+        "defence": 94.74,
+        "speed": 82.81
+      },
+      "growth_stats": {
+        "might": 2.4,
+        "intelligence": 0.75,
+        "defence": 1.74,
+        "speed": 2.81
+      },
       "innate": {
         "id": 101601,
         "name": "신속기습",
@@ -3642,6 +3798,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 45.57,
+        "intelligence": 101.46,
+        "defence": 77.73,
+        "speed": 64.24
+      },
+      "growth_stats": {
+        "might": 0.57,
+        "intelligence": 2.46,
+        "defence": 1.73,
+        "speed": 2.24
+      },
       "innate": {
         "id": 101901,
         "name": "용맹의 화신",
@@ -3881,6 +4049,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 92.4,
+        "intelligence": 68.02,
+        "defence": 105.03,
+        "speed": 64.78
+      },
+      "growth_stats": {
+        "might": 2.4,
+        "intelligence": 1.02,
+        "defence": 2.03,
+        "speed": 1.78
+      },
       "innate": {
         "id": 102301,
         "name": "강렬",
@@ -4111,6 +4291,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 76.35,
+        "intelligence": 73.53,
+        "defence": 104.35,
+        "speed": 38.55
+      },
+      "growth_stats": {
+        "might": 1.35,
+        "intelligence": 1.53,
+        "defence": 2.35,
+        "speed": 1.55
+      },
       "innate": {
         "id": 102401,
         "name": "양번 사수",
@@ -4371,6 +4563,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 21.23,
+        "intelligence": 95.16,
+        "defence": 96.62,
+        "speed": 50.55
+      },
+      "growth_stats": {
+        "might": 0.23,
+        "intelligence": 2.16,
+        "defence": 1.62,
+        "speed": 1.55
+      },
       "innate": {
         "id": 102601,
         "name": "바람과 눈꽃",
@@ -4715,6 +4919,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 74.43,
+        "intelligence": 85.31,
+        "defence": 101.12,
+        "speed": 46.72
+      },
+      "growth_stats": {
+        "might": 1.43,
+        "intelligence": 2.31,
+        "defence": 2.12,
+        "speed": 1.72
+      },
       "innate": {
         "id": 200001,
         "name": "백성과 함께",
@@ -5071,6 +5287,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 109.75,
+        "intelligence": 81.35,
+        "defence": 96.13,
+        "speed": 69.43
+      },
+      "growth_stats": {
+        "might": 2.75,
+        "intelligence": 1.35,
+        "defence": 2.13,
+        "speed": 2.43
+      },
       "innate": {
         "id": 200101,
         "name": "화하 진압",
@@ -5385,6 +5613,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 110.78,
+        "intelligence": 61.04,
+        "defence": 91.84,
+        "speed": 61.29
+      },
+      "growth_stats": {
+        "might": 2.78,
+        "intelligence": 1.04,
+        "defence": 1.84,
+        "speed": 2.29
+      },
       "innate": {
         "id": 200201,
         "name": "만인지적",
@@ -5696,6 +5936,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 48.52,
+        "intelligence": 113.0,
+        "defence": 102.3,
+        "speed": 50.65
+      },
+      "growth_stats": {
+        "might": 0.52,
+        "intelligence": 3.0,
+        "defence": 2.3,
+        "speed": 1.65
+      },
       "innate": {
         "id": 200301,
         "name": "초선차전",
@@ -5965,6 +6217,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 52.55,
+        "intelligence": 105.65,
+        "defence": 76.75,
+        "speed": 44.65
+      },
+      "growth_stats": {
+        "might": 0.55,
+        "intelligence": 2.65,
+        "defence": 1.75,
+        "speed": 1.65
+      },
       "innate": {
         "id": 200401,
         "name": "연환계",
@@ -6297,6 +6561,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 87.95,
+        "intelligence": 99.55,
+        "defence": 87.59,
+        "speed": 78.36
+      },
+      "growth_stats": {
+        "might": 1.95,
+        "intelligence": 2.55,
+        "defence": 1.59,
+        "speed": 2.36
+      },
       "innate": {
         "id": 200501,
         "name": "겸손한 자세",
@@ -6656,6 +6932,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 105.51,
+        "intelligence": 66.32,
+        "defence": 94.69,
+        "speed": 49.23
+      },
+      "growth_stats": {
+        "might": 2.51,
+        "intelligence": 1.32,
+        "defence": 1.69,
+        "speed": 2.23
+      },
       "innate": {
         "id": 200701,
         "name": "전장 평정",
@@ -6958,6 +7246,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 30.33,
+        "intelligence": 100.28,
+        "defence": 86.62,
+        "speed": 38.0
+      },
+      "growth_stats": {
+        "might": 0.33,
+        "intelligence": 2.28,
+        "defence": 1.62,
+        "speed": 2.0
+      },
       "innate": {
         "id": 200901,
         "name": "목우유마",
@@ -7275,6 +7575,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 106.65,
+        "intelligence": 71.52,
+        "defence": 99.15,
+        "speed": 57.29
+      },
+      "growth_stats": {
+        "might": 2.65,
+        "intelligence": 1.52,
+        "defence": 2.15,
+        "speed": 2.29
+      },
       "innate": {
         "id": 201201,
         "name": "칠진칠출",
@@ -7643,6 +7955,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 94.43,
+        "intelligence": 48.24,
+        "defence": 82.65,
+        "speed": 83.54
+      },
+      "growth_stats": {
+        "might": 2.43,
+        "intelligence": 1.24,
+        "defence": 1.65,
+        "speed": 2.54
+      },
       "innate": {
         "id": 201301,
         "name": "치명적 미모",
@@ -8062,6 +8386,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 107.78,
+        "intelligence": 54.01,
+        "defence": 96.72,
+        "speed": 65.53
+      },
+      "growth_stats": {
+        "might": 2.78,
+        "intelligence": 1.01,
+        "defence": 1.72,
+        "speed": 2.53
+      },
       "innate": {
         "id": 201501,
         "name": "기병 돌격",
@@ -8358,6 +8694,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 52.29,
+        "intelligence": 102.59,
+        "defence": 84.64,
+        "speed": 78.3
+      },
+      "growth_stats": {
+        "might": 0.29,
+        "intelligence": 2.59,
+        "defence": 1.64,
+        "speed": 2.3
+      },
       "innate": {
         "id": 201801,
         "name": "간파력",
@@ -8717,6 +9065,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 24.29,
+        "intelligence": 94.95,
+        "defence": 99.62,
+        "speed": 83.68
+      },
+      "growth_stats": {
+        "might": 0.29,
+        "intelligence": 1.95,
+        "defence": 1.62,
+        "speed": 1.68
+      },
       "innate": {
         "id": 201901,
         "name": "황심의 가호",
@@ -9022,6 +9382,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 51.56,
+        "intelligence": 113.0,
+        "defence": 95.24,
+        "speed": 54.71
+      },
+      "growth_stats": {
+        "might": 0.56,
+        "intelligence": 3.0,
+        "defence": 2.24,
+        "speed": 1.71
+      },
       "innate": {
         "id": 202201,
         "name": "성운 대열",
@@ -9330,6 +9702,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 82.91,
+        "intelligence": 88.08,
+        "defence": 93.09,
+        "speed": 65.33
+      },
+      "growth_stats": {
+        "might": 1.91,
+        "intelligence": 2.08,
+        "defence": 2.09,
+        "speed": 2.33
+      },
       "innate": {
         "id": 300001,
         "name": "강동 호거",
@@ -9692,6 +10076,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 102.59,
+        "intelligence": 72.3,
+        "defence": 102.12,
+        "speed": 64.53
+      },
+      "growth_stats": {
+        "might": 2.59,
+        "intelligence": 1.3,
+        "defence": 2.12,
+        "speed": 2.53
+      },
       "innate": {
         "id": 300101,
         "name": "강동 제패",
@@ -10006,6 +10402,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 98.38,
+        "intelligence": 75.98,
+        "defence": 90.66,
+        "speed": 60.41
+      },
+      "growth_stats": {
+        "might": 2.38,
+        "intelligence": 0.98,
+        "defence": 1.66,
+        "speed": 2.41
+      },
       "innate": {
         "id": 300201,
         "name": "궁희",
@@ -10353,6 +10761,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 21.38,
+        "intelligence": 86.14,
+        "defence": 81.64,
+        "speed": 64.39
+      },
+      "growth_stats": {
+        "might": 0.38,
+        "intelligence": 2.14,
+        "defence": 1.64,
+        "speed": 2.39
+      },
       "innate": {
         "id": 300301,
         "name": "천향",
@@ -10625,6 +11045,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 23.35,
+        "intelligence": 87.15,
+        "defence": 99.69,
+        "speed": 28.72
+      },
+      "growth_stats": {
+        "might": 0.35,
+        "intelligence": 2.15,
+        "defence": 1.69,
+        "speed": 1.72
+      },
       "innate": {
         "id": 300401,
         "name": "국색",
@@ -10939,6 +11371,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 71.36,
+        "intelligence": 99.4,
+        "defence": 91.65,
+        "speed": 72.09
+      },
+      "growth_stats": {
+        "might": 0.36,
+        "intelligence": 2.4,
+        "defence": 1.65,
+        "speed": 2.09
+      },
       "innate": {
         "id": 300501,
         "name": "형주 분할",
@@ -11265,6 +11709,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 102.51,
+        "intelligence": 79.32,
+        "defence": 100.75,
+        "speed": 61.59
+      },
+      "growth_stats": {
+        "might": 2.51,
+        "intelligence": 1.32,
+        "defence": 1.75,
+        "speed": 2.59
+      },
       "innate": {
         "id": 300601,
         "name": "수전의 제왕",
@@ -11654,6 +12110,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 73.95,
+        "intelligence": 103.75,
+        "defence": 96.01,
+        "speed": 55.73
+      },
+      "growth_stats": {
+        "might": 0.95,
+        "intelligence": 2.75,
+        "defence": 2.01,
+        "speed": 1.73
+      },
       "innate": {
         "id": 300701,
         "name": "기지의 승리",
@@ -11938,6 +12406,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 66.44,
+        "intelligence": 106.74,
+        "defence": 95.96,
+        "speed": 41.88
+      },
+      "growth_stats": {
+        "might": 0.44,
+        "intelligence": 2.74,
+        "defence": 1.96,
+        "speed": 1.88
+      },
       "innate": {
         "id": 300801,
         "name": "화소연영",
@@ -12180,6 +12660,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 73.58,
+        "intelligence": 75.54,
+        "defence": 82.32,
+        "speed": 52.7
+      },
+      "growth_stats": {
+        "might": 1.58,
+        "intelligence": 1.54,
+        "defence": 2.32,
+        "speed": 1.7
+      },
       "innate": {
         "id": 300901,
         "name": "흥왕의 위업",
@@ -12560,6 +13052,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 85.9,
+        "intelligence": 97.38,
+        "defence": 95.8,
+        "speed": 69.19
+      },
+      "growth_stats": {
+        "might": 1.9,
+        "intelligence": 2.38,
+        "defence": 1.8,
+        "speed": 2.19
+      },
       "innate": {
         "id": 301001,
         "name": "백의도강",
@@ -12880,6 +13384,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 100.49,
+        "intelligence": 89.22,
+        "defence": 100.89,
+        "speed": 70.54
+      },
+      "growth_stats": {
+        "might": 2.49,
+        "intelligence": 1.22,
+        "defence": 1.89,
+        "speed": 2.54
+      },
       "innate": {
         "id": 301101,
         "name": "완벽한 사격",
@@ -13308,6 +13824,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 88.58,
+        "intelligence": 85.62,
+        "defence": 105.18,
+        "speed": 75.91
+      },
+      "growth_stats": {
+        "might": 1.58,
+        "intelligence": 1.62,
+        "defence": 2.18,
+        "speed": 1.91
+      },
       "innate": {
         "id": 301201,
         "name": "고육지계",
@@ -13631,6 +14159,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 92.18,
+        "intelligence": 79.77,
+        "defence": 104.3,
+        "speed": 66.71
+      },
+      "growth_stats": {
+        "might": 2.18,
+        "intelligence": 0.77,
+        "defence": 2.3,
+        "speed": 1.71
+      },
       "innate": {
         "id": 301301,
         "name": "무열황제",
@@ -13819,6 +14359,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 81.5,
+        "intelligence": 49.78,
+        "defence": 103.21,
+        "speed": 57.45
+      },
+      "growth_stats": {
+        "might": 1.5,
+        "intelligence": 0.78,
+        "defence": 2.21,
+        "speed": 1.45
+      },
       "innate": {
         "id": 301401,
         "name": "불굴의 의지",
@@ -14175,6 +14727,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 113.0,
+        "intelligence": 35.7,
+        "defence": 85.89,
+        "speed": 66.57
+      },
+      "growth_stats": {
+        "might": 3.0,
+        "intelligence": 0.7,
+        "defence": 1.89,
+        "speed": 2.57
+      },
       "innate": {
         "id": 400001,
         "name": "무쌍의 용사",
@@ -14555,6 +15119,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 105.55,
+        "intelligence": 86.49,
+        "defence": 95.95,
+        "speed": 76.61
+      },
+      "growth_stats": {
+        "might": 2.55,
+        "intelligence": 1.49,
+        "defence": 1.95,
+        "speed": 2.61
+      },
       "innate": {
         "id": 400101,
         "name": "바람 방랑자",
@@ -14893,6 +15469,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 17.24,
+        "intelligence": 98.29,
+        "defence": 88.59,
+        "speed": 79.92
+      },
+      "growth_stats": {
+        "might": 0.24,
+        "intelligence": 2.29,
+        "defence": 1.59,
+        "speed": 1.92
+      },
       "innate": {
         "id": 400201,
         "name": "비분시",
@@ -15207,6 +15795,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 72.0,
+        "intelligence": 84.8,
+        "defence": 97.03,
+        "speed": 59.25
+      },
+      "growth_stats": {
+        "might": 2.0,
+        "intelligence": 1.8,
+        "defence": 2.03,
+        "speed": 2.25
+      },
       "innate": {
         "id": 400401,
         "name": "군웅 집결",
@@ -15548,6 +16148,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 26.35,
+        "intelligence": 95.48,
+        "defence": 82.48,
+        "speed": 52.99
+      },
+      "growth_stats": {
+        "might": 0.35,
+        "intelligence": 2.48,
+        "defence": 1.48,
+        "speed": 1.99
+      },
       "innate": {
         "id": 401001,
         "name": "군주 시해",
@@ -15760,6 +16372,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 33.43,
+        "intelligence": 103.55,
+        "defence": 97.99,
+        "speed": 56.53
+      },
+      "growth_stats": {
+        "might": 0.43,
+        "intelligence": 2.55,
+        "defence": 1.99,
+        "speed": 1.53
+      },
       "innate": {
         "id": 401101,
         "name": "황천의 시대",
@@ -15972,6 +16596,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 52.63,
+        "intelligence": 100.54,
+        "defence": 78.87,
+        "speed": 65.94
+      },
+      "growth_stats": {
+        "might": 0.63,
+        "intelligence": 2.54,
+        "defence": 1.87,
+        "speed": 1.94
+      },
       "innate": {
         "id": 401301,
         "name": "지략전",
@@ -16313,6 +16949,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 96.39,
+        "intelligence": 40.65,
+        "defence": 80.79,
+        "speed": 73.48
+      },
+      "growth_stats": {
+        "might": 2.39,
+        "intelligence": 0.65,
+        "defence": 1.79,
+        "speed": 2.48
+      },
       "innate": {
         "id": 401401,
         "name": "장군의 무용",
@@ -16690,6 +17338,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 50.33,
+        "intelligence": 86.24,
+        "defence": 66.67,
+        "speed": 68.12
+      },
+      "growth_stats": {
+        "might": 0.33,
+        "intelligence": 2.24,
+        "defence": 1.67,
+        "speed": 2.12
+      },
       "innate": {
         "id": 401601,
         "name": "지략 방어",
@@ -17031,6 +17691,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 97.4,
+        "intelligence": 47.76,
+        "defence": 85.69,
+        "speed": 67.56
+      },
+      "growth_stats": {
+        "might": 2.4,
+        "intelligence": 0.76,
+        "defence": 1.69,
+        "speed": 2.56
+      },
       "innate": {
         "id": 401701,
         "name": "남다른 완력",
@@ -17369,6 +18041,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 98.4,
+        "intelligence": 42.67,
+        "defence": 84.68,
+        "speed": 66.4
+      },
+      "growth_stats": {
+        "might": 2.4,
+        "intelligence": 0.67,
+        "defence": 1.68,
+        "speed": 2.4
+      },
       "innate": {
         "id": 401801,
         "name": "치열한 교전",
@@ -17707,6 +18391,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 12.35,
+        "intelligence": 97.35,
+        "defence": 61.6,
+        "speed": 48.73
+      },
+      "growth_stats": {
+        "might": 0.35,
+        "intelligence": 2.35,
+        "defence": 1.6,
+        "speed": 1.73
+      },
       "innate": {
         "id": 401901,
         "name": "마비산",
@@ -18024,6 +18720,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "speed",
+      "base_stats": {
+        "might": 91.01,
+        "intelligence": 78.91,
+        "defence": 95.9,
+        "speed": 87.3
+      },
+      "growth_stats": {
+        "might": 2.01,
+        "intelligence": 1.91,
+        "defence": 1.9,
+        "speed": 2.3
+      },
       "innate": {
         "id": 402101,
         "name": "국경의 장수",
@@ -18365,6 +19073,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 18.41,
+        "intelligence": 95.22,
+        "defence": 90.75,
+        "speed": 47.03
+      },
+      "growth_stats": {
+        "might": 0.41,
+        "intelligence": 2.22,
+        "defence": 1.75,
+        "speed": 2.03
+      },
       "innate": {
         "id": 402301,
         "name": "폐월",
@@ -18655,6 +19375,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 96.4,
+        "intelligence": 68.78,
+        "defence": 86.69,
+        "speed": 62.69
+      },
+      "growth_stats": {
+        "might": 2.4,
+        "intelligence": 0.78,
+        "defence": 1.69,
+        "speed": 2.69
+      },
       "innate": {
         "id": 402601,
         "name": "필사의 돌격",
@@ -19068,6 +19800,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 92.2,
+        "intelligence": 81.42,
+        "defence": 102.1,
+        "speed": 77.93
+      },
+      "growth_stats": {
+        "might": 2.2,
+        "intelligence": 1.42,
+        "defence": 2.1,
+        "speed": 1.93
+      },
       "innate": {
         "id": 402801,
         "name": "압도적 권력",
@@ -19316,6 +20060,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 15.25,
+        "intelligence": 86.85,
+        "defence": 81.65,
+        "speed": 57.73
+      },
+      "growth_stats": {
+        "might": 0.25,
+        "intelligence": 1.85,
+        "defence": 1.65,
+        "speed": 1.73
+      },
       "innate": {
         "id": 402901,
         "name": "눈부신 자태",
@@ -19630,6 +20386,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 33.35,
+        "intelligence": 80.85,
+        "defence": 78.35,
+        "speed": 64.65
+      },
+      "growth_stats": {
+        "might": 0.35,
+        "intelligence": 1.85,
+        "defence": 1.35,
+        "speed": 1.65
+      },
       "innate": {
         "id": 500001,
         "name": "민첩한 대응",
@@ -19947,6 +20715,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 30.34,
+        "intelligence": 77.75,
+        "defence": 61.25,
+        "speed": 28.47
+      },
+      "growth_stats": {
+        "might": 0.34,
+        "intelligence": 1.75,
+        "defence": 1.25,
+        "speed": 1.47
+      },
       "innate": {
         "id": 500101,
         "name": "지피지기",
@@ -20264,6 +21044,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 80.28,
+        "intelligence": 66.7,
+        "defence": 83.5,
+        "speed": 17.84
+      },
+      "growth_stats": {
+        "might": 0.28,
+        "intelligence": 1.7,
+        "defence": 1.5,
+        "speed": 1.84
+      },
       "innate": {
         "id": 500201,
         "name": "형강 사수",
@@ -20476,6 +21268,18 @@
       "rarity": 3,
       "rarity_name": "B",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 22.33,
+        "intelligence": 83.48,
+        "defence": 56.21,
+        "speed": 28.44
+      },
+      "growth_stats": {
+        "might": 0.33,
+        "intelligence": 1.48,
+        "defence": 1.21,
+        "speed": 1.44
+      },
       "innate": {
         "id": 500301,
         "name": "토벌의 격문",
@@ -20495,6 +21299,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 79.65,
+        "intelligence": 45.77,
+        "defence": 75.63,
+        "speed": 46.84
+      },
+      "growth_stats": {
+        "might": 1.65,
+        "intelligence": 0.77,
+        "defence": 1.63,
+        "speed": 1.84
+      },
       "innate": {
         "id": 500401,
         "name": "팔호의 수장",
@@ -20803,6 +21619,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 15.21,
+        "intelligence": 73.91,
+        "defence": 70.45,
+        "speed": 36.32
+      },
+      "growth_stats": {
+        "might": 0.21,
+        "intelligence": 1.91,
+        "defence": 1.45,
+        "speed": 1.32
+      },
       "innate": {
         "id": 500501,
         "name": "비상",
@@ -21120,6 +21948,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 61.31,
+        "intelligence": 66.32,
+        "defence": 94.73,
+        "speed": 46.3
+      },
+      "growth_stats": {
+        "might": 1.31,
+        "intelligence": 1.32,
+        "defence": 1.73,
+        "speed": 1.3
+      },
       "innate": {
         "id": 500601,
         "name": "예측 불가",
@@ -21332,6 +22172,18 @@
       "rarity": 3,
       "rarity_name": "B",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 32.36,
+        "intelligence": 78.48,
+        "defence": 43.49,
+        "speed": 58.38
+      },
+      "growth_stats": {
+        "might": 0.36,
+        "intelligence": 1.48,
+        "defence": 0.49,
+        "speed": 1.38
+      },
       "innate": {
         "id": 500701,
         "name": "단아한 선비",
@@ -21351,6 +22203,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 76.64,
+        "intelligence": 48.17,
+        "defence": 75.55,
+        "speed": 58.31
+      },
+      "growth_stats": {
+        "might": 1.64,
+        "intelligence": 0.17,
+        "defence": 1.55,
+        "speed": 1.31
+      },
       "innate": {
         "id": 500801,
         "name": "강가 격파",
@@ -21659,6 +22523,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 73.97,
+        "intelligence": 77.4,
+        "defence": 92.7,
+        "speed": 35.41
+      },
+      "growth_stats": {
+        "might": 0.97,
+        "intelligence": 1.4,
+        "defence": 1.7,
+        "speed": 1.41
+      },
       "innate": {
         "id": 500901,
         "name": "옹량 지휘",
@@ -21871,6 +22747,18 @@
       "rarity": 3,
       "rarity_name": "B",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 34.52,
+        "intelligence": 79.8,
+        "defence": 67.33,
+        "speed": 31.4
+      },
+      "growth_stats": {
+        "might": 0.52,
+        "intelligence": 1.8,
+        "defence": 1.33,
+        "speed": 1.4
+      },
       "innate": {
         "id": 501201,
         "name": "형세 판단",
@@ -21890,6 +22778,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 98.42,
+        "intelligence": 48.99,
+        "defence": 93.67,
+        "speed": 72.22
+      },
+      "growth_stats": {
+        "might": 2.42,
+        "intelligence": 0.99,
+        "defence": 1.67,
+        "speed": 2.22
+      },
       "innate": {
         "id": 501601,
         "name": "청룡 출격",
@@ -22210,6 +23110,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 30.61,
+        "intelligence": 78.73,
+        "defence": 61.45,
+        "speed": 62.4
+      },
+      "growth_stats": {
+        "might": 0.61,
+        "intelligence": 1.73,
+        "defence": 1.45,
+        "speed": 1.4
+      },
       "innate": {
         "id": 501801,
         "name": "공리공론",
@@ -22494,6 +23406,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 40.45,
+        "intelligence": 83.82,
+        "defence": 65.48,
+        "speed": 57.34
+      },
+      "growth_stats": {
+        "might": 0.45,
+        "intelligence": 1.82,
+        "defence": 1.48,
+        "speed": 1.34
+      },
       "innate": {
         "id": 501901,
         "name": "뛰어난 인재",
@@ -22811,6 +23735,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 82.7,
+        "intelligence": 66.02,
+        "defence": 101.05,
+        "speed": 63.92
+      },
+      "growth_stats": {
+        "might": 1.7,
+        "intelligence": 1.02,
+        "defence": 2.05,
+        "speed": 1.92
+      },
       "innate": {
         "id": 502001,
         "name": "충성과 용맹",
@@ -23026,6 +23962,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 22.44,
+        "intelligence": 83.75,
+        "defence": 76.49,
+        "speed": 49.34
+      },
+      "growth_stats": {
+        "might": 0.44,
+        "intelligence": 1.75,
+        "defence": 1.49,
+        "speed": 1.34
+      },
       "innate": {
         "id": 502101,
         "name": "흰눈썹 장군",
@@ -23343,6 +24291,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 83.01,
+        "intelligence": 29.26,
+        "defence": 72.39,
+        "speed": 70.83
+      },
+      "growth_stats": {
+        "might": 2.01,
+        "intelligence": 0.26,
+        "defence": 1.39,
+        "speed": 1.83
+      },
       "innate": {
         "id": 502201,
         "name": "완력",
@@ -23678,6 +24638,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 82.77,
+        "intelligence": 47.58,
+        "defence": 93.55,
+        "speed": 42.39
+      },
+      "growth_stats": {
+        "might": 1.77,
+        "intelligence": 0.58,
+        "defence": 1.55,
+        "speed": 1.39
+      },
       "innate": {
         "id": 502301,
         "name": "무외의 경지",
@@ -23986,6 +24958,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 88.86,
+        "intelligence": 67.86,
+        "defence": 80.35,
+        "speed": 46.72
+      },
+      "growth_stats": {
+        "might": 1.86,
+        "intelligence": 0.86,
+        "defence": 1.35,
+        "speed": 1.72
+      },
       "innate": {
         "id": 502501,
         "name": "명사수",
@@ -24321,6 +25305,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 79.55,
+        "intelligence": 52.87,
+        "defence": 81.7,
+        "speed": 52.43
+      },
+      "growth_stats": {
+        "might": 1.55,
+        "intelligence": 0.87,
+        "defence": 1.7,
+        "speed": 1.43
+      },
       "innate": {
         "id": 502701,
         "name": "도약일격",
@@ -24629,6 +25625,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 81.72,
+        "intelligence": 80.68,
+        "defence": 79.62,
+        "speed": 34.41
+      },
+      "growth_stats": {
+        "might": 1.72,
+        "intelligence": 1.68,
+        "defence": 1.62,
+        "speed": 1.41
+      },
       "innate": {
         "id": 502801,
         "name": "천하무략",
@@ -24946,6 +25954,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 74.65,
+        "intelligence": 80.8,
+        "defence": 83.35,
+        "speed": 46.37
+      },
+      "growth_stats": {
+        "might": 1.65,
+        "intelligence": 0.8,
+        "defence": 1.35,
+        "speed": 1.37
+      },
       "innate": {
         "id": 502901,
         "name": "용감한 선봉",
@@ -25281,6 +26301,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 78.58,
+        "intelligence": 78.05,
+        "defence": 77.55,
+        "speed": 64.33
+      },
+      "growth_stats": {
+        "might": 1.58,
+        "intelligence": 1.05,
+        "defence": 1.55,
+        "speed": 1.33
+      },
       "innate": {
         "id": 503201,
         "name": "진군 차단",
@@ -25616,6 +26648,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 82.61,
+        "intelligence": 79.89,
+        "defence": 99.08,
+        "speed": 28.52
+      },
+      "growth_stats": {
+        "might": 1.61,
+        "intelligence": 1.89,
+        "defence": 2.08,
+        "speed": 1.52
+      },
       "innate": {
         "id": 503401,
         "name": "백리의성",
@@ -25831,6 +26875,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 5.05,
+        "intelligence": 91.76,
+        "defence": 66.33,
+        "speed": 33.34
+      },
+      "growth_stats": {
+        "might": 0.05,
+        "intelligence": 1.76,
+        "defence": 1.33,
+        "speed": 1.34
+      },
       "innate": {
         "id": 503901,
         "name": "격렬한 언사",
@@ -26115,6 +27171,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 79.55,
+        "intelligence": 22.28,
+        "defence": 83.7,
+        "speed": 31.39
+      },
+      "growth_stats": {
+        "might": 1.55,
+        "intelligence": 0.28,
+        "defence": 1.7,
+        "speed": 1.39
+      },
       "innate": {
         "id": 504401,
         "name": "천공장군",
@@ -26327,6 +27395,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "defence",
+      "base_stats": {
+        "might": 67.27,
+        "intelligence": 78.76,
+        "defence": 86.74,
+        "speed": 18.33
+      },
+      "growth_stats": {
+        "might": 1.27,
+        "intelligence": 0.76,
+        "defence": 1.74,
+        "speed": 1.33
+      },
       "innate": {
         "id": 504701,
         "name": "반란 평정",
@@ -26539,6 +27619,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "might",
+      "base_stats": {
+        "might": 97.15,
+        "intelligence": 45.51,
+        "defence": 101.98,
+        "speed": 65.08
+      },
+      "growth_stats": {
+        "might": 2.15,
+        "intelligence": 0.51,
+        "defence": 1.98,
+        "speed": 2.08
+      },
       "innate": {
         "id": 504801,
         "name": "괴술",
@@ -26850,6 +27942,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 58.55,
+        "intelligence": 80.72,
+        "defence": 86.75,
+        "speed": 60.31
+      },
+      "growth_stats": {
+        "might": 0.55,
+        "intelligence": 1.72,
+        "defence": 1.75,
+        "speed": 1.31
+      },
       "innate": {
         "id": 505101,
         "name": "나라의 기둥",
@@ -27062,6 +28166,18 @@
       "rarity": 4,
       "rarity_name": "A",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 49.57,
+        "intelligence": 77.6,
+        "defence": 54.38,
+        "speed": 55.39
+      },
+      "growth_stats": {
+        "might": 0.57,
+        "intelligence": 1.6,
+        "defence": 1.38,
+        "speed": 1.39
+      },
       "innate": {
         "id": 505201,
         "name": "아첨의 귀재",
@@ -27346,6 +28462,18 @@
       "rarity": 3,
       "rarity_name": "B",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 33.41,
+        "intelligence": 78.31,
+        "defence": 50.89,
+        "speed": 35.47
+      },
+      "growth_stats": {
+        "might": 0.41,
+        "intelligence": 1.31,
+        "defence": 0.89,
+        "speed": 1.47
+      },
       "innate": {
         "id": 505401,
         "name": "남부 정벌",
@@ -27365,6 +28493,18 @@
       "rarity": 5,
       "rarity_name": "S",
       "recommended_attribute": "intelligence",
+      "base_stats": {
+        "might": 65.24,
+        "intelligence": 92.25,
+        "defence": 92.73,
+        "speed": 58.75
+      },
+      "growth_stats": {
+        "might": 0.24,
+        "intelligence": 2.25,
+        "defence": 1.73,
+        "speed": 1.75
+      },
       "innate": {
         "id": 505501,
         "name": "도술의 귀재",
@@ -31122,49 +32262,37 @@
       "id": 1,
       "name": "방패병",
       "description": "궁병에게 강하고, 기병에게 약하다.",
-      "proficiency_ids": [
-        22,
-        23,
-        24,
-        25,
-        26
-      ]
+      "proficiency_ids": [],
+      "is_base": true,
+      "unlock_level": 1,
+      "proficiency_unlock_level": null
     },
     {
       "id": 2,
       "name": "궁병",
       "description": "창병에게 강하고, 방패병에게 약하다.",
-      "proficiency_ids": [
-        15,
-        16,
-        17,
-        18,
-        19
-      ]
+      "proficiency_ids": [],
+      "is_base": true,
+      "unlock_level": 1,
+      "proficiency_unlock_level": null
     },
     {
       "id": 3,
       "name": "창병",
       "description": "기병에게 강하고, 궁병에게 약하다.",
-      "proficiency_ids": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ]
+      "proficiency_ids": [],
+      "is_base": true,
+      "unlock_level": 1,
+      "proficiency_unlock_level": null
     },
     {
       "id": 4,
       "name": "기병",
       "description": "방패병에게 강하고, 창병에게 약하다.",
-      "proficiency_ids": [
-        8,
-        9,
-        10,
-        12,
-        14
-      ]
+      "proficiency_ids": [],
+      "is_base": true,
+      "unlock_level": 1,
+      "proficiency_unlock_level": null
     },
     {
       "id": 5,
@@ -31177,7 +32305,10 @@
         4,
         5,
         7
-      ]
+      ],
+      "is_base": false,
+      "unlock_level": 35,
+      "proficiency_unlock_level": 40
     },
     {
       "id": 6,
@@ -31190,7 +32321,10 @@
         4,
         5,
         6
-      ]
+      ],
+      "is_base": false,
+      "unlock_level": 35,
+      "proficiency_unlock_level": 40
     },
     {
       "id": 7,
@@ -31203,7 +32337,10 @@
         12,
         13,
         14
-      ]
+      ],
+      "is_base": false,
+      "unlock_level": 35,
+      "proficiency_unlock_level": 40
     },
     {
       "id": 8,
@@ -31216,7 +32353,10 @@
         11,
         12,
         14
-      ]
+      ],
+      "is_base": false,
+      "unlock_level": 35,
+      "proficiency_unlock_level": 40
     },
     {
       "id": 9,
@@ -31229,7 +32369,10 @@
         18,
         19,
         20
-      ]
+      ],
+      "is_base": false,
+      "unlock_level": 35,
+      "proficiency_unlock_level": 40
     },
     {
       "id": 10,
@@ -31242,7 +32385,10 @@
         18,
         19,
         21
-      ]
+      ],
+      "is_base": false,
+      "unlock_level": 35,
+      "proficiency_unlock_level": 40
     },
     {
       "id": 11,
@@ -31255,7 +32401,10 @@
         25,
         26,
         27
-      ]
+      ],
+      "is_base": false,
+      "unlock_level": 35,
+      "proficiency_unlock_level": 40
     },
     {
       "id": 12,
@@ -31268,7 +32417,10 @@
         25,
         26,
         28
-      ]
+      ],
+      "is_base": false,
+      "unlock_level": 35,
+      "proficiency_unlock_level": 40
     }
   ],
   "proficiencies": [
@@ -31592,6 +32744,1690 @@
       ]
     }
   ],
+  "equipment": [
+    {
+      "id": 2000001,
+      "name": "방천극",
+      "description": "방천극에 담긴 살기는 귀신조차 막지 못한다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000002,
+      "name": "고정도",
+      "description": "기세는 소나무와 같고, 기개는 강산을 삼킬 듯하다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000003,
+      "name": "의천검",
+      "description": "하늘을 꿰뚫는 검기가 고금을 뒤흔든다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000004,
+      "name": "자웅쌍고검",
+      "description": "용이 휘감고 봉황이 나르는 듯, 날카로워 금도 자를 수 있다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000005,
+      "name": "장팔사모",
+      "description": "뱀처럼 휘어진 장창, 넓은 하늘이 어둠에 잠긴다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000006,
+      "name": "청룡언월도",
+      "description": "용의 울음에 달이 기우니, 천지에 위세를 떨친다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000007,
+      "name": "칠성보검",
+      "description": "칠성이 사방을 휘감으며, 일격으로 숨을 끊는다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000008,
+      "name": "제갈연노",
+      "description": "전광석화처럼 빠른 속사로 전쟁을 승리로 이끈다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000009,
+      "name": "호두담금창",
+      "description": "호랑이가 포효하듯 나아가니, 그 예리함은 막을 수 없다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000010,
+      "name": "공작털 부채",
+      "description": "화려한 깃털 부채 아래, 무쌍의 전략이 펼쳐진다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000011,
+      "name": "청강검",
+      "description": "무지개가 태양을 뚫듯, 철을 진흙처럼 깎는다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000012,
+      "name": "양유기궁",
+      "description": "최고의 신궁, 백 걸음 밖의 과녁도 맞출 수 있다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000013,
+      "name": "유성추",
+      "description": "용맹함은 삼군을 제압하고, 힘은 강산을 뽑을 듯하다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000014,
+      "name": "양은창",
+      "description": "차가운 살기가 앞서 날아가는 것이, 마치 용이 날아온 듯하다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000015,
+      "name": "쌍철극",
+      "description": "쌍이 동시에 날아가, 기세로 삼군을 진압한다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000016,
+      "name": "사소도",
+      "description": "가는 곳마다 적이 초목처럼 쓰러진다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000017,
+      "name": "삼첨도",
+      "description": "세 개의 끝과 두 개의 날, 천지를 본떴다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000018,
+      "name": "철척사모",
+      "description": "창이 앞서니, 천 리 밖의 적도 물러난다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000019,
+      "name": "장철편",
+      "description": "강철 채찍이 용처럼 늘어지니, 만상이 흐르는 듯하다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000020,
+      "name": "월아극",
+      "description": "창끝이 달처럼 빛나, 그 어떤 영웅도 막지 못한다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000021,
+      "name": "낭아봉",
+      "description": "달리는 이리가 울부짖자, 천 리 밖의 적이 물러난다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000022,
+      "name": "낙마줄",
+      "description": "지혜로 천 리 밖에서 승리를 거두고, 꾀로 강병을 몰아낸다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000023,
+      "name": "환수도",
+      "description": "수천 번 단련하여 철도 흙처럼 가른다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000024,
+      "name": "풍취도",
+      "description": "상장의 풍모, 누구도 막을 수 없는 용맹함을 지녔다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000025,
+      "name": "비단옥포",
+      "description": "강이 맑고 바다가 잔잔하며, 천하가 태평하다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000026,
+      "name": "상인의 백의",
+      "description": "기묘한 계책을 선보이는 이가 입는 백색 의상.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000027,
+      "name": "기문판갑",
+      "description": "용을 타고 구름 위를 떠오르니, 기운이 만상을 덮는다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000028,
+      "name": "금사연갑",
+      "description": "칼과 창도 뚫지 못하는 황금 갑옷.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000029,
+      "name": "수면연환갑",
+      "description": "호랑이와 용의 포효처럼 위엄이 드러난다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000030,
+      "name": "여장군 갑옷",
+      "description": "잠룡은 날을 거두고, 날으는 봉황은 솜씨를 감춘다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000031,
+      "name": "황금중갑",
+      "description": "연이은 승리를 거둘 수 있는 천하 무쌍의 갑옷.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000032,
+      "name": "은룡갑옷",
+      "description": "은룡이 갑옷을 두르고, 용맹하게 삼군을 제압한다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000033,
+      "name": "잠룡갑옷",
+      "description": "잠룡이 세상에 모습을 드러내니, 큰 인물을 만날 적시이다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000034,
+      "name": "소천관",
+      "description": "늑대가 하늘을 향해 울부짖으며, 널리 위엄을 떨친다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000035,
+      "name": "조의투구",
+      "description": "강철 같은 어깨로 정의를 짊어지는 무쌍의 국사.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000036,
+      "name": "현철갑옷",
+      "description": "현철을 담금질하듯, 나라를 안정시킨다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000037,
+      "name": "중철갑옷",
+      "description": "바위처럼 단단하고 금성탕지처럼 견고하다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000038,
+      "name": "청동갑옷",
+      "description": "청동으로 만든 갑옷, 만 명의 적을 막을 수 있다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000039,
+      "name": "은룡갑옷",
+      "description": "은룡이 선두에 서서, 멀리 이름을 알린다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000040,
+      "name": "선봉갑옷",
+      "description": "용감하게 선두에 서는 무쌍의 상장.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000041,
+      "name": "화씨벽",
+      "description": "곤륜산의 옥처럼 멀리 복을 전파한다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000042,
+      "name": "호심경",
+      "description": "맑은 거울의 보호를 받아 위기가 해소된다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000043,
+      "name": "칠성등",
+      "description": "별자리를 밟으며, 장수를 기원한다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000044,
+      "name": "상아 바둑돌",
+      "description": "노련한 계책으로 한 걸음씩 진지를 구축한다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000045,
+      "name": "낭아보옥",
+      "description": "빛나는 옥처럼 맑고, 달빛처럼 영롱하도다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000046,
+      "name": "중랑장 인장",
+      "description": "용맹하고 병법에 능하여, 천하를 바꿀 수 있다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000047,
+      "name": "구화옥비녀",
+      "description": "화려한 비녀, 봉황의 자태를 하고 있다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000048,
+      "name": "착금박산로",
+      "description": "금빛 구름 문양, 천하를 삼키는 기세를 지녔다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000049,
+      "name": "제사술잔",
+      "description": "가절에 예를 갖추어 모시니, 끝없는 복이 쏟아진다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000050,
+      "name": "산호관",
+      "description": "느슨한 머리를 살며시 쥐자, 느린 구름이 소매에서 피어난다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000051,
+      "name": "은제 술잔",
+      "description": "성인 같은 덕으로 후세까지 이롭게 비호한다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000052,
+      "name": "옥봉령",
+      "description": "아홉 곡조가 일제히 울리니, 온갖 새가 봉황을 향해 날아든다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000053,
+      "name": "용문패",
+      "description": "용과 봉황이 상서로이 나타나니, 길한 징조가 들어난다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000054,
+      "name": "단심석",
+      "description": "서로 진심을 터놓으니, 충심이 변하지 않는다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000055,
+      "name": "청옥",
+      "description": "영험한 돌을 연마하여, 하늘을 여한 없이 메운다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000056,
+      "name": "금호패",
+      "description": "삼군을 호령하며 천하에 위세를 떨친다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000057,
+      "name": "강철도",
+      "description": "예리한 무기.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000058,
+      "name": "중갑",
+      "description": "든든한 갑주.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000059,
+      "name": "백옥패",
+      "description": "유명한 보물.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000060,
+      "name": "방천극",
+      "description": "방천극에 담긴 살기는 귀신조차 막지 못한다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000061,
+      "name": "고정도",
+      "description": "기세는 소나무와 같고, 기개는 강산을 삼킬 듯하다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000062,
+      "name": "의천검",
+      "description": "하늘을 꿰뚫는 검기가 고금을 뒤흔든다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000063,
+      "name": "자웅쌍고검",
+      "description": "용이 휘감고 봉황이 나르는 듯, 날카로워 금도 자를 수 있다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000064,
+      "name": "장팔사모",
+      "description": "뱀처럼 휘어진 장창, 넓은 하늘이 어둠에 잠긴다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000065,
+      "name": "청룡언월도",
+      "description": "용의 울음에 달이 기우니, 천지에 위세를 떨친다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000066,
+      "name": "칠성보검",
+      "description": "칠성이 사방을 휘감으며, 일격으로 숨을 끊는다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000067,
+      "name": "제갈연노",
+      "description": "전광석화처럼 빠른 속사로 전쟁을 승리로 이끈다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000068,
+      "name": "호두담금창",
+      "description": "호랑이가 포효하듯 나아가니, 그 예리함은 막을 수 없다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000069,
+      "name": "공작털 부채",
+      "description": "화려한 깃털 부채 아래, 무쌍의 전략이 펼쳐진다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000070,
+      "name": "청강검",
+      "description": "무지개가 태양을 뚫듯, 철을 진흙처럼 깎는다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000071,
+      "name": "양유기궁",
+      "description": "최고의 신궁, 백 걸음 밖의 과녁도 맞출 수 있다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000072,
+      "name": "비단옥포",
+      "description": "강이 맑고 바다가 잔잔하며, 천하가 태평하다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000073,
+      "name": "상인의 백의",
+      "description": "기묘한 계책을 선보이는 이가 입는 백색 의상.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000074,
+      "name": "기문판갑",
+      "description": "용을 타고 구름 위를 떠오르니, 기운이 만상을 덮는다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000075,
+      "name": "금사연갑",
+      "description": "칼과 창도 뚫지 못하는 황금 갑옷.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000076,
+      "name": "수면연환갑",
+      "description": "호랑이와 용의 포효처럼 위엄이 드러난다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000077,
+      "name": "여장군 갑옷",
+      "description": "잠룡은 날을 거두고, 날으는 봉황은 솜씨를 감춘다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000078,
+      "name": "황금중갑",
+      "description": "연이은 승리를 거둘 수 있는 천하 무쌍의 갑옷.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000079,
+      "name": "은룡갑옷",
+      "description": "은룡이 갑옷을 두르고, 용맹하게 삼군을 제압한다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000080,
+      "name": "화씨벽",
+      "description": "곤륜산의 옥처럼 멀리 복을 전파한다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000081,
+      "name": "호심경",
+      "description": "맑은 거울의 보호를 받아 위기가 해소된다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000082,
+      "name": "칠성등",
+      "description": "별자리를 밟으며, 장수를 기원한다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000083,
+      "name": "상아 바둑돌",
+      "description": "노련한 계책으로 한 걸음씩 진지를 구축한다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000084,
+      "name": "낭아보옥",
+      "description": "빛나는 옥처럼 맑고, 달빛처럼 영롱하도다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000085,
+      "name": "중랑장 인장",
+      "description": "용맹하고 병법에 능하여, 천하를 바꿀 수 있다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000086,
+      "name": "구화옥비녀",
+      "description": "화려한 비녀, 봉황의 자태를 하고 있다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000087,
+      "name": "착금박산로",
+      "description": "금빛 구름 문양, 천하를 삼키는 기세를 지녔다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000088,
+      "name": "구원자의 도포",
+      "description": "부수로 세상을 구하고 황천이 몸을 지키네.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000089,
+      "name": "둔갑천서",
+      "description": "신선의 자취로 속세에서 벗어나고, 기문으로 형상을 바꾼다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000090,
+      "name": "구원자의 도포",
+      "description": "부수로 세상을 구하고 황천이 몸을 지키네.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000091,
+      "name": "둔갑천서",
+      "description": "신선의 자취로 속세에서 벗어나고, 기문으로 형상을 바꾼다.",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000092,
+      "name": "홍란궁",
+      "description": "활시위로 인연의 업을 끊고 화살로 속세의 연을 자른다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000093,
+      "name": "홍란궁",
+      "description": "활시위로 인연의 업을 끊고 화살로 속세의 연을 자른다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000094,
+      "name": "천운궁",
+      "description": "활시위를 당기자 천둥이 치고, 그림자가 창공을 스치며 지나간다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000095,
+      "name": "천운궁",
+      "description": "활시위를 당기자 천둥이 치고, 그림자가 창공을 스치며 지나간다.",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000096,
+      "name": "현철 견갑",
+      "description": "검은 쇠로 주조하여, 태산처럼 흔들림이 없다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000097,
+      "name": "현철 견갑",
+      "description": "검은 쇠로 주조하여, 태산처럼 흔들림이 없다.",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000098,
+      "name": "기린 갑옷",
+      "description": "명광이 갑옷을 빛내고, 기린 문양이 몸을 수호한다",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000099,
+      "name": "기린 갑옷",
+      "description": "명광이 갑옷을 빛내고, 기린 문양이 몸을 수호한다",
+      "kind": "armor",
+      "kind_name": "방어구",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000100,
+      "name": "황금 지팡이",
+      "description": "금차의 열절이여, 정심은 변치 않는다",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000101,
+      "name": "황금 지팡이",
+      "description": "금차의 열절이여, 정심은 변치 않는다",
+      "kind": "treasure",
+      "kind_name": "보물",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000102,
+      "name": "자오의 칼",
+      "description": "자오의 날이 번뜩이고, 광인으로 적을 파훼한다",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 2000103,
+      "name": "자오의 칼",
+      "description": "자오의 날이 번뜩이고, 광인으로 적을 파훼한다",
+      "kind": "weapon",
+      "kind_name": "무기",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    }
+  ],
+  "horses": [
+    {
+      "id": 3000001,
+      "name": "적토",
+      "description": "고삐를 끊고 질주하는 모습이, 마치 구천에서 내려온 화룡과 같습니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000002,
+      "name": "적로",
+      "description": "바람 소리 울리는 곳에 금빛 채찍을 휘두르면, 푸른 수면 위를 질주합니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000003,
+      "name": "절영",
+      "description": "천둥이 치면 그림자조차 남기지 않고 사라지며, 화염이 치솟아 진영을 붉게 물들입니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000004,
+      "name": "조황비전",
+      "description": "곤륜옥이 부서지며 하늘이 번쩍이니, 마치 유룡이 인간 세상에 내려온 듯합니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000005,
+      "name": "한혈보마",
+      "description": "꼬리는 유성과 같고 머리는 까마귀 같으며, 입에서는 붉은 빛을 내뿜습니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000006,
+      "name": "설원흑운",
+      "description": "검은 구름이 성을 덮어 빛을 가리면, 철갑을 두른 말이 흰 눈을 밟으며 다가옵니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000007,
+      "name": "백야옥사자",
+      "description": "붉은 빛이 몸을 감싸 용을 가두니, 갑옷마저 피에 물들어 붉어집니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000008,
+      "name": "적토",
+      "description": "고삐를 끊고 질주하는 모습이, 마치 구천에서 내려온 화룡과 같습니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000009,
+      "name": "적로",
+      "description": "바람 소리 울리는 곳에 금빛 채찍을 휘두르면, 푸른 수면 위를 질주합니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000010,
+      "name": "절영",
+      "description": "천둥이 치면 그림자조차 남기지 않고 사라지며, 화염이 치솟아 진영을 붉게 물들입니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000011,
+      "name": "조황비전",
+      "description": "곤륜옥이 부서지며 하늘이 번쩍이니, 마치 유룡이 인간 세상에 내려온 듯합니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000012,
+      "name": "한혈보마",
+      "description": "꼬리는 유성과 같고 머리는 까마귀 같으며, 입에서는 붉은 빛을 내뿜습니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000013,
+      "name": "설원흑운",
+      "description": "검은 구름이 성을 덮어 빛을 가리면, 철갑을 두른 말이 흰 눈을 밟으며 다가옵니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000014,
+      "name": "백야옥사자",
+      "description": "붉은 빛이 몸을 감싸 용을 가두니, 갑옷마저 피에 물들어 붉어집니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000015,
+      "name": "백룡",
+      "description": "결은 옥과 같고 색은 눈과 같으니, 마치 유룡이 세상에 나타난 듯합니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000016,
+      "name": "우추",
+      "description": "철갑을 두른 매서운 눈동자, 피를 흘리는 명마입니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000017,
+      "name": "추풍",
+      "description": "푸른 구름을 가르고 초록 갈기를 휘날리며, 바람처럼 달립니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000018,
+      "name": "경범",
+      "description": "강풍처럼 빠르고, 돛처럼 질주합니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000019,
+      "name": "보경",
+      "description": "빛깔이 다채로워 때에 따라 변합니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000020,
+      "name": "적뢰",
+      "description": "번개같이 빠르고, 불꽃처럼 날쌔답니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000021,
+      "name": "회영",
+      "description": "하늘에 숨어 회색 그림자를 타며, 소요진에 위엄을 떨칩니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 2,
+      "rarity_name": "A",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000022,
+      "name": "청총마",
+      "description": "청백색 말입니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000023,
+      "name": "흑갈마",
+      "description": "흑갈색 말입니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000024,
+      "name": "익주마",
+      "description": "익주에서 온 말입니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000025,
+      "name": "하곡마",
+      "description": "하곡에서 온 말입니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 1,
+      "rarity_name": "B",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000026,
+      "name": "쾌항",
+      "description": "하늘을 가르고 화살처럼 질주하여, 천둥소리처럼 순식간에 당도합니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000027,
+      "name": "백설",
+      "description": "얼어붙은 천 리 길을 몰아치는 바람처럼, 흰 눈을 맞고 서리를 밟으며 달립니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000028,
+      "name": "백합",
+      "description": "만 리 길을 깃털처럼 가볍게 날아가며, 날갯짓에 바람과 구름이 일으킵니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000029,
+      "name": "이비사",
+      "description": "모래바람을 일으키며 쾌속으로 질주하니, 하늘을 가르는 그림자처럼 빠릅니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000030,
+      "name": "오손",
+      "description": "검은 그림자가 밤의 장막처럼 질주하면, 말발굽 소리가 천둥처럼 천지에 울립니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000031,
+      "name": "쾌항",
+      "description": "하늘을 가르고 화살처럼 질주하여, 천둥소리처럼 순식간에 당도합니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000032,
+      "name": "백설",
+      "description": "얼어붙은 천 리 길을 몰아치는 바람처럼, 흰 눈을 맞고 서리를 밟으며 달립니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000033,
+      "name": "백합",
+      "description": "만 리 길을 깃털처럼 가볍게 날아가며, 날갯짓에 바람과 구름이 일으킵니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000034,
+      "name": "이비사",
+      "description": "모래바람을 일으키며 쾌속으로 질주하니, 하늘을 가르는 그림자처럼 빠릅니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000035,
+      "name": "오손",
+      "description": "검은 그림자가 밤의 장막처럼 질주하면, 말발굽 소리가 천둥처럼 천지에 울립니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000036,
+      "name": "열진",
+      "description": "발굽이 떨어지면 천근의 힘으로 대나무를 가르고, 철기병이 횡으로 돌격하면 적진이 저절로 갈라집니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 4,
+      "rarity_name": "SS",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    },
+    {
+      "id": 3000037,
+      "name": "열진",
+      "description": "발굽이 떨어지면 천근의 힘으로 대나무를 가르고, 철기병이 횡으로 돌격하면 적진이 저절로 갈라집니다.",
+      "kind": "horse",
+      "kind_name": "말",
+      "rarity": 3,
+      "rarity_name": "S",
+      "season_availability": "unverified",
+      "attribute_input": "actual_attribute_totals",
+      "special_effects_supported": false
+    }
+  ],
   "rules": {
     "max_hero_breakthrough": 5,
     "points_per_breakthrough": 10,
@@ -31606,7 +34442,21 @@
     "hero_count": 3,
     "max_learned_per_hero": 2,
     "max_legendary_per_hero": 1,
-    "max_proficiencies_per_hero": 3,
+    "max_proficiencies_per_hero": 1,
+    "proficiency_unlock_level": 40,
+    "skill_level": {
+      "minimum": 1,
+      "maximum": 10,
+      "default": 10,
+      "editable": true
+    },
+    "hero_stats": {
+      "base_level": 1,
+      "level_calculation": "base_stats + growth_stats * (level - 1)",
+      "total_stats_default": null,
+      "total_stats_requires_all_attributes": true,
+      "zero_total_stats_allowed": false
+    },
     "description_skill_level": 10,
     "description_skill_grade": 0,
     "equipment_input": "attribute_totals",
@@ -31675,6 +34525,8 @@
             "defence": 0.0,
             "speed": 0.0
           },
+          "equipment_item_id": null,
+          "horse_item_id": null,
           "total_stats": null,
           "innate": {
             "level": 10,
@@ -31711,6 +34563,8 @@
             "defence": 0.0,
             "speed": 0.0
           },
+          "equipment_item_id": null,
+          "horse_item_id": null,
           "total_stats": null,
           "innate": {
             "level": 10,
@@ -31747,6 +34601,8 @@
             "defence": 0.0,
             "speed": 0.0
           },
+          "equipment_item_id": null,
+          "horse_item_id": null,
           "total_stats": null,
           "innate": {
             "level": 10,
@@ -31790,6 +34646,8 @@
             "defence": 0.0,
             "speed": 0.0
           },
+          "equipment_item_id": null,
+          "horse_item_id": null,
           "total_stats": null,
           "innate": {
             "level": 10,
@@ -31826,6 +34684,8 @@
             "defence": 0.0,
             "speed": 0.0
           },
+          "equipment_item_id": null,
+          "horse_item_id": null,
           "total_stats": null,
           "innate": {
             "level": 10,
@@ -31862,6 +34722,8 @@
             "defence": 0.0,
             "speed": 0.0
           },
+          "equipment_item_id": null,
+          "horse_item_id": null,
           "total_stats": null,
           "innate": {
             "level": 10,
@@ -31879,6 +34741,9 @@
     "추정 전투입니다. 일부 효과의 반영 범위가 제한되며 실제 게임 결과와 다를 수 있습니다.",
     "무장 breakthrough는 배분점수, 무장 promotion은 고유 전법 강화, learned[].breakthrough는 학습 전법 강화입니다. 기존 grade는 같은 강화 단계의 호환 필드이며 중복 가산하지 않습니다.",
     "추천 배분은 레벨 구간·무장 돌파 배분점을 자동 적용합니다. 직접 배분·총 능력치 입력에는 돌파분을 중복 추가하지 않습니다.",
+    "무장 base_stats는 Lv1 기준이며 growth_stats는 레벨당 증가값입니다. total_stats는 미사용 시 null로 유지하세요.",
+    "고유·학습 전법 레벨의 기본값은10, 입력 범위는1~10입니다. 설명문은 레벨10·강화0 기준입니다.",
+    "장비·말 목록은 원본 수록 정보입니다. 시즌별 획득 가능 여부는 미검증이며, 실제 능력치 옵션을 직접 입력해야 합니다. 아이템 ID만으로 수치·특수 효과를 자동 적용하지 않습니다.",
     "일반 병법 후보는 정적 허용 범위입니다. 계정 보유·재추첨 결과·재화 지불 해금과 특수 페이지는 반영하지 않습니다.",
     "한국 시즌3은 시험 지원입니다. 신규 해금·변경 수치는 확인 중입니다."
   ]
