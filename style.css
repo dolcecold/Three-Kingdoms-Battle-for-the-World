@@ -424,3 +424,22 @@ dialog[open]{animation:pop .2s ease-out}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
+
+/* 내 덱 */
+.deck-save{display:grid;gap:6px;padding:12px;border-radius:12px;background:var(--bg)}
+.deck-save-row{display:flex;gap:8px}
+.deck-list{display:grid;gap:8px}
+.deck-empty{padding:18px;text-align:center;border:1.5px dashed var(--line);border-radius:12px;color:var(--muted);font-size:13px}
+.deck-item{display:grid;gap:8px;padding:12px;border-radius:12px;border:1px solid var(--line-soft);background:var(--raise)}
+.deck-item.is-base{border-color:var(--brass);box-shadow:inset 3px 0 0 var(--brass)}
+.deck-item .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.deck-item strong{font-size:15px}
+.deck-item .heroes{font-size:13px;color:var(--muted)}
+.deck-actions{display:flex;gap:6px;flex-wrap:wrap}
+.deck-actions .danger{color:var(--danger)}
+.preset-foot{flex-wrap:wrap}
+.preset-foot .foot-gap{flex:1}
+.army-hint{width:100%;font-size:12px;color:var(--warn)}
+.verdict .why{font-size:13px;color:var(--muted);margin-top:6px}
+#report-heading{user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+@media (max-width:600px){.preset-foot .foot-gap{display:none}.preset-foot button{flex:1 1 40%}}

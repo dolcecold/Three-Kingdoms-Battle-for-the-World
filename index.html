@@ -58,7 +58,7 @@
           <div class="spine-tools">
             <button data-action="swap" type="button" class="ghost-btn small">양측 바꾸기</button>
             <button data-action="share-match" type="button" class="ghost-btn small">대전 링크 복사</button>
-            <button data-action="reset" type="button" class="ghost-btn small">예시로 초기화</button>
+            <button data-action="reset" type="button" class="ghost-btn small">기본 편성으로</button>
           </div>
         </aside>
 
@@ -67,7 +67,7 @@
       <div class="mobile-tools">
         <button data-action="swap" type="button" class="ghost-btn small">양측 바꾸기</button>
         <button data-action="share-match" type="button" class="ghost-btn small">대전 링크 복사</button>
-        <button data-action="reset" type="button" class="ghost-btn small">예시로 초기화</button>
+        <button data-action="reset" type="button" class="ghost-btn small">기본 편성으로</button>
       </div>
     </section>
 
@@ -140,7 +140,21 @@
       </div>
       <p id="preset-error" class="form-error" role="alert"></p>
     </div>
-    <footer class="modal-foot"><button class="ghost-btn" type="button" data-close="preset-dialog">닫기</button><button class="solid-btn" id="preset-apply" type="button" disabled>이 편성 불러오기</button></footer>
+    <footer class="modal-foot preset-foot"><button class="ghost-btn" type="button" data-close="preset-dialog">닫기</button><span class="foot-gap"></span><button class="ghost-btn" id="preset-save" type="button" disabled>내 덱에 저장</button><button class="ghost-btn" id="preset-base" type="button" disabled>기본 편성으로 지정</button><button class="solid-btn" id="preset-apply" type="button" disabled>이 편성 불러오기</button></footer>
+  </dialog>
+
+  <!-- 내 덱 -->
+  <dialog id="deck-dialog" class="modal" aria-labelledby="deck-title">
+    <header class="modal-head"><div><h2 id="deck-title">내 덱</h2><p id="deck-sub" class="muted-note"></p></div><button class="icon-btn" type="button" data-close="deck-dialog" aria-label="닫기">✕</button></header>
+    <div class="modal-body">
+      <form id="deck-save-form" class="deck-save">
+        <label class="field" for="deck-name" id="deck-save-label">현재 편성 저장</label>
+        <div class="deck-save-row"><input id="deck-name" type="text" maxlength="80" placeholder="덱 이름" required><button class="solid-btn small" type="submit">저장</button></div>
+      </form>
+      <div id="deck-list" class="deck-list"></div>
+      <p class="muted-note">내 덱은 이 브라우저에만 저장됩니다. 다른 기기로 옮길 때는 공유 코드를 쓰세요. ★ 기본 편성은 처음 열 때와 '기본 편성으로'를 누를 때 아군 부대에 들어갑니다.</p>
+    </div>
+    <footer class="modal-foot"><button class="ghost-btn" type="button" data-close="deck-dialog">닫기</button></footer>
   </dialog>
 
   <!-- 무장·전법 선택 -->
