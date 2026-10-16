@@ -12,7 +12,7 @@ const $=id=>document.getElementById(id);
 const SIDES=['left','right'];
 const SIDE_NAME={left:'아군',right:'상대'};
 const SIDE_CLASS={left:'ally',right:'enemy'};
-const KEYS={api:'cheonha-sample-api',draft:'cheonha-draft-v1',theme:'cheonha-theme',decks:'cheonha-mydecks-v1',dev:'cheonha-dev'};
+const KEYS={api:'cheonha-sample-api',draft:'cheonha-draft-v1',theme:'cheonha-theme',decks:'cheonha-mydecks-v1',dev:'cheonha-dev',eng:'cheonha-max-engagements'};
 const fmt=n=>Number(n??0).toLocaleString('ko-KR');
 const clone=v=>structuredClone(v);
 const reduceMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -49,6 +49,8 @@ function message(error){
   if(error instanceof TypeError)console.error(error);
   let text=error?.message||'알 수 없는 오류가 발생했습니다.';
   if(error?.status===429)text+=error.retryAfter?` ${error.retryAfter}초 뒤에 다시 시도하세요.`:' 잠시 뒤에 다시 시도하세요.';
+  if(error?.status===504)text+=' 최대 경기 수를 줄이면 빨라질 수 있습니다.';
+  if(error?.status===503)text+=' 지금은 계산할 수 없습니다. 잠시 뒤 다시 시도하세요.';
   if(error?.requestId)text+=` (요청 ID ${error.requestId})`;
   return text;
 }
@@ -58,7 +60,7 @@ async function copyText(text){
 }
 
 /* ── 상태 ─────────────────────────────────────────────── */
-const state={dev:store.get(KEYS.dev)==='1',season:2,data:null,idx:null,api:null,armies:{left:null,right:null},busy:false,open:new Set(),tabs:new Map(),report:null,sample:false,dirty:false,view:'left',battleAbort:null};
+const state={maxEng:Number(store.get(KEYS.eng))||0,dev:store.get(KEYS.dev)==='1',season:2,data:null,idx:null,api:null,armies:{left:null,right:null},busy:false,open:new Set(),tabs:new Map(),report:null,sample:false,dirty:false,view:'left',battleAbort:null};
 
 function indexData(d){
   const map=rows=>new Map(rows.map(r=>[r.id,r]));
@@ -69,10 +71,20 @@ async function localData(season){
   if(!res.ok)throw new Error('기본 편성 데이터를 불러오지 못했습니다. data 폴더가 함께 배포됐는지 확인하세요.');
   return res.json();
 }
-function examplesFrom(data){return SIDES.map((_,i)=>normalizeArmy(clone(data.examples[i])));}
+// 옛 코드의 innate.grade·learned[].grade는 호환 필드라 새 필드로 옮기고 0으로 정리합니다(계약 README).
+function prep(army){
+  const a=normalizeArmy(clone(army));
+  for(const h of a.heroes){
+    if(h.promotion==null)h.promotion=h.innate.grade||0;
+    h.innate.grade=0;h.breakthrough??=0;h.allocation_mode??='manual';
+    for(const s of h.learned){s.breakthrough=s.breakthrough??s.grade??0;s.grade=0;}
+  }
+  return a;
+}
+function examplesFrom(data){return SIDES.map((_,i)=>prep(data.examples[i]));}
 function baseArmy(data){
   const d=decks.base(data.season);if(!d)return null;
-  try{return validateArmy(data,normalizeArmy(clone(d.army)));}catch{return null;}
+  try{return validateArmy(data,prep(d.army));}catch{return null;}
 }
 function startArmies(data){const ex=examplesFrom(data);return [baseArmy(data)||ex[0],ex[1]];}
 
@@ -147,7 +159,7 @@ let draftTimer;
 function saveDraft(){clearTimeout(draftTimer);draftTimer=setTimeout(()=>store.set(KEYS.draft,JSON.stringify({v:1,season:state.season,left:state.armies.left,right:state.armies.right})),400);}
 function readDraft(){try{const d=JSON.parse(store.get(KEYS.draft)||'null');return d?.v===1&&[1,2,3].includes(d.season)&&d.left&&d.right?d:null;}catch{return null;}}
 function restoreDraft(draft){
-  try{const left=normalizeArmy(draft.left),right=normalizeArmy(draft.right);validateArmy(state.data,left);validateArmy(state.data,right);state.armies.left=left;state.armies.right=right;return true;}
+  try{const left=prep(draft.left),right=prep(draft.right);validateArmy(state.data,left);validateArmy(state.data,right);state.armies.left=left;state.armies.right=right;return true;}
   catch{return false;}
 }
 
@@ -166,8 +178,15 @@ function scheduleRender(){if(renderQueued)return;renderQueued=true;setTimeout(()
 function render(){
   const key=document.activeElement?.dataset?.focus;
   for(const s of SIDES)renderArmy(s);
-  updateSummary();updateConnection();updateTabs();
+  updateSummary();updateConnection();updateTabs();syncEngagements();
   if(key)document.querySelector(`[data-focus="${CSS.escape(key)}"]`)?.focus({preventScroll:true});
+}
+function syncEngagements(){
+  const r=state.data?.rules||{},min=r.min_engagements||1,max=r.max_engagements||8;
+  if(!(state.maxEng>=min&&state.maxEng<=max))state.maxEng=r.default_max_engagements||max;
+  const el=$('max-eng');
+  if(el.options.length!==max-min+1)el.replaceChildren(...Array.from({length:max-min+1},(_,i)=>h('option',{value:String(min+i),text:`${min+i}경기`})));
+  el.value=String(state.maxEng);
 }
 function updateSummary(){
   if(!state.data)return;
@@ -228,7 +247,7 @@ function heroCard(side,army,hero){
     h('span',{class:'slot-badge'+(pos==='back'?' back':''),'aria-label':`${hero.slot}번 위치, ${pos==='back'?'후열':'전열'}`},h('b',{text:hero.slot}),h('small',{text:pos==='back'?'후열':'전열'})),
     h('button',{class:'hero-pick',type:'button','aria-label':`${SIDE_NAME[side]} ${hero.slot}번 무장 ${row.name}, 바꾸기`,dataset:{pick:'hero',focus:fkey(side,hero.slot,'pick-hero')}},
       h('span',{class:'name'},h('span',{text:row.name}),chevron()),
-      h('span',{class:'meta',text:[row.faction_name,row.rarity_name&&`${row.rarity_name}등급`,arm?.name||'병종 미상',`Lv${hero.level}`].filter(Boolean).join(' · ')})),
+      h('span',{class:'meta',text:[row.faction_name,row.rarity_name&&`${row.rarity_name}등급`,arm?.name||'병종 미상',`Lv${hero.level}`,hero.breakthrough?`돌파${hero.breakthrough}`:null,hero.promotion?`승품${hero.promotion}`:null].filter(Boolean).join(' · ')})),
     h('label',{class:'troops-field'},'병력',num(hero.troops,{min:1,max:50000,step:1,dataset:{path:'troops',focus:fkey(side,hero.slot,'troops')}}))
   );
   const innate=h('details',{class:'innate'},
@@ -237,7 +256,7 @@ function heroCard(side,army,hero){
   const tactics=h('div',{class:'tactic-row'});
   hero.learned.forEach((s,i)=>{const t=ix.tactic.get(s.skill_id);tactics.append(h('button',{class:'tactic-btn',type:'button',dataset:{pick:'tactic',index:i,focus:fkey(side,hero.slot,`pick-tactic-${i}`)},'aria-label':`학습 전법 ${i+1}: ${t?.name||'알 수 없음'}, 바꾸기`},
     h('span',{class:'t-name',text:t?.name||`ID ${s.skill_id}`}),
-    h('span',{class:'t-meta'},t?h('span',{class:`tag type-${t.type_name}`,text:t.type_name}):null,`Lv${s.level} · ${s.grade}승`)));});
+    h('span',{class:'t-meta'},t?h('span',{class:`tag type-${t.type_name}`,text:t.type_name}):null,`Lv${s.level} · 돌파${s.breakthrough??0}`)));});
   if(hero.learned.length<2)tactics.append(h('button',{class:'tactic-btn empty',type:'button',dataset:{pick:'tactic',index:hero.learned.length,focus:fkey(side,hero.slot,`pick-tactic-${hero.learned.length}`)},text:'+ 전법 추가'}));
   const slots=row.warbook_slots.length;
   const adv=h('details',{class:'advanced',open:state.open.has(key),dataset:{openKey:key}},
@@ -254,13 +273,15 @@ function advancedBody(side,army,hero,row,arm,key){
     panel.append(h('div',{class:'grid-4'},
       h('label',{class:'field'},'위치',sel([1,2,3].map(id=>({id,name:`${id}번`})),hero.slot,{dataset:{path:'position_slot',focus:F('position')}})),
       h('label',{class:'field'},'무장 레벨',num(hero.level,{min:1,max:50,step:1,dataset:{path:'level',focus:F('level')}})),
-      h('label',{class:'field'},'고유 전법 Lv',num(hero.innate.level,{min:1,max:10,step:1,dataset:{path:'innate.level',focus:F('innate.level')}})),
-      h('label',{class:'field'},'고유 승급',num(hero.innate.grade,{min:0,max:5,step:1,dataset:{path:'innate.grade',focus:F('innate.grade')}}))));
+      h('label',{class:'field'},'무장 돌파',num(hero.breakthrough,{min:0,max:5,step:1,dataset:{path:'breakthrough',focus:F('breakthrough')}})),
+      h('label',{class:'field'},'무장 승품',num(hero.promotion??0,{min:0,max:5,step:1,dataset:{path:'promotion',focus:F('promotion')}})),
+      h('label',{class:'field'},'고유 전법 Lv',num(hero.innate.level,{min:1,max:10,step:1,dataset:{path:'innate.level',focus:F('innate.level')}}))),
+      h('p',{class:'muted-note',text:'무장 돌파는 능력치 배분점을, 무장 승품은 고유 전법을 강화합니다.'}));
     hero.learned.forEach((s,i)=>panel.append(
       h('p',{class:'sub-head'},ix.tactic.get(s.skill_id)?.name||'학습 전법',h('span',{text:`학습 전법 ${i+1}`})),
       h('div',{class:'grid-2'},
         h('label',{class:'field'},'레벨',num(s.level,{min:1,max:10,step:1,dataset:{path:`learned_upgrade.${i}.level`,focus:F(`lu${i}l`)}})),
-        h('label',{class:'field'},'승급',num(s.grade,{min:0,max:5,step:1,dataset:{path:`learned_upgrade.${i}.grade`,focus:F(`lu${i}g`)}})))));
+        h('label',{class:'field'},'전법 돌파',num(s.breakthrough??0,{min:0,max:5,step:1,dataset:{path:`learned_upgrade.${i}.breakthrough`,focus:F(`lu${i}b`)}})))));
     panel.append(h('p',{class:'muted-note',text:'위치를 바꾸면 해당 위치의 무장과 자리를 맞바꿉니다. 레벨을 낮추면 해금되지 않은 병법 슬롯은 비워집니다.'}));
   }else if(tab==='books'){
     for(const rule of row.warbook_slots){
@@ -283,7 +304,18 @@ function advancedBody(side,army,hero,row,arm,key){
       hero.arms_skill_ids.length?h('div',{class:'desc-box'},hero.arms_skill_ids.map(id=>{const p=ix.prof.get(id);return p?h('div',null,h('b',{text:p.name}),` · ${p.description}`):null;})):null,
       h('p',{class:'muted-note',text:'병종을 바꾸면 정통 선택이 초기화됩니다.'}));
   }else{
-    for(const [k,label] of [['allocation','능력치 배분'],['equipment','장비 능력치 합계'],['horse','말 능력치 합계']])
+    const pts=allocPoints(hero),attr=STAT_FIELDS.find(([k])=>k===row.recommended_attribute)?.[1];
+    const rec=hero.allocation_mode==='recommended';
+    panel.append(h('div',{class:'seg alloc-seg',role:'group','aria-label':'능력치 배분 방식'},
+      h('button',{type:'button','aria-pressed':String(rec),disabled:!attr,dataset:{alloc:'recommended',focus:F('alloc-rec')},text:'추천 자동 배분'}),
+      h('button',{type:'button','aria-pressed':String(!rec),dataset:{alloc:'manual',focus:F('alloc-man')},text:'직접 배분'})));
+    if(rec)panel.append(h('p',{class:'desc-box',text:`배분점 ${pts}점을 ${attr}에 자동 배분합니다. (레벨 ${hero.level} 기준 + 무장 돌파 ${hero.breakthrough}단계)`}));
+    else{
+      const sum=STAT_FIELDS.reduce((n,[k])=>n+Number(hero.allocation[k]||0),0);
+      panel.append(h('p',{class:'sub-head'},'능력치 배분',h('span',{text:`합계 ${fmt(sum)}점 · 기본 배분점 ${pts}점`})),statGrid(hero.allocation,'allocation',F),
+        h('p',{class:'muted-note',text:attr?`무장 돌파분까지 포함한 실제 배분 총점을 입력합니다. 이 무장의 추천 속성은 ${attr}입니다.`:'무장 돌파분까지 포함한 실제 배분 총점을 입력합니다.'}));
+    }
+    for(const [k,label] of [['equipment','장비 능력치 합계'],['horse','말 능력치 합계']])
       panel.append(h('p',{class:'sub-head',text:label}),statGrid(hero[k],k,F));
     panel.append(h('p',{class:'muted-note',text:'장비와 말은 능력치 합계로 입력합니다. 특수 효과는 반영하지 않습니다.'}),
       h('label',{class:'check-row'},h('input',{type:'checkbox',checked:hero.total_stats!==null,dataset:{path:'use_total_stats',focus:F('use_total')}}),'총 능력치 직접 입력'));
@@ -291,12 +323,19 @@ function advancedBody(side,army,hero,row,arm,key){
   }
   return h('div',null,tabs,panel);
 }
+function allocPoints(hero){
+  const r=state.data.rules;
+  return Math.floor(hero.level/(r.allocation_level_step||10))*(r.points_per_level_step||10)+(hero.breakthrough||0)*(r.points_per_breakthrough||10);
+}
 function statGrid(stats,prefix,F){return h('div',{class:'grid-4'},STAT_FIELDS.map(([k,name])=>h('label',{class:'field'},name,num(stats[k],{min:0,max:2000,dataset:{path:`${prefix}.${k}`,focus:F(`${prefix}.${k}`)}}))));}
 function emptyHint(army){
   const empty=army.heroes.reduce((n,x)=>n+(2-x.learned.length),0);
-  const noStats=army.heroes.filter(x=>!x.total_stats&&Object.values(x.allocation).every(v=>!v)).length;
-  const parts=[empty?`학습 전법 빈칸 ${empty}개`:null,noStats?`능력치 배분 0인 무장 ${noStats}명`:null].filter(Boolean);
-  return parts.length?h('p',{class:'army-hint',text:`${parts.join(' · ')} — 피해가 낮게 계산돼 8턴 안에 승부가 나지 않을 수 있습니다.`}):null;
+  const zero=army.heroes.filter(x=>!x.total_stats&&x.allocation_mode!=='recommended'&&Object.values(x.allocation).every(v=>!v));
+  const fixable=zero.some(x=>state.idx.hero.get(x.hero_id)?.recommended_attribute);
+  const parts=[empty?`학습 전법 빈칸 ${empty}개`:null,zero.length?`능력치 배분 0인 무장 ${zero.length}명`:null].filter(Boolean);
+  return parts.length?h('div',{class:'army-hint'},
+    h('span',{text:`${parts.join(' · ')} — 피해가 낮게 계산돼 전멸 승패가 나기 어렵습니다.`}),
+    fixable?h('button',{type:'button',class:'ghost-btn small',dataset:{allocAll:'1'},text:'추천 자동 배분 적용'}):null):null;
 }
 function armyFoot(side,army){
   let status;
@@ -315,8 +354,9 @@ function applyEdit(side,slot,path,value){
   const army=state.armies[side],hero=army.heroes.find(x=>x.slot===slot);
   if(path.startsWith('army.'))setPath(army,path.slice(5),value);
   else if(path==='position_slot'){const other=army.heroes.find(x=>x.slot===value);if(other&&other!==hero){other.slot=hero.slot;hero.slot=value;}}
-  else if(path==='hero_id'){hero.hero_id=value;hero.warbook_slots=[];hero.advanced_arms_id=null;hero.arms_skill_ids=[];hero.total_stats=null;hero.innate={level:10,grade:0};}
-  else if(path.startsWith('learned.')){const i=Number(path.split('.')[1]);if(value)hero.learned[i]={skill_id:value,level:hero.learned[i]?.level||10,grade:hero.learned[i]?.grade||0};else hero.learned.splice(i,1);hero.learned=hero.learned.filter(Boolean);}
+  else if(path==='hero_id'){hero.hero_id=value;hero.warbook_slots=[];hero.advanced_arms_id=null;hero.arms_skill_ids=[];hero.total_stats=null;hero.innate={level:10,grade:0};hero.promotion=0;hero.breakthrough=0;
+    if(hero.allocation_mode==='recommended'&&!state.idx.hero.get(value)?.recommended_attribute)hero.allocation_mode='manual';}
+  else if(path.startsWith('learned.')){const i=Number(path.split('.')[1]);if(value)hero.learned[i]={skill_id:value,level:hero.learned[i]?.level||10,grade:0,breakthrough:hero.learned[i]?.breakthrough??0};else hero.learned.splice(i,1);hero.learned=hero.learned.filter(Boolean);}
   else if(path.startsWith('learned_upgrade.'))setPath(hero,'learned.'+path.slice(16),value);
   else if(path.startsWith('warbook.')){const s=Number(path.split('.')[1]);hero.warbook_slots=hero.warbook_slots.filter(x=>x.slot!==s);if(value)hero.warbook_slots.push({slot:s,warbook_id:value});}
   else if(path==='advanced_arms_id'){hero.advanced_arms_id=value;hero.arms_skill_ids=[];}
@@ -391,7 +431,7 @@ function pickTactic(side,slot,index){
   const order=['액티브','패시브','지휘','추격'];
   const groups=[{key:'type',label:'유형',options:[...new Set(d.tactics.map(t=>t.type_name))].sort((a,b)=>(order.indexOf(a)+1||9)-(order.indexOf(b)+1||9))}];
   const row=state.idx.hero.get(hero.hero_id);
-  openPicker({title:`${row.name} · 학습 전법 ${index+1}`,sub:`설명은 Lv${d.rules.description_skill_level}·${d.rules.description_skill_grade}승 기준입니다.`,items,current:hero.learned[index]?.skill_id,groups,allowClear:index<hero.learned.length,focusKey:fkey(side,slot,`pick-tactic-${Math.min(index,1)}`),onPick:id=>applyEdit(side,slot,`learned.${index}`,id)});
+  openPicker({title:`${row.name} · 학습 전법 ${index+1}`,sub:`설명은 Lv${d.rules.description_skill_level}·돌파${d.rules.description_skill_grade} 기준입니다.`,items,current:hero.learned[index]?.skill_id,groups,allowClear:index<hero.learned.length,focusKey:fkey(side,slot,`pick-tactic-${Math.min(index,1)}`),onPick:id=>applyEdit(side,slot,`learned.${index}`,id)});
 }
 
 /* ── 추천덱 ───────────────────────────────────────────── */
@@ -482,7 +522,7 @@ $('deck-list').onclick=e=>{
   const {deckAct:act,id}=b.dataset,d=decks.all().find(x=>x.id===id);if(!d)return;
   try{
     if(act==='load'){
-      const army=validateArmy(state.data,normalizeArmy(clone(d.army)));
+      const army=validateArmy(state.data,prep(d.army));
       state.armies[deckSide]=army;state.view=deckSide;dirty();render();$('deck-dialog').close();notify(`'${d.name}'을(를) ${SIDE_NAME[deckSide]} 부대에 불러왔습니다.`);return;
     }
     if(act==='base'){decks.update(id,{base:!d.base});notify(d.base?'기본 편성을 해제했습니다.':`'${d.name}'을(를) 기본 편성으로 지정했습니다.`);}
@@ -524,17 +564,18 @@ async function applyCode(){
   if(codeMode==='share'){await copyText(codeValue);notify('공유 코드를 복사했습니다.');return;}
   const decoded=await decodeArmyCode(extractCode($('army-code').value));
   if(decoded.season!==state.season)await switchSeason(decoded.season,{keep:true});
-  state.armies[codeSide]=validateArmy(state.data,decoded.army);
+  state.armies[codeSide]=validateArmy(state.data,prep(decoded.army));
   state.view=codeSide;dirty();render();$('code-dialog').close();notify(`${SIDE_NAME[codeSide]} 부대에 편성을 불러왔습니다.`);
 }
 async function shareMatch(){
   for(const s of SIDES){try{validateArmy(state.data,state.armies[s]);}catch(e){throw new Error(`${SIDE_NAME[s]} 부대: ${e.message}`);}}
   const [a,b]=await Promise.all(SIDES.map(s=>encodeArmyCode(state.armies[s],state.season,codeOpts())));
-  await copyText(shareUrl({s:state.season,a,b}));notify('두 부대가 담긴 대전 링크를 복사했습니다.');
+  await copyText(shareUrl({s:state.season,a,b,n:state.maxEng}));notify('두 부대가 담긴 대전 링크를 복사했습니다.');
 }
 function readHashCodes(){
   if(!location.hash||location.hash.length<6)return null;
-  const p=new URLSearchParams(location.hash.slice(1));const a=p.get('a'),b=p.get('b');
+  const p=new URLSearchParams(location.hash.slice(1));const a=p.get('a'),b=p.get('b'),n=Number(p.get('n'));
+  if(n)state.maxEng=n;
   return a||b?{a,b}:null;
 }
 
@@ -566,7 +607,7 @@ async function battle(){
   $('battle-hint').textContent='서버에서 전투를 계산하고 있습니다.';
   const slow=setTimeout(()=>{$('battle-hint').textContent='응답이 늦습니다. 서버가 잠에서 깨는 중일 수 있으니 조금만 기다려 주세요.';notify('서버 응답을 기다리는 중입니다.');},7000);
   try{
-    const report=await state.api.battle(l,r,{signal:ctrl.signal});
+    const report=await state.api.battle(l,r,{signal:ctrl.signal,max_engagements:state.maxEng});
     showReport(report);
     $('report-section').scrollIntoView({behavior:reduceMotion()?'instant':'smooth',block:'start'});
     notify('전투가 끝났습니다.');
@@ -587,6 +628,10 @@ function troopSeries(report){
   }
   return series;
 }
+function turnLabel(report,turn){
+  const l=report.timeline.find(x=>x.turn===turn&&x.engagement);
+  return l?`${l.engagement}경기 ${l.engagement_turn}턴`:`${turn}턴`;
+}
 function troopChart(report){
   const series=troopSeries(report),n=report.turns;
   const W=640,H=240,P={l:56,r:18,t:14,b:30},iw=W-P.l-P.r,ih=H-P.t-P.b;
@@ -594,13 +639,22 @@ function troopChart(report){
   const x=i=>P.l+(n?i/n:0)*iw,y=v=>P.t+ih-(v/max)*ih;
   const svg=sv('svg',{class:'chart',viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':`턴별 총 병력. 아군 ${fmt(series.left[0])}에서 ${fmt(series.left.at(-1))}, 상대 ${fmt(series.right[0])}에서 ${fmt(series.right.at(-1))}.`});
   for(const f of [0,.25,.5,.75,1]){const yy=y(max*f);svg.append(sv('line',{class:'grid',x1:P.l,x2:W-P.r,y1:yy,y2:yy}),sv('text',{class:'axis-label',x:P.l-8,y:yy+4,'text-anchor':'end'},fmt(Math.round(max*f))));}
-  for(let i=0;i<=n;i++)svg.append(sv('text',{class:'axis-label',x:x(i),y:H-8,'text-anchor':'middle'},i===0?'시작':`${i}`));
+  const engs=report.engagements||[];
+  if(engs.length>1){
+    let at=0;
+    for(const e of engs){
+      if(at>0)svg.append(sv('line',{class:'eng-sep',x1:x(at),x2:x(at),y1:P.t,y2:P.t+ih}));
+      svg.append(sv('text',{class:'axis-label',x:x(at),y:H-8,'text-anchor':at===0?'start':'middle'},`${e.number}경기`));
+      at+=e.turns;
+    }
+    svg.append(sv('text',{class:'axis-label',x:x(n),y:H-8,'text-anchor':'end'},`${n}턴`));
+  }else for(let i=0;i<=n;i++)svg.append(sv('text',{class:'axis-label',x:x(i),y:H-8,'text-anchor':'middle'},i===0?'시작':`${i}`));
   for(const s of SIDES){
     svg.append(sv('polyline',{class:`line ${s}`,points:series[s].map((v,i)=>`${x(i)},${y(v)}`).join(' ')}));
-    series[s].forEach((v,i)=>{const c=sv('circle',{class:`pt ${s}`,cx:x(i),cy:y(v),r:3.5});c.append(sv('title',{},`${SIDE_NAME[s]} ${i===0?'시작':i+'턴 종료'}: ${fmt(v)}`));svg.append(c);});
+    series[s].forEach((v,i)=>{const c=sv('circle',{class:`pt ${s}`,cx:x(i),cy:y(v),r:n>16?2.5:3.5});c.append(sv('title',{},`${SIDE_NAME[s]} ${i===0?'시작':turnLabel(report,i)+' 종료'}: ${fmt(v)}`));svg.append(c);});
   }
   return h('section',{class:'panel'},
-    h('h4',null,'턴별 총 병력',h('span',{text:'전보의 잔여 병력 기록으로 계산'})),
+    h('h4',null,'턴별 총 병력',h('span',{text:(report.engagements?.length>1?'경기 사이 병력 유지 · ':'')+'전보의 잔여 병력 기록으로 계산'})),
     h('div',{class:'chart-wrap'},svg),
     h('div',{class:'legend'},h('span',null,h('i',{class:'dot ally'}),`아군 ${report.armies.left.name}`),h('span',null,h('i',{class:'dot enemy'}),`상대 ${report.armies.right.name}`)));
 }
@@ -609,6 +663,10 @@ function tableEl(headers,rows){
     h('thead',null,h('tr',null,headers.map(t=>h('th',{scope:'col',text:t})))),
     h('tbody',null,rows.map(r=>h('tr',null,r.map(c=>h('td',null,c)))))));
 }
+const OUTCOME={
+  left_win:{cls:'left',stamp:'勝',label:'승리',prefix:true},right_win:{cls:'right',stamp:'敗',label:'패배',prefix:true},
+  left_advantage:{cls:'left',stamp:'優',label:'우세',prefix:true},right_advantage:{cls:'right',stamp:'劣',label:'열세',prefix:true},
+  balanced:{cls:'draw',stamp:'均',label:'비등'},draw:{cls:'draw',stamp:'和',label:'무승부'}};
 function drawReason(report){
   const pct=s=>report.armies[s].remaining_troops/Math.max(1,report.armies[s].initial_troops)*100;
   const l=pct('left'),r=pct('right'),lead=Math.abs(l-r)<1?null:l>r?'아군':'상대';
@@ -618,25 +676,34 @@ function drawReason(report){
 function showReport(report,sample=false){
   state.report=report;state.sample=sample;state.dirty=false;
   const L=report.armies.left,R=report.armies.right;
-  const title=report.result==='draw'?'무승부':report.result==='left'?'아군 승리':'상대 승리';
-  const stamp=report.result==='draw'?'和':'勝';
-  const verdict=h('header',{class:`verdict ${report.result}`},
+  // outcome이 없는 옛 전보는 result로 대체합니다.
+  const outcome=report.outcome||(report.result==='left'?'left_win':report.result==='right'?'right_win':'draw');
+  const o=OUTCOME[outcome]||OUTCOME.draw;
+  const label=report.outcome_label||o.label;
+  const title=o.prefix?`아군 ${label}`:label;
+  const kicker=report.engagement_count?`한국 시즌 ${report.season} · ${report.engagement_count}경기 ${report.turns}턴 · 최대 ${report.max_engagements}경기`:`한국 시즌 ${report.season} · ${report.turns}턴`;
+  const pa=report.power_assessment;
+  const verdict=h('header',{class:`verdict ${o.cls}`},
     h('div',null,
-      h('p',{class:'kicker',text:`한국 시즌 ${report.season} · ${report.turns}턴`}),
+      h('p',{class:'kicker',text:kicker}),
       h('h3',{text:title}),
-      report.result==='draw'?h('p',{class:'why',text:drawReason(report)}):null,
+      report.result_message?h('p',{class:'why',text:report.result_message}):report.result==='draw'?h('p',{class:'why',text:drawReason(report)}):null,
+      pa?.message&&!['left_win','right_win'].includes(outcome)?h('p',{class:'why',text:`${pa.message}${pa.confidence==='uncalibrated'?' (보정 전 추정)':''}`}):null,
       h('div',{class:'chips'},
         h('span',{class:'tag',text:sample?'예시 전보 — 현재 편성과 무관':'추정 전투'}),
         report.limited_support?h('span',{class:'tag warn',text:'일부 효과 반영 제한'}):null,
         h('span',{class:'tag stale',id:'report-stale',hidden:true,text:'편성이 바뀌었습니다 · 이전 결과'}))),
-    h('div',{class:'verdict-stamp','aria-hidden':'true',text:stamp}));
+    h('div',{class:'verdict-stamp','aria-hidden':'true',text:o.stamp}));
   const tally=h('div',{class:'tally'},SIDES.map(s=>{
     const a=report.armies[s],pct=Math.max(0,Math.min(100,a.remaining_troops/Math.max(1,a.initial_troops)*100));
     return h('section',{class:`tally-side ${s}`},
       h('h4',null,h('i',{class:'dot'}),`${SIDE_NAME[s]} · ${a.name}`),
       h('p',{class:'tally-num'},fmt(a.remaining_troops),h('small',{text:`/ ${fmt(a.initial_troops)} 잔여 (${pct.toFixed(0)}%)`})),
       h('div',{class:'bar'},h('span',{style:`width:${pct}%`})),
-      h('p',{class:'tally-stats'},h('span',null,'가한 피해',h('b',{text:fmt(a.damage)})),h('span',null,'회복',h('b',{text:fmt(a.healing)}))));
+      h('p',{class:'tally-stats'},h('span',null,'가한 피해',h('b',{text:fmt(a.damage)})),h('span',null,'회복',h('b',{text:fmt(a.healing)}))),
+      a.combat_power?h('p',{class:'tally-stats'},
+        h('span',null,'추정 전투력',h('b',{text:`${fmt(a.combat_power.initial)} → ${fmt(a.combat_power.remaining)}`})),
+        h('span',null,'생존 무장',h('b',{text:`${a.combat_power.remaining_survivors}/${a.combat_power.initial_survivors}`}))):null);
   }));
   const heroes=SIDES.flatMap(s=>report.armies[s].heroes.map(x=>({...x,side:s})));
   const maxDmg=Math.max(1,...heroes.map(x=>x.damage));
@@ -652,12 +719,28 @@ function showReport(report,sample=false){
     tableEl(['무장 · 전법','시전·등록','효과 발생','피해','회복'],tacticRows),
     h('p',{class:'muted-note',text:'효과 발생 횟수는 추정 모형의 집계로, 게임 화면의 발동 횟수와 다를 수 있습니다.'})));
   const notes=h('details',{class:'report-detail'},h('summary',{text:'추정 결과 안내'}),h('div',{class:'inner'},(report.notices||[]).map(t=>h('p',{class:'muted-note',text:t}))));
-  const card=h('article',{class:'report'+(reduceMotion()?'':' reveal')},verdict,tally,troopChart(report),dmg,state.dev?timelineBlock(report):null,heroTable,tactics,notes);
+  const card=h('article',{class:'report'+(reduceMotion()?'':' reveal')},verdict,tally,engagementPanel(report),troopChart(report),dmg,state.dev?timelineBlock(report):null,heroTable,tactics,notes);
   $('report').replaceChildren(card);$('download-report').disabled=false;
+}
+const ENG_REASON={turn_limit:'8턴 종료',annihilation:'전멸',mutual_annihilation:'양측 전멸'};
+const NEXT={power_advantage:'전력 차이로 재교전',power_balanced:'전력 비등 · 종료',annihilation:'전멸 · 종료',engagement_limit:'경기 수 상한 · 종료'};
+const ADV={left:'아군 우세',right:'상대 우세',balanced:'비등',neither:'—'};
+function engagementPanel(report){
+  const engs=report.engagements||[];if(!engs.length)return null;
+  const res=e=>e.result==='left'?'아군 승':e.result==='right'?'상대 승':ENG_REASON[e.reason]||e.reason;
+  const rows=engs.map(e=>[`${e.number}경기`,`${e.turns}턴`,res(e),
+    `${fmt(e.armies.left.remaining_troops)} / ${fmt(e.armies.left.initial_troops)}`,
+    `${fmt(e.armies.right.remaining_troops)} / ${fmt(e.armies.right.initial_troops)}`,
+    `${fmt(e.remaining_combat_power.left)} : ${fmt(e.remaining_combat_power.right)}`,
+    ADV[e.power_advantage]||'—',NEXT[e.continuation_reason]||(e.rematch?'재교전':'종료')]);
+  return h('section',{class:'panel'},
+    h('h4',null,'경기별 진행',h('span',{text:`경기당 최대 ${report.max_turns_per_engagement||8}턴 · 병력·부상병 유지, 임시 효과 초기화`})),
+    tableEl(['경기','턴','경기 결과','아군 병력','상대 병력','잔존 전투력 (아군:상대)','평가','다음'],rows),
+    h('p',{class:'muted-note',text:'전투력은 편성 비교용 추정 점수로, 게임 공식 전투력·승률이 아닙니다. 우세는 전멸 승패가 아닌 추정 평가입니다.'}));
 }
 function timelineBlock(report){
   const turns=[...new Set(report.timeline.map(l=>l.turn))].sort((a,b)=>a-b);
-  const turnSel=sel([{id:'all',name:'모든 턴'},...turns.map(t=>({id:t,name:t===0?'전투 준비':`${t}턴`}))],'all',{'aria-label':'턴 선택'});
+  const turnSel=sel([{id:'all',name:'모든 턴'},...turns.map(t=>({id:t,name:t===0?'전투 준비':turnLabel(report,t)}))],'all',{'aria-label':'턴 선택'});
   let side='all',core=true;
   const seg=(opts,get,set,label)=>{const g=h('div',{class:'seg',role:'group','aria-label':label});const paint=()=>g.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.v===String(get()))));opts.forEach(([v,t])=>g.append(h('button',{type:'button',dataset:{v},text:t,onclick:()=>{set(v);paint();draw();}})));paint();return g;};
   const sideSeg=seg([['all','전체'],['left','아군'],['right','상대']],()=>side,v=>side=v,'진영 필터');
@@ -671,7 +754,7 @@ function timelineBlock(report){
       const s=l.actor?.split(':')[0];
       if(side!=='all'&&s!==side)continue;
       if(core&&(l.kind==='action'||l.kind==='attack'))continue;
-      if(l.turn!==last){last=l.turn;list.append(h('li',{class:'turn-head',text:l.turn===0?'전투 준비':`${l.turn}턴`}));}
+      if(l.turn!==last){last=l.turn;list.append(h('li',{class:'turn-head',text:l.turn===0?'전투 준비':l.engagement?`${l.engagement}경기 ${l.engagement_turn}턴`:`${l.turn}턴`}));}
       const amt=l.amount!=null&&(l.kind==='damage'||l.kind==='heal')?h('span',{class:`amt ${l.kind==='damage'?'dmg':'heal'}`,text:`${l.kind==='damage'?'−':'+'}${fmt(l.amount)}`}):h('span');
       list.append(h('li',{class:`line k-${l.kind} ${s||''}`},h('span',{text:l.text}),amt));
     }
@@ -697,6 +780,11 @@ $('armies').addEventListener('click',e=>{
   if(t.dataset.presetSide)task(()=>showPresets(t.dataset.presetSide));
   else if(t.dataset.deckSide)showDecks(t.dataset.deckSide);
   else if(t.dataset.codeMode)task(()=>showCode(t.dataset.side,t.dataset.codeMode));
+  else if(t.dataset.alloc)applyEdit(side,slot,'allocation_mode',t.dataset.alloc);
+  else if(t.dataset.allocAll){
+    for(const x of state.armies[side].heroes)if(!x.total_stats&&Object.values(x.allocation).every(v=>!v)&&state.idx.hero.get(x.hero_id)?.recommended_attribute)x.allocation_mode='recommended';
+    dirty();render();notify('배분이 0인 무장을 추천 자동 배분으로 바꿨습니다.');
+  }
   else if(t.dataset.pick==='hero')pickHero(side,slot);
   else if(t.dataset.pick==='tactic')pickTactic(side,slot,Number(t.dataset.index));
   else if(t.dataset.tab){state.tabs.set(`${side}:${slot}`,t.dataset.tab);render();}
@@ -746,7 +834,7 @@ $('preset-list').onkeydown=e=>{
 };
 function presetArmy(){
   const t=presets.templates.find(x=>x.id===presetSelection);if(!t)throw new Error('편성을 먼저 고르세요.');
-  return {t,army:armyFromRecommendedDeck(t,state.season,state.data)};
+  return {t,army:prep(armyFromRecommendedDeck(t,state.season,state.data))};
 }
 $('preset-save').onclick=()=>task(async()=>{const {t,army}=presetArmy();decks.add(t.name,army);notify(`'${t.name}'을(를) 내 덱에 저장했습니다.`);},'preset-error');
 $('preset-base').onclick=()=>task(async()=>{
@@ -756,7 +844,7 @@ $('preset-base').onclick=()=>task(async()=>{
 },'preset-error');
 $('preset-apply').onclick=()=>task(async()=>{
   const t=presets.templates.find(x=>x.id===presetSelection);if(!t)throw new Error('불러올 편성을 고르세요.');
-  state.armies[presetSide]=armyFromRecommendedDeck(t,state.season,state.data);state.view=presetSide;dirty();render();$('preset-dialog').close();
+  state.armies[presetSide]=prep(armyFromRecommendedDeck(t,state.season,state.data));state.view=presetSide;dirty();render();$('preset-dialog').close();
   notify(`${t.name}을(를) 불러왔습니다. 위치·병력·장비 수치는 직접 조정하세요.`);
 },'preset-error');
 
@@ -777,15 +865,16 @@ document.addEventListener('click',e=>{
   else if(a==='share-match')task(shareMatch);
 });
 $('battle').onclick=()=>task(battle);
+$('max-eng').onchange=e=>{state.maxEng=Number(e.target.value);store.set(KEYS.eng,String(state.maxEng));};
 $('cancel-battle').onclick=()=>state.battleAbort?.abort();
 $('example-report').onclick=()=>task(async()=>{
-  const res=await fetch('./data/report-example-s3.json');if(!res.ok)throw new Error('예시 전보를 불러오지 못했습니다.');
+  const res=await fetch('./data/report-example.json');if(!res.ok)throw new Error('예시 전보를 불러오지 못했습니다.');
   showReport(await res.json(),true);$('report-section').scrollIntoView({behavior:reduceMotion()?'instant':'smooth',block:'start'});
 });
 $('download-report').onclick=()=>{
   if(!state.report)return;
   const url=URL.createObjectURL(new Blob([JSON.stringify(state.report,null,2)],{type:'application/json'}));
-  const a=h('a',{href:url,download:state.sample?'sample-battle-report-s3.json':`battle-report-${state.report.report_id}.json`});
+  const a=h('a',{href:url,download:state.sample?'sample-battle-report.json':`battle-report-${state.report.report_id}.json`});
   document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 };
 $('page-origin').textContent=location.origin;
@@ -819,7 +908,7 @@ async function init(){
       for(const [k,s] of [['a','left'],['b','right']]){
         const dec=shared[k];if(!dec)continue;
         if(dec.season!==state.season){msgs.push(`${SIDE_NAME[s]} 코드는 다른 시즌이라 건너뛰었습니다.`);continue;}
-        try{state.armies[s]=validateArmy(state.data,dec.army);}catch(e){msgs.push(`${SIDE_NAME[s]}: ${e.message}`);}
+        try{state.armies[s]=validateArmy(state.data,prep(dec.army));}catch(e){msgs.push(`${SIDE_NAME[s]}: ${e.message}`);}
       }
       notify(msgs.length?msgs.join(' '):'공유받은 편성을 불러왔습니다.',msgs.length>0);
       saveDraft();

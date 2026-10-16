@@ -38,8 +38,9 @@ export class BattleApi {
     } finally { clearTimeout(timer); signal?.removeEventListener('abort', abort); }
   }
   editor(season, options) { return this.request(`/api/v2/editor?season=${encodeURIComponent(season)}`, options); }
-  battle(leftCode, rightCode, options) {
-    return this.request('/api/v2/battles', {...options, method:'POST', body:{left_code:leftCode, right_code:rightCode}});
+  battle(leftCode, rightCode, {max_engagements=8,...options}={}) {
+    if(!Number.isInteger(max_engagements)||max_engagements<1||max_engagements>8)throw new Error('최대 경기 수는 1~8 사이의 정수로 입력하세요.');
+    return this.request('/api/v2/battles', {...options, method:'POST', body:{left_code:leftCode, right_code:rightCode,max_engagements}});
   }
   async battleFromArmies(left, right, season, {data_version=null,...options}={}) {
     const [leftCode,rightCode] = await Promise.all([encodeArmyCode(left,season,{data_version}),encodeArmyCode(right,season,{data_version})]);

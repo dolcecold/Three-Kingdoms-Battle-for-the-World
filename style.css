@@ -443,3 +443,12 @@ dialog[open]{animation:pop .2s ease-out}
 .verdict .why{font-size:13px;color:var(--muted);margin-top:6px}
 #report-heading{user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
 @media (max-width:600px){.preset-foot .foot-gap{display:none}.preset-foot button{flex:1 1 40%}}
+
+/* 최대 경기 수·배분 방식·경기 구분선 */
+.eng-field{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:650;color:var(--muted)}
+.eng-field select{width:auto;padding:5px 26px 5px 10px;font-size:13px;font-weight:650;border-radius:999px}
+.alloc-seg{align-self:start;width:max-content}
+.chart .eng-sep{stroke:var(--brass);stroke-width:1;stroke-dasharray:4 4}
+.army-hint{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+@media (max-width:900px){.eng-field{order:2}.eng-field select{padding:4px 22px 4px 8px;font-size:12px}.spine{gap:8px}.spine-score .score small{display:none}}
+@media (max-width:900px){.eng-field span{display:none}.seal{white-space:nowrap;padding:0 18px}.seal span{white-space:nowrap}}

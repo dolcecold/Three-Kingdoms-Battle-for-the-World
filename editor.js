@@ -35,11 +35,14 @@ export function validateArmy(data,army){
     const row=data.heroes.find(x=>x.id===h.hero_id);
     if(!row)fail('현재 시즌에서 선택할 수 없는 무장이 있습니다.');
     if(!integer(h.level,1,50)||!integer(h.troops,1,50000))fail(`${row.name}: 레벨은 1~50, 병력은 1~50,000으로 입력하세요.`);
+    if(!integer(h.breakthrough??0,0,5)||!['manual','recommended'].includes(h.allocation_mode??'manual'))fail(`${row.name}: 무장 돌파는 0~5, 배분 방식은 직접 또는 추천으로 선택하세요.`);
+    if(h.promotion!=null&&(!integer(h.promotion,0,5)||(h.innate.grade!==0&&h.innate.grade!==h.promotion)))fail(`${row.name}: 무장 승품은 0~5로 입력하고 호환용 고유 grade와 일치시켜 주세요.`);
+    if(h.allocation_mode==='recommended'&&h.total_stats==null&&!row.recommended_attribute)fail(`${row.name}: 추천 배분 속성이 확인되지 않았습니다. 직접 배분을 선택하세요.`);
     for(const stats of [h.allocation,h.equipment,h.horse,...(h.total_stats==null?[]:[h.total_stats])]){
       if(!stats||STAT_FIELDS.some(([key])=>!range(stats[key],0,2000)))fail(`${row.name}: 능력치는 0~2,000 사이의 숫자로 입력하세요.`);
     }
     if(!Array.isArray(h.learned)||h.learned.length>2||new Set(h.learned.map(s=>s.skill_id)).size!==h.learned.length)fail(`${row.name}: 학습 전법은 중복 없이 2개까지 선택하세요.`);
-    for(const s of [h.innate,...h.learned])if(!s||!integer(s.level,1,10)||!integer(s.grade,0,5))fail(`${row.name}: 전법 레벨은 1~10, 승급은 0~5로 입력하세요.`);
+    for(const s of [h.innate,...h.learned])if(!s||!integer(s.level,1,10)||!integer(s.grade,0,5)||s.breakthrough!=null&&(!integer(s.breakthrough,0,5)||(s.grade!==0&&s.grade!==s.breakthrough)))fail(`${row.name}: 전법 레벨은 1~10, 돌파는 0~5로 입력하고 호환용 grade와 일치시켜 주세요.`);
     for(const s of h.learned){
       const tactic=data.tactics.find(t=>t.id===s.skill_id);
       if(!tactic)fail(`${row.name}: 선택할 수 없는 학습 전법이 있습니다.`);

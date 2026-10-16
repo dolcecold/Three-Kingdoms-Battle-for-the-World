@@ -1,5 +1,5 @@
 {
-  "data_version": "kr-editor-10a0bc018ceefbcf",
+  "data_version": "kr-editor-b6399127cd097e9b",
   "season": 1,
   "experimental": false,
   "heroes": [
@@ -12,6 +12,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 100001,
         "name": "난세의 간웅",
@@ -322,6 +323,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 100101,
         "name": "백병 혈전",
@@ -662,6 +664,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 100201,
         "name": "고대의 악래",
@@ -987,6 +990,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 100501,
         "name": "주도면밀",
@@ -1225,6 +1229,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 100701,
         "name": "침착한 지휘",
@@ -1439,6 +1444,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 100801,
         "name": "인재 등용",
@@ -1686,6 +1692,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 101001,
         "name": "적진 돌파",
@@ -1996,6 +2003,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 101201,
         "name": "둔전령",
@@ -2327,6 +2335,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 101301,
         "name": "승승장구",
@@ -2637,6 +2646,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "speed",
       "innate": {
         "id": 101601,
         "name": "신속기습",
@@ -2974,6 +2984,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 101901,
         "name": "용맹의 화신",
@@ -3212,6 +3223,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 102301,
         "name": "강렬",
@@ -3441,6 +3453,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 102401,
         "name": "양번 사수",
@@ -3700,6 +3713,7 @@
       "faction_name": "위",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 102601,
         "name": "바람과 눈꽃",
@@ -4043,6 +4057,7 @@
       "faction_name": "촉",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 200001,
         "name": "백성과 함께",
@@ -4398,6 +4413,7 @@
       "faction_name": "촉",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 200101,
         "name": "화하 진압",
@@ -4711,6 +4727,7 @@
       "faction_name": "촉",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 200201,
         "name": "만인지적",
@@ -5021,6 +5038,7 @@
       "faction_name": "촉",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 200301,
         "name": "초선차전",
@@ -5289,6 +5307,7 @@
       "faction_name": "촉",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 200501,
         "name": "겸손한 자세",
@@ -5647,6 +5666,7 @@
       "faction_name": "촉",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 200701,
         "name": "전장 평정",
@@ -5948,6 +5968,7 @@
       "faction_name": "촉",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 200901,
         "name": "목우유마",
@@ -6264,6 +6285,7 @@
       "faction_name": "촉",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 201201,
         "name": "칠진칠출",
@@ -6631,6 +6653,7 @@
       "faction_name": "촉",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 201501,
         "name": "기병 돌격",
@@ -6926,6 +6949,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 300001,
         "name": "강동 호거",
@@ -7287,6 +7311,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 300101,
         "name": "강동 제패",
@@ -7600,6 +7625,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 300201,
         "name": "궁희",
@@ -7946,6 +7972,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 300301,
         "name": "천향",
@@ -8217,6 +8244,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 300401,
         "name": "국색",
@@ -8530,6 +8558,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 300501,
         "name": "형주 분할",
@@ -8855,6 +8884,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 300601,
         "name": "수전의 제왕",
@@ -9243,6 +9273,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 300701,
         "name": "기지의 승리",
@@ -9526,6 +9557,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 300901,
         "name": "흥왕의 위업",
@@ -9905,6 +9937,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 301001,
         "name": "백의도강",
@@ -10224,6 +10257,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 301101,
         "name": "완벽한 사격",
@@ -10651,6 +10685,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 301201,
         "name": "고육지계",
@@ -10973,6 +11008,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 301301,
         "name": "무열황제",
@@ -11160,6 +11196,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 400001,
         "name": "무쌍의 용사",
@@ -11539,6 +11576,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 400201,
         "name": "비분시",
@@ -11852,6 +11890,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 400401,
         "name": "군웅 집결",
@@ -12192,6 +12231,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 401001,
         "name": "군주 시해",
@@ -12403,6 +12443,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 401101,
         "name": "황천의 시대",
@@ -12614,6 +12655,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 401401,
         "name": "장군의 무용",
@@ -12990,6 +13032,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 401701,
         "name": "남다른 완력",
@@ -13327,6 +13370,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 401801,
         "name": "치열한 교전",
@@ -13664,6 +13708,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 401901,
         "name": "마비산",
@@ -13980,6 +14025,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 402301,
         "name": "폐월",
@@ -14269,6 +14315,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 402601,
         "name": "필사의 돌격",
@@ -14681,6 +14728,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 402801,
         "name": "압도적 권력",
@@ -14928,6 +14976,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 402901,
         "name": "눈부신 자태",
@@ -15241,6 +15290,7 @@
       "faction_name": "위",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 500001,
         "name": "민첩한 대응",
@@ -15557,6 +15607,7 @@
       "faction_name": "위",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 500101,
         "name": "지피지기",
@@ -15873,6 +15924,7 @@
       "faction_name": "위",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 500201,
         "name": "형강 사수",
@@ -16084,6 +16136,7 @@
       "faction_name": "위",
       "rarity": 3,
       "rarity_name": "B",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 500301,
         "name": "토벌의 격문",
@@ -16102,6 +16155,7 @@
       "faction_name": "위",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "might",
       "innate": {
         "id": 500401,
         "name": "팔호의 수장",
@@ -16409,6 +16463,7 @@
       "faction_name": "위",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 500501,
         "name": "비상",
@@ -16725,6 +16780,7 @@
       "faction_name": "위",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 500601,
         "name": "예측 불가",
@@ -16936,6 +16992,7 @@
       "faction_name": "위",
       "rarity": 3,
       "rarity_name": "B",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 500701,
         "name": "단아한 선비",
@@ -16954,6 +17011,7 @@
       "faction_name": "위",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "might",
       "innate": {
         "id": 500801,
         "name": "강가 격파",
@@ -17261,6 +17319,7 @@
       "faction_name": "위",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 500901,
         "name": "옹량 지휘",
@@ -17472,6 +17531,7 @@
       "faction_name": "촉",
       "rarity": 3,
       "rarity_name": "B",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 501201,
         "name": "형세 판단",
@@ -17490,6 +17550,7 @@
       "faction_name": "촉",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 501601,
         "name": "청룡 출격",
@@ -17809,6 +17870,7 @@
       "faction_name": "촉",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 501801,
         "name": "공리공론",
@@ -18092,6 +18154,7 @@
       "faction_name": "촉",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 501901,
         "name": "뛰어난 인재",
@@ -18408,6 +18471,7 @@
       "faction_name": "촉",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 502001,
         "name": "충성과 용맹",
@@ -18622,6 +18686,7 @@
       "faction_name": "촉",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 502101,
         "name": "흰눈썹 장군",
@@ -18938,6 +19003,7 @@
       "faction_name": "촉",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "might",
       "innate": {
         "id": 502201,
         "name": "완력",
@@ -19272,6 +19338,7 @@
       "faction_name": "오",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "might",
       "innate": {
         "id": 502301,
         "name": "무외의 경지",
@@ -19579,6 +19646,7 @@
       "faction_name": "오",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "might",
       "innate": {
         "id": 502501,
         "name": "명사수",
@@ -19913,6 +19981,7 @@
       "faction_name": "오",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "might",
       "innate": {
         "id": 502701,
         "name": "도약일격",
@@ -20220,6 +20289,7 @@
       "faction_name": "오",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 502801,
         "name": "천하무략",
@@ -20536,6 +20606,7 @@
       "faction_name": "오",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "might",
       "innate": {
         "id": 502901,
         "name": "용감한 선봉",
@@ -20870,6 +20941,7 @@
       "faction_name": "오",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "might",
       "innate": {
         "id": 503201,
         "name": "진군 차단",
@@ -21204,6 +21276,7 @@
       "faction_name": "오",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 503401,
         "name": "백리의성",
@@ -21418,6 +21491,7 @@
       "faction_name": "군웅",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 503901,
         "name": "격렬한 언사",
@@ -21701,6 +21775,7 @@
       "faction_name": "군웅",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 504401,
         "name": "천공장군",
@@ -21912,6 +21987,7 @@
       "faction_name": "군웅",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "defence",
       "innate": {
         "id": 504701,
         "name": "반란 평정",
@@ -22123,6 +22199,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "might",
       "innate": {
         "id": 504801,
         "name": "괴술",
@@ -22433,6 +22510,7 @@
       "faction_name": "군웅",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 505101,
         "name": "나라의 기둥",
@@ -22644,6 +22722,7 @@
       "faction_name": "군웅",
       "rarity": 4,
       "rarity_name": "A",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 505201,
         "name": "아첨의 귀재",
@@ -22927,6 +23006,7 @@
       "faction_name": "군웅",
       "rarity": 3,
       "rarity_name": "B",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 505401,
         "name": "남부 정벌",
@@ -22945,6 +23025,7 @@
       "faction_name": "군웅",
       "rarity": 5,
       "rarity_name": "S",
+      "recommended_attribute": "intelligence",
       "innate": {
         "id": 505501,
         "name": "도술의 귀재",
@@ -26821,13 +26902,55 @@
     }
   ],
   "rules": {
+    "max_hero_breakthrough": 5,
+    "points_per_breakthrough": 10,
+    "allocation_level_step": 10,
+    "points_per_level_step": 10,
+    "max_hero_promotion": 5,
+    "max_tactic_breakthrough": 5,
+    "default_max_engagements": 8,
+    "min_engagements": 1,
+    "max_engagements": 8,
+    "max_turns_per_engagement": 8,
     "hero_count": 3,
     "max_learned_per_hero": 2,
     "max_legendary_per_hero": 1,
     "max_proficiencies_per_hero": 3,
     "description_skill_level": 10,
     "description_skill_grade": 0,
-    "equipment_input": "attribute_totals"
+    "equipment_input": "attribute_totals",
+    "progression_inputs": [
+      {
+        "key": "hero_breakthrough",
+        "label": "무장 돌파",
+        "path": "army.heroes[].breakthrough",
+        "minimum": 0,
+        "maximum": 5,
+        "default": 0,
+        "description": "스탯 배분점수 증가. 추천 배분 모드에서 자동 반영하며 직접 배분에는 이미 배분한 총점을 입력",
+        "legacy_path": null
+      },
+      {
+        "key": "tactic_breakthrough",
+        "label": "전법 돌파",
+        "path": "army.heroes[].learned[].breakthrough",
+        "minimum": 0,
+        "maximum": 5,
+        "default": 0,
+        "description": "학습 전법 수치 강화. 고유 전법은 무장 승품 사용",
+        "legacy_path": "army.heroes[].learned[].grade"
+      },
+      {
+        "key": "hero_promotion",
+        "label": "무장 승품",
+        "path": "army.heroes[].promotion",
+        "minimum": 0,
+        "maximum": 5,
+        "default": 0,
+        "description": "고유 전법의 수치 강화. 무장 스탯 돌파와 별개",
+        "legacy_path": "army.heroes[].innate.grade"
+      }
+    ]
   },
   "examples": [
     {
@@ -26840,6 +26963,9 @@
           "slot": 1,
           "level": 50,
           "troops": 10000,
+          "breakthrough": 0,
+          "promotion": null,
+          "allocation_mode": "manual",
           "allocation": {
             "might": 0.0,
             "intelligence": 0.0,
@@ -26873,6 +26999,9 @@
           "slot": 2,
           "level": 50,
           "troops": 10000,
+          "breakthrough": 0,
+          "promotion": null,
+          "allocation_mode": "manual",
           "allocation": {
             "might": 0.0,
             "intelligence": 0.0,
@@ -26906,6 +27035,9 @@
           "slot": 3,
           "level": 50,
           "troops": 10000,
+          "breakthrough": 0,
+          "promotion": null,
+          "allocation_mode": "manual",
           "allocation": {
             "might": 0.0,
             "intelligence": 0.0,
@@ -26946,6 +27078,9 @@
           "slot": 1,
           "level": 50,
           "troops": 10000,
+          "breakthrough": 0,
+          "promotion": null,
+          "allocation_mode": "manual",
           "allocation": {
             "might": 0.0,
             "intelligence": 0.0,
@@ -26979,6 +27114,9 @@
           "slot": 2,
           "level": 50,
           "troops": 10000,
+          "breakthrough": 0,
+          "promotion": null,
+          "allocation_mode": "manual",
           "allocation": {
             "might": 0.0,
             "intelligence": 0.0,
@@ -27012,6 +27150,9 @@
           "slot": 3,
           "level": 50,
           "troops": 10000,
+          "breakthrough": 0,
+          "promotion": null,
+          "allocation_mode": "manual",
           "allocation": {
             "might": 0.0,
             "intelligence": 0.0,
@@ -27045,6 +27186,8 @@
   ],
   "notices": [
     "추정 전투입니다. 일부 효과의 반영 범위가 제한되며 실제 게임 결과와 다를 수 있습니다.",
+    "무장 breakthrough는 배분점수, 무장 promotion은 고유 전법 강화, learned[].breakthrough는 학습 전법 강화입니다. 기존 grade는 같은 강화 단계의 호환 필드이며 중복 가산하지 않습니다.",
+    "추천 배분은 레벨 구간·무장 돌파 배분점을 자동 적용합니다. 직접 배분·총 능력치 입력에는 돌파분을 중복 추가하지 않습니다.",
     "일반 병법 후보는 정적 허용 범위입니다. 계정 보유·재추첨 결과·재화 지불 해금과 특수 페이지는 반영하지 않습니다."
   ]
 }

@@ -1,4 +1,4 @@
-# 천하결전 덱 시뮬레이터 — GitHub Pages 프런트 v0.6.2
+# 천하결전 덱 시뮬레이터 — GitHub Pages 프런트 v0.7.0
 
 부대 편성 → 공유 → 전투 → 전보 확인을 한 화면에서 하는 정적 페이지입니다. 빌드나 패키지 설치 없이 이 폴더를 그대로 올리면 됩니다.
 
@@ -39,9 +39,9 @@ export const API_BASE_URL = 'https://내앱.fastapicloud.dev';
 | `recommended-decks.js` | 추천덱 조회 헬퍼 | 변경 없음 |
 | `data/editor-s1~3.json` | 서버 연결 전 편성 스냅샷 | 변경 없음 |
 | `data/recommended-decks.json` | 추천덱 메타 v1.1.0 | 변경 없음 |
-| `data/report-example-s3.json` | 예시 전보 | 변경 없음 |
+| `data/report-example.json` | 예시 전보 (백엔드 계약 0.5.0 `examples/report-s2.json`) | 변경 없음 |
 
-사용 API는 그대로입니다: `GET /api/v2/editor?season=N`, `POST /api/v2/battles {left_code,right_code}`.
+사용 API: `GET /api/v2/editor?season=N`, `POST /api/v2/battles {left_code,right_code,max_engagements}` (백엔드 계약 0.5.0).
 
 ## v0.6.0 변경 사항
 
@@ -67,6 +67,14 @@ export const API_BASE_URL = 'https://내앱.fastapicloud.dev';
 - 추천덱의 동명 무장(예: 황보숭 A/S등급)은 후보로 보여주고 사용자가 직접 고르게 합니다. 전법이 없는 덱은 빈 슬롯으로 불러옵니다.
 - 화면에서 쓰지 않는 파일(`mapping-audit.json`, `recommended-decks.schema.json`, `RECOMMENDED_DECKS.md`)은 배포본에서 뺐습니다.
 
+## v0.7.0 변경 사항 (백엔드 계약 0.5.0)
+
+- **강화 입력:** 무장 돌파(`breakthrough`), 무장 승품(`promotion`), 전법 돌파(`learned[].breakthrough`)를 입력합니다. 옛 코드·저장 덱·초안의 `innate.grade`·`learned[].grade`는 불러올 때 새 필드로 옮기고 0으로 정리합니다. 화면에 grade는 표시하지 않습니다.
+- **능력치 배분 방식:** `추천 자동 배분`(무장별 추천 속성에 레벨·돌파 배분점 자동 적용)과 `직접 배분`을 고릅니다. 배분 0인 무장이 있으면 부대 아래에서 한 번에 추천 배분으로 바꿀 수 있습니다. 기본값은 계약과 같은 직접 배분입니다.
+- **최대 경기 수:** 전투 버튼 옆에서 1~8경기를 고릅니다(기본 8, 브라우저에 기억). 부대 코드에는 넣지 않고, 대전 링크에는 `n=`으로 함께 담습니다.
+- **전보:** 주 결과를 `outcome`(아군 승리·패배·우세·열세, 비등, 무승부)으로 표시하고 `result_message`와 잔존 전력 평가 문구를 보여줍니다. 추정 전투력(시작→종료)·생존 무장 수, 경기별 진행 표, 경기 경계가 표시된 병력 그래프, "2경기 1턴" 형식의 턴별 전보를 추가했습니다. 우세는 공식 승리로 바꾸어 표시하지 않습니다.
+- **오류:** 504(계산 시간 초과)에는 경기 수를 줄이라는 안내, 503에는 잠시 뒤 재시도 안내를 붙입니다. 자동 재요청은 하지 않습니다.
+
 ## v0.6.2 변경 사항
 
 - **내 덱:** 각 부대의 `내 덱` 버튼으로 현재 편성을 이름 붙여 저장·불러오기·덮어쓰기·삭제합니다. 브라우저 localStorage에 시즌별로 저장됩니다.
@@ -76,7 +84,7 @@ export const API_BASE_URL = 'https://내앱.fastapicloud.dev';
 
 ## 데이터만 갱신할 때
 
-새 패키지를 받으면 `data/` 안의 JSON 5개와 `army-code.js`, `editor.js`, `recommended-decks.js`를 교체합니다. `api-client.js`를 교체했다면 `this.fetchImpl = fetchImpl;` 줄을 `this.fetchImpl = (...args) => fetchImpl(...args);`로 다시 바꿉니다.
+새 패키지를 받으면 `data/`의 `editor-s1~3.json`, `recommended-decks.json`(예시 전보를 바꾸려면 `examples/report-s2.json` → `data/report-example.json`)과 `army-code.js`, `editor.js`, `recommended-decks.js`를 교체합니다. `api-client.js`를 교체했다면 `this.fetchImpl = fetchImpl;` 줄을 `this.fetchImpl = (...args) => fetchImpl(...args);`로 다시 바꿉니다.
 
 ## 범위와 한계
 
