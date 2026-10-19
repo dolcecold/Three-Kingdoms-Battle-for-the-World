@@ -279,7 +279,7 @@ function heroCard(side,army,hero){
     h('span',{class:'slot-badge'+(pos==='back'?' back':''),'aria-label':`${hero.slot}번 위치, ${pos==='back'?'후열':'전열'}`},h('b',{text:hero.slot}),h('small',{text:pos==='back'?'후열':'전열'})),
     h('button',{class:'hero-pick',type:'button','aria-label':`${SIDE_NAME[side]} ${hero.slot}번 무장 ${row.name}, 바꾸기`,dataset:{pick:'hero',focus:fkey(side,hero.slot,'pick-hero')}},
       h('span',{class:'name'},h('span',{text:row.name}),chevron()),
-      h('span',{class:'meta',text:[row.faction_name,row.rarity_name&&`${row.rarity_name}등급`,arm?.name||'병종 미상',`Lv${hero.level}`,hero.breakthrough?`돌파${hero.breakthrough}`:null,hero.promotion?`승품${hero.promotion}`:null].filter(Boolean).join(' · ')})),
+      h('span',{class:'meta',text:[row.faction_name,row.rarity_name&&`${row.rarity_name}등급`,arm?.name||'병종 미상',`Lv${hero.level}`,hero.breakthrough?`승급·돌파${hero.breakthrough}`:null,hero.promotion?`고유 승품${hero.promotion}`:null].filter(Boolean).join(' · ')})),
     h('label',{class:'troops-field'},'병력',num(hero.troops,{min:1,max:50000,step:1,dataset:{path:'troops',focus:fkey(side,hero.slot,'troops')}}))
   );
   const rom=romanceFor(d,hero),inn=innateFor(d,hero)||row.innate;
@@ -296,7 +296,7 @@ function heroCard(side,army,hero){
   const tactics=h('div',{class:'tactic-row'});
   hero.learned.forEach((s,i)=>{const t=ix.tactic.get(s.skill_id);tactics.append(h('button',{class:'tactic-btn',type:'button',dataset:{pick:'tactic',index:i,focus:fkey(side,hero.slot,`pick-tactic-${i}`)},'aria-label':`학습 전법 ${i+1}: ${t?.name||'알 수 없음'}, 바꾸기`},
     h('span',{class:'t-name',text:t?.name||`ID ${s.skill_id}`}),
-    h('span',{class:'t-meta'},t?h('span',{class:`tag type-${t.type_name}`,text:t.type_name}):null,`Lv${s.level} · 돌파${s.breakthrough??0}`)));});
+    h('span',{class:'t-meta'},t?h('span',{class:`tag type-${t.type_name}`,text:t.type_name}):null,t&&t.variant&&t.variant!=='standard'?h('span',{class:'tag variant',text:t.variant_label||t.variant}):null,`Lv${s.level} · 승급·돌파${s.breakthrough??0}`)));});
   if(hero.learned.length<2)tactics.append(h('button',{class:'tactic-btn empty',type:'button',dataset:{pick:'tactic',index:hero.learned.length,focus:fkey(side,hero.slot,`pick-tactic-${hero.learned.length}`)},text:'+ 전법 추가'}));
   const slots=row.warbook_slots.length;
   const adv=h('details',{class:'advanced',open:state.open.has(key),dataset:{openKey:key}},
@@ -313,15 +313,15 @@ function advancedBody(side,army,hero,row,arm,key){
     panel.append(h('div',{class:'grid-4'},
       h('label',{class:'field'},'위치',sel([1,2,3].map(id=>({id,name:`${id}번`})),hero.slot,{dataset:{path:'position_slot',focus:F('position')}})),
       h('label',{class:'field'},'무장 레벨',num(hero.level,{min:1,max:50,step:1,dataset:{path:'level',focus:F('level')}})),
-      h('label',{class:'field'},'무장 돌파',num(hero.breakthrough,{min:0,max:5,step:1,dataset:{path:'breakthrough',focus:F('breakthrough')}})),
-      h('label',{class:'field'},'무장 승품',num(hero.promotion??0,{min:0,max:5,step:1,dataset:{path:'promotion',focus:F('promotion')}})),
+      h('label',{class:'field'},'장수 승급·돌파',num(hero.breakthrough,{min:0,max:5,step:1,dataset:{path:'breakthrough',focus:F('breakthrough')}})),
+      h('label',{class:'field'},'고유 전법 승품',num(hero.promotion??0,{min:0,max:5,step:1,dataset:{path:'promotion',focus:F('promotion')}})),
       h('label',{class:'field'},'고유 전법 Lv',num(hero.innate.level,{min:1,max:10,step:1,dataset:{path:'innate.level',focus:F('innate.level')}}))),
-      h('p',{class:'muted-note',text:'무장 돌파는 능력치 배분점을, 무장 승품은 고유 전법을 강화합니다.'}));
+      h('p',{class:'muted-note',text:`장수 승급·돌파는 단계당 능력치 배분점 ${d.rules.points_per_breakthrough??10}점을 더하고(지금 ${(hero.breakthrough||0)*(d.rules.points_per_breakthrough??10)}점), 고유 전법 승품은 고유 전법의 강화 수치에 적용됩니다.`}));
     hero.learned.forEach((s,i)=>panel.append(
       h('p',{class:'sub-head'},ix.tactic.get(s.skill_id)?.name||'학습 전법',h('span',{text:`학습 전법 ${i+1}`})),
       h('div',{class:'grid-2'},
         h('label',{class:'field'},'레벨',num(s.level,{min:1,max:10,step:1,dataset:{path:`learned_upgrade.${i}.level`,focus:F(`lu${i}l`)}})),
-        h('label',{class:'field'},'전법 돌파',num(s.breakthrough??0,{min:0,max:5,step:1,dataset:{path:`learned_upgrade.${i}.breakthrough`,focus:F(`lu${i}b`)}})))));
+        h('label',{class:'field'},'학습 전법 승급·돌파',num(s.breakthrough??0,{min:0,max:5,step:1,dataset:{path:`learned_upgrade.${i}.breakthrough`,focus:F(`lu${i}b`)}})))));
     panel.append(h('p',{class:'muted-note',text:'위치를 바꾸면 해당 위치의 무장과 자리를 맞바꿉니다. 레벨을 낮추면 해금되지 않은 병법 슬롯은 비워집니다.'}));
   }else if(tab==='books'){
     const rom=romanceFor(d,hero),page=hero.warbook_page||'normal';
@@ -368,11 +368,11 @@ function advancedBody(side,army,hero,row,arm,key){
     panel.append(h('div',{class:'seg alloc-seg',role:'group','aria-label':'능력치 배분 방식'},
       h('button',{type:'button','aria-pressed':String(rec),disabled:!attr,dataset:{alloc:'recommended',focus:F('alloc-rec')},text:'추천 자동 배분'}),
       h('button',{type:'button','aria-pressed':String(!rec),dataset:{alloc:'manual',focus:F('alloc-man')},text:'직접 배분'})));
-    if(rec)panel.append(h('p',{class:'desc-box',text:`배분점 ${pts}점을 ${attr}에 자동 배분합니다. (레벨 ${hero.level} 기준 + 무장 돌파 ${hero.breakthrough}단계)`}));
+    if(rec)panel.append(h('p',{class:'desc-box',text:`배분점 ${pts}점을 ${attr}에 자동 배분합니다. (레벨 ${hero.level} 기준 ${pts-(hero.breakthrough||0)*(d.rules.points_per_breakthrough??10)}점 + 장수 승급·돌파 ${hero.breakthrough||0}단계 × ${d.rules.points_per_breakthrough??10}점)`}));
     else{
       const sum=STAT_FIELDS.reduce((n,[k])=>n+Number(hero.allocation[k]||0),0);
       panel.append(h('p',{class:'sub-head'},'능력치 배분',h('span',{text:`합계 ${fmt(sum)}점 · 기본 배분점 ${pts}점`})),statGrid(hero.allocation,'allocation',F),
-        h('p',{class:'muted-note',text:attr?`무장 돌파분까지 포함한 실제 배분 총점을 입력합니다. 이 무장의 추천 속성은 ${attr}입니다.`:'무장 돌파분까지 포함한 실제 배분 총점을 입력합니다.'}));
+        h('p',{class:'muted-note',text:attr?`장수 승급·돌파로 늘어난 배분점까지 포함한 실제 배분 총점을 입력합니다. 이 무장의 추천 속성은 ${attr}입니다.`:'장수 승급·돌파로 늘어난 배분점까지 포함한 실제 배분 총점을 입력합니다.'}));
     }
     for(const [k,label,idKey,catalog] of [['equipment','장비','equipment_item_id',d.equipment],['horse','말','horse_item_id',d.horses]]){
       const item=hero[idKey]!=null?catalog?.find(x=>x.id===hero[idKey]):null;
@@ -548,13 +548,16 @@ function pickItem(side,slot,kind){
 function pickTactic(side,slot,index){
   const army=state.armies[side],hero=army.heroes.find(x=>x.slot===slot),d=state.data;
   const allowed=new Set(tacticChoices(d,army,hero,index).map(t=>t.id));
+  const groupOf=t=>t.exclusive_group_id??t.base_skill_id??t.id;
+  const groupClash=t=>{for(const x of army.heroes)for(const [i,s] of x.learned.entries()){if(x===hero&&i===index)continue;const o=state.idx.tactic.get(s.skill_id);if(o&&o.id!==t.id&&groupOf(o)===groupOf(t))return o.name;}return null;};
   const items=d.tactics.map(t=>{
     const own=hero.learned.some((s,i)=>i!==index&&s.skill_id===t.id),dis=!allowed.has(t.id);
-    return {id:t.id,name:t.name,tags:[h('span',{class:`tag type-${t.type_name}`,text:t.type_name}),t.rarity_name?h('span',{class:'tag'+(t.rarity>=3?' legend':''),text:t.rarity_name}):null,t.variant==='shadow'?h('span',{class:'tag',text:'투영'}):null,t.effect_status==='not_implemented'?h('span',{class:'tag warn',text:'효과 미반영'}):null,t.max_per_army>1?h('span',{class:'tag',text:`부대당 ${t.max_per_army}개`}):null],facets:{type:t.type_name,rarity:t.rarity_name},desc:t.description,search:(t.name+t.description+t.type_name).replace(/\s/g,'').toLowerCase(),disabled:dis,why:dis?(own?'이 무장이 이미 배웠습니다.':`부대 내 사용 한도(${t.max_per_army}개)에 도달했습니다.`):''};
+    return {id:t.id,name:t.name,tags:[h('span',{class:`tag type-${t.type_name}`,text:t.type_name}),t.rarity_name?h('span',{class:'tag'+(t.rarity>=3?' legend':''),text:t.rarity_name}):null,t.variant&&t.variant!=='standard'?h('span',{class:'tag variant',text:t.variant_label||t.variant}):null,t.expires_with_season?h('span',{class:'tag warn',text:'이번 시즌 전용'}):null,t.effect_status==='not_implemented'?h('span',{class:'tag warn',text:'효과 미반영'}):null,t.max_per_army>1?h('span',{class:'tag',text:`부대당 ${t.max_per_army}개`}):null],facets:{type:t.type_name,rarity:t.rarity_name,variant:t.variant_label||'일반'},desc:t.description,search:(t.name+t.description+t.type_name+(t.variant_label||'')).replace(/\s/g,'').toLowerCase(),disabled:dis,why:dis?(own?'이 무장이 이미 배웠습니다.':groupClash(t)?`같은 원본의 ${groupClash(t)}이(가) 이미 부대에 있습니다. 일반·투영·반전은 함께 쓸 수 없습니다.`:`부대 내 사용 한도(${t.max_per_army}개)에 도달했습니다.`):''};
   });
   const order=['액티브','패시브','지휘','추격'];
   const groups=[{key:'type',label:'유형',options:[...new Set(d.tactics.map(t=>t.type_name))].sort((a,b)=>(order.indexOf(a)+1||9)-(order.indexOf(b)+1||9))},
-    {key:'rarity',label:'등급',options:['S','A','B'].filter(r=>d.tactics.some(t=>t.rarity_name===r))}];
+    {key:'rarity',label:'등급',options:['S','A','B'].filter(r=>d.tactics.some(t=>t.rarity_name===r))},
+    {key:'variant',label:'구분',options:[...new Set(d.tactics.map(t=>t.variant_label||'일반'))]}];
   const row=state.idx.hero.get(hero.hero_id);
   openPicker({title:`${row.name} · 학습 전법 ${index+1}`,sub:`설명 기준 Lv${d.rules.description_skill_level}·강화${d.rules.description_skill_grade} · 실제 전투는 입력한 레벨·돌파로 계산합니다.`,items,current:hero.learned[index]?.skill_id,groups,allowClear:index<hero.learned.length,focusKey:fkey(side,slot,`pick-tactic-${Math.min(index,1)}`),onPick:id=>applyEdit(side,slot,`learned.${index}`,id)});
 }
@@ -688,7 +691,7 @@ function poolRows(){
   if(poolTab==='heroes')return [...d.heroes].sort((a,b)=>(a.faction??9)-(b.faction??9)||(b.rarity??0)-(a.rarity??0)||a.id-b.id)
     .filter(r=>(poolSel.faction==='all'||r.faction_name===poolSel.faction)&&(poolSel.rarity==='all'||r.rarity_name===poolSel.rarity)&&(!q||r.name.replace(/\s/g,'').toLowerCase().includes(q)))
     .map(r=>({id:r.id,name:r.name,sub:[r.faction_name,r.rarity_name&&`${r.rarity_name}등급`].filter(Boolean).join(' · ')}));
-  return d.tactics.filter(t=>(poolSel.type==='all'||t.type_name===poolSel.type)&&(poolSel.trarity==='all'||t.rarity_name===poolSel.trarity)&&(!q||t.name.replace(/\s/g,'').toLowerCase().includes(q))).map(t=>({id:t.id,name:t.name,sub:[t.type_name,t.rarity_name,t.variant==='shadow'?'투영':null].filter(Boolean).join(' · ')}));
+  return d.tactics.filter(t=>(poolSel.type==='all'||t.type_name===poolSel.type)&&(poolSel.trarity==='all'||t.rarity_name===poolSel.trarity)&&(!q||t.name.replace(/\s/g,'').toLowerCase().includes(q))).map(t=>({id:t.id,name:t.name,sub:[t.type_name,t.rarity_name,t.variant&&t.variant!=='standard'?(t.variant_label||t.variant):null].filter(Boolean).join(' · ')}));
 }
 function renderPool(){
   const d=state.data,set=poolTab==='heroes'?myPool.heroes:myPool.tactics;

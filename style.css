@@ -617,3 +617,4 @@ input.narrow{width:90px}
 .romance-box .romance-row{margin-top:0;flex-wrap:wrap}
 .romance-label.quiet{background:transparent;color:var(--muted)}
 .romance-books{font-size:12px;color:var(--muted)}
+.tag.variant{background:color-mix(in srgb,#7A4FB5 16%,transparent);color:color-mix(in srgb,#7A4FB5 75%,var(--ink))}

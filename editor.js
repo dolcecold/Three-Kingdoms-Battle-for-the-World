@@ -63,6 +63,12 @@ export function tacticChoices(data,army,hero,index){
   const current=hero.learned[index]?.skill_id;
   return data.tactics.filter(t=>{
     if(t.id===current)return true;
+    const group=t.exclusive_group_id??t.base_skill_id??t.id;
+    if(army.heroes.some(h=>h.learned.some((s,i)=>{
+      if(h===hero&&i===index)return false;
+      const other=data.tactics.find(r=>r.id===s.skill_id);
+      return other&&other.id!==t.id&&(other.exclusive_group_id??other.base_skill_id??other.id)===group;
+    })))return false;
     if(hero.learned.some((s,i)=>i!==index&&s.skill_id===t.id))return false;
     const used=army.heroes.reduce((n,h)=>n+h.learned.filter(s=>s.skill_id===t.id).length,0);
     return used<t.max_per_army;
@@ -80,6 +86,7 @@ export function validateArmy(data,army){
   if(new Set(army.heroes.map(h=>h.slot)).size!==3||army.heroes.some(h=>![1,2,3].includes(h.slot)))fail('무장 위치는 1·2·3번이어야 합니다.');
   if(new Set(army.heroes.map(h=>h.hero_id)).size!==3)fail('같은 부대에 무장을 중복 배치할 수 없습니다.');
   const learnedCounts=new Map();
+  const variantGroups=new Map();
   const romanceGroups=new Set();
   for(const h of army.heroes){
     const row=data.heroes.find(x=>x.id===h.hero_id);
@@ -103,6 +110,9 @@ export function validateArmy(data,army){
     for(const s of h.learned){
       const tactic=data.tactics.find(t=>t.id===s.skill_id);
       if(!tactic)fail(`${row.name}: 선택할 수 없는 학습 전법이 있습니다.`);
+      const group=tactic.exclusive_group_id??tactic.base_skill_id??tactic.id;
+      if(variantGroups.has(group)&&variantGroups.get(group)!==s.skill_id)fail('같은 원본의 일반·투영·반전 전법은 한 부대에서 함께 사용할 수 없습니다.');
+      variantGroups.set(group,s.skill_id);
       const n=(learnedCounts.get(s.skill_id)||0)+1;learnedCounts.set(s.skill_id,n);
       if(n>tactic.max_per_army)fail(`${tactic.name}: 부대 내 사용 가능 횟수를 초과했습니다.`);
     }

@@ -1,7 +1,7 @@
 {
   "region": "KR",
   "locale": "ko-KR",
-  "data_version": "kr-editor-e3f17b2b49f65caf",
+  "data_version": "kr-editor-6f0584625c9d0200",
   "season": 2,
   "experimental": false,
   "heroes": [
@@ -29011,7 +29011,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20000,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29029,7 +29032,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20010,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29047,7 +29053,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20020,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29065,7 +29074,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20030,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29083,7 +29095,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20040,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29101,7 +29116,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20050,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29119,7 +29137,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20060,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29137,7 +29158,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20070,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29155,7 +29179,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20080,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29173,7 +29200,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20100,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29191,7 +29221,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20110,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29209,7 +29242,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20120,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29227,8 +29263,11 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
-      "effect_status": "not_implemented"
+      "exclusive_group_id": 20130,
+      "expires_with_season": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20140,
@@ -29245,7 +29284,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20140,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29263,7 +29305,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20150,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29281,7 +29326,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20170,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29299,7 +29347,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20180,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29317,7 +29368,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20190,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29335,7 +29389,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20200,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29353,7 +29410,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20210,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29371,7 +29431,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20220,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29389,8 +29452,11 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
-      "effect_status": "not_implemented"
+      "exclusive_group_id": 20230,
+      "expires_with_season": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20240,
@@ -29407,7 +29473,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20240,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29425,7 +29494,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20250,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29443,7 +29515,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20260,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29461,7 +29536,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20270,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29479,7 +29557,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20280,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29497,7 +29578,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20290,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29515,7 +29599,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20300,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29533,7 +29620,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20310,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29551,7 +29641,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20320,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29569,7 +29662,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20330,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29587,7 +29683,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20340,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29605,7 +29704,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20350,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29623,7 +29725,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20360,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29641,7 +29746,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20370,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29659,8 +29767,11 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
-      "effect_status": "not_implemented"
+      "exclusive_group_id": 20380,
+      "expires_with_season": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20390,
@@ -29677,7 +29788,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20390,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29695,7 +29809,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20400,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29713,7 +29830,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20410,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29731,7 +29851,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20420,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29749,7 +29872,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20430,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29767,7 +29893,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20440,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29785,7 +29914,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20460,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29803,7 +29935,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20470,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29821,7 +29956,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20480,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29839,7 +29977,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20490,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29857,7 +29998,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20500,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29874,7 +30018,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20530,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29891,7 +30038,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20540,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -29908,7 +30058,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20550,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29925,7 +30078,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20560,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29942,7 +30098,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20570,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29959,7 +30118,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20580,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29976,7 +30138,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20590,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -29993,8 +30158,11 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
-      "effect_status": "not_implemented"
+      "exclusive_group_id": 20600,
+      "expires_with_season": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20610,
@@ -30010,7 +30178,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20610,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30027,7 +30198,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20620,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30044,7 +30218,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20630,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30061,7 +30238,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20640,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30078,7 +30258,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20650,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30095,7 +30278,10 @@
       "rarity": 3,
       "rarity_name": "S",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 20660,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30113,7 +30299,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70000,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30131,7 +30320,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70010,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30149,7 +30341,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70020,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30167,7 +30362,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70030,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30185,7 +30383,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70040,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30203,7 +30404,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70050,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30221,7 +30425,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70060,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30239,7 +30446,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70070,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30257,7 +30467,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70080,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30275,7 +30488,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70090,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30293,7 +30509,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70100,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30311,7 +30530,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70110,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30329,7 +30551,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70120,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30347,7 +30572,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70130,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30365,7 +30593,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70140,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30383,7 +30614,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70150,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30401,7 +30635,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70160,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30419,7 +30656,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70170,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30437,7 +30677,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70180,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30455,7 +30698,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70190,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30473,7 +30719,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70200,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30491,7 +30740,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70210,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30509,7 +30761,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70220,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30527,7 +30782,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70230,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30545,7 +30803,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70240,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30563,7 +30824,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70250,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30581,7 +30845,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70260,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30599,7 +30866,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70280,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30617,7 +30887,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70290,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30634,7 +30907,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70300,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30651,7 +30927,10 @@
       "rarity": 2,
       "rarity_name": "A",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 70310,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30669,7 +30948,10 @@
       "rarity": 1,
       "rarity_name": "B",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 90000,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30687,7 +30969,10 @@
       "rarity": 1,
       "rarity_name": "B",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 90010,
+      "expires_with_season": null,
       "effect_status": "estimated"
     },
     {
@@ -30705,7 +30990,10 @@
       "rarity": 1,
       "rarity_name": "B",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 90020,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30723,7 +31011,10 @@
       "rarity": 1,
       "rarity_name": "B",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 90030,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30741,7 +31032,10 @@
       "rarity": 1,
       "rarity_name": "B",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 90040,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30759,7 +31053,10 @@
       "rarity": 1,
       "rarity_name": "B",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 90050,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30777,7 +31074,10 @@
       "rarity": 1,
       "rarity_name": "B",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 90060,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30795,7 +31095,10 @@
       "rarity": 1,
       "rarity_name": "B",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 90070,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30813,7 +31116,10 @@
       "rarity": 1,
       "rarity_name": "B",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 90080,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30831,7 +31137,10 @@
       "rarity": 1,
       "rarity_name": "B",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 90090,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     },
     {
@@ -30849,7 +31158,10 @@
       "rarity": 1,
       "rarity_name": "B",
       "variant": "standard",
+      "variant_label": "일반",
       "base_skill_id": null,
+      "exclusive_group_id": 90100,
+      "expires_with_season": null,
       "effect_status": "not_implemented"
     }
   ],
@@ -35732,6 +36044,7 @@
   ],
   "romance_options": [],
   "rules": {
+    "variant_exclusion_scope": "army_same_base_skill",
     "max_romance_per_group": 1,
     "romance_warbooks_replace_normal": true,
     "max_hero_breakthrough": 5,
