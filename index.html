@@ -32,6 +32,7 @@
       <label><input type="radio" name="season" value="3"><span>S3<small>시험</small></span></label>
     </fieldset>
     <div class="topbar-tools">
+      <button class="ghost-btn small pool-open" id="open-pool" type="button">보유 풀 <b id="pool-badge"></b></button>
       <button class="conn-pill" id="open-connection" type="button"><i aria-hidden="true"></i><span id="connection-label">편성 모드</span></button>
       <button class="icon-btn" id="theme-toggle" type="button" aria-label="화면 테마 전환"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg></button>
     </div>
@@ -128,10 +129,11 @@
   <dialog id="preset-dialog" class="modal wide" aria-labelledby="preset-title">
     <header class="modal-head"><h2 id="preset-title">추천덱 불러오기</h2><button class="icon-btn" type="button" data-close="preset-dialog" aria-label="닫기">✕</button></header>
     <div class="modal-body">
-      <p class="modal-copy">편성 초안입니다. 시즌과 관계없이 모두 불러올 수 있고, 지금 시즌에 없는 무장·전법은 비우거나 임시 무장으로 채웁니다. 불러온 뒤 직접 다듬어 테스트하세요.</p>
+      <div id="preset-lineup" class="lineup-bar"></div>
       <div class="preset-filters">
         <input id="preset-search" type="search" placeholder="덱 이름, 무장, 전법으로 검색" aria-label="추천덱 검색">
-        <div id="preset-seasons" class="seg" role="group" aria-label="시즌"></div>
+        <div id="preset-seasons" class="seg" role="group" aria-label="한국 시즌"></div>
+        <div id="preset-sort" class="seg" role="group" aria-label="정렬"><button type="button" data-sort="fit" aria-pressed="true">적합성 순</button><button type="button" data-sort="name" aria-pressed="false">기본 순</button></div>
       </div>
       <p id="preset-count" class="muted-note"></p>
       <div class="preset-layout">
@@ -140,7 +142,7 @@
       </div>
       <p id="preset-error" class="form-error" role="alert"></p>
     </div>
-    <footer class="modal-foot preset-foot"><button class="ghost-btn" type="button" data-close="preset-dialog">닫기</button><span class="foot-gap"></span><button class="ghost-btn" id="preset-save" type="button" disabled>내 덱에 저장</button><button class="ghost-btn" id="preset-base" type="button" disabled>기본 편성으로 지정</button><button class="solid-btn" id="preset-apply" type="button" disabled>이 편성 불러오기</button></footer>
+    <footer class="modal-foot preset-foot"><button class="ghost-btn" type="button" data-close="preset-dialog">닫기</button><span class="foot-gap"></span><button class="ghost-btn" id="preset-lineup-toggle" type="button" hidden>구성에 추가</button><button class="ghost-btn" id="preset-save" type="button" disabled>내 덱에 저장</button><button class="ghost-btn" id="preset-base" type="button" disabled>기본 편성으로 지정</button><button class="solid-btn" id="preset-apply" type="button" disabled>이 편성 불러오기</button></footer>
   </dialog>
 
   <!-- 내 덱 -->
@@ -155,6 +157,18 @@
       <p class="muted-note">내 덱은 이 브라우저에만 저장됩니다. 다른 기기로 옮길 때는 공유 코드를 쓰세요. ★ 기본 편성은 처음 열 때와 '기본 편성으로'를 누를 때 아군 부대에 들어갑니다.</p>
     </div>
     <footer class="modal-foot"><button class="ghost-btn" type="button" data-close="deck-dialog">닫기</button></footer>
+  </dialog>
+
+  <!-- 보유 풀 -->
+  <dialog id="pool-dialog" class="modal picker" aria-labelledby="pool-title">
+    <header class="modal-head"><div><h2 id="pool-title">보유 풀</h2><p class="muted-note">갖고 있는 무장·전법을 체크하세요. 이 브라우저에만 저장되며, 추천덱 적합성 계산에 씁니다.</p></div><button class="icon-btn" type="button" data-close="pool-dialog" aria-label="닫기">✕</button></header>
+    <div class="picker-controls">
+      <div id="pool-tabs" class="seg" role="tablist" aria-label="보유 풀 분류"><button type="button" role="tab" data-pool-tab="heroes" aria-selected="true">무장 <b id="pool-n-heroes"></b></button><button type="button" role="tab" data-pool-tab="tactics" aria-selected="false">전법 <b id="pool-n-tactics"></b></button></div>
+      <input id="pool-search" type="search" placeholder="이름으로 검색" aria-label="보유 풀 검색" autocomplete="off">
+      <div id="pool-chips"></div>
+    </div>
+    <div id="pool-grid" class="pool-grid" role="group" aria-label="보유 여부"></div>
+    <footer class="modal-foot"><span id="pool-count" class="muted-note"></span><span class="foot-gap"></span><button class="ghost-btn small" id="pool-none" type="button">보이는 항목 해제</button><button class="ghost-btn small" id="pool-all" type="button">보이는 항목 모두 선택</button><button class="solid-btn small" type="button" data-close="pool-dialog">완료</button></footer>
   </dialog>
 
   <!-- 무장·전법 선택 -->
