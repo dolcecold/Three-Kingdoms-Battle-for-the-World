@@ -262,7 +262,14 @@ function romanceRow(side,army,hero,opts){
     opts.map(r=>h('option',{value:String(r.trait_id),disabled:taken.has(r.stage_id)&&hero.romance_trait_id!==r.trait_id,
       text:`${r.name} · ${d.arms.find(a=>a.id===r.arms_id)?.name||''}${taken.has(r.stage_id)&&hero.romance_trait_id!==r.trait_id?' (같은 그룹 사용 중)':''}`})));
   el.value=hero.romance_trait_id==null?'':String(hero.romance_trait_id);
-  return h('label',{class:'romance-row'},h('span',{class:'romance-label',text:'연의'}),el);
+  const rom=romanceFor(d,hero),page=hero.warbook_page||'normal';
+  return h('div',{class:'romance-box'},
+    h('label',{class:'romance-row'},h('span',{class:'romance-label',text:'연의'}),el),
+    rom?h('div',{class:'romance-row'},h('span',{class:'romance-label quiet',text:'병법'}),
+      h('div',{class:'seg',role:'group','aria-label':'병법 페이지'},
+        h('button',{type:'button','aria-pressed':String(page==='normal'),dataset:{bookPage:'normal',focus:fkey(side,hero.slot,'card-page-normal')},text:'일반 병법'}),
+        h('button',{type:'button','aria-pressed':String(page==='romance'),dataset:{bookPage:'romance',focus:fkey(side,hero.slot,'card-page-romance')},title:rom.warbooks.map(b=>b.name).join(', '),text:'연의 고정 병법'})),
+      page==='romance'?h('span',{class:'romance-books',text:rom.warbooks.map(b=>b.name).join(' · ')}):null):null);
 }
 function heroCard(side,army,hero){
   const d=state.data,ix=state.idx,row=ix.hero.get(hero.hero_id),arm=armFor(d,hero);
