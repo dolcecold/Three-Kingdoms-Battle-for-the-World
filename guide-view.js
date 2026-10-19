@@ -162,11 +162,13 @@ export async function createGuideView(ctx){
       const tpl=templates.find(t=>t.id===tplSel.value);
       if(tpl&&!formSel.value)formSel.value=String(tpl.army.formation_id);
       fill(rowsHost,deck.heroes.map(x=>{
-        const lv=inputs[`${x.id}:lv`]??=n('레벨',50),tr=inputs[`${x.id}:tr`]??=n('병력',50000),il=inputs[`${x.id}:il`]??=n('고유Lv',10);
+        // 보유 풀에 내 설정이 있으면 미리 채웁니다(사용자가 저장한 실제 값).
+        const pf=ctx.heroProfile(x.id),pre=(el,v)=>{if(v!=null&&el.value==='')el.value=String(v);return el;};
+        const lv=inputs[`${x.id}:lv`]??=pre(n('레벨',50),pf?.level),tr=inputs[`${x.id}:tr`]??=pre(n('병력',50000),pf?.troops),il=inputs[`${x.id}:il`]??=pre(n('고유Lv',10),pf?.innate_level);
         const learned=tpl?.army.heroes.find(y=>y.hero_id===x.id)?.learned||[];
         return h('div',{class:'import-row'},h('strong',{text:x.name}),
           h('label',{class:'field'},'레벨',lv),h('label',{class:'field'},'병력',tr),h('label',{class:'field'},'고유 전법 Lv',il),
-          learned.map(s=>h('label',{class:'field'},`${tacticName(s.skill_id)} Lv`,inputs[`${x.id}:${s.skill_id}`]??=n('Lv',10))));
+          learned.map(s=>{const el=inputs[`${x.id}:${s.skill_id}`]??=n('Lv',10);const tp=ctx.tacticProfile(s.skill_id);if(tp&&el.value==='')el.value=String(tp.level);return h('label',{class:'field'},`${tacticName(s.skill_id)} Lv`,el);}));
       }));
     };
     tplSel.onchange=drawRows;drawRows();

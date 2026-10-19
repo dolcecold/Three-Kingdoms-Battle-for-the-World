@@ -7,6 +7,7 @@ import {STAT_FIELDS,armFor,bookChoices,tacticChoices,validateArmy,previewHeroSta
 import {API_BASE_URL} from './config.js';
 import {loadRecommendedDecks,filterRecommendedDecks} from './recommended-decks.js';
 import {reviewArmyCoexistence} from './guide-content.js';
+import {encodePoolCode,decodePoolCode} from './pool-code.js';
 
 /* ── 기본 도구 ─────────────────────────────────────────── */
 const $=id=>document.getElementById(id);
@@ -310,6 +311,11 @@ function advancedBody(side,army,hero,row,arm,key){
   const tabs=h('div',{class:'adv-tabs',role:'tablist','aria-label':'상세 설정 분류'},TABS.map(([id,name])=>h('button',{type:'button',role:'tab','aria-selected':String(id===tab),dataset:{tab:id,focus:F(`tab-${id}`)},text:name})));
   const panel=h('div',{class:'adv-panel',role:'tabpanel'});
   if(tab==='basic'){
+    const hasProfile=myPool.heroProfiles.has(hero.hero_id);
+    panel.append(h('div',{class:'profile-bar'},
+      h('span',{class:'muted-note',text:hasProfile?'보유 풀에 이 무장의 내 설정이 있습니다.':'지금 설정을 보유 풀에 저장해 두면 다음부터 자동으로 채워집니다.'}),
+      h('button',{type:'button',class:'ghost-btn small',dataset:{profileSave:'1',focus:F('profile-save')},text:'내 설정으로 저장'}),
+      h('button',{type:'button',class:'ghost-btn small',disabled:!hasProfile,dataset:{profileLoad:'1',focus:F('profile-load')},text:'내 설정 불러오기'})));
     panel.append(h('div',{class:'grid-4'},
       h('label',{class:'field'},'위치',sel([1,2,3].map(id=>({id,name:`${id}번`})),hero.slot,{dataset:{path:'position_slot',focus:F('position')}})),
       h('label',{class:'field'},'무장 레벨',num(hero.level,{min:1,max:50,step:1,dataset:{path:'level',focus:F('level')}})),
@@ -529,7 +535,7 @@ function pickHero(side,slot){
   const groups=[
     {key:'faction',label:'진영',options:uniq(heroes,'faction',r=>r.faction_name).sort((a,b)=>a[0]-b[0]).map(x=>x[1])},
     {key:'rarity',label:'등급',options:uniq(heroes,'rarity',r=>`${r.rarity_name}등급`).sort((a,b)=>b[0]-a[0]).map(x=>x[1])}];
-  openPicker({title:`${SIDE_NAME[side]} ${slot}번 무장`,sub:`${d.heroes.length}명 · 무장을 바꾸면 병법·병종·정통 설정이 초기화됩니다.`,items,groups,current:hero.hero_id,allowClear:false,focusKey:fkey(side,slot,'pick-hero'),onPick:id=>{if(id!==hero.hero_id)applyEdit(side,slot,'hero_id',id);}});
+  openPicker({title:`${SIDE_NAME[side]} ${slot}번 무장`,sub:`${d.heroes.length}명 · 무장을 바꾸면 병법·병종·정통 설정이 초기화됩니다.`,items,groups,current:hero.hero_id,allowClear:false,focusKey:fkey(side,slot,'pick-hero'),onPick:id=>{if(id===hero.hero_id)return;applyEdit(side,slot,'hero_id',id);if(applyHeroProfile(hero))notify(`${state.idx.hero.get(id).name}: 보유 풀의 내 설정을 채웠습니다.`);}});
 }
 function pickItem(side,slot,kind){
   const hero=state.armies[side].heroes.find(x=>x.slot===slot),d=state.data;
@@ -559,7 +565,7 @@ function pickTactic(side,slot,index){
     {key:'rarity',label:'등급',options:['S','A','B'].filter(r=>d.tactics.some(t=>t.rarity_name===r))},
     {key:'variant',label:'구분',options:[...new Set(d.tactics.map(t=>t.variant_label||'일반'))]}];
   const row=state.idx.hero.get(hero.hero_id);
-  openPicker({title:`${row.name} · 학습 전법 ${index+1}`,sub:`설명 기준 Lv${d.rules.description_skill_level}·강화${d.rules.description_skill_grade} · 실제 전투는 입력한 레벨·돌파로 계산합니다.`,items,current:hero.learned[index]?.skill_id,groups,allowClear:index<hero.learned.length,focusKey:fkey(side,slot,`pick-tactic-${Math.min(index,1)}`),onPick:id=>applyEdit(side,slot,`learned.${index}`,id)});
+  openPicker({title:`${row.name} · 학습 전법 ${index+1}`,sub:`설명 기준 Lv${d.rules.description_skill_level}·강화${d.rules.description_skill_grade} · 실제 전투는 입력한 레벨·돌파로 계산합니다.`,items,current:hero.learned[index]?.skill_id,groups,allowClear:index<hero.learned.length,focusKey:fkey(side,slot,`pick-tactic-${Math.min(index,1)}`),onPick:id=>{applyEdit(side,slot,`learned.${index}`,id);applyTacticProfiles(hero);}});
 }
 
 /* ── 보유 풀 메뉴: 추천덱 데이터 ─────────────────────────── */
@@ -579,9 +585,16 @@ function dedupePresets(list){
 async function ensurePresets(){if(!presets){presets=await loadRecommendedDecks();presetRows=dedupePresets(presets.templates);}return presetRows;}
 
 /* ── 보유 풀·구성 (브라우저 localStorage) ───────────────── */
-function readPool(){try{const d=JSON.parse(store.get(KEYS.pool)||'null');return {heroes:new Set(d?.heroes||[]),tactics:new Set(d?.tactics||[])};}catch{return {heroes:new Set(),tactics:new Set()};}}
+// v2: 보유 여부 + 무장·전법별 내 설정. v1(보유 목록만)도 그대로 읽습니다.
+function poolFrom(d){
+  const ids=v=>new Set((Array.isArray(v)?v:[]).map(Number).filter(Number.isInteger));
+  const map=v=>new Map(Object.entries(v&&typeof v==='object'?v:{}).map(([k,x])=>[Number(k),x]).filter(([k,x])=>Number.isInteger(k)&&x&&typeof x==='object'));
+  return {heroes:ids(d?.heroes),tactics:ids(d?.tactics),heroProfiles:map(d?.hero_profiles),tacticProfiles:map(d?.tactic_profiles)};
+}
+function readPool(){try{return poolFrom(JSON.parse(store.get(KEYS.pool)||'null'));}catch{return poolFrom(null);}}
 let myPool=readPool();
-function savePool(){store.set(KEYS.pool,JSON.stringify({v:1,heroes:[...myPool.heroes],tactics:[...myPool.tactics]}));recomputeLineup();updateRosterCounts();}
+const poolSnapshot=()=>({v:2,heroes:[...myPool.heroes],tactics:[...myPool.tactics],hero_profiles:Object.fromEntries(myPool.heroProfiles),tactic_profiles:Object.fromEntries(myPool.tacticProfiles)});
+function savePool(){store.set(KEYS.pool,JSON.stringify(poolSnapshot()));recomputeLineup();updateRosterCounts();}
 const poolActive=()=>myPool.heroes.size>0||myPool.tactics.size>0;
 // 구성은 시즌별로 저장합니다. 항목마다 차지한 무장·전법을 기록해 나머지 덱의 적합성을 남은 풀로 다시 계산합니다.
 function readLineup(){try{return JSON.parse(store.get(KEYS.lineup)||'{}')[state.season]||[];}catch{return [];}}
@@ -658,6 +671,7 @@ function presetArmyFor(t){
   if(dropped)notes.push(`이 시즌에 없는 전법·병법 ${dropped}개 비움`);
   if(emptied)notes.push(`보유하지 않은 전법 ${emptied}칸 비움`);
   if(missing.length)notes.push(`미보유 무장: ${missing.join(', ')}`);
+  const applied=profileNote(applyProfilesToArmy(army));if(applied)notes.push(applied);
   return {t,army:loadable(d,army),notes};
 }
 const presetNote=(t,notes,army)=>`'${t.label}'을(를) 불러왔습니다.${notes.length?` ${notes.join(' · ')}.`:''}${isValid(state.data,army)?'':' 부대 아래 안내를 보고 고쳐 주세요.'}`;
@@ -665,6 +679,190 @@ function sendToBattle(army,side,text,warn=false){
   state.armies[side]=army;state.view=side;dirty();render();
   location.hash='#/battle';notify(text,warn);
 }
+
+/* ── 내 설정: 무장·전법별 육성 상태 (보유 풀에 저장) ─────────── */
+const statCopy=v=>Object.fromEntries(STAT_FIELDS.map(([k])=>[k,Number(v?.[k])||0]));
+const clampNum=(v,lo,hi,dv)=>v===''||v==null||!Number.isFinite(Number(v))?dv:Math.min(hi,Math.max(lo,Math.trunc(Number(v))));
+function emptyProfile(heroId){
+  const row=state.idx.hero.get(heroId);
+  return {troops:10000,level:50,breakthrough:0,promotion:0,innate_level:10,allocation_mode:row?.recommended_attribute?'recommended':'manual',allocation:statCopy(),
+    equipment_item_id:null,equipment:statCopy(),horse_item_id:null,horse:statCopy(),advanced_arms_id:null,arms_skill_ids:[],warbook_slots:[],total_stats:null};
+}
+function captureProfile(hero){
+  return {troops:hero.troops,level:hero.level,breakthrough:hero.breakthrough||0,promotion:hero.promotion??0,innate_level:hero.innate.level,
+    allocation_mode:hero.allocation_mode||'manual',allocation:statCopy(hero.allocation),
+    equipment_item_id:hero.equipment_item_id??null,equipment:statCopy(hero.equipment),horse_item_id:hero.horse_item_id??null,horse:statCopy(hero.horse),
+    advanced_arms_id:hero.advanced_arms_id??null,arms_skill_ids:[...(hero.arms_skill_ids||[])].slice(0,1),
+    // 연의 고정 병법 페이지일 때는 일반 병법이 비어 있으므로 기존에 저장한 일반 병법을 유지합니다.
+    warbook_slots:hero.warbook_page==='romance'?(myPool.heroProfiles.get(hero.hero_id)?.warbook_slots||[]):clone(hero.warbook_slots||[]),
+    total_stats:hero.total_stats?statCopy(hero.total_stats):null};
+}
+/** 저장한 설정을 편성 무장에 덮어씁니다. 지금 시즌 데이터에 없는 항목은 건너뜁니다. */
+function applyHeroProfile(hero){
+  const p=myPool.heroProfiles.get(hero.hero_id);if(!p)return false;
+  const d=state.data,ix=state.idx,row=ix.hero.get(hero.hero_id);
+  hero.troops=clampNum(p.troops,1,50000,hero.troops);hero.level=clampNum(p.level,1,50,hero.level);
+  hero.breakthrough=clampNum(p.breakthrough,0,5,0);hero.promotion=clampNum(p.promotion,0,5,0);
+  hero.innate={...hero.innate,level:clampNum(p.innate_level,1,10,hero.innate.level),grade:0};
+  hero.allocation_mode=p.allocation_mode==='recommended'&&row?.recommended_attribute?'recommended':'manual';
+  hero.allocation=statCopy(p.allocation);hero.equipment=statCopy(p.equipment);hero.horse=statCopy(p.horse);
+  hero.equipment_item_id=d.equipment?.some(x=>x.id===p.equipment_item_id)?p.equipment_item_id:null;
+  hero.horse_item_id=d.horses?.some(x=>x.id===p.horse_item_id)?p.horse_item_id:null;
+  hero.advanced_arms_id=ix.arm.has(p.advanced_arms_id)?p.advanced_arms_id:null;
+  hero.arms_skill_ids=(p.arms_skill_ids||[]).filter(id=>ix.prof.has(id)).slice(0,1);
+  if(hero.warbook_page!=='romance')hero.warbook_slots=(p.warbook_slots||[]).filter(s=>ix.book.has(s.warbook_id)&&hero.level>=(row?.warbook_slots.find(r=>r.slot===s.slot)?.unlock_level??99));
+  hero.total_stats=p.total_stats&&STAT_FIELDS.every(([k])=>Number.isFinite(Number(p.total_stats[k])))?statCopy(p.total_stats):null;
+  return true;
+}
+function applyTacticProfiles(hero){
+  let n=0;
+  for(const s of hero.learned){const p=myPool.tacticProfiles.get(s.skill_id);if(p){s.level=clampNum(p.level,1,10,10);s.breakthrough=clampNum(p.breakthrough,0,5,0);n++;}}
+  return n;
+}
+function applyProfilesToArmy(army){let h=0,t=0;for(const x of army.heroes){if(applyHeroProfile(x))h++;t+=applyTacticProfiles(x);}return {heroes:h,tactics:t};}
+const profileNote=r=>r.heroes||r.tactics?`내 설정 적용: 무장 ${r.heroes}명·전법 ${r.tactics}개`:'';
+function saveProfileFromBattle(side,slot){
+  const hero=state.armies[side].heroes.find(x=>x.slot===slot);
+  myPool.heroProfiles.set(hero.hero_id,captureProfile(hero));myPool.heroes.add(hero.hero_id);
+  for(const s of hero.learned){myPool.tacticProfiles.set(s.skill_id,{level:s.level,breakthrough:s.breakthrough??0});myPool.tactics.add(s.skill_id);}
+  savePool();render();
+  notify(`${state.idx.hero.get(hero.hero_id).name}의 설정과 학습 전법 ${hero.learned.length}개의 레벨·승급·돌파를 보유 풀에 저장했습니다.`);
+}
+
+/* 내 설정 편집 대화상자 */
+let profileTarget=null,profileDraft=null;
+function openProfile(kind,id){
+  profileTarget={kind,id};
+  const saved=kind==='hero'?myPool.heroProfiles.get(id):myPool.tacticProfiles.get(id);
+  profileDraft=clone(saved||(kind==='hero'?emptyProfile(id):{level:10,breakthrough:0}));
+  const name=kind==='hero'?state.idx.hero.get(id)?.name:state.idx.tactic.get(id)?.name;
+  $('profile-title').textContent=`${name} · 내 설정`;
+  $('profile-sub').textContent=kind==='hero'?'배틀에 이 무장을 넣을 때 자동으로 채워집니다. 학습 전법 레벨은 전법 탭에서 따로 저장합니다.':'이 전법을 학습 전법으로 넣을 때 레벨과 승급·돌파가 자동으로 채워집니다.';
+  $('profile-clear').hidden=!saved;
+  drawProfile();$('profile-dialog').showModal();
+}
+// 입력칸의 blur에서 다시 그리기가 겹치지 않도록 한 박자 늦춰 그립니다.
+let profileQueued=false;
+function queueProfileDraw(){if(profileQueued)return;profileQueued=true;setTimeout(()=>{profileQueued=false;if($('profile-dialog').open)drawProfile();},0);}
+function drawProfile(){
+  const key=document.activeElement?.dataset?.pf;
+  const p=profileDraft,d=state.data,ix=state.idx,body=$('profile-body');
+  const n=(k,lo,hi,label,val=p[k])=>h('label',{class:'field'},label,h('input',{type:'number',min:lo,max:hi,step:1,value:val??'',dataset:{pf:k}}));
+  const stats=(prefix,obj)=>h('div',{class:'grid-4'},STAT_FIELDS.map(([k,nm])=>h('label',{class:'field'},nm,h('input',{type:'number',min:0,max:2000,step:'any',value:obj?.[k]??0,dataset:{pf:`${prefix}.${k}`}}))));
+  if(profileTarget.kind==='tactic'){
+    fill(body,h('div',{class:'grid-2'},n('level',1,10,'전법 레벨'),n('breakthrough',0,5,'학습 전법 승급·돌파')));
+  }else{
+    const row=ix.hero.get(profileTarget.id),attr=STAT_FIELDS.find(([k])=>k===row.recommended_attribute)?.[1];
+    const temp={hero_id:row.id,level:Number(p.level)||1,warbook_slots:p.warbook_slots,warbook_page:'normal',learned:[],arms_skill_ids:p.arms_skill_ids,advanced_arms_id:p.advanced_arms_id};
+    const arm=armFor(d,temp),profLv=arm?.proficiency_unlock_level??d.rules.proficiency_unlock_level??40;
+    const itemSel=(kind,list)=>{const el=h('select',{dataset:{pf:`${kind}_item_id`}},h('option',{value:'',text:'이름 선택 안 함'}),
+      [...new Set((list||[]).map(x=>x.kind_name))].map(k=>h('optgroup',{label:k},list.filter(x=>x.kind_name===k).map(x=>h('option',{value:String(x.id),text:`${x.name} · ${x.rarity_name}`})))));
+      el.value=p[`${kind}_item_id`]==null?'':String(p[`${kind}_item_id`]);return el;};
+    const armSel=h('select',{dataset:{pf:'advanced_arms_id'}},d.arms.map(a=>h('option',{value:String(a.id),disabled:a.id!==arm?.id&&(Number(p.level)||1)<(a.unlock_level??1),text:a.is_base?a.name:`${a.name} (고급 · Lv${a.unlock_level??35})`})));armSel.value=String(arm?.id??row.default_arms_id);
+    const canProf=d.season!==1&&arm&&!arm.is_base&&(Number(p.level)||1)>=profLv;
+    const profSel=h('select',{disabled:!canProf,dataset:{pf:'proficiency'}},h('option',{value:'',text:canProf?'선택 안 함':'고급 병종·Lv40 이상에서 선택'}),d.proficiencies.filter(x=>arm?.proficiency_ids.includes(x.id)).map(x=>h('option',{value:String(x.id),text:x.name})));profSel.value=p.arms_skill_ids?.[0]!=null&&canProf?String(p.arms_skill_ids[0]):'';
+    fill(body,
+      h('p',{class:'sub-head',text:'기본'}),
+      h('div',{class:'grid-4'},n('troops',1,50000,'병력'),n('level',1,50,'무장 레벨'),n('breakthrough',0,5,'장수 승급·돌파'),n('promotion',0,5,'고유 전법 승품'),n('innate_level',1,10,'고유 전법 Lv')),
+      h('p',{class:'sub-head'},'능력치 배분',h('span',{text:`장수 승급·돌파 단계당 +${d.rules.points_per_breakthrough??10}점`})),
+      h('div',{class:'seg alloc-seg'},h('button',{type:'button','aria-pressed':String(p.allocation_mode==='recommended'),disabled:!attr,dataset:{pfAlloc:'recommended'},text:'추천 자동 배분'}),h('button',{type:'button','aria-pressed':String(p.allocation_mode!=='recommended'),dataset:{pfAlloc:'manual'},text:'직접 배분'})),
+      p.allocation_mode==='recommended'?h('p',{class:'muted-note',text:`추천 속성 ${attr}에 레벨·승급·돌파 배분점을 자동으로 넣습니다.`}):stats('allocation',p.allocation),
+      h('p',{class:'sub-head'},'장비',h('span',{text:'게임에 표시된 실제 옵션'})),itemSel('equipment',d.equipment),stats('equipment',p.equipment),
+      h('p',{class:'sub-head'},'말',h('span',{text:'게임에 표시된 실제 옵션'})),itemSel('horse',d.horses),stats('horse',p.horse),
+      h('p',{class:'sub-head',text:'병종·정통'}),h('div',{class:'grid-2'},h('label',{class:'field'},'병종',armSel),h('label',{class:'field'},'정통',profSel)),
+      h('p',{class:'sub-head',text:'병법 (일반 페이지)'}),
+      h('div',{class:'grid-3'},row.warbook_slots.map(rule=>{
+        const cur=p.warbook_slots.find(s=>s.slot===rule.slot),locked=(Number(p.level)||1)<rule.unlock_level;
+        const choices=[...bookChoices(d,temp,rule.slot)].sort((a,b)=>b.quality-a.quality||a.id-b.id);
+        return h('label',{class:'field'},`슬롯 ${rule.slot}${locked?` (Lv${rule.unlock_level})`:''}`,sel(choices,cur?.warbook_id,{disabled:locked,dataset:{pf:`warbook.${rule.slot}`}},{empty:true,group:b=>b.quality_name}));
+      })),
+      h('label',{class:'check-row'},h('input',{type:'checkbox',checked:Boolean(p.total_stats),dataset:{pf:'use_total'}}),'총 능력치 직접 입력 (게임의 진형·전법 적용 전 값)'),
+      p.total_stats?stats('total_stats',p.total_stats):null,
+      h('p',{class:'muted-note',text:'연의 분기는 부대마다 정하므로 배틀 화면에서 고릅니다. 이 설정은 이 브라우저와 백업 코드에만 저장됩니다.'}));
+  }
+  if(key)body.querySelector(`[data-pf="${CSS.escape(key)}"]`)?.focus();
+}
+function setProfileField(k,raw,{redraw=false}={}){
+  const p=profileDraft,v=raw===''?null:raw;
+  if(k.includes('.')&&!k.startsWith('warbook.')){const [a,b]=k.split('.');p[a]={...(p[a]||statCopy()),[b]:Number(v)||0};}
+  else if(k.startsWith('warbook.')){const slot=Number(k.split('.')[1]);p.warbook_slots=p.warbook_slots.filter(s=>s.slot!==slot);if(v!=null)p.warbook_slots.push({slot,warbook_id:Number(v)});redraw=true;}
+  else if(k==='advanced_arms_id'){const id=Number(v),row=state.idx.hero.get(profileTarget.id);p.advanced_arms_id=id===row.default_arms_id?null:id;
+    if(p.arms_skill_ids.length&&!state.idx.arm.get(id)?.proficiency_ids.includes(p.arms_skill_ids[0]))p.arms_skill_ids=[];redraw=true;}
+  else if(k==='proficiency'){p.arms_skill_ids=v==null?[]:[Number(v)];}
+  else if(k==='equipment_item_id'||k==='horse_item_id')p[k]=v==null?null:Number(v);
+  else if(k==='use_total'){p.total_stats=raw?statCopy():null;redraw=true;}
+  else{p[k]=v==null?null:Number(v);if(k==='level')redraw=true;}
+  if(redraw)queueProfileDraw();
+}
+$('profile-body').addEventListener('input',e=>{const k=e.target.dataset.pf;if(k&&e.target.type==='number')setProfileField(k,e.target.value);});
+$('profile-body').addEventListener('change',e=>{const k=e.target.dataset.pf;if(!k)return;setProfileField(k,e.target.type==='checkbox'?e.target.checked:e.target.value,{redraw:e.target.type!=='number'||k==='level'});});
+$('profile-body').addEventListener('click',e=>{const b=e.target.closest('[data-pf-alloc]');if(!b)return;profileDraft.allocation_mode=b.dataset.pfAlloc;queueProfileDraw();});
+$('profile-save').onclick=()=>{
+  const {kind,id}=profileTarget,p=profileDraft;
+  if(kind==='tactic'){myPool.tacticProfiles.set(id,{level:clampNum(p.level,1,10,10),breakthrough:clampNum(p.breakthrough,0,5,0)});myPool.tactics.add(id);}
+  else{
+    if(p.total_stats&&STAT_FIELDS.every(([k])=>!Number(p.total_stats[k]))){notify('총 능력치를 직접 입력하려면 네 가지를 모두 넣어 주세요. 쓰지 않으면 체크를 끄세요.',true);return;}
+    const clean={...p,troops:clampNum(p.troops,1,50000,10000),level:clampNum(p.level,1,50,50),breakthrough:clampNum(p.breakthrough,0,5,0),promotion:clampNum(p.promotion,0,5,0),innate_level:clampNum(p.innate_level,1,10,10)};
+    myPool.heroProfiles.set(id,clean);myPool.heroes.add(id);
+  }
+  savePool();$('profile-dialog').close();renderPool();notify('내 설정을 저장했습니다. 배틀에 넣을 때 자동으로 채워집니다.');
+};
+$('profile-clear').onclick=()=>{const {kind,id}=profileTarget;(kind==='hero'?myPool.heroProfiles:myPool.tacticProfiles).delete(id);savePool();$('profile-dialog').close();renderPool();notify('내 설정을 지웠습니다. 보유 표시는 그대로입니다.');};
+
+/* 보유 풀 백업 코드 (다른 기기로 옮기기) */
+let backupMode='export';
+function showBackup(mode){
+  backupMode=mode;$('backup-error').textContent='';$('backup-code').value='';
+  const opt=(id,label,checked,disabled)=>h('label',{class:'check-row'},h('input',{type:'checkbox',id,checked,disabled}),label);
+  if(mode==='export'){
+    $('backup-title').textContent='백업 코드 만들기';
+    $('backup-sub').textContent='다른 기기에서 "백업 코드 불러오기"에 붙여넣으면 같은 보유 풀을 씁니다. 서버에 저장하지 않습니다.';
+    fill($('backup-options'),opt('bk-pool',`보유 무장 ${myPool.heroes.size}·전법 ${myPool.tactics.size} · 내 설정 ${myPool.heroProfiles.size+myPool.tacticProfiles.size}개`,true,true),
+      opt('bk-decks',`내 덱 ${decks.all().length}개`,true,false),opt('bk-lineup','내 구성 (시즌별)',false,false));
+    $('backup-code').readOnly=true;
+    fill($('backup-foot'),h('button',{type:'button',class:'ghost-btn',id:'bk-file',text:'파일로 저장'}),h('button',{type:'button',class:'solid-btn',id:'bk-copy',text:'코드 복사'}));
+    makeBackup();
+  }else{
+    $('backup-title').textContent='백업 코드 불러오기';
+    $('backup-sub').textContent='보유 풀과 내 설정은 백업 내용으로 바뀝니다. 내 덱은 기존 덱에 더해집니다.';
+    fill($('backup-options'),h('label',{class:'field'},'백업 파일에서 불러오기',h('input',{type:'file',id:'bk-upload',accept:'.txt,text/plain'})));
+    $('backup-code').readOnly=false;
+    fill($('backup-foot'),h('button',{type:'button',class:'solid-btn',id:'bk-apply',text:'불러오기'}));
+  }
+  $('backup-dialog').showModal();
+}
+async function makeBackup(){
+  try{
+    let lineup=null;try{lineup=JSON.parse(store.get(KEYS.lineup)||'null');}catch{}
+    const payload={saved_at:new Date().toISOString(),pool:poolSnapshot()};
+    if($('bk-decks')?.checked)payload.decks=decks.all();
+    if($('bk-lineup')?.checked&&lineup)payload.lineup=lineup;
+    $('backup-code').value=await encodePoolCode(payload);
+  }catch(e){$('backup-error').textContent=message(e);}
+}
+$('backup-dialog').addEventListener('change',async e=>{
+  if(e.target.id==='bk-decks'||e.target.id==='bk-lineup')makeBackup();
+  if(e.target.id==='bk-upload'&&e.target.files[0])$('backup-code').value=(await e.target.files[0].text()).trim();
+});
+$('backup-dialog').addEventListener('click',async e=>{
+  const id=e.target.id;
+  if(id==='bk-copy'){try{await copyText($('backup-code').value);notify(`백업 코드를 복사했습니다 (${fmt($('backup-code').value.length)}자). 메신저가 긴 글을 자르면 파일로 저장해 옮기세요.`);}catch(err){$('backup-error').textContent=message(err);}}
+  else if(id==='bk-file'){
+    const url=URL.createObjectURL(new Blob([$('backup-code').value],{type:'text/plain'}));
+    const a=h('a',{href:url,download:`cheonha-pool-${new Date().toISOString().slice(0,10)}.txt`});document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }else if(id==='bk-apply'){
+    $('backup-error').textContent='';
+    try{
+      const data=await decodePoolCode($('backup-code').value);
+      myPool=poolFrom(data.pool);savePool();
+      let added=0;
+      if(Array.isArray(data.decks)){const list=decks.all(),have=new Set(list.map(x=>x.id));for(const x of data.decks)if(x?.id&&x.army&&!have.has(x.id)){list.push(x);added++;}decks.write(list);}
+      if(data.lineup&&typeof data.lineup==='object')store.set(KEYS.lineup,JSON.stringify(data.lineup));
+      $('backup-dialog').close();render();updateRosterCounts();if(parseRoute().view==='roster')renderRoster(rosterSub);
+      notify(`백업을 불러왔습니다. 보유 무장 ${myPool.heroes.size}·전법 ${myPool.tactics.size}, 내 설정 ${myPool.heroProfiles.size+myPool.tacticProfiles.size}개${Array.isArray(data.decks)?`, 내 덱 ${added}개 추가`:''}.`);
+    }catch(err){$('backup-error').textContent=message(err);}
+  }
+});
 
 /* ── 보유 풀 메뉴: 화면 ───────────────────────────────── */
 let rosterSub='pool';
@@ -705,7 +903,11 @@ function renderPool(){
   fill($('pool-chips'),groups.map(([k,label,opts])=>h('div',{class:'chips chip-row',role:'group','aria-label':label},h('span',{class:'chip-label',text:label}),
     ['all',...opts].map(v=>h('button',{type:'button','aria-pressed':String(poolSel[k]===v),dataset:{poolGroup:k,v},text:v==='all'?'전체':v})))));
   const rows=poolRows();
-  fill($('pool-grid'),rows.length?rows.map(r=>h('button',{type:'button',class:'pool-item','aria-pressed':String(set.has(r.id)),dataset:{poolId:r.id}},h('span',{text:r.name}),h('small',{text:r.sub}))):h('p',{class:'muted-note',text:'조건에 맞는 항목이 없습니다.'}));
+  const profiles=poolTab==='heroes'?myPool.heroProfiles:myPool.tacticProfiles;
+  fill($('pool-grid'),rows.length?rows.map(r=>h('div',{class:'pool-item'+(set.has(r.id)?' owned':'')},
+    h('button',{type:'button',class:'pool-toggle','aria-pressed':String(set.has(r.id)),dataset:{poolId:r.id}},h('span',{text:r.name}),h('small',{text:r.sub}),
+      profiles.has(r.id)?h('small',{class:'has-profile',text:poolTab==='heroes'?`내 설정 · Lv${profiles.get(r.id).level} 돌파${profiles.get(r.id).breakthrough||0}`:`내 설정 · Lv${profiles.get(r.id).level} 돌파${profiles.get(r.id).breakthrough||0}`}):null),
+    set.has(r.id)?h('button',{type:'button',class:'pool-edit',dataset:{poolEdit:r.id},'aria-label':`${r.name} 내 설정`,text:'설정'}):null)):h('p',{class:'muted-note',text:'조건에 맞는 항목이 없습니다.'}));
   $('pool-count').textContent=`표시 ${rows.length}개 중 보유 ${rows.filter(r=>set.has(r.id)).length}개`;
 }
 
@@ -1120,6 +1322,8 @@ $('armies').addEventListener('click',e=>{
   else if(t.dataset.codeMode)task(()=>showCode(t.dataset.side,t.dataset.codeMode));
   else if(t.dataset.alloc)applyEdit(side,slot,'allocation_mode',t.dataset.alloc);
   else if(t.dataset.bookPage)applyEdit(side,slot,'warbook_page',t.dataset.bookPage);
+  else if(t.dataset.profileSave)saveProfileFromBattle(side,slot);
+  else if(t.dataset.profileLoad){const x=state.armies[side].heroes.find(y=>y.slot===slot);applyHeroProfile(x);applyTacticProfiles(x);dirty();render();notify('내 설정을 불러왔습니다.');}
   else if(t.dataset.allocAll){
     for(const x of state.armies[side].heroes)if(!x.total_stats&&Object.values(x.allocation).every(v=>!v)&&state.idx.hero.get(x.hero_id)?.recommended_attribute)x.allocation_mode='recommended';
     dirty();render();notify('배분이 0인 무장을 추천 자동 배분으로 바꿨습니다.');
@@ -1167,8 +1371,11 @@ $('picker-list').onkeydown=e=>{
 /* ── 보유 풀 메뉴 이벤트 ───────────────────────────────── */
 $('pool-tabs').onclick=e=>{const b=e.target.closest('[data-pool-tab]');if(!b)return;poolTab=b.dataset.poolTab;$('pool-search').value='';renderPool();};
 $('pool-search').oninput=renderPool;
+$('backup-export').onclick=()=>showBackup('export');
+$('backup-import').onclick=()=>showBackup('import');
 $('pool-chips').onclick=e=>{const b=e.target.closest('[data-pool-group]');if(!b)return;poolSel[b.dataset.poolGroup]=b.dataset.v;renderPool();};
 $('pool-grid').onclick=e=>{
+  const ed=e.target.closest('[data-pool-edit]');if(ed){openProfile(poolTab==='heroes'?'hero':'tactic',Number(ed.dataset.poolEdit));return;}
   const b=e.target.closest('[data-pool-id]');if(!b)return;
   const set=poolTab==='heroes'?myPool.heroes:myPool.tactics,id=Number(b.dataset.poolId);
   set.has(id)?set.delete(id):set.add(id);savePool();renderPool();
@@ -1288,6 +1495,8 @@ function guideCtx(){
     ensurePresets,openPreset,addTemplatesToLineup,
     sendToBattle:(army,side,text,warn)=>sendToBattle(army,side,text,warn),
     presetsData:()=>presets,
+    heroProfile:id=>myPool.heroProfiles.get(id)||null,
+    tacticProfile:id=>myPool.tacticProfiles.get(id)||null,
     applyRomance:(side,heroId,traitId)=>{
       if(state.season!==3){notify('연의는 한국 시즌3에서 적용할 수 있습니다. 상단에서 S3로 바꿔 주세요.',true);return false;}
       const hero=state.armies[side].heroes.find(x=>x.hero_id===heroId),name=state.idx.hero.get(heroId)?.name||'해당 무장';
