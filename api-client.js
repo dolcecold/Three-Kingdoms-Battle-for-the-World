@@ -28,6 +28,7 @@ export class BattleApi {
     try {
       const response = await this.fetchImpl(`${this.baseUrl}${path}`, {
         method, signal:controller.signal, credentials:'omit',
+        ...(method === 'GET' ? {cache:'no-store'} : {}),
         ...(body === undefined ? {} : {headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)})
       });
       let data;

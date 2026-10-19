@@ -1,12 +1,12 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "region": "KR",
   "locale": "ko-KR",
   "seasons": [
     3
   ],
-  "catalog_data_version": "kr-editor-1c6a232569ebd6bd",
-  "scope_note": "한국 시즌3 편성 참고와 일반 운용 가이드입니다. 연의의 한국어 변경 효과를 포함하지만 한국 시즌3 서버 해금은 확인되지 않았고, 연의·직업·장비 특수 옵션의 전투 계산은 지원하지 않습니다.",
+  "catalog_data_version": "kr-editor-e3f17b2b49f65caf",
+  "scope_note": "한국 시즌3의 실제 편성 목록과 콘텐츠 가이드입니다. 연의6무장·12분기의 병종·변경 고유 전법·선택한 병법 페이지를 추정 전투에 반영합니다. 직업·장비 특수 옵션은 설명용이며 계산 미지원입니다.",
   "menus": [
     {
       "id": "opening",
@@ -23,7 +23,6 @@
       "label": "부대 운용",
       "route": "/guides/operation",
       "article_ids": [
-        "five-armies",
         "allocation-and-order",
         "reading-estimates"
       ]
@@ -151,8 +150,6 @@
             "opening-kurou",
             "opening-caiyuan",
             "opening-sundae",
-            "opening-dongnan",
-            "opening-diaonan",
             "opening-zuotian",
             "opening-zuosun",
             "opening-sanxian"
@@ -191,37 +188,6 @@
           "type": "action",
           "action": "browse_combat_presets",
           "label": "정규 추천덱 비교하기"
-        }
-      ]
-    },
-    {
-      "id": "five-armies",
-      "title": "무장이 겹치지 않는 5부대 구성안",
-      "category": "operation",
-      "seasons": [
-        3
-      ],
-      "summary": "총 15명으로 구성하는 5부대 운용안 3종입니다.",
-      "blocks": [
-        {
-          "type": "paragraph",
-          "text": "각 구성안은 무장 중복 없이 5부대를 편성하는 참고안입니다. 나열된 순서는 육성 우선순위·필수 출전 순서가 아니며, 특정 일차에 완성해야 하는 일정도 아닙니다."
-        },
-        {
-          "type": "coexistence_plans",
-          "ids": [
-            "plan-zhouyu-machao",
-            "plan-lvbu",
-            "plan-zhouyu-xunyu"
-          ]
-        },
-        {
-          "type": "bullets",
-          "items": [
-            "각 부대의 추천덱 변형을 하나씩 선택한 뒤 실제 보유 전법으로 편성을 조정합니다.",
-            "동일 전법의 여러 부대 사용 여부는 계정의 보유 수량과 게임 규칙을 확인합니다. 부대 내 전법 사용 제한을 계정 전체 제한으로 해석하지 않습니다.",
-            "5부대는 운용 계획입니다. 현재 전투 API는 선택한 두 부대의 전투를 계산하며, 5대5 연속 전장이나 토지 수비군을 자동 생성하지 않습니다."
-          ]
         }
       ]
     },
@@ -296,8 +262,7 @@
             "stats-e516d8af3245",
             "stats-d460a7dc28ab",
             "stats-23bd0e15ac8f",
-            "stats-63b2a279718a",
-            "stats-d9a6ade74895"
+            "stats-63b2a279718a"
           ]
         },
         {
@@ -538,56 +503,48 @@
       "seasons": [
         3
       ],
-      "summary": "기본 무장에 붙는 연의 분기와 변경 전법·병종·병법을 함께 확인합니다.",
+      "summary": "한국 시즌3에서 사용 가능한 연의의 변경 전법·병종·병법을 선택하고 추정 전투에 반영합니다.",
       "blocks": [
         {
           "type": "paragraph",
-          "text": "연의는 일반 무장을 SP 무장으로 바꿔 부르는 이름이 아닙니다. 확보한 게임 데이터에는 기본 무장을 기준으로 분기를 선택하고, 연결 전법·병종·병법을 바꾸는 구성이 있습니다."
+          "text": "연의는 한국 시즌3에서 사용 가능한 콘텐츠입니다. 기존 무장에 분기를 지정하면 변경 병종과 고유 전법을 적용합니다. SP 무장과는 별도의 선택입니다."
         },
         {
           "type": "table",
           "columns": [
-            "구분",
-            "이번 가이드의 제공 범위"
+            "항목",
+            "지원 범위"
           ],
           "rows": [
             [
               "대상",
-              "원소·공손찬, 장료·감녕, 관우·조인: 3그룹·6무장"
+              "원소·공손찬, 장료·감녕, 관우·조인: 3그룹·6무장·12분기"
             ],
             [
-              "분기",
-              "무장마다 두 가지, 총 12개 변경 전법 설명"
-            ],
-            [
-              "병법",
-              "각 분기에 연결된 3종의 이름·효과 설명"
-            ],
-            [
-              "한국어 설명",
-              "확보한 한국어 게임 문구 기준, 전법 Lv10·승품 0 표시"
-            ],
-            [
-              "시즌 해금",
-              "한국 시즌3에서 실제 개방되는지는 별도 확인 필요"
+              "전법",
+              "원본 한국어 설명으로 각 분기와 변경 고유 전법 ID를 연결"
             ],
             [
               "계산",
-              "현재 전투 API에는 연의 선택 입력이 없으며 연의 효과 계산을 지원하지 않음"
+              "중첩·발동 상한·반격·지연 제어·피해·회복을 추정 엔진에 적용"
+            ],
+            [
+              "병법",
+              "normal은 기존 일반 슬롯, romance는 해당 분기의 고정3종으로 대체"
+            ],
+            [
+              "제한",
+              "같은 그룹에서1명·1분기, 양측 부대는 서로 다른 계정으로 각각 검증"
+            ],
+            [
+              "검증 상태",
+              "서버 계산식과 효과 순서의 실측 보정은 남아 있어 정확한 승률을 보증하지 않음"
             ]
           ]
         },
         {
           "type": "paragraph",
-          "text": "한국어 문구가 데이터에 있는 것과 한국 시즌3 서버에서 해당 기능이 열린 것은 별개입니다. 이 메뉴는 한국 시즌3 사용자가 참고할 수 있는 설명이며, 시즌3에서 전부 사용할 수 있다는 표시가 아닙니다."
-        },
-        {
-          "type": "bullets",
-          "items": [
-            "기본 무장 이름과 변경 전법 이름이 같아도 전법 ID·설명은 달라질 수 있습니다.",
-            "해당 분기의 변경 전법, 병종, 연결 병법을 하나의 선택으로 비교합니다.",
-            "일반 편성 코드로 계산한 결과를 연의 적용 결과로 표시하지 않습니다."
-          ]
+          "text": "편성 입력의 romance_trait_id에 분기 ID를 넣습니다. null이면 기존 무장입니다. 고정 연의 병법을 사용할 때 warbook_page=\"romance\"로 지정하고 warbook_slots는 비웁니다. 일반 병법과 합쳐6개를 적용하지 않습니다."
         }
       ]
     },
@@ -598,11 +555,11 @@
       "seasons": [
         3
       ],
-      "summary": "변경 전법과 연결 병법을 한국어로 읽고 분기별 역할을 비교합니다.",
+      "summary": "한국 시즌3 연의12분기의 명칭·변경 고유 전법·병종·고정 병법과 계산 지원을 비교합니다.",
       "blocks": [
         {
           "type": "paragraph",
-          "text": "무장별 변경 전법 2종과 병종·병법 분기 2종을 제공합니다. 무장과 변경 전법의 연결, 무장과 분기·병법의 연결은 확인했지만 개별 분기와 전법 ID의 정확한 대응까지 확정하지는 않았습니다. 화면에서는 무장별 변경 전법 목록과 분기별 병법을 나누어 표시합니다."
+          "text": "12분기와 변경 전법의 개별 연결을 원본 한국어 설명으로 확인했습니다. 관우 칠군수몰(분기9)은 지휘 전법810010, 단도부회(분기10)는 액티브 전법810009입니다. 분기 번호로 전법 ID를 계산하지 마세요."
         },
         {
           "type": "romance_options",
@@ -623,7 +580,7 @@
         },
         {
           "type": "paragraph",
-          "text": "표시된 수치는 전법 Lv10·승품 0의 설명용 기준값입니다. \"무력/지력/통솔/선공의 영향\"이라는 조건을 포함하며 실제 전투 수치나 발동 결과를 예측한 값이 아닙니다. 연결 병법을 현재 일반 병법 슬롯에 자유롭게 추가할 수 있다는 뜻도 아닙니다."
+          "text": "모든 분기를 추정 계산에 반영했습니다. 표시 설명은 전법Lv10·승품0 기준이며 실제 요청에는 사용자의 고유 전법 레벨과 승품을 입력합니다. 속성 영향·피해 전달·반응 순서는 실측으로 보정해야 합니다."
         }
       ]
     },
@@ -641,58 +598,37 @@
           "columns": [
             "그룹",
             "대상 무장",
-            "주요 비교점"
+            "선택 제한"
           ],
           "rows": [
             [
               "1",
               "원소 / 공손찬",
-              "방어·아군 액티브 연계와 궁병·추격 보조 중 현재 부대에 필요한 역할"
+              "한 무장·한 분기"
             ],
             [
               "2",
               "장료 / 감녕",
-              "우군 공격 연계, 광역 액티브, 추격 강화, 적 추격에 대한 반격 중 필요한 역할"
+              "한 무장·한 분기"
             ],
             [
               "3",
               "관우 / 조인",
-              "광역 회심·추격 보조와 반격 연계·턴별 피해 억제 중 필요한 역할"
+              "한 무장·한 분기"
             ]
           ]
         },
         {
-          "type": "checklist",
-          "items": [
-            {
-              "id": "target",
-              "text": "연의를 적용할 부대의 무장 3명과 최종 병종부터 정하기"
-            },
-            {
-              "id": "condition",
-              "text": "3궁병·3기병·3창병·3방패병 등 연결 병법의 부대 조건 확인하기"
-            },
-            {
-              "id": "stats",
-              "text": "선공·무력·통솔 등 변경 전법이 참조하는 실제 능력치 확인하기"
-            },
-            {
-              "id": "unlocks",
-              "text": "게임에서 서버 진행 단계·선택 가능 수·변경 대기시간 확인하기"
-            },
-            {
-              "id": "support",
-              "text": "현재 시뮬레이터에서 해당 선택이 지원되는지 확인하기"
-            }
-          ]
+          "type": "paragraph",
+          "text": "editor.romance_options에서 무장과 분기를 선택합니다. 변경 병종과 같은 계열의 고급 병종만 사용할 수 있습니다. 고정 병법에는3궁병·3기병·3창병·3방패병 조건이 있으므로 나머지 두 무장의 실제 병종도 확인합니다."
         },
         {
           "type": "paragraph",
-          "text": "보관 공략의 선택 계획은 그룹마다 1명을 기준으로 비교합니다. 가이드의 선택 검토 도구도 이 참고 기준을 사용합니다. 실제 서버의 선택 가능 수, 변경 조건, 개방 일차를 확정하는 검증기는 아닙니다."
+          "text": "공유 코드에는 분기와 병법 페이지가 함께 저장됩니다. 상대방이 코드를 복원해 분기·전법·병법을 수정하고 다시 계산할 수 있습니다. 계산은 기존 POST /api/v2/battles에서 처리합니다."
         },
         {
           "type": "paragraph",
-          "text": "예를 들어 공손찬의 궁병으로 변경되는 분기에 연결된 <신궁>은 3궁병 조건이 있습니다. 해당 분기만 고르고 나머지 두 무장을 다른 병종으로 두면 그 병법의 부대 조건을 충족하지 못합니다."
+          "text": "그룹당1명 검증은 요청 부대 단위입니다. 편성 저장소에서 같은 계정의 여러 부대를 함께 관리한다면 프런트에서도 전체 부대의 그룹 중복을 검토하세요. 서버 진행 해금 시간과 변경 대기시간은 이 계산기가 대신 판정하지 않습니다."
         }
       ]
     },
@@ -745,8 +681,8 @@
           "rows": [
             [
               "연의",
-              "무장의 분기와 변경 전법·병종·연결 병법 검토",
-              "미지원"
+              "한국 시즌3 분기·변경 전법·병종·선택 병법 페이지",
+              "추정 계산 지원"
             ],
             [
               "연무",
@@ -1240,68 +1176,6 @@
       ]
     },
     {
-      "id": "opening-dongnan",
-      "name": "동남만 개척",
-      "seasons": [
-        3
-      ],
-      "mode": "opening",
-      "level_range": {
-        "min": 5,
-        "max": 19,
-        "label": "5~19레벨"
-      },
-      "heroes": [
-        {
-          "id": 4028,
-          "name": "동탁"
-        },
-        {
-          "id": 4005,
-          "name": "맹획"
-        },
-        {
-          "id": 4006,
-          "name": "축융부인"
-        }
-      ],
-      "preset_kind": "heroes_only",
-      "tactic_template_ids": [],
-      "combat_template_ids": [],
-      "stat_note_ids": []
-    },
-    {
-      "id": "opening-diaonan",
-      "name": "초남만 개척",
-      "seasons": [
-        3
-      ],
-      "mode": "opening",
-      "level_range": {
-        "min": 5,
-        "max": 34,
-        "label": "5~34레벨"
-      },
-      "heroes": [
-        {
-          "id": 4023,
-          "name": "초선"
-        },
-        {
-          "id": 4005,
-          "name": "맹획"
-        },
-        {
-          "id": 4006,
-          "name": "축융부인"
-        }
-      ],
-      "preset_kind": "heroes_only",
-      "tactic_template_ids": [],
-      "combat_template_ids": [],
-      "stat_note_ids": []
-    },
-    {
       "id": "opening-zuotian",
       "name": "좌전녕 개척",
       "seasons": [
@@ -1399,408 +1273,7 @@
       "stat_note_ids": []
     }
   ],
-  "coexistence_plans": [
-    {
-      "id": "plan-zhouyu-machao",
-      "name": "주유·마초 중심 5부대",
-      "seasons": [
-        3
-      ],
-      "teams": [
-        {
-          "id": "plan-zhouyu-machao-1",
-          "name": "화신",
-          "heroes": [
-            {
-              "id": 3007,
-              "name": "주유"
-            },
-            {
-              "id": 3012,
-              "name": "황개"
-            },
-            {
-              "id": 5034,
-              "name": "서성"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_huoshen"
-          ],
-          "stat_note_ids": [
-            "stats-a59f7681ba25"
-          ]
-        },
-        {
-          "id": "plan-zhouyu-machao-2",
-          "name": "순황육",
-          "heroes": [
-            {
-              "id": 1000,
-              "name": "조조"
-            },
-            {
-              "id": 3008,
-              "name": "육손"
-            },
-            {
-              "id": 1008,
-              "name": "순욱"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_xunhuanglu"
-          ],
-          "stat_note_ids": [
-            "stats-dfb6d4db7361"
-          ]
-        },
-        {
-          "id": "plan-zhouyu-machao-3",
-          "name": "소견향",
-          "heroes": [
-            {
-              "id": 1026,
-              "name": "견희"
-            },
-            {
-              "id": 3003,
-              "name": "소교"
-            },
-            {
-              "id": 3002,
-              "name": "손상향"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_xiaozhenxiang",
-            "reference:gyeonhyang:option1",
-            "reference:gyeonhyang:option2",
-            "reference:gyeonhyang:option3"
-          ],
-          "stat_note_ids": [
-            "stats-7dcd00120d80"
-          ]
-        },
-        {
-          "id": "plan-zhouyu-machao-4",
-          "name": "황마마",
-          "heroes": [
-            {
-              "id": 2009,
-              "name": "황월영"
-            },
-            {
-              "id": 2015,
-              "name": "마초"
-            },
-            {
-              "id": 2013,
-              "name": "마운록"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_yueying_double",
-            "sheet:dcg_s2_huangmama"
-          ],
-          "stat_note_ids": [
-            "stats-40bee8750f40"
-          ]
-        },
-        {
-          "id": "plan-zhouyu-machao-5",
-          "name": "쌍감 관우",
-          "heroes": [
-            {
-              "id": 1023,
-              "name": "하후돈"
-            },
-            {
-              "id": 1012,
-              "name": "등애"
-            },
-            {
-              "id": 2001,
-              "name": "관우"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_shuangjian",
-            "reference:web65_ssanggam_guanyu:webAudit65"
-          ],
-          "stat_note_ids": [
-            "stats-4b85fa3e9e17"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "plan-lvbu",
-      "name": "여포 중심 5부대",
-      "seasons": [
-        3
-      ],
-      "teams": [
-        {
-          "id": "plan-lvbu-1",
-          "name": "화신",
-          "heroes": [
-            {
-              "id": 3007,
-              "name": "주유"
-            },
-            {
-              "id": 3012,
-              "name": "황개"
-            },
-            {
-              "id": 5034,
-              "name": "서성"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_huoshen"
-          ],
-          "stat_note_ids": [
-            "stats-a59f7681ba25"
-          ]
-        },
-        {
-          "id": "plan-lvbu-2",
-          "name": "백문기",
-          "heroes": [
-            {
-              "id": 1000,
-              "name": "조조"
-            },
-            {
-              "id": 4013,
-              "name": "진궁"
-            },
-            {
-              "id": 4000,
-              "name": "여포"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_baimenqi"
-          ],
-          "stat_note_ids": [
-            "stats-11b47d4789b2"
-          ]
-        },
-        {
-          "id": "plan-lvbu-3",
-          "name": "쌍감 관우",
-          "heroes": [
-            {
-              "id": 1023,
-              "name": "하후돈"
-            },
-            {
-              "id": 1012,
-              "name": "등애"
-            },
-            {
-              "id": 2001,
-              "name": "관우"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_shuangjian",
-            "reference:web65_ssanggam_guanyu:webAudit65"
-          ],
-          "stat_note_ids": [
-            "stats-4b85fa3e9e17"
-          ]
-        },
-        {
-          "id": "plan-lvbu-4",
-          "name": "황룡기",
-          "heroes": [
-            {
-              "id": 2000,
-              "name": "유비"
-            },
-            {
-              "id": 2012,
-              "name": "조운"
-            },
-            {
-              "id": 4023,
-              "name": "초선"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s1_diaolong",
-            "sheet:a80_s2_huanglong",
-            "reference:web65_hwangryong:webAudit65"
-          ],
-          "stat_note_ids": [
-            "stats-57b0c5615ff5"
-          ]
-        },
-        {
-          "id": "plan-lvbu-5",
-          "name": "중화기",
-          "heroes": [
-            {
-              "id": 3005,
-              "name": "노숙"
-            },
-            {
-              "id": 3008,
-              "name": "육손"
-            },
-            {
-              "id": 3000,
-              "name": "손권"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_zhonghuoqi",
-            "reference:s2_lusun:official"
-          ],
-          "stat_note_ids": [
-            "stats-6e7e575f5c92"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "plan-zhouyu-xunyu",
-      "name": "주유·순욱·방통 중심 5부대",
-      "seasons": [
-        3
-      ],
-      "teams": [
-        {
-          "id": "plan-zhouyu-xunyu-1",
-          "name": "금순어",
-          "heroes": [
-            {
-              "id": 3007,
-              "name": "주유"
-            },
-            {
-              "id": 1008,
-              "name": "순욱"
-            },
-            {
-              "id": 2004,
-              "name": "방통"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_jinxunyu"
-          ],
-          "stat_note_ids": [
-            "stats-760244d55382"
-          ]
-        },
-        {
-          "id": "plan-zhouyu-xunyu-2",
-          "name": "태원마",
-          "heroes": [
-            {
-              "id": 4004,
-              "name": "원소"
-            },
-            {
-              "id": 3014,
-              "name": "주태"
-            },
-            {
-              "id": 2015,
-              "name": "마초"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_taiyuanma",
-            "reference:s2_mjwon:official"
-          ],
-          "stat_note_ids": [
-            "stats-0a7966a16876"
-          ]
-        },
-        {
-          "id": "plan-zhouyu-xunyu-3",
-          "name": "조감초",
-          "heroes": [
-            {
-              "id": 2019,
-              "name": "감부인"
-            },
-            {
-              "id": 2012,
-              "name": "조운"
-            },
-            {
-              "id": 4023,
-              "name": "초선"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_zhaogandiao",
-            "sheet:dcg_s2_zhaogandiao",
-            "reference:s2_ganzhao:official"
-          ],
-          "stat_note_ids": [
-            "stats-f4cbd45cff53"
-          ]
-        },
-        {
-          "id": "plan-zhouyu-xunyu-4",
-          "name": "중화기",
-          "heroes": [
-            {
-              "id": 3005,
-              "name": "노숙"
-            },
-            {
-              "id": 3008,
-              "name": "육손"
-            },
-            {
-              "id": 3000,
-              "name": "손권"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_zhonghuoqi",
-            "reference:s2_lusun:official"
-          ],
-          "stat_note_ids": [
-            "stats-6e7e575f5c92"
-          ]
-        },
-        {
-          "id": "plan-zhouyu-xunyu-5",
-          "name": "노태위",
-          "heroes": [
-            {
-              "id": 1023,
-              "name": "하후돈"
-            },
-            {
-              "id": 1000,
-              "name": "조조"
-            },
-            {
-              "id": 1009,
-              "name": "사마의"
-            }
-          ],
-          "candidate_template_ids": [
-            "sheet:a80_s2_laotaiwei"
-          ],
-          "stat_note_ids": [
-            "stats-d460a7dc28ab"
-          ]
-        }
-      ]
-    }
-  ],
+  "coexistence_plans": [],
   "stat_notes": [
     {
       "id": "stats-abd6f8daa9b1",
@@ -3024,50 +2497,6 @@
       "candidate_template_ids": [
         "sheet:dcg_s5_zuotianning"
       ]
-    },
-    {
-      "id": "stats-d9a6ade74895",
-      "title": "SP 제갈량 남만방패",
-      "seasons": [
-        3
-      ],
-      "heroes": [
-        {
-          "id": 4006,
-          "name": "축융부인"
-        },
-        {
-          "id": 4005,
-          "name": "맹획"
-        },
-        {
-          "id": 2022,
-          "name": "SP 제갈량"
-        }
-      ],
-      "notes": [
-        {
-          "id": 4006,
-          "name": "축융부인",
-          "allocation_note": "무력",
-          "role_note": ""
-        },
-        {
-          "id": 4005,
-          "name": "맹획",
-          "allocation_note": "무력/통솔",
-          "role_note": ""
-        },
-        {
-          "id": 2022,
-          "name": "SP 제갈량",
-          "allocation_note": "선공 1위 후 지력",
-          "role_note": ""
-        }
-      ],
-      "candidate_template_ids": [
-        "sheet:dcg_s5_spzhugeman"
-      ]
     }
   ],
   "glossary_tags": [
@@ -3469,7 +2898,7 @@
         }
       ],
       "reference_max_selected": 1,
-      "unlock_note": "실제 해금은 해당 서버의 연의 진행 단계와 변경 대기시간을 확인합니다. 개막 후 고정 일수로 환산하지 않습니다."
+      "unlock_note": "한국 시즌3 연의 콘텐츠 사용 가능을 사용자 확인했습니다. 그룹별1명 선택을 검증하며 서버별 진행 단계·변경 대기시간은 게임에서 확인합니다."
     },
     {
       "id": 2,
@@ -3485,7 +2914,7 @@
         }
       ],
       "reference_max_selected": 1,
-      "unlock_note": "실제 해금은 해당 서버의 연의 진행 단계와 변경 대기시간을 확인합니다. 개막 후 고정 일수로 환산하지 않습니다."
+      "unlock_note": "한국 시즌3 연의 콘텐츠 사용 가능을 사용자 확인했습니다. 그룹별1명 선택을 검증하며 서버별 진행 단계·변경 대기시간은 게임에서 확인합니다."
     },
     {
       "id": 3,
@@ -3501,7 +2930,7 @@
         }
       ],
       "reference_max_selected": 1,
-      "unlock_note": "실제 해금은 해당 서버의 연의 진행 단계와 변경 대기시간을 확인합니다. 개막 후 고정 일수로 환산하지 않습니다."
+      "unlock_note": "한국 시즌3 연의 콘텐츠 사용 가능을 사용자 확인했습니다. 그룹별1명 선택을 검증하며 서버별 진행 단계·변경 대기시간은 게임에서 확인합니다."
     }
   ],
   "romance_options": [
@@ -3513,17 +2942,16 @@
         "id": 4004,
         "name": "원소"
       },
-      "title": "원소 연의 분기 1",
+      "title": "업성의 진지",
       "arms": {
         "id": 1,
         "name": "방패병",
         "selection": "changed"
       },
       "skill_option_ids": [
-        810001,
-        810002
+        810001
       ],
-      "skill_link_verified": false,
+      "skill_link_verified": true,
       "linked_warbooks": [
         {
           "id": 70519,
@@ -3541,8 +2969,8 @@
           "description": "전체 아군이 병기 피해를 준 후, 목표가 받는 피해가 1% 증가하며, 최대 4회 중첩될 수 있다."
         }
       ],
-      "kr_season3_unlocked": null,
-      "simulation_supported": false
+      "kr_season3_unlocked": true,
+      "simulation_supported": true
     },
     {
       "id": "romance-trait-2",
@@ -3552,17 +2980,16 @@
         "id": 4004,
         "name": "원소"
       },
-      "title": "원소 연의 분기 2",
+      "title": "사세삼공",
       "arms": {
         "id": 2,
         "name": "궁병",
         "selection": "base"
       },
       "skill_option_ids": [
-        810001,
         810002
       ],
-      "skill_link_verified": false,
+      "skill_link_verified": true,
       "linked_warbooks": [
         {
           "id": 70516,
@@ -3580,8 +3007,8 @@
           "description": "전투 1번째 턴에 우군 2명이 1스택의 방어를 획득한다."
         }
       ],
-      "kr_season3_unlocked": null,
-      "simulation_supported": false
+      "kr_season3_unlocked": true,
+      "simulation_supported": true
     },
     {
       "id": "romance-trait-3",
@@ -3591,17 +3018,16 @@
         "id": 4021,
         "name": "공손찬"
       },
-      "title": "공손찬 연의 분기 1",
+      "title": "백마의종",
       "arms": {
         "id": 2,
         "name": "궁병",
         "selection": "changed"
       },
       "skill_option_ids": [
-        810003,
-        810004
+        810003
       ],
-      "skill_link_verified": false,
+      "skill_link_verified": true,
       "linked_warbooks": [
         {
           "id": 70516,
@@ -3619,8 +3045,8 @@
           "description": "전체 아군이 병기 피해를 준 후, 목표가 받는 피해가 1% 증가하며, 최대 4회 중첩될 수 있다."
         }
       ],
-      "kr_season3_unlocked": null,
-      "simulation_supported": false
+      "kr_season3_unlocked": true,
+      "simulation_supported": true
     },
     {
       "id": "romance-trait-4",
@@ -3630,17 +3056,16 @@
         "id": 4021,
         "name": "공손찬"
       },
-      "title": "공손찬 연의 분기 2",
+      "title": "북방 질주",
       "arms": {
         "id": 4,
         "name": "기병",
         "selection": "base"
       },
       "skill_option_ids": [
-        810003,
         810004
       ],
-      "skill_link_verified": false,
+      "skill_link_verified": true,
       "linked_warbooks": [
         {
           "id": 70517,
@@ -3658,8 +3083,8 @@
           "description": "피해를 준 후, 추격 전법 피해가 2.5% 증가하며, 최대 4회 중첩된다."
         }
       ],
-      "kr_season3_unlocked": null,
-      "simulation_supported": false
+      "kr_season3_unlocked": true,
+      "simulation_supported": true
     },
     {
       "id": "romance-trait-5",
@@ -3669,17 +3094,16 @@
         "id": 4001,
         "name": "장료"
       },
-      "title": "장료 연의 분기 1",
+      "title": "유유자적",
       "arms": {
         "id": 4,
         "name": "기병",
         "selection": "base"
       },
       "skill_option_ids": [
-        810005,
-        810006
+        810005
       ],
-      "skill_link_verified": false,
+      "skill_link_verified": true,
       "linked_warbooks": [
         {
           "id": 70517,
@@ -3697,8 +3121,8 @@
           "description": "피해를 준 후, 추격 전법 피해가 2.5% 증가하며, 최대 4회 중첩된다."
         }
       ],
-      "kr_season3_unlocked": null,
-      "simulation_supported": false
+      "kr_season3_unlocked": true,
+      "simulation_supported": true
     },
     {
       "id": "romance-trait-6",
@@ -3708,17 +3132,16 @@
         "id": 4001,
         "name": "장료"
       },
-      "title": "장료 연의 분기 2",
+      "title": "적장 참살",
       "arms": {
         "id": 2,
         "name": "궁병",
         "selection": "changed"
       },
       "skill_option_ids": [
-        810005,
         810006
       ],
-      "skill_link_verified": false,
+      "skill_link_verified": true,
       "linked_warbooks": [
         {
           "id": 70516,
@@ -3736,8 +3159,8 @@
           "description": "액티브 전법 발동률이 3% 증가한다."
         }
       ],
-      "kr_season3_unlocked": null,
-      "simulation_supported": false
+      "kr_season3_unlocked": true,
+      "simulation_supported": true
     },
     {
       "id": "romance-trait-7",
@@ -3747,17 +3170,16 @@
         "id": 3006,
         "name": "감녕"
       },
-      "title": "감녕 연의 분기 1",
+      "title": "수상 약탈",
       "arms": {
         "id": 4,
         "name": "기병",
         "selection": "base"
       },
       "skill_option_ids": [
-        810007,
-        810008
+        810007
       ],
-      "skill_link_verified": false,
+      "skill_link_verified": true,
       "linked_warbooks": [
         {
           "id": 70517,
@@ -3775,8 +3197,8 @@
           "description": "피해를 준 후, 추격 전법 피해가 2.5% 증가하며, 최대 4회 중첩된다."
         }
       ],
-      "kr_season3_unlocked": null,
-      "simulation_supported": false
+      "kr_season3_unlocked": true,
+      "simulation_supported": true
     },
     {
       "id": "romance-trait-8",
@@ -3786,17 +3208,16 @@
         "id": 3006,
         "name": "감녕"
       },
-      "title": "감녕 연의 분기 2",
+      "title": "기병대 급습",
       "arms": {
         "id": 3,
         "name": "창병",
         "selection": "changed"
       },
       "skill_option_ids": [
-        810007,
         810008
       ],
-      "skill_link_verified": false,
+      "skill_link_verified": true,
       "linked_warbooks": [
         {
           "id": 70518,
@@ -3814,8 +3235,8 @@
           "description": "일반 공격 후, 일반 공격 피해가 4.5% 증가하며, 최대 5회 중첩한다."
         }
       ],
-      "kr_season3_unlocked": null,
-      "simulation_supported": false
+      "kr_season3_unlocked": true,
+      "simulation_supported": true
     },
     {
       "id": "romance-trait-9",
@@ -3825,17 +3246,16 @@
         "id": 2001,
         "name": "관우"
       },
-      "title": "관우 연의 분기 1",
+      "title": "칠군수몰",
       "arms": {
         "id": 4,
         "name": "기병",
         "selection": "base"
       },
       "skill_option_ids": [
-        810009,
         810010
       ],
-      "skill_link_verified": false,
+      "skill_link_verified": true,
       "linked_warbooks": [
         {
           "id": 70517,
@@ -3853,8 +3273,8 @@
           "description": "피해를 준 후, 추격 전법 피해가 2.5% 증가하며, 최대 4회 중첩된다."
         }
       ],
-      "kr_season3_unlocked": null,
-      "simulation_supported": false
+      "kr_season3_unlocked": true,
+      "simulation_supported": true
     },
     {
       "id": "romance-trait-10",
@@ -3864,17 +3284,16 @@
         "id": 2001,
         "name": "관우"
       },
-      "title": "관우 연의 분기 2",
+      "title": "단도부회",
       "arms": {
         "id": 2,
         "name": "궁병",
         "selection": "changed"
       },
       "skill_option_ids": [
-        810009,
-        810010
+        810009
       ],
-      "skill_link_verified": false,
+      "skill_link_verified": true,
       "linked_warbooks": [
         {
           "id": 70516,
@@ -3892,8 +3311,8 @@
           "description": "액티브 전법 발동률이 3% 증가한다."
         }
       ],
-      "kr_season3_unlocked": null,
-      "simulation_supported": false
+      "kr_season3_unlocked": true,
+      "simulation_supported": true
     },
     {
       "id": "romance-trait-11",
@@ -3903,17 +3322,16 @@
         "id": 1024,
         "name": "조인"
       },
-      "title": "조인 연의 분기 1",
+      "title": "철벽 수비",
       "arms": {
         "id": 3,
         "name": "창병",
         "selection": "changed"
       },
       "skill_option_ids": [
-        810011,
-        810012
+        810011
       ],
-      "skill_link_verified": false,
+      "skill_link_verified": true,
       "linked_warbooks": [
         {
           "id": 70518,
@@ -3931,8 +3349,8 @@
           "description": "통솔이 가장 높은 아군 단일 목표가 받는 피해가 4.5% 감소한다."
         }
       ],
-      "kr_season3_unlocked": null,
-      "simulation_supported": false
+      "kr_season3_unlocked": true,
+      "simulation_supported": true
     },
     {
       "id": "romance-trait-12",
@@ -3942,17 +3360,16 @@
         "id": 1024,
         "name": "조인"
       },
-      "title": "조인 연의 분기 2",
+      "title": "팔문금쇄",
       "arms": {
         "id": 1,
         "name": "방패병",
         "selection": "base"
       },
       "skill_option_ids": [
-        810011,
         810012
       ],
-      "skill_link_verified": false,
+      "skill_link_verified": true,
       "linked_warbooks": [
         {
           "id": 70519,
@@ -3970,8 +3387,8 @@
           "description": "전체 아군이 병기 피해를 준 후, 목표가 받는 피해가 1% 증가하며, 최대 4회 중첩될 수 있다."
         }
       ],
-      "kr_season3_unlocked": null,
-      "simulation_supported": false
+      "kr_season3_unlocked": true,
+      "simulation_supported": true
     }
   ],
   "romance_skills": [
@@ -3987,7 +3404,7 @@
       "description_level": 10,
       "description_grade": 0,
       "use_note": "무력·지력·선공이 높은 아군이 낮은 적 속성을 겨냥하고, 피해에 연동해 병력이 낮은 아군을 회복하는 분기입니다.",
-      "simulation_supported": false
+      "simulation_supported": true
     },
     {
       "id": 810002,
@@ -4001,7 +3418,7 @@
       "description_level": 10,
       "description_grade": 0,
       "use_note": "아군의 액티브 발동으로 피해 증감과 적이 받는 피해 증가를 쌓는 분기입니다.",
-      "simulation_supported": false
+      "simulation_supported": true
     },
     {
       "id": 810003,
@@ -4015,7 +3432,7 @@
       "description_level": 10,
       "description_grade": 0,
       "use_note": "초반 우군의 회심·묘책과 액티브 추가 발동을 보조합니다. 3궁병 전용 병법과 함께 검토합니다.",
-      "simulation_supported": false
+      "simulation_supported": true
     },
     {
       "id": 810004,
@@ -4029,7 +3446,7 @@
       "description_level": 10,
       "description_grade": 0,
       "use_note": "일반 공격 뒤 적의 무력·지력을 탈취하고 혼합 피해를 주는 분기입니다. 선공 차이와 방패병 대상 조건이 있습니다.",
-      "simulation_supported": false
+      "simulation_supported": true
     },
     {
       "id": 810005,
@@ -4043,7 +3460,7 @@
       "description_level": 10,
       "description_grade": 0,
       "use_note": "우군의 일반 공격·추격을 계기로 추가 일반 공격을 시도합니다. 턴별 발동 상한과 후열 우선 조건을 확인합니다.",
-      "simulation_supported": false
+      "simulation_supported": true
     },
     {
       "id": 810006,
@@ -4057,7 +3474,7 @@
       "description_level": 10,
       "description_grade": 0,
       "use_note": "액티브로 회심을 쌓고 다수 적을 공격하며, 회심 발생 시 제어 상태를 부여하는 분기입니다.",
-      "simulation_supported": false
+      "simulation_supported": true
     },
     {
       "id": 810007,
@@ -4071,7 +3488,7 @@
       "description_level": 10,
       "description_grade": 0,
       "use_note": "연타와 추격 피해를 강화하고 조건에 따라 통솔을 무시합니다. 회심을 발동하지 않는 피해 조건도 있습니다.",
-      "simulation_supported": false
+      "simulation_supported": true
     },
     {
       "id": 810008,
@@ -4085,7 +3502,7 @@
       "description_level": 10,
       "description_grade": 0,
       "use_note": "적의 추격에 반격하고 해당 적의 피해를 낮추는 분기입니다. 일반 공격·추격 중심 상대를 비교할 때 검토합니다.",
-      "simulation_supported": false
+      "simulation_supported": true
     },
     {
       "id": 810009,
@@ -4099,7 +3516,7 @@
       "description_level": 10,
       "description_grade": 0,
       "use_note": "높은 초기 발동률로 광역 병기 피해를 주고 회심 시 추가 피해를 줍니다. 발동 횟수에 따른 발동률 감소를 함께 봅니다.",
-      "simulation_supported": false
+      "simulation_supported": true
     },
     {
       "id": 810010,
@@ -4113,7 +3530,7 @@
       "description_level": 10,
       "description_grade": 0,
       "use_note": "자신과 무력이 높은 우군의 초반 연타를 보조하고, 추격 피해의 후열 지정과 피해 증가를 돕는 분기입니다.",
-      "simulation_supported": false
+      "simulation_supported": true
     },
     {
       "id": 810011,
@@ -4127,7 +3544,7 @@
       "description_level": 10,
       "description_grade": 0,
       "use_note": "통솔이 높은 우군의 반격을 강화하고 일반 공격 부담·책략 피격 반격을 연계합니다.",
-      "simulation_supported": false
+      "simulation_supported": true
     },
     {
       "id": 810012,
@@ -4141,7 +3558,7 @@
       "description_level": 10,
       "description_grade": 0,
       "use_note": "홀수·짝수 턴에 서로 다른 전법 계열의 피해를 억제하고, 이후 턴의 침묵·무장 해제 조건을 만드는 분기입니다.",
-      "simulation_supported": false
+      "simulation_supported": true
     }
   ],
   "profession_profiles": [
@@ -5048,5 +4465,5 @@
       "simulation_supported": false
     }
   ],
-  "content_version": "kr-guides-c850b626183d4f0a"
+  "content_version": "kr-guides-0c23b75a34bf4e3c"
 }

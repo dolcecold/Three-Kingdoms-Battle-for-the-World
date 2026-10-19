@@ -239,34 +239,30 @@ export async function createGuideView(ctx){
     return fill(wrap,query,chips,list),wrap;
   }
 
-  /* ── 연의 ── */
-  const PLAN_KEY='cheonha-romance-plan';
-  const readPlan=()=>{try{const p=JSON.parse(store.get(PLAN_KEY)||'null');return p?.kind==='romance-reference-plan'?p.selected_trait_ids:[];}catch{return [];}};
-  const savePlan=ids=>store.set(PLAN_KEY,JSON.stringify({kind:'romance-reference-plan',content_version:content.content_version,selected_trait_ids:ids}));
+  /* ── 연의: 배틀 편성에 바로 적용 ── */
   function romanceBlock(){
     const wrap=h('section',{class:'guide-tool'});let stage=content.romance_stages[0]?.id;
     const skills=new Map(content.romance_skills.map(s=>[s.id,s]));
+    const usedBy=traitId=>['left','right'].filter(side=>state.armies[side]?.heroes.some(x=>x.romance_trait_id===traitId));
     const draw=()=>{
-      const plan=readPlan(),review=G.reviewRomanceChoices(content,plan),set=owned();
-      const st=content.romance_stages.find(s=>s.id===stage);
+      const set=owned(),st=content.romance_stages.find(s=>s.id===stage);
       fill(wrap,
-        h('div',{class:'chips'},badge('한국 시즌3 해금 확인 필요','warn'),badge('전투 계산 미지원')),
+        h('div',{class:'chips'},badge('한국 시즌3 연의','fit-high'),badge('추정 계산 반영'),badge('레벨·승품은 편성값 그대로')),
+        h('p',{class:'muted-note',text:'분기를 고르면 고유 전법과 병종이 바뀝니다. 같은 그룹에서는 부대마다 1명·1분기만 쓸 수 있고, 연의 고정 병법은 배틀의 병법 탭에서 일반 병법 대신 고를 수 있습니다.'}),
         h('div',{class:'seg'},content.romance_stages.map(s=>h('button',{type:'button','aria-pressed':String(s.id===stage),onclick:()=>{stage=s.id;draw();},text:`${s.name} · ${s.heroes.map(x=>x.name).join('/')}`}))),
         st?.unlock_note?h('p',{class:'muted-note',text:st.unlock_note}):null,
-        st.heroes.map(hero=>{
-          const opts=G.filterRomanceOptions(content,{stageId:stage,heroId:hero.id});
-          const changed=(opts[0]?.skill_option_ids||[]).map(id=>skills.get(id)).filter(Boolean);
-          return h('article',{class:'guide-card'},
-            h('div',{class:'top'},heroChip(hero,set),h('span',{class:'muted-note',text:'변경 전법 후보 (분기와의 일대일 연결은 미확정)'})),
-            h('div',{class:'grid-2'},changed.map(s=>h('div',{class:'desc-box'},h('b',{text:s.name}),' ',badge(s.type,`type-${s.type}`),h('p',{text:s.description}),s.use_note?h('p',{class:'muted-note',text:s.use_note}):null))),
-            opts.map(o=>h('div',{class:'branch'},
-              h('label',{class:'check-row'},h('input',{type:'checkbox',checked:plan.includes(o.trait_id),onchange:e=>{const next=readPlan().filter(id=>id!==o.trait_id);if(e.target.checked)next.push(o.trait_id);savePlan(next);draw();}}),h('strong',{text:o.title})),
-              h('p',null,h('b',{text:'병종 '}),`${o.arms.name}${o.arms.selection==='changed'?' (분기에서 변경)':' (기본 병종)'}`),
-              h('ul',{class:'bullets'},o.linked_warbooks.map(b=>h('li',null,h('b',{text:b.name}),` ${b.description}`))))));
-        }),
-        h('div',{class:'plan-box'},h('strong',{text:`참고 계획: ${review.selected_trait_ids.length}개 분기 선택`}),
-          review.errors.length?h('p',{class:'form-error',text:review.errors.join(' ')}):h('p',{class:'muted-note',text:review.complete?'세 그룹을 모두 골랐습니다.':`아직 고르지 않은 그룹: ${review.missing_stage_ids.map(id=>content.romance_stages.find(s=>s.id===id)?.name).join(', ')}`}),
-          h('p',{class:'muted-note',text:'보관 공략의 그룹당 1명·1분기 기준으로 점검하는 참고 계획입니다. 게임 해금·보유·전투 적용을 보장하지 않으며, 배틀 편성에는 반영되지 않습니다.'})));
+        st.heroes.map(hero=>h('article',{class:'guide-card'},
+          h('div',{class:'top'},heroChip(hero,set),h('span',{class:'muted-note',text:'분기 2개 중 하나를 고릅니다'})),
+          G.filterRomanceOptions(content,{stageId:stage,heroId:hero.id}).map(o=>{
+            const sk=(o.skill_option_ids||[]).map(id=>skills.get(id)).filter(Boolean),on=usedBy(o.trait_id);
+            return h('div',{class:'branch'},
+              h('div',{class:'top'},h('strong',{text:o.title}),badge(o.arms.name),on.map(side=>badge(`${ctx.SIDE_NAME[side]} 적용 중`,'in-lineup'))),
+              sk.map(k=>h('p',null,h('b',{text:`변경 고유 전법 · ${k.name} `}),badge(k.type,`type-${k.type}`),h('br'),k.description)),
+              h('details',null,h('summary',{text:'연의 고정 병법 3개'}),h('ul',{class:'bullets'},o.linked_warbooks.map(b=>h('li',null,h('b',{text:b.name}),` ${b.description}`)))),
+              h('div',{class:'deck-actions'},['left','right'].map(side=>h('button',{type:'button',class:side==='left'?'solid-btn small ally-btn':'ghost-btn small',
+                onclick:()=>{const r=ctx.applyRomance(side,hero.id,o.trait_id);if(r)draw();},text:`${ctx.SIDE_NAME[side]} 편성에 적용`}))));
+          })))
+      );
     };
     draw();return wrap;
   }

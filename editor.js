@@ -1,6 +1,9 @@
 /** Public editor selection rules only; combat runs in the backend. */
 export const STAT_FIELDS=[['might','무력'],['intelligence','지력'],['defence','통솔'],['speed','선공']];
 
+/** IDs are identity keys. In particular, S/A 황보숭 and ordinary/SP 제갈량 differ. */
+export function heroChoiceLabel(row){return `${row.name} · ${row.rarity_name} · ${row.faction_name} (#${row.id})`;}
+
 /** Original client stat math only. No formation, combat, or effect calculation. */
 export function previewHeroStats(data,hero){
   const row=data.heroes.find(h=>h.id===hero.hero_id);
@@ -30,9 +33,26 @@ export function migrateProgression(army){
   return value;
 }
 
-export function armFor(data,hero){return data.arms.find(a=>a.id===(hero.advanced_arms_id||data.heroes.find(h=>h.id===hero.hero_id)?.default_arms_id));}
+export function romanceFor(data,hero){return hero.romance_trait_id==null?null:(data.romance_options??[]).find(r=>r.trait_id===hero.romance_trait_id&&r.hero_id===hero.hero_id)??null;}
+export function innateFor(data,hero){return romanceFor(data,hero)?.innate??data.heroes.find(h=>h.id===hero.hero_id)?.innate;}
+export function armFor(data,hero){return data.arms.find(a=>a.id===(hero.advanced_arms_id||romanceFor(data,hero)?.arms_id||data.heroes.find(h=>h.id===hero.hero_id)?.default_arms_id));}
+
+/** Selection only. Fixed Romance books replace the normal slots. */
+export function withRomance(data,army,heroId,traitId,{warbookPage='normal'}={}){
+  const copy=structuredClone(army),hero=copy.heroes.find(h=>h.hero_id===heroId);
+  if(!hero)throw new Error('편성에 없는 무장입니다.');
+  hero.romance_trait_id=traitId;hero.warbook_page=warbookPage;
+  const option=romanceFor(data,hero);
+  if(traitId!=null&&!option)throw new Error('해당 시즌·무장의 연의 분기를 선택하세요.');
+  if(warbookPage==='romance')hero.warbook_slots=[];
+  const arm=data.arms.find(a=>a.id===hero.advanced_arms_id);
+  const expected=option?.arms_id??data.heroes.find(h=>h.id===heroId)?.default_arms_id;
+  if(arm&&arm.arms_type!==data.arms.find(a=>a.id===expected)?.arms_type){hero.advanced_arms_id=null;hero.arms_skill_ids=[];}
+  return validateArmy(data,copy);
+}
 
 export function bookChoices(data,hero,slot){
+  if(hero.warbook_page==='romance')return [];
   const rule=data.heroes.find(h=>h.id===hero.hero_id)?.warbook_slots.find(s=>s.slot===slot);
   if(!rule||hero.level<rule.unlock_level)return [];
   const others=hero.warbook_slots.filter(s=>s.slot!==slot).map(s=>data.warbooks.find(b=>b.id===s.warbook_id)).filter(Boolean);
@@ -60,9 +80,15 @@ export function validateArmy(data,army){
   if(new Set(army.heroes.map(h=>h.slot)).size!==3||army.heroes.some(h=>![1,2,3].includes(h.slot)))fail('무장 위치는 1·2·3번이어야 합니다.');
   if(new Set(army.heroes.map(h=>h.hero_id)).size!==3)fail('같은 부대에 무장을 중복 배치할 수 없습니다.');
   const learnedCounts=new Map();
+  const romanceGroups=new Set();
   for(const h of army.heroes){
     const row=data.heroes.find(x=>x.id===h.hero_id);
     if(!row)fail('현재 시즌에서 선택할 수 없는 무장이 있습니다.');
+    const romance=romanceFor(data,h);
+    if(h.romance_trait_id!=null&&(!Number.isInteger(h.romance_trait_id)||!romance||data.season!==3))fail(`${row.name}: 한국 시즌3의 해당 무장 연의 분기를 선택하세요.`);
+    if(!['normal','romance'].includes(h.warbook_page??'normal'))fail('병법 페이지를 확인하세요.');
+    if(h.warbook_page==='romance'&&(!romance||h.warbook_slots.length))fail(`${row.name}: 연의 고정 병법은 일반 병법과 함께 적용할 수 없습니다.`);
+    if(romance){if(romanceGroups.has(romance.stage_id))fail('같은 연의 그룹에서는 한 무장의 한 분기만 선택하세요.');romanceGroups.add(romance.stage_id);}
     if(!integer(h.level,1,50)||!integer(h.troops,1,50000))fail(`${row.name}: 레벨은 1~50, 병력은 1~50,000으로 입력하세요.`);
     if(!integer(h.breakthrough??0,0,5)||!['manual','recommended'].includes(h.allocation_mode??'manual'))fail(`${row.name}: 무장 돌파는 0~5, 배분 방식은 직접 또는 추천으로 선택하세요.`);
     if(h.promotion!=null&&(!integer(h.promotion,0,5)||(h.innate.grade!==0&&h.innate.grade!==h.promotion)))fail(`${row.name}: 무장 승품은 0~5로 입력하고 호환용 고유 grade와 일치시켜 주세요.`);
@@ -86,6 +112,7 @@ export function validateArmy(data,army){
     }
     const arm=armFor(data,h);
     if(!arm)fail(`${row.name}: 병종을 확인하세요.`);
+    if(romance&&arm.arms_type!==romance.arms_id)fail(`${row.name}: 연의 분기와 같은 계열의 병종을 선택하세요.`);
     if(h.level<(arm.unlock_level??1))fail(`${row.name}: 선택 병종은 Lv${arm.unlock_level}부터 사용할 수 있습니다.`);
     if(!Array.isArray(h.arms_skill_ids)||h.arms_skill_ids.length>(data.rules.max_proficiencies_per_hero??1)||h.arms_skill_ids.some(id=>!arm.proficiency_ids.includes(id)))fail(`${row.name}: 병종 정통은 해당 고급 병종의 후보 중1개만 선택하세요.`);
     if(h.arms_skill_ids.length&&(data.season===1||arm.is_base||h.level<(arm.proficiency_unlock_level??40)))fail(`${row.name}: 정통은 한국 S2·S3 고급 병종에서 Lv40부터 선택하세요.`);

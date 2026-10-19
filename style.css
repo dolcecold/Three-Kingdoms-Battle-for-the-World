@@ -606,3 +606,10 @@ input.narrow{width:90px}
   .guide-body{padding:18px}
   .sub{padding:14px}
 }
+
+/* 연의 */
+.romance-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+.romance-label{flex:none;font-size:12px;font-weight:700;color:var(--brass);padding:3px 8px;border-radius:999px;background:var(--brass-soft)}
+.romance-row select{flex:1;padding:6px 26px 6px 10px;font-size:13px}
+.branch .top{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.branch details summary{cursor:pointer;font-size:13px;font-weight:650;margin-top:4px}

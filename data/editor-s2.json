@@ -1,7 +1,7 @@
 {
   "region": "KR",
   "locale": "ko-KR",
-  "data_version": "kr-editor-1c6a232569ebd6bd",
+  "data_version": "kr-editor-e3f17b2b49f65caf",
   "season": 2,
   "experimental": false,
   "heroes": [
@@ -29007,7 +29007,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20010,
@@ -29020,7 +29025,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20020,
@@ -29033,7 +29043,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20030,
@@ -29046,7 +29061,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20040,
@@ -29059,7 +29079,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20050,
@@ -29072,7 +29097,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20060,
@@ -29085,7 +29115,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20070,
@@ -29098,7 +29133,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20080,
@@ -29111,7 +29151,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20100,
@@ -29124,7 +29169,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20110,
@@ -29137,7 +29187,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20120,
@@ -29150,7 +29205,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20130,
@@ -29163,7 +29223,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20140,
@@ -29176,7 +29241,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20150,
@@ -29189,7 +29259,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20170,
@@ -29202,7 +29277,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20180,
@@ -29215,7 +29295,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20190,
@@ -29228,7 +29313,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20200,
@@ -29241,7 +29331,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20210,
@@ -29254,7 +29349,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20220,
@@ -29267,7 +29367,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20230,
@@ -29280,7 +29385,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20240,
@@ -29293,7 +29403,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20250,
@@ -29306,7 +29421,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20260,
@@ -29319,7 +29439,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20270,
@@ -29332,7 +29457,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20280,
@@ -29345,7 +29475,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20290,
@@ -29358,7 +29493,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20300,
@@ -29371,7 +29511,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20310,
@@ -29384,7 +29529,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20320,
@@ -29397,7 +29547,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20330,
@@ -29410,7 +29565,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20340,
@@ -29423,7 +29583,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20350,
@@ -29436,7 +29601,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20360,
@@ -29449,7 +29619,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20370,
@@ -29462,7 +29637,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20380,
@@ -29475,7 +29655,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20390,
@@ -29488,7 +29673,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20400,
@@ -29501,7 +29691,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20410,
@@ -29514,7 +29709,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20420,
@@ -29527,7 +29727,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20430,
@@ -29540,7 +29745,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20440,
@@ -29553,7 +29763,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20460,
@@ -29566,7 +29781,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20470,
@@ -29579,7 +29799,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20480,
@@ -29592,7 +29817,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20490,
@@ -29605,7 +29835,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20500,
@@ -29618,7 +29853,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20530,
@@ -29630,7 +29870,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20540,
@@ -29642,7 +29887,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20550,
@@ -29654,7 +29904,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20560,
@@ -29666,7 +29921,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20570,
@@ -29678,7 +29938,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20580,
@@ -29690,7 +29955,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20590,
@@ -29702,7 +29972,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20600,
@@ -29714,7 +29989,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20610,
@@ -29726,7 +30006,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20620,
@@ -29738,7 +30023,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20630,
@@ -29750,7 +30040,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20640,
@@ -29762,7 +30057,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 20650,
@@ -29774,7 +30074,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 20660,
@@ -29786,7 +30091,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 3,
+      "rarity_name": "S",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70000,
@@ -29799,7 +30109,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70010,
@@ -29812,7 +30127,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70020,
@@ -29825,7 +30145,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70030,
@@ -29838,7 +30163,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70040,
@@ -29851,7 +30181,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70050,
@@ -29864,7 +30199,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70060,
@@ -29877,7 +30217,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70070,
@@ -29890,7 +30235,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70080,
@@ -29903,7 +30253,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70090,
@@ -29916,7 +30271,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70100,
@@ -29929,7 +30289,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70110,
@@ -29942,7 +30307,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70120,
@@ -29955,7 +30325,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70130,
@@ -29968,7 +30343,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70140,
@@ -29981,7 +30361,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70150,
@@ -29994,7 +30379,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70160,
@@ -30007,7 +30397,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70170,
@@ -30020,7 +30415,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70180,
@@ -30033,7 +30433,12 @@
         3
       ],
       "type_name": "추격",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70190,
@@ -30046,7 +30451,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70200,
@@ -30059,7 +30469,12 @@
         3
       ],
       "type_name": "지휘",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70210,
@@ -30072,7 +30487,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70220,
@@ -30085,7 +30505,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70230,
@@ -30098,7 +30523,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70240,
@@ -30111,7 +30541,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70250,
@@ -30124,7 +30559,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70260,
@@ -30137,7 +30577,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70280,
@@ -30150,7 +30595,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
     },
     {
       "id": 70290,
@@ -30163,7 +30613,12 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70300,
@@ -30175,7 +30630,12 @@
         3
       ],
       "type_name": "액티브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     },
     {
       "id": 70310,
@@ -30187,7 +30647,210 @@
         3
       ],
       "type_name": "패시브",
-      "max_per_army": 1
+      "max_per_army": 1,
+      "rarity": 2,
+      "rarity_name": "A",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
+    },
+    {
+      "id": 90000,
+      "name": "지략",
+      "description": "랜덤 적군 단일 목표에게 120%의 책략 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
+      "type_name": "액티브",
+      "max_per_army": 1,
+      "rarity": 1,
+      "rarity_name": "B",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
+    },
+    {
+      "id": 90010,
+      "name": "출격",
+      "description": "랜덤 적군 단일 목표에게 120%의 병기 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
+      "type_name": "액티브",
+      "max_per_army": 1,
+      "rarity": 1,
+      "rarity_name": "B",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "estimated"
+    },
+    {
+      "id": 90020,
+      "name": "허심탄회",
+      "description": "1턴 동안 랜덤 적군 단일 목표에게 혼란 효과를 부여한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
+      "type_name": "액티브",
+      "max_per_army": 1,
+      "rarity": 1,
+      "rarity_name": "B",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
+    },
+    {
+      "id": 90030,
+      "name": "무용",
+      "description": "자신의 무력이 20포인트 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
+      "type_name": "패시브",
+      "max_per_army": 1,
+      "rarity": 1,
+      "rarity_name": "B",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
+    },
+    {
+      "id": 90040,
+      "name": "전장의 격려",
+      "description": "우군 2명의 무력이 14포인트 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
+      "type_name": "지휘",
+      "max_per_army": 1,
+      "rarity": 1,
+      "rarity_name": "B",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
+    },
+    {
+      "id": 90050,
+      "name": "지능 개발",
+      "description": "우군 2명의 지력이 12포인트 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
+      "type_name": "지휘",
+      "max_per_army": 1,
+      "rarity": 1,
+      "rarity_name": "B",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
+    },
+    {
+      "id": 90060,
+      "name": "후방 행군",
+      "description": "자신의 통솔이 24포인트 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
+      "type_name": "패시브",
+      "max_per_army": 1,
+      "rarity": 1,
+      "rarity_name": "B",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
+    },
+    {
+      "id": 90070,
+      "name": "강공격",
+      "description": "일반 공격 후, 현재 공격 목표에게 120%의 병기 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
+      "type_name": "추격",
+      "max_per_army": 1,
+      "rarity": 1,
+      "rarity_name": "B",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
+    },
+    {
+      "id": 90080,
+      "name": "파진",
+      "description": "일반 공격 후, 2턴 동안 해당 목표의 통솔이 30포인트 감소한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
+      "type_name": "추격",
+      "max_per_army": 1,
+      "rarity": 1,
+      "rarity_name": "B",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
+    },
+    {
+      "id": 90090,
+      "name": "전마 사살",
+      "description": "일반 공격 후, 2턴 동안 해당 목표의 선공을 30포인트 감소시키고, 목표가 기병이면 추가로 선공을 20포인트 감소시킨다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
+      "type_name": "추격",
+      "max_per_army": 1,
+      "rarity": 1,
+      "rarity_name": "B",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
+    },
+    {
+      "id": 90100,
+      "name": "무장 사살",
+      "description": "일반 공격 후, 해당 목표에게 100%의 병기 피해를 주며, 목표의 선공이 100포인트 이하면 이번 피해가 25% 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
+      "type_name": "추격",
+      "max_per_army": 1,
+      "rarity": 1,
+      "rarity_name": "B",
+      "variant": "standard",
+      "base_skill_id": null,
+      "effect_status": "not_implemented"
     }
   ],
   "warbooks": [
@@ -33029,6 +33692,7 @@
       "id": 1,
       "name": "방패병",
       "description": "궁병에게 강하고, 기병에게 약하다.",
+      "arms_type": 1,
       "proficiency_ids": [],
       "is_base": true,
       "unlock_level": 1,
@@ -33038,6 +33702,7 @@
       "id": 2,
       "name": "궁병",
       "description": "창병에게 강하고, 방패병에게 약하다.",
+      "arms_type": 2,
       "proficiency_ids": [],
       "is_base": true,
       "unlock_level": 1,
@@ -33047,6 +33712,7 @@
       "id": 3,
       "name": "창병",
       "description": "기병에게 강하고, 궁병에게 약하다.",
+      "arms_type": 3,
       "proficiency_ids": [],
       "is_base": true,
       "unlock_level": 1,
@@ -33056,6 +33722,7 @@
       "id": 4,
       "name": "기병",
       "description": "방패병에게 강하고, 창병에게 약하다.",
+      "arms_type": 4,
       "proficiency_ids": [],
       "is_base": true,
       "unlock_level": 1,
@@ -33065,6 +33732,7 @@
       "id": 5,
       "name": "단창병",
       "description": "견고하고 날카로운 창을 든 병사, 공격에 막힘이 없다.",
+      "arms_type": 3,
       "proficiency_ids": [
         1,
         2,
@@ -33081,6 +33749,7 @@
       "id": 6,
       "name": "장창병",
       "description": "예리한 장창을 든 병사, 창을 찌르는 것이 비룡과 같다.",
+      "arms_type": 3,
       "proficiency_ids": [
         1,
         2,
@@ -33097,6 +33766,7 @@
       "id": 7,
       "name": "경기병",
       "description": "가벼운 무장으로 출전한 기병, 바람처럼 적진을 파괴한다.",
+      "arms_type": 4,
       "proficiency_ids": [
         8,
         9,
@@ -33113,6 +33783,7 @@
       "id": 8,
       "name": "중기병",
       "description": "무거운 갑옷을 입은 기병, 전장을 거침없이 누비며 적을 베어버린다.",
+      "arms_type": 4,
       "proficiency_ids": [
         8,
         9,
@@ -33129,6 +33800,7 @@
       "id": 9,
       "name": "장궁병",
       "description": "정교한 장궁을 든 병사, 활시위를 당겨 적진을 함락한다.",
+      "arms_type": 2,
       "proficiency_ids": [
         15,
         16,
@@ -33145,6 +33817,7 @@
       "id": 10,
       "name": "석궁병",
       "description": "쇠뇌를 장착한 병사, 적진을 분쇄하고 심장을 꿰뚫어 전쟁을 순식간에 끝낸다.",
+      "arms_type": 2,
       "proficiency_ids": [
         15,
         16,
@@ -33161,6 +33834,7 @@
       "id": 11,
       "name": "중방패병",
       "description": "무거운 갑옷을 입고 단단한 방패를 든 병사, 조금의 미동도 없이 날카로운 칼날과 화살을 막아낸다.",
+      "arms_type": 1,
       "proficiency_ids": [
         22,
         23,
@@ -33177,6 +33851,7 @@
       "id": 12,
       "name": "검방패병",
       "description": "검과 방패를 든 병사, 방패로 적을 막고 검으로 무찌른다.",
+      "arms_type": 1,
       "proficiency_ids": [
         22,
         23,
@@ -35055,7 +35730,10 @@
       "special_effects_supported": false
     }
   ],
+  "romance_options": [],
   "rules": {
+    "max_romance_per_group": 1,
+    "romance_warbooks_replace_normal": true,
     "max_hero_breakthrough": 5,
     "points_per_breakthrough": 10,
     "allocation_level_step": 10,
@@ -35128,6 +35806,8 @@
       "heroes": [
         {
           "hero_id": 2000,
+          "romance_trait_id": null,
+          "warbook_page": "normal",
           "slot": 1,
           "level": 50,
           "troops": 10000,
@@ -35166,6 +35846,8 @@
         },
         {
           "hero_id": 2001,
+          "romance_trait_id": null,
+          "warbook_page": "normal",
           "slot": 2,
           "level": 50,
           "troops": 10000,
@@ -35204,6 +35886,8 @@
         },
         {
           "hero_id": 2002,
+          "romance_trait_id": null,
+          "warbook_page": "normal",
           "slot": 3,
           "level": 50,
           "troops": 10000,
@@ -35249,6 +35933,8 @@
       "heroes": [
         {
           "hero_id": 1000,
+          "romance_trait_id": null,
+          "warbook_page": "normal",
           "slot": 1,
           "level": 50,
           "troops": 10000,
@@ -35287,6 +35973,8 @@
         },
         {
           "hero_id": 1005,
+          "romance_trait_id": null,
+          "warbook_page": "normal",
           "slot": 2,
           "level": 50,
           "troops": 10000,
@@ -35325,6 +36013,8 @@
         },
         {
           "hero_id": 1008,
+          "romance_trait_id": null,
+          "warbook_page": "normal",
           "slot": 3,
           "level": 50,
           "troops": 10000,

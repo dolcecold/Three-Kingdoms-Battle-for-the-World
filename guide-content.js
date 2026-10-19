@@ -20,13 +20,13 @@ function resolveDeck(content,deckOrId){
   return deck;
 }
 function validateContent(content){
-  if(!['1.0.0','1.1.0'].includes(content?.schema_version)||content.region!=='KR'||!Array.isArray(content.seasons)||
+  if(!['1.0.0','1.1.0','1.2.0'].includes(content?.schema_version)||content.region!=='KR'||!Array.isArray(content.seasons)||
       !Array.isArray(content.menus)||!Array.isArray(content.articles)||!Array.isArray(content.opening_decks)||
       !Array.isArray(content.coexistence_plans)||!Array.isArray(content.stat_notes)||!Array.isArray(content.glossary)||
       typeof content.catalog_data_version!=='string'||typeof content.content_version!=='string'){
     throw new Error('지원하지 않는 가이드 데이터 형식입니다.');
   }
-  if(content.schema_version==='1.1.0'&&['romance_stages','romance_options','romance_skills','profession_profiles','equipment_options'].some(key=>!Array.isArray(content[key]))){
+  if(['1.1.0','1.2.0'].includes(content.schema_version)&&['romance_stages','romance_options','romance_skills','profession_profiles','equipment_options'].some(key=>!Array.isArray(content[key]))){
     throw new Error('확장 가이드의 연의·직업·장비 목록이 누락되었습니다.');
   }
   return content;
@@ -58,7 +58,7 @@ export function filterGuideArticles(content,{category=null,season=3,query=''}={}
     ])].join(' ')).includes(q)));
 }
 
-/** Guide comparison only: null KR unlock state never means season-3 availability. */
+/** Korean season3 Romance branch filters; combat runs on the backend. */
 export function filterRomanceOptions(content,{heroId=null,stageId=null,ownedHeroIds=null,onlyOwned=false,query=''}={}){
   const owned=ownedSet(ownedHeroIds),q=searchKey(query);
   const skillMap=rowsById(content.romance_skills??[]);
@@ -73,7 +73,7 @@ export function filterRomanceOptions(content,{heroId=null,stageId=null,ownedHero
       ...r.linked_warbooks.flatMap(b=>[b.name,b.description])].join(' ')).includes(q)));
 }
 
-/** IDs are guide trait IDs (1..12), not ArmyConfig hero/tactic IDs. */
+/** Trait IDs (1..12) map to HeroConfig.romance_trait_id, never to hero IDs. */
 export function reviewRomanceChoices(content,traitIds){
   if(!content.romance_stages?.length||!content.romance_options?.length)throw new Error('연의 목록이 포함된 가이드 v1.1.0 이상을 사용하세요.');
   if(!Array.isArray(traitIds)||traitIds.some(id=>!Number.isInteger(id)||id<=0))throw new Error('연의 분기 ID 목록을 확인하세요.');
@@ -89,13 +89,13 @@ export function reviewRomanceChoices(content,traitIds){
   }
   for(const stage of content.romance_stages??[]){
     if(selected.filter(o=>o.stage_id===stage.id).length>stage.reference_max_selected){
-      errors.push(`${stage.name}: 보관 공략의 비교 기준은 ${stage.reference_max_selected}명·1분기 선택입니다.`);
+      errors.push(`${stage.name}: 한국 시즌3 연의 선택 기준은 ${stage.reference_max_selected}명·1분기 선택입니다.`);
     }
   }
   const missing_stage_ids=(content.romance_stages??[]).filter(s=>!selected.some(o=>o.stage_id===s.id)).map(s=>s.id);
   return {valid_reference_plan:errors.length===0,complete:errors.length===0&&missing_stage_ids.length===0,
     selected_trait_ids:selected.map(o=>o.trait_id),missing_stage_ids,errors,
-    kr_season3_unlocked:null,simulation_supported:false};
+    kr_season3_unlocked:true,simulation_supported:true};
 }
 
 export function filterEquipmentOptions(content,{slotType=null,kind=null,dedicated=null,query=''}={}){
