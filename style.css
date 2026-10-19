@@ -491,3 +491,118 @@ input::placeholder{color:color-mix(in srgb,var(--muted) 70%,transparent)}
 .busy-own{color:var(--warn)}
 .quick-deck{width:auto;max-width:180px;padding:5px 26px 5px 10px;font-size:12.5px;border-radius:999px}
 @media (max-width:900px){.preset-filters{grid-template-columns:1fr}.preset-filters .seg{overflow-x:auto}}
+
+/* ── 메뉴 구조 ───────────────────────────────────────── */
+.main-nav{display:flex;gap:2px;padding:3px;background:var(--surface-2);border-radius:12px}
+.main-nav a{display:flex;align-items:center;gap:7px;padding:7px 16px;border-radius:9px;color:var(--muted);font-weight:700;font-size:14.5px;text-decoration:none;white-space:nowrap}
+.main-nav a:hover{color:var(--ink)}
+.main-nav a[aria-current="page"]{background:var(--raise);color:var(--ink);box-shadow:var(--shadow)}
+.nav-ico{font-family:var(--font-display);font-weight:800;font-size:15px;color:var(--brass)}
+.main-nav a[aria-current="page"] .nav-ico{color:var(--enemy)}
+.brand{margin-right:0}
+.season-switch{margin-left:auto}
+.view-head{margin:6px 0 18px}
+.view-head h1{font-family:var(--font-display);font-size:30px;font-weight:800;letter-spacing:-.02em}
+.view-sub{color:var(--muted);font-size:14px;max-width:75ch;margin-top:4px}
+.text-link{color:var(--ally);font-weight:650;text-decoration:underline;text-underline-offset:3px;background:none;border:0;padding:0;font-size:inherit;cursor:pointer}
+.empty-box{display:grid;justify-items:center;gap:10px;padding:32px 20px;border:1.5px dashed var(--line);border-radius:var(--r-card);color:var(--muted);text-align:center}
+.sub-help{color:var(--muted);font-size:13.5px;margin-bottom:12px}
+.tool-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.tool-row.end{justify-content:flex-end}
+.tool-row>input[type=search]{flex:1 1 220px;width:auto}
+.chip-stack{display:grid;gap:6px;margin-bottom:10px}
+.stack{display:grid;gap:12px}
+a.ghost-btn,a.solid-btn{text-decoration:none;color:inherit}
+a.solid-btn{color:var(--surface)}
+.ally-btn{background:var(--ally);color:#fff}
+.ally-btn:hover:not(:disabled){background:var(--ally-ink)}
+.enemy-btn{background:var(--enemy);color:#fff}
+.enemy-btn:hover:not(:disabled){background:var(--enemy-ink)}
+.ghost-btn.danger{color:var(--danger)}
+
+/* 보유 풀 하위 메뉴 */
+.subnav{display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;padding-bottom:2px;border-bottom:1px solid var(--line-soft)}
+.subnav a{display:flex;align-items:center;gap:8px;padding:10px 14px;color:var(--muted);font-weight:700;text-decoration:none;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-1px}
+.subnav a i{font-style:normal;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--surface-2);font-size:11.5px}
+.subnav a b{font-weight:600;font-size:12px;color:var(--ok)}
+.subnav a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--enemy)}
+.subnav a[aria-current="page"] i{background:var(--enemy);color:#fff}
+.sub{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-panel);padding:18px}
+.pool-grid{padding:0;min-height:0;max-height:none}
+.preset-filters{grid-template-columns:minmax(0,1fr) auto auto auto;margin-bottom:6px}
+.preset-layout{grid-template-columns:minmax(0,360px) minmax(0,1fr);margin-top:8px}
+.preset-list{max-height:68vh}
+.preset-side{display:grid;gap:10px;align-content:start;position:sticky;top:90px}
+.preset-preview{max-height:56vh}
+.preset-actions{display:flex;flex-wrap:wrap;gap:6px}
+.preset-actions .solid-btn,.preset-actions .ghost-btn{flex:1 1 auto}
+.lineup-list{display:grid;gap:10px}
+.lineup-card{display:grid;gap:8px;padding:14px;border-radius:12px;border:1px solid var(--line-soft);background:var(--raise)}
+.lineup-card .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lineup-card .order{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--brass-soft);color:var(--brass);font-weight:800;font-size:13px}
+.lineup-card .heroes{font-size:14px}
+.sub .panel{margin-bottom:12px}
+
+/* 가이드 */
+.guide-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:20px;align-items:start}
+.guide-nav-wrap{position:sticky;top:84px;display:grid;gap:10px;max-height:calc(100vh - 110px);overflow-y:auto;padding:14px;border-radius:var(--r-panel);background:var(--surface);border:1px solid var(--line-soft)}
+#guide-nav ul{list-style:none;margin:2px 0 10px;padding:0}
+#guide-nav li a{display:block;padding:6px 10px;border-radius:8px;color:var(--muted);text-decoration:none;font-size:13.5px}
+#guide-nav li a:hover{background:var(--bg);color:var(--ink)}
+#guide-nav li a[aria-current="page"]{background:var(--ink);color:var(--surface);font-weight:650}
+.nav-group{display:block;font-weight:800;font-size:13px;padding:4px 10px;color:var(--ink);text-decoration:none}
+.nav-menu.open .nav-group{color:var(--enemy)}
+.guide-body{min-width:0;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r-panel);padding:24px 26px;display:grid;gap:14px;line-height:1.7}
+.guide-body h2{font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.3}
+.crumb{font-size:12.5px;font-weight:700;color:var(--enemy)}
+.lead{font-size:15.5px;color:var(--muted)}
+.season-note{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:color-mix(in srgb,var(--warn) 12%,transparent);color:var(--warn);font-size:13px}
+.bullets{margin:0;padding-left:20px;display:grid;gap:4px}
+.checklist{display:grid;gap:8px;padding:12px 14px;border-radius:12px;background:var(--bg)}
+.checklist .check-row{font-weight:500;align-items:flex-start}
+.guide-tool{display:grid;gap:10px}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.guide-card{display:grid;gap:8px;align-content:start;padding:14px;border-radius:12px;border:1px solid var(--line-soft);background:var(--raise);line-height:1.55}
+.guide-card.compact p{font-size:13px;color:var(--muted)}
+.guide-card .top{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.guide-card .top strong{font-size:15.5px}
+.hero-row{display:flex;flex-wrap:wrap;gap:4px}
+.hero-chip{display:inline-flex;padding:2px 9px;border-radius:999px;background:var(--surface-2);font-size:12.5px;font-weight:650}
+.hero-chip.own{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.hero-chip.miss{color:var(--muted);text-decoration:line-through}
+.link-row{display:inline-flex;flex-wrap:wrap;gap:8px}
+.inline-field{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted)}
+input.narrow{width:90px}
+.glossary{display:grid;grid-template-columns:max-content 1fr;gap:6px 14px;margin:0}
+.glossary dt{font-weight:700}
+.glossary dd{margin:0;color:var(--muted)}
+.branch{display:grid;gap:4px;padding:10px 12px;border-radius:10px;background:var(--bg);font-size:13.5px}
+.plan-box{display:grid;gap:4px;padding:12px 14px;border-radius:12px;border:1px dashed var(--brass)}
+.article-nav{display:flex;justify-content:space-between;gap:10px;margin-top:8px;flex-wrap:wrap}
+.import-rows{display:grid;gap:10px}
+.import-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;align-items:end;padding:10px;border-radius:10px;background:var(--bg)}
+.import-row strong{grid-column:1/-1}
+.seg-pair{display:inline-flex;gap:8px;flex-wrap:wrap}
+
+@media (max-width:900px){
+  .topbar{position:static;margin-top:0}
+  .main-nav{order:3;width:100%}
+  .main-nav a{flex:1;justify-content:center;padding:8px 6px}
+  .season-switch{order:4;margin-left:0}
+  .board-tabs{top:calc(env(safe-area-inset-top,0px) + 6px)}
+  .preset-filters{grid-template-columns:1fr}
+  .preset-layout{grid-template-columns:1fr}
+  .preset-side{position:static}
+  .preset-list{max-height:40vh}
+  .guide-layout{grid-template-columns:1fr}
+  .guide-nav-wrap{position:static;max-height:none}
+  #guide-nav{display:flex;gap:6px;overflow-x:auto}
+  #guide-nav .nav-menu{display:contents}
+  #guide-nav ul{display:none}
+  #guide-nav .nav-menu.open ul{display:flex;gap:4px;margin:0}
+  #guide-nav .nav-group{white-space:nowrap;border-radius:999px;border:1px solid var(--line)}
+  #guide-nav .nav-menu.open .nav-group{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+  #guide-nav li a{white-space:nowrap;border:1px solid var(--line-soft)}
+  .guide-body{padding:18px}
+  .sub{padding:14px}
+}

@@ -18,13 +18,18 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <a class="skip-link" href="#board">편성으로 바로 가기</a>
+  <a class="skip-link" href="#main">본문으로 바로 가기</a>
 
   <header class="topbar">
     <a class="brand" href="./" aria-label="천하결전 덱 시뮬레이터 처음으로">
       <span class="brand-seal" aria-hidden="true">戰</span>
       <span class="brand-text"><strong>천하결전</strong><span>덱 시뮬레이터</span></span>
     </a>
+    <nav class="main-nav" aria-label="메뉴">
+      <a href="#/battle" data-nav="battle"><span class="nav-ico" aria-hidden="true">戰</span>배틀</a>
+      <a href="#/roster" data-nav="roster"><span class="nav-ico" aria-hidden="true">將</span>보유 풀</a>
+      <a href="#/guides" data-nav="guides"><span class="nav-ico" aria-hidden="true">書</span>가이드</a>
+    </nav>
     <fieldset class="season-switch" id="season-switch">
       <legend class="sr-only">플레이 시즌</legend>
       <label><input type="radio" name="season" value="1"><span>S1</span></label>
@@ -32,13 +37,13 @@
       <label><input type="radio" name="season" value="3"><span>S3<small>시험</small></span></label>
     </fieldset>
     <div class="topbar-tools">
-      <button class="ghost-btn small pool-open" id="open-pool" type="button">보유 풀 <b id="pool-badge"></b></button>
       <button class="conn-pill" id="open-connection" type="button"><i aria-hidden="true"></i><span id="connection-label">편성 모드</span></button>
       <button class="icon-btn" id="theme-toggle" type="button" aria-label="화면 테마 전환"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg></button>
     </div>
   </header>
 
   <main id="main">
+   <section id="view-battle" class="view" aria-label="배틀">
     <section class="board" id="board" aria-label="부대 편성">
       <div class="board-tabs" role="tablist" aria-label="편집할 부대">
         <button role="tab" id="tab-left" aria-controls="left" aria-selected="true" data-view="left" type="button"><span class="dot ally" aria-hidden="true"></span>아군 <b id="tab-left-total"></b></button>
@@ -90,6 +95,71 @@
       </div>
     </section>
 
+   </section>
+
+   <section id="view-roster" class="view" hidden aria-labelledby="roster-title">
+    <div class="view-head">
+      <h1 id="roster-title">보유 풀</h1>
+      <p class="view-sub">갖고 있는 무장·전법을 등록하면 그걸로 맞출 수 있는 추천덱을 찾고, 여러 부대를 겹치지 않게 짜고, 완성한 덱을 저장합니다. 모든 정보는 이 브라우저에만 저장됩니다.</p>
+    </div>
+    <nav class="subnav" aria-label="보유 풀 메뉴">
+      <a href="#/roster/pool" data-sub="pool"><i>1</i>보유 무장·전법 <b id="sub-n-pool"></b></a>
+      <a href="#/roster/presets" data-sub="presets"><i>2</i>추천덱 찾기</a>
+      <a href="#/roster/lineup" data-sub="lineup"><i>3</i>내 구성 <b id="sub-n-lineup"></b></a>
+      <a href="#/roster/decks" data-sub="decks"><i>4</i>내 덱 <b id="sub-n-decks"></b></a>
+    </nav>
+
+    <div id="roster-pool" class="sub" hidden>
+      <p class="sub-help">게임에서 갖고 있는 무장과 전법을 눌러 체크하세요. 진영·등급·유형으로 거른 뒤 '보이는 항목 모두 선택'을 쓰면 빠릅니다.</p>
+      <div class="tool-row">
+        <div id="pool-tabs" class="seg" role="tablist" aria-label="보유 풀 분류"><button type="button" role="tab" data-pool-tab="heroes" aria-selected="true">무장 <b id="pool-n-heroes"></b></button><button type="button" role="tab" data-pool-tab="tactics" aria-selected="false">전법 <b id="pool-n-tactics"></b></button></div>
+        <input id="pool-search" type="search" placeholder="이름으로 검색" aria-label="보유 풀 검색" autocomplete="off">
+      </div>
+      <div id="pool-chips" class="chip-stack"></div>
+      <div class="tool-row end"><span id="pool-count" class="muted-note"></span><button class="ghost-btn small" id="pool-none" type="button">보이는 항목 해제</button><button class="ghost-btn small" id="pool-all" type="button">보이는 항목 모두 선택</button></div>
+      <div id="pool-grid" class="pool-grid" role="group" aria-label="보유 여부"></div>
+    </div>
+
+    <div id="roster-presets" class="sub" hidden>
+      <p class="sub-help" id="preset-help"></p>
+      <div class="preset-filters">
+        <input id="preset-search" type="search" placeholder="덱 이름, 무장, 전법으로 검색" aria-label="추천덱 검색">
+        <div id="preset-mode" class="seg" role="group" aria-label="용도"><button type="button" data-mode="combat" aria-pressed="true">일반 전투</button><button type="button" data-mode="opening" aria-pressed="false">개척</button></div>
+        <div id="preset-seasons" class="seg" role="group" aria-label="한국 시즌"></div>
+        <div id="preset-sort" class="seg" role="group" aria-label="정렬"><button type="button" data-sort="fit" aria-pressed="true">적합성 순</button><button type="button" data-sort="name" aria-pressed="false">이름 순</button></div>
+      </div>
+      <p id="preset-count" class="muted-note"></p>
+      <div class="preset-layout">
+        <div id="preset-list" class="preset-list" role="listbox" aria-label="추천덱 목록"></div>
+        <div class="preset-side">
+          <div id="preset-preview" class="preset-preview" aria-live="polite"></div>
+          <p id="preset-error" class="form-error" role="alert"></p>
+          <div class="preset-actions">
+            <button class="ghost-btn" id="preset-lineup-toggle" type="button">내 구성에 추가</button>
+            <button class="ghost-btn" id="preset-save" type="button">내 덱에 저장</button>
+            <button class="ghost-btn" id="preset-base" type="button">기본 편성으로 지정</button>
+            <button class="solid-btn ally-btn" id="preset-send-left" type="button">배틀: 아군으로</button>
+            <button class="solid-btn enemy-btn" id="preset-send-right" type="button">배틀: 상대로</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="roster-lineup" class="sub" hidden></div>
+    <div id="roster-decks" class="sub" hidden></div>
+   </section>
+
+   <section id="view-guides" class="view" hidden aria-labelledby="guide-title">
+    <div class="view-head">
+      <h1 id="guide-title">가이드</h1>
+      <p class="view-sub" id="guide-scope">가이드를 불러오는 중입니다.</p>
+    </div>
+    <div class="guide-layout">
+      <aside class="guide-nav-wrap"><input id="guide-search" type="search" placeholder="가이드 검색" aria-label="가이드 검색"><nav id="guide-nav" aria-label="가이드 목차"></nav></aside>
+      <article id="guide-body" class="guide-body" aria-live="polite"></article>
+    </div>
+   </section>
+
     <footer class="page-foot">
       <p>추정 전투 결과이며 실제 게임과 다를 수 있습니다. 한국 시즌 3은 시험 지원입니다. 이 페이지는 팬 제작 도구로, 게임사와 관련이 없습니다.</p>
     </footer>
@@ -125,51 +195,21 @@
     <footer class="modal-foot"><button class="ghost-btn" id="code-secondary" type="button">링크 복사</button><button class="solid-btn" id="code-submit" type="button">코드 복사</button></footer>
   </dialog>
 
-  <!-- 추천덱 -->
-  <dialog id="preset-dialog" class="modal wide" aria-labelledby="preset-title">
-    <header class="modal-head"><h2 id="preset-title">추천덱 불러오기</h2><button class="icon-btn" type="button" data-close="preset-dialog" aria-label="닫기">✕</button></header>
-    <div class="modal-body">
-      <div id="preset-lineup" class="lineup-bar"></div>
-      <div class="preset-filters">
-        <input id="preset-search" type="search" placeholder="덱 이름, 무장, 전법으로 검색" aria-label="추천덱 검색">
-        <div id="preset-seasons" class="seg" role="group" aria-label="한국 시즌"></div>
-        <div id="preset-sort" class="seg" role="group" aria-label="정렬"><button type="button" data-sort="fit" aria-pressed="true">적합성 순</button><button type="button" data-sort="name" aria-pressed="false">기본 순</button></div>
-      </div>
-      <p id="preset-count" class="muted-note"></p>
-      <div class="preset-layout">
-        <div id="preset-list" class="preset-list" role="listbox" aria-label="추천덱 목록"></div>
-        <div id="preset-preview" class="preset-preview" aria-live="polite"></div>
-      </div>
-      <p id="preset-error" class="form-error" role="alert"></p>
-    </div>
-    <footer class="modal-foot preset-foot"><button class="ghost-btn" type="button" data-close="preset-dialog">닫기</button><span class="foot-gap"></span><button class="ghost-btn" id="preset-lineup-toggle" type="button" hidden>구성에 추가</button><button class="ghost-btn" id="preset-save" type="button" disabled>내 덱에 저장</button><button class="ghost-btn" id="preset-base" type="button" disabled>기본 편성으로 지정</button><button class="solid-btn" id="preset-apply" type="button" disabled>이 편성 불러오기</button></footer>
-  </dialog>
 
   <!-- 내 덱 -->
   <dialog id="deck-dialog" class="modal" aria-labelledby="deck-title">
-    <header class="modal-head"><div><h2 id="deck-title">내 덱</h2><p id="deck-sub" class="muted-note"></p></div><button class="icon-btn" type="button" data-close="deck-dialog" aria-label="닫기">✕</button></header>
+    <header class="modal-head"><div><h2 id="deck-title">내 덱에 저장</h2><p id="deck-sub" class="muted-note"></p></div><button class="icon-btn" type="button" data-close="deck-dialog" aria-label="닫기">✕</button></header>
     <div class="modal-body">
       <form id="deck-save-form" class="deck-save">
         <label class="field" for="deck-name" id="deck-save-label">현재 편성 저장</label>
         <div class="deck-save-row"><input id="deck-name" type="text" maxlength="80" placeholder="덱 이름" required><button class="solid-btn small" type="submit">저장</button></div>
       </form>
       <div id="deck-list" class="deck-list"></div>
-      <p class="muted-note">내 덱은 이 브라우저에만 저장됩니다. 다른 기기로 옮길 때는 공유 코드를 쓰세요. ★ 기본 편성은 처음 열 때와 '기본 편성으로'를 누를 때 아군 부대에 들어갑니다.</p>
+      <p class="muted-note">새 이름으로 저장하거나, 아래 기존 덱을 지금 편성으로 덮어씁니다. 불러오기·삭제·기본 편성 지정은 보유 풀 → 내 덱에서 합니다.</p>
     </div>
     <footer class="modal-foot"><button class="ghost-btn" type="button" data-close="deck-dialog">닫기</button></footer>
   </dialog>
 
-  <!-- 보유 풀 -->
-  <dialog id="pool-dialog" class="modal picker" aria-labelledby="pool-title">
-    <header class="modal-head"><div><h2 id="pool-title">보유 풀</h2><p class="muted-note">갖고 있는 무장·전법을 체크하세요. 이 브라우저에만 저장되며, 추천덱 적합성 계산에 씁니다.</p></div><button class="icon-btn" type="button" data-close="pool-dialog" aria-label="닫기">✕</button></header>
-    <div class="picker-controls">
-      <div id="pool-tabs" class="seg" role="tablist" aria-label="보유 풀 분류"><button type="button" role="tab" data-pool-tab="heroes" aria-selected="true">무장 <b id="pool-n-heroes"></b></button><button type="button" role="tab" data-pool-tab="tactics" aria-selected="false">전법 <b id="pool-n-tactics"></b></button></div>
-      <input id="pool-search" type="search" placeholder="이름으로 검색" aria-label="보유 풀 검색" autocomplete="off">
-      <div id="pool-chips"></div>
-    </div>
-    <div id="pool-grid" class="pool-grid" role="group" aria-label="보유 여부"></div>
-    <footer class="modal-foot"><span id="pool-count" class="muted-note"></span><span class="foot-gap"></span><button class="ghost-btn small" id="pool-none" type="button">보이는 항목 해제</button><button class="ghost-btn small" id="pool-all" type="button">보이는 항목 모두 선택</button><button class="solid-btn small" type="button" data-close="pool-dialog">완료</button></footer>
-  </dialog>
 
   <!-- 무장·전법 선택 -->
   <dialog id="picker-dialog" class="modal picker" aria-labelledby="picker-title">

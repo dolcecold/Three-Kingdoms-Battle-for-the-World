@@ -6,6 +6,7 @@ import {normalizeArmy} from './army-code.js';
 import {STAT_FIELDS,armFor,bookChoices,tacticChoices,validateArmy,previewHeroStats,migrateProgression} from './editor.js';
 import {API_BASE_URL} from './config.js';
 import {loadRecommendedDecks,filterRecommendedDecks} from './recommended-decks.js';
+import {reviewArmyCoexistence} from './guide-content.js';
 
 /* ── 기본 도구 ─────────────────────────────────────────── */
 const $=id=>document.getElementById(id);
@@ -228,8 +229,8 @@ function armyHead(side,army){
       h('input',{class:'army-name',type:'text',maxLength:80,value:army.name,'aria-label':`${SIDE_NAME[side]} 부대 이름`,dataset:{path:'army.name',focus:fkey(side,'army','name')}}),
       quickDeck(side)),
     h('div',{class:'army-tools'},
-      h('button',{class:'ghost-btn small preset-btn',type:'button',dataset:{presetSide:side},text:'추천덱'}),
-      h('button',{class:'ghost-btn small',type:'button',dataset:{deckSide:side},text:'내 덱'}),
+      decks.forSeason(state.season).length?null:h('a',{class:'ghost-btn small preset-btn',href:'#/roster/presets',text:'덱 가져오기'}),
+      h('button',{class:'ghost-btn small',type:'button',dataset:{deckSave:side},text:'내 덱에 저장'}),
       h('button',{class:'ghost-btn small',type:'button',dataset:{codeMode:'import',side},text:'코드 불러오기'}),
       h('button',{class:'ghost-btn small',type:'button',dataset:{codeMode:'share',side},text:'공유'}))
   );
@@ -505,184 +506,78 @@ function pickTactic(side,slot,index){
   openPicker({title:`${row.name} · 학습 전법 ${index+1}`,sub:`설명 기준 Lv${d.rules.description_skill_level}·강화${d.rules.description_skill_grade} · 실제 전투는 입력한 레벨·돌파로 계산합니다.`,items,current:hero.learned[index]?.skill_id,groups,allowClear:index<hero.learned.length,focusKey:fkey(side,slot,`pick-tactic-${Math.min(index,1)}`),onPick:id=>applyEdit(side,slot,`learned.${index}`,id)});
 }
 
-/* ── 추천덱 ───────────────────────────────────────────── */
-let presets=null,presetRows=[],presetSide='left',presetSelection=null,presetSeason='all',presetSort='fit';
-// 시즌은 한국 서버 기준(source_kr_season)으로만 표시합니다.
-const deckSeason=t=>t.source_kr_season??null;
+/* ── 보유 풀 메뉴: 추천덱 데이터 ─────────────────────────── */
+let presets=null,presetRows=[],presetSelection=null,presetSeason=null,presetSort='fit',presetMode='combat';
+const deckSeason=t=>t.season??null;
 const seasonName=n=>n==null?'시즌 미상':`한국 S${n}`;
-// 시즌·무장·전법·병법·진형이 같은 덱은 하나만 남기고, 이름이 같은 변형은 '1안·2안'으로 구분합니다.
+// 같은 용도·시즌·편성 내용은 하나만 남기고, 이름이 같은 변형은 '1안·2안'으로 구분합니다.
 function dedupePresets(list){
-  const sig=t=>JSON.stringify([deckSeason(t),t.formation?.id??t.formation?.raw_name,t.heroes.map(x=>[x.id??x.raw_name,x.learned_tactics.map(s=>s.id??s.raw_name),x.warbooks.map(b=>b.id??b.raw_name)])]);
+  const sig=t=>JSON.stringify([t.mode,deckSeason(t),t.army?.formation_id,(t.army?.heroes||[]).map(x=>[x.hero_id,x.learned.map(s=>s.skill_id),x.warbook_slots.map(b=>b.warbook_id)])]);
   const seen=new Map();
-  for(const t of list){const k=sig(t),o=seen.get(k);if(!o||(t.applied_tactics||0)>(o.applied_tactics||0))seen.set(k,t);}
+  for(const t of list){const k=sig(t);if(!seen.has(k))seen.set(k,t);}
   const kept=list.filter(t=>seen.get(sig(t))===t),count={},idx={};
-  for(const t of kept){const k=`${deckSeason(t)}|${t.name}`;count[k]=(count[k]||0)+1;}
-  return kept.map(t=>{const k=`${deckSeason(t)}|${t.name}`;idx[k]=(idx[k]||0)+1;return {...t,label:count[k]>1?`${t.name} · ${idx[k]}안`:t.name};});
+  const key=t=>`${t.mode}|${deckSeason(t)}|${t.name}`;
+  for(const t of kept)count[key(t)]=(count[key(t)]||0)+1;
+  return kept.map(t=>{idx[key(t)]=(idx[key(t)]||0)+1;return {...t,label:count[key(t)]>1?`${t.name} · ${idx[key(t)]}안`:t.name};});
 }
+async function ensurePresets(){if(!presets){presets=await loadRecommendedDecks();presetRows=dedupePresets(presets.templates);}return presetRows;}
 
 /* ── 보유 풀·구성 (브라우저 localStorage) ───────────────── */
 function readPool(){try{const d=JSON.parse(store.get(KEYS.pool)||'null');return {heroes:new Set(d?.heroes||[]),tactics:new Set(d?.tactics||[])};}catch{return {heroes:new Set(),tactics:new Set()};}}
 let myPool=readPool();
-function savePool(){store.set(KEYS.pool,JSON.stringify({v:1,heroes:[...myPool.heroes],tactics:[...myPool.tactics]}));updatePoolBadge();}
+function savePool(){store.set(KEYS.pool,JSON.stringify({v:1,heroes:[...myPool.heroes],tactics:[...myPool.tactics]}));recomputeLineup();updateRosterCounts();}
 const poolActive=()=>myPool.heroes.size>0||myPool.tactics.size>0;
-function updatePoolBadge(){$('pool-badge').textContent=poolActive()?`${myPool.heroes.size}·${myPool.tactics.size}`:'';}
-// 구성은 시즌별로 저장합니다. 항목마다 선택 시점에 차지한 무장·전법을 기록해, 나머지 덱의 적합성을 남은 풀로 다시 계산합니다.
+// 구성은 시즌별로 저장합니다. 항목마다 차지한 무장·전법을 기록해 나머지 덱의 적합성을 남은 풀로 다시 계산합니다.
 function readLineup(){try{return JSON.parse(store.get(KEYS.lineup)||'{}')[state.season]||[];}catch{return [];}}
-function saveLineup(list){let all={};try{all=JSON.parse(store.get(KEYS.lineup)||'{}');}catch{}all[state.season]=list;store.set(KEYS.lineup,JSON.stringify(all));}
-function availFor(exceptTid){
+function saveLineup(list){let all={};try{all=JSON.parse(store.get(KEYS.lineup)||'{}');}catch{}all[state.season]=list;store.set(KEYS.lineup,JSON.stringify(all));updateRosterCounts();}
+function availFor(exceptTid,lineup=readLineup()){
   const heroes=new Set([...myPool.heroes].filter(id=>state.idx.hero.has(id)));
   const tactics=new Set([...myPool.tactics].filter(id=>state.idx.tactic.has(id)));
-  for(const e of readLineup())if(e.tid!==exceptTid){e.heroes.forEach(id=>heroes.delete(id));e.tactics.forEach(id=>tactics.delete(id));}
+  for(const e of lineup)if(e.tid!==exceptTid){e.heroes.forEach(id=>heroes.delete(id));e.tactics.forEach(id=>tactics.delete(id));}
   return {heroes,tactics};
 }
-/** 덱 하나를 남은 풀에 맞춰 봅니다. 무장 3명·전법 6칸 기준, 적합성 = 무장 60% + 전법 40%. */
+/** 풀이 바뀌면 구성 순서대로 점유를 다시 계산합니다. */
+function recomputeLineup(){
+  if(!presets)return;
+  const next=[];
+  for(const e of readLineup()){const t=presetRows.find(x=>x.id===e.tid);if(!t)continue;const p=planDeck(t,availFor(t.id,next));next.push({tid:e.tid,heroes:p.usedH,tactics:p.usedT});}
+  saveLineup(next);
+}
+/** 무장 3명·전법 6칸 기준으로 남은 풀에 맞춰 봅니다. 적합성 = 무장 60% + 전법 40%. */
 function planDeck(t,avail){
   const ix=state.idx,usedH=new Set(),usedT=new Set();let hc=0,tc=0;
   const heroes=[0,1,2].map(i=>{
-    const x=t.heroes[i];if(!x)return {src:null,ids:[],own:null,tactics:[]};
-    const ids=[x.id,...(x.candidates||[]).map(c=>c.id)].filter(id=>id!=null&&ix.hero.has(id));
-    const own=ids.find(id=>avail.heroes.has(id)&&!usedH.has(id))??null;
+    const x=t.heroes[i];if(!x)return {src:null,own:null,tactics:[]};
+    const own=ix.hero.has(x.id)&&avail.heroes.has(x.id)&&!usedH.has(x.id)?x.id:null;
     if(own!=null){usedH.add(own);hc++;}
-    const tactics=x.learned_tactics.slice(0,2).map(sk=>{
-      const opts=[sk.id,...(sk.alternatives||[]).map(a=>a.id)].filter(id=>id!=null&&ix.tactic.has(id));
-      const got=opts.find(id=>avail.tactics.has(id)&&!usedT.has(id))??null;
+    const tactics=(x.learned_tactics||[]).slice(0,2).map(sk=>{
+      const got=sk.id!=null&&ix.tactic.has(sk.id)&&avail.tactics.has(sk.id)&&!usedT.has(sk.id)?sk.id:null;
       if(got!=null){usedT.add(got);tc++;}
       return {src:sk,got};
     });
-    return {src:x,ids,own,tactics};
+    return {src:x,own,tactics};
   });
   return {heroes,heroCount:hc,tacticCount:tc,fit:Math.round(hc/3*60+tc/6*40),usedH:[...usedH],usedT:[...usedT]};
 }
 const fitTag=p=>h('span',{class:`tag ${p.fit>=80?'fit-high':p.fit>=50?'fit-mid':'fit-low'}`,text:`적합 ${p.fit}% · 무장 ${p.heroCount}/3 · 전법 ${p.tacticCount}/6`});
 
-async function showPresets(side){
-  if(!presets){presets=await loadRecommendedDecks();presetRows=dedupePresets(presets.templates);}
-  presetSide=side;presetSelection=null;$('preset-search').value='';$('preset-error').textContent='';
-  $('preset-title').textContent=`${SIDE_NAME[side]} 부대에 추천덱 불러오기`;
-  const have=new Set(presetRows.map(deckSeason));
-  presetSeason=have.has(state.season)?state.season:'all';
-  const opts=[['all','전체'],...[...have].filter(n=>n!=null).sort((a,b)=>a-b).map(n=>[n,seasonName(n)]),...(have.has(null)?[['none','시즌 미상']]:[])];
-  fill($('preset-seasons'),opts.map(([v,t])=>h('button',{type:'button','aria-pressed':String(String(v)===String(presetSeason)),dataset:{season:v},text:t})));
-  presetSort=poolActive()?'fit':'name';
-  renderPresets();$('preset-dialog').showModal();
-}
-function renderLineupBar(){
-  const bar=$('preset-lineup'),lineup=readLineup();
-  if(!poolActive()){fill(bar,h('span',{text:'보유 풀을 등록하면 내 무장·전법으로 얼마나 맞출 수 있는지(적합성) 순으로 보여줍니다.'}),h('button',{type:'button',class:'solid-btn small',dataset:{openPool:'1'},text:'보유 풀 등록'}));return;}
-  const a=availFor(null);
-  fill(bar,h('span',{class:'label',text:`내 구성 ${lineup.length}개`}),
-    lineup.map(e=>{const t=presetRows.find(x=>x.id===e.tid);return h('span',{class:'lineup-chip'},
-      h('button',{type:'button',class:'go',dataset:{lineupGo:e.tid},text:t?.label||'삭제된 덱'}),
-      h('button',{type:'button',dataset:{lineupRemove:e.tid},'aria-label':`${t?.label||''} 구성에서 빼기`,text:'✕'}));}),
-    h('span',{class:'rest',text:`남은 무장 ${a.heroes.size} · 남은 전법 ${a.tactics.size}`}),
-    h('button',{type:'button',class:'ghost-btn small',dataset:{openPool:'1'},text:'보유 풀 편집'}),
-    lineup.length?h('button',{type:'button',class:'ghost-btn small',dataset:{lineupClear:'1'},text:'구성 비우기'}):null);
-}
-function renderPresets(){
-  renderLineupBar();
-  const fitOn=poolActive()&&presetSort==='fit';
-  $('preset-sort').hidden=!poolActive();
-  $('preset-sort').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.sort===presetSort)));
-  const lineupIds=new Set(readLineup().map(e=>e.tid));
-  const best={};for(const t of presetRows)best[t.name]=Math.max(best[t.name]??0,t.applied_tactics||0);
-  let rows=filterRecommendedDecks({templates:presetRows},{season:state.season,source:'all',query:$('preset-search').value,includeBlocked:true})
-    .filter(t=>presetSeason==='all'||(presetSeason==='none'?deckSeason(t)==null:deckSeason(t)===Number(presetSeason)))
-    .map(t=>({t,p:poolActive()?planDeck(t,availFor(t.id)):null}));
-  rows.sort(fitOn
-    ?(x,y)=>Number(lineupIds.has(y.t.id))-Number(lineupIds.has(x.t.id))||y.p.fit-x.p.fit||y.p.heroCount-x.p.heroCount||(y.t.applied_tactics||0)-(x.t.applied_tactics||0)
-    :(x,y)=>(deckSeason(x.t)??99)-(deckSeason(y.t)??99)||(best[y.t.name]-best[x.t.name])||x.t.name.localeCompare(y.t.name,'ko')||(y.t.applied_tactics||0)-(x.t.applied_tactics||0));
-  $('preset-count').textContent=`${rows.length}개 · 불러오는 곳은 지금 편집 중인 한국 시즌 ${state.season}입니다.${poolActive()?' 보유하지 않은 전법 칸은 비워서 불러옵니다.':''}`;
-  if(!rows.some(r=>r.t.id===presetSelection))presetSelection=rows[0]?.t.id||null;
-  fill($('preset-list'),rows.length?rows.map(({t,p})=>{
-    const named=t.heroes.filter(x=>x.id||x.candidates?.length).length;
-    return h('button',{class:'preset-opt',type:'button',role:'option','aria-selected':String(t.id===presetSelection),dataset:{templateId:t.id}},
-      h('strong',{text:t.label}),
-      h('span',{class:'heroes',text:t.heroes.map(x=>x.name||x.raw_name).join(' · ')||'무장 미지정'}),
-      h('span',{class:'meta'},lineupIds.has(t.id)?h('span',{class:'tag in-lineup',text:'내 구성'}):null,
-        p?fitTag(p):null,h('span',{class:'tag',text:seasonName(deckSeason(t))}),
-        named<3?h('span',{class:'tag warn',text:`무장 ${3-named}명 임시`}):null,
-        p?null:h('span',{class:'tag',text:t.applied_tactics?`전법 ${t.applied_tactics}/6`:'전법 직접 선택'})));
-  }):h('p',{class:'muted-note',text:'검색 조건에 맞는 덱이 없습니다.'}));
-  renderPresetPreview();
-}
-function setPresetButtons(on){for(const id of ['preset-apply','preset-save','preset-base','preset-lineup-toggle'])$(id).disabled=!on;}
-function renderPresetPreview(){
-  const host=$('preset-preview');$('preset-error').textContent='';
-  const t=presetRows.find(x=>x.id===presetSelection);
-  setPresetButtons(Boolean(t));
-  const inLineup=Boolean(t&&readLineup().some(e=>e.tid===t.id));
-  $('preset-lineup-toggle').hidden=!poolActive();$('preset-lineup-toggle').textContent=inLineup?'구성에서 빼기':'구성에 추가';
-  if(!t){host.replaceChildren(h('p',{class:'muted-note',text:'왼쪽 목록에서 덱을 고르면 구성이 여기에 표시됩니다.'}));return;}
-  const p=poolActive()?planDeck(t,availFor(t.id)):null,all=readPool();
-  const line=(label,...kids)=>h('p',null,h('b',{text:`${label} `}),...kids);
-  const heroMark=(x,i)=>{
-    if(!p)return null;const e=p.heroes[i];
-    if(e.own!=null)return h('span',{class:'own',text:' ✓ 보유'});
-    return e.ids.some(id=>all.heroes.has(id))?h('span',{class:'busy-own',text:' 다른 구성에서 사용 중'}):h('span',{class:'miss',text:' 미보유'});
-  };
-  const tacticLine=(x,i)=>{
-    if(!p)return x.learned_tactics.map(s=>s.name||s.raw_name).join(' / ')||'직접 선택';
-    const list=p.heroes[i].tactics;if(!list.length)return '직접 선택';
-    return list.flatMap((e,j)=>{
-      const name=e.got!=null?state.idx.tactic.get(e.got)?.name:(e.src.name||e.src.raw_name);
-      return [j?' / ':'',h('span',{class:e.got!=null?'own':'miss',text:name+(e.got!=null&&e.got!==e.src.id?' (대체)':'')})];
-    });
-  };
-  fill(host,
-    h('h3',{text:t.label}),
-    h('p',{class:'muted-note'},seasonName(deckSeason(t)),' ',p?fitTag(p):null),
-    t.formation?.raw_name?line('진형',t.formation.name||t.formation.raw_name):null,
-    t.heroes.length?t.heroes.map((x,i)=>h('div',{class:'preset-member'},
-      h('strong',null,x.name||x.raw_name,heroMark(x,i)),
-      line('전법',tacticLine(x,i)),
-      x.warbooks.length?line('병법',x.warbooks.map(b=>b.name||b.raw_name).join(', ')):null,
-      x.stat_plan?line('스탯',x.stat_plan):null,
-      x.equipment_note?.raw&&x.equipment_note.raw!=='-'?line('장비',x.equipment_note.raw):null))
-      :h('p',{class:'preset-member',text:'지정된 무장이 없어 임시 무장 3명으로 불러옵니다.'}),
-    p?h('p',{class:'muted-note',text:'초록은 보유, 취소선은 미보유입니다. 미보유 전법 칸은 비워서 불러옵니다.'}):null);
-}
-function toggleLineup(){
-  const t=presetRows.find(x=>x.id===presetSelection);if(!t)return;
-  const list=readLineup(),i=list.findIndex(e=>e.tid===t.id);
-  if(i>=0){list.splice(i,1);saveLineup(list);notify(`'${t.label}'을(를) 구성에서 뺐습니다. 다른 덱의 적합성을 다시 계산했습니다.`);}
-  else{const p=planDeck(t,availFor(t.id));list.push({tid:t.id,heroes:p.usedH,tactics:p.usedT});saveLineup(list);
-    notify(`'${t.label}'을(를) 구성에 추가했습니다. 무장 ${p.heroCount}명·전법 ${p.tacticCount}개를 차지하고, 남은 풀로 적합성을 다시 계산했습니다.`);}
-  renderPresets();
-}
-
-/** 시즌 검증 없이 지금 편집 시즌 데이터에 맞춰 최대한 불러옵니다. 보유 풀이 있으면 미보유 전법 칸은 비웁니다. */
-function presetArmy(){
-  const t=presetRows.find(x=>x.id===presetSelection);if(!t)throw new Error('덱을 먼저 고르세요.');
+/** 시즌 검증 없이 지금 편집 시즌 데이터에 맞춰 불러옵니다. 보유 풀이 있으면 미보유 전법 칸은 비웁니다. */
+function presetArmyFor(t){
   const d=state.data,ix=state.idx,notes=[];
   const plan=poolActive()?planDeck(t,availFor(t.id)):null;
-  const resolveHero=x=>[x.id,...(x.candidates||[]).map(c=>c.id)].find(id=>id!=null&&ix.hero.has(id));
-  let army;
-  if(t.army)army=prep(t.army);
-  else{
-    const heroes=t.heroes.slice(0,3).map((x,i)=>({hero_id:resolveHero(x)??-1,slot:x.slot||i+1,
-      learned:x.learned_tactics.filter(s=>s.id!=null).slice(0,2).map(s=>({skill_id:s.id,level:10,breakthrough:0}))}));
-    while(heroes.length<3)heroes.push({hero_id:-1});
-    army=prep({name:t.label,formation_id:t.formation?.id,supply:100,heroes});
-  }
-  army.name=(t.label||army.name).slice(0,80);
+  const army=prep(t.army);
+  army.name=t.label.slice(0,80);
   if(!ix.formation.has(army.formation_id))army.formation_id=d.examples[0].formation_id;
-  // 템플릿 군대의 무장 순서와 원문 무장 목록을 맞춥니다.
-  const srcIndex=x=>t.heroes.findIndex(r=>r.id===x.hero_id||(r.candidates||[]).some(c=>c.id===x.hero_id));
+  const srcIndex=x=>t.heroes.findIndex(r=>r.id===x.hero_id);
   const used=new Set(),slots=new Set();
   army.heroes.forEach((x,i)=>{
-    const si=srcIndex(x)>=0?srcIndex(x):i,src=t.heroes[si];
-    x._src=si;
-    const owned=plan?.heroes[si]?.own;
-    if(owned!=null&&owned!==x.hero_id&&!used.has(owned))x.hero_id=owned;
+    x._src=srcIndex(x)>=0?srcIndex(x):i;
     if(!ix.hero.has(x.hero_id)||used.has(x.hero_id)){
-      const alt=src&&resolveHero(src);
-      if(alt!=null&&!used.has(alt))x.hero_id=alt;
-      else{
-        const pool=[...(plan?[...plan.heroes.map(e=>e.own),...availFor(t.id).heroes]:[]),...d.examples.flatMap(e=>e.heroes.map(y=>y.hero_id)),...d.heroes.map(y=>y.id)];
-        x.hero_id=pool.find(id=>id!=null&&ix.hero.has(id)&&!used.has(id)&&!army.heroes.some(y=>y!==x&&y.hero_id===id));
-        x.learned=[];x.warbook_slots=[];x.advanced_arms_id=null;x.arms_skill_ids=[];
-        notes.push(`${src?.name||src?.raw_name||`${i+1}번`} → ${ix.hero.get(x.hero_id).name}(임시)`);
-      }
+      const pool=[...(plan?availFor(t.id).heroes:[]),...d.examples.flatMap(e=>e.heroes.map(y=>y.hero_id)),...d.heroes.map(y=>y.id)];
+      const was=t.heroes[x._src]?.name||`${i+1}번`;
+      x.hero_id=pool.find(id=>ix.hero.has(id)&&!used.has(id)&&!army.heroes.some(y=>y!==x&&y.hero_id===id));
+      x.learned=[];x.warbook_slots=[];x.advanced_arms_id=null;x.arms_skill_ids=[];
+      notes.push(`${was} → ${ix.hero.get(x.hero_id).name}(임시)`);
     }
     used.add(x.hero_id);
     if(!slots.has(x.slot)&&[1,2,3].includes(x.slot))slots.add(x.slot);else x.slot=null;
@@ -696,24 +591,45 @@ function presetArmy(){
     if(x.advanced_arms_id!=null&&!ix.arm.has(x.advanced_arms_id)){x.advanced_arms_id=null;x.arms_skill_ids=[];}
     dropped+=n-x.learned.length-x.warbook_slots.length;
     if(plan&&plan.heroes[x._src]?.src){
-      const keep=plan.heroes[x._src].tactics.filter(e=>e.got!=null).map(e=>e.got);
-      const before=x.learned.length||plan.heroes[x._src].tactics.length;
-      x.learned=keep.slice(0,2).map(id=>({skill_id:id,level:x.learned.find(s=>s.skill_id===id)?.level??10,grade:0,breakthrough:0}));
-      emptied+=Math.max(0,before-x.learned.length);
+      const keep=new Set(plan.heroes[x._src].tactics.filter(e=>e.got!=null).map(e=>e.got));
+      const before=x.learned.length;
+      x.learned=x.learned.filter(s=>keep.has(s.skill_id));
+      emptied+=before-x.learned.length;
       if(!myPool.heroes.has(x.hero_id))missing.push(ix.hero.get(x.hero_id).name);
     }
     delete x._src;
   }
-  if(dropped&&!plan)notes.push(`이 시즌에 없는 전법·병법 ${dropped}개 비움`);
+  if(dropped)notes.push(`이 시즌에 없는 전법·병법 ${dropped}개 비움`);
   if(emptied)notes.push(`보유하지 않은 전법 ${emptied}칸 비움`);
   if(missing.length)notes.push(`미보유 무장: ${missing.join(', ')}`);
   return {t,army:loadable(d,army),notes};
 }
 const presetNote=(t,notes,army)=>`'${t.label}'을(를) 불러왔습니다.${notes.length?` ${notes.join(' · ')}.`:''}${isValid(state.data,army)?'':' 부대 아래 안내를 보고 고쳐 주세요.'}`;
+function sendToBattle(army,side,text,warn=false){
+  state.armies[side]=army;state.view=side;dirty();render();
+  location.hash='#/battle';notify(text,warn);
+}
 
-/* ── 보유 풀 대화상자 ─────────────────────────────────── */
+/* ── 보유 풀 메뉴: 화면 ───────────────────────────────── */
+let rosterSub='pool';
+function updateRosterCounts(){
+  if(!state.data)return;
+  const hs=state.data.heroes.filter(x=>myPool.heroes.has(x.id)).length,ts=state.data.tactics.filter(x=>myPool.tactics.has(x.id)).length;
+  $('sub-n-pool').textContent=poolActive()?`${hs}·${ts}`:'';
+  const ln=readLineup().length,dn=decks.forSeason(state.season).length;
+  $('sub-n-lineup').textContent=ln?String(ln):'';$('sub-n-decks').textContent=dn?String(dn):'';
+}
+async function renderRoster(sub){
+  rosterSub=sub;
+  for(const k of ['pool','presets','lineup','decks']){$(`roster-${k}`).hidden=k!==sub;const a=document.querySelector(`.subnav [data-sub="${k}"]`);a.setAttribute('aria-current',k===sub?'page':'false');}
+  if(sub!=='pool')await ensurePresets();
+  if(sub==='pool')renderPool();else if(sub==='presets')renderPresets();else if(sub==='lineup')renderLineupView();else renderDecksView();
+  updateRosterCounts();
+}
+const rosterLink=(sub,text,cls='ghost-btn small')=>h('a',{href:`#/roster/${sub}`,class:cls,text});
+
+/* 1) 보유 무장·전법 */
 let poolTab='heroes';const poolSel={faction:'all',rarity:'all',type:'all'};
-function showPool(){poolTab='heroes';Object.keys(poolSel).forEach(k=>poolSel[k]='all');$('pool-search').value='';renderPool();$('pool-dialog').showModal();}
 function poolRows(){
   const d=state.data,q=$('pool-search').value.replace(/\s/g,'').toLowerCase();
   if(poolTab==='heroes')return [...d.heroes].sort((a,b)=>(a.faction??9)-(b.faction??9)||(b.rarity??0)-(a.rarity??0)||a.id-b.id)
@@ -737,58 +653,173 @@ function renderPool(){
   $('pool-count').textContent=`표시 ${rows.length}개 중 보유 ${rows.filter(r=>set.has(r.id)).length}개`;
 }
 
-/* ── 내 덱 대화상자 ───────────────────────────────────── */
-let deckSide='left';const pending={};
-function showDecks(side){
-  deckSide=side;Object.keys(pending).forEach(k=>delete pending[k]);
-  $('deck-title').textContent=`내 덱 → ${SIDE_NAME[side]} 부대`;
-  $('deck-save-label').textContent=`현재 ${SIDE_NAME[side]} 편성 저장`;
-  $('deck-name').value=state.armies[side].name;
-  renderDecks();$('deck-dialog').showModal();
+/* 2) 추천덱 찾기 */
+function renderPresets(){
+  const lineup=readLineup(),lineupIds=new Set(lineup.map(e=>e.tid));
+  if(presetSeason==null)presetSeason=presetRows.some(t=>deckSeason(t)===state.season)?state.season:'all';
+  const have=[...new Set(presetRows.filter(t=>t.mode===presetMode).map(deckSeason))].sort((a,b)=>(a??99)-(b??99));
+  if(presetSeason!=='all'&&!have.includes(Number(presetSeason)))presetSeason='all';
+  fill($('preset-seasons'),[['all','전체'],...have.map(n=>[n,seasonName(n)])].map(([v,t])=>h('button',{type:'button','aria-pressed':String(String(v)===String(presetSeason)),dataset:{season:v},text:t})));
+  $('preset-mode').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===presetMode)));
+  const fitOn=poolActive()&&presetSort==='fit';
+  $('preset-sort').hidden=!poolActive();
+  $('preset-sort').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.sort===presetSort)));
+  const a=poolActive()?availFor(null):null;
+  fill($('preset-help'),poolActive()
+    ?[`보유 무장·전법으로 맞출 수 있는 정도(적합성) 순입니다. 내 구성 ${lineup.length}개가 차지한 것을 빼고 남은 무장 ${a.heroes.size}·전법 ${a.tactics.size}개로 계산합니다. `,rosterLink('lineup','내 구성 보기','text-link')]
+    :['보유 무장·전법을 등록하면 내가 맞출 수 있는 덱부터 보여줍니다. ',rosterLink('pool','보유 등록하기','text-link')]);
+  const best={};for(const t of presetRows)best[t.name]=Math.max(best[t.name]??0,(t.heroes||[]).reduce((n,x)=>n+(x.learned_tactics||[]).length,0));
+  const rows=filterRecommendedDecks({schema_version:'2.0.0',templates:presetRows},{season:state.season,query:$('preset-search').value,mode:presetMode,includeBlocked:true})
+    .filter(t=>presetSeason==='all'||deckSeason(t)===Number(presetSeason))
+    .map(t=>({t,p:poolActive()?planDeck(t,availFor(t.id,lineup)):null}));
+  rows.sort(fitOn
+    ?(x,y)=>Number(lineupIds.has(y.t.id))-Number(lineupIds.has(x.t.id))||y.p.fit-x.p.fit||y.p.heroCount-x.p.heroCount
+    :(x,y)=>(deckSeason(x.t)??99)-(deckSeason(y.t)??99)||(best[y.t.name]-best[x.t.name])||x.t.name.localeCompare(y.t.name,'ko'));
+  $('preset-count').textContent=`${rows.length}개 · 불러오면 지금 편집 중인 한국 시즌 ${state.season}에 맞춰집니다.${poolActive()?' 보유하지 않은 전법 칸은 비워서 불러옵니다.':''}`;
+  if(!rows.some(r=>r.t.id===presetSelection))presetSelection=rows[0]?.t.id||null;
+  fill($('preset-list'),rows.length?rows.map(({t,p})=>h('button',{class:'preset-opt',type:'button',role:'option','aria-selected':String(t.id===presetSelection),dataset:{templateId:t.id}},
+    h('strong',{text:t.label}),
+    h('span',{class:'heroes',text:t.heroes.map(x=>x.name).join(' · ')}),
+    h('span',{class:'meta'},lineupIds.has(t.id)?h('span',{class:'tag in-lineup',text:'내 구성'}):null,p?fitTag(p):null,h('span',{class:'tag',text:seasonName(deckSeason(t))}))))
+    :h('p',{class:'muted-note',text:'조건에 맞는 덱이 없습니다.'}));
+  renderPresetPreview();
 }
-function renderDecks(){
-  const list=decks.forSeason(state.season),other=decks.all().length-list.length;
-  $('deck-sub').textContent=`한국 시즌 ${state.season} · ${list.length}개${other?` (다른 시즌 ${other}개)`:''}`;
+function renderPresetPreview(){
+  const host=$('preset-preview');$('preset-error').textContent='';
+  const t=presetRows.find(x=>x.id===presetSelection);
+  for(const id of ['preset-send-left','preset-send-right','preset-save','preset-base','preset-lineup-toggle'])$(id).disabled=!t;
+  const inLineup=Boolean(t&&readLineup().some(e=>e.tid===t.id));
+  $('preset-lineup-toggle').hidden=!poolActive();$('preset-lineup-toggle').textContent=inLineup?'내 구성에서 빼기':'내 구성에 추가';
+  if(!t){host.replaceChildren(h('p',{class:'muted-note',text:'왼쪽 목록에서 덱을 고르면 구성이 여기에 표시됩니다.'}));return;}
+  const ix=state.idx,p=poolActive()?planDeck(t,availFor(t.id)):null;
+  const line=(label,...kids)=>h('p',null,h('b',{text:`${label} `}),...kids);
+  const armyHero=id=>t.army.heroes.find(x=>x.hero_id===id);
+  const heroMark=i=>{
+    if(!p)return null;const e=p.heroes[i],id=e.src?.id;
+    if(e.own!=null)return h('span',{class:'own',text:' ✓ 보유'});
+    if(!ix.hero.has(id))return h('span',{class:'busy-own',text:' 이 시즌에 없음'});
+    return myPool.heroes.has(id)?h('span',{class:'busy-own',text:' 다른 구성에서 사용 중'}):h('span',{class:'miss',text:' 미보유'});
+  };
+  const tacticLine=(x,i)=>{
+    const list=p?p.heroes[i].tactics:(x.learned_tactics||[]).map(s=>({src:s,got:s.id}));
+    if(!list.length)return '직접 선택';
+    return list.flatMap((e,j)=>[j?' / ':'',h('span',{class:p?(e.got!=null?'own':'miss'):'',text:e.src.name})]);
+  };
+  const books=x=>(armyHero(x.id)?.warbook_slots||[]).map(b=>ix.book.get(b.warbook_id)?.name).filter(Boolean);
+  fill(host,
+    h('h3',{text:t.label}),
+    h('p',{class:'muted-note'},`${seasonName(deckSeason(t))} · ${t.mode==='opening'?'개척':'일반 전투'} `,p?fitTag(p):null),
+    ix.formation.get(t.army.formation_id)?line('진형',ix.formation.get(t.army.formation_id).name):null,
+    t.heroes.map((x,i)=>h('div',{class:'preset-member'},
+      h('strong',null,x.name,heroMark(i)),
+      line('전법',tacticLine(x,i)),
+      books(x).length?line('병법',books(x).join(', ')):null)),
+    p?h('p',{class:'muted-note',text:'초록은 보유, 취소선은 미보유입니다. 미보유 전법 칸은 비워서 불러옵니다.'}):null);
+}
+function toggleLineup(){
+  const t=presetRows.find(x=>x.id===presetSelection);if(!t)return;
+  const list=readLineup(),i=list.findIndex(e=>e.tid===t.id);
+  if(i>=0){list.splice(i,1);saveLineup(list);recomputeLineup();notify(`'${t.label}'을(를) 내 구성에서 뺐습니다. 다른 덱의 적합성을 다시 계산했습니다.`);}
+  else{const p=planDeck(t,availFor(t.id));list.push({tid:t.id,heroes:p.usedH,tactics:p.usedT});saveLineup(list);
+    notify(`'${t.label}'을(를) 내 구성에 추가했습니다. 무장 ${p.heroCount}명·전법 ${p.tacticCount}개를 차지하고, 남은 풀로 적합성을 다시 계산했습니다.`);}
+  renderPresets();
+}
+function openPreset(tid){
+  const t=presetRows.find(x=>x.id===tid);if(!t){notify('추천덱을 찾을 수 없습니다.',true);return;}
+  presetMode=t.mode;presetSeason='all';presetSelection=tid;$('preset-search').value='';
+  if(location.hash==='#/roster/presets')renderRoster('presets');else location.hash='#/roster/presets';
+  requestAnimationFrame(()=>$('preset-list').querySelector('[aria-selected="true"]')?.scrollIntoView({block:'nearest'}));
+}
+function addTemplatesToLineup(tids){
+  let list=readLineup(),added=0;
+  for(const tid of tids){const t=presetRows.find(x=>x.id===tid);if(!t||list.some(e=>e.tid===tid))continue;const p=planDeck(t,availFor(tid,list));list.push({tid,heroes:p.usedH,tactics:p.usedT});added++;}
+  saveLineup(list);return added;
+}
+
+/* 3) 내 구성 */
+function renderLineupView(){
+  const host=$('roster-lineup'),lineup=readLineup();
+  const help=h('p',{class:'sub-help',text:'추천덱 찾기에서 담은 덱들입니다. 앞의 덱이 차지한 무장·전법을 빼고 다음 덱을 계산하므로, 여러 부대를 겹치지 않게 짤 때 씁니다.'});
+  if(!lineup.length){fill(host,help,h('div',{class:'empty-box'},h('p',{text:'아직 담은 덱이 없습니다.'}),rosterLink('presets','추천덱 찾으러 가기','solid-btn small')));return;}
+  const items=lineup.map((e,i)=>{const t=presetRows.find(x=>x.id===e.tid);return t?{e,t,i}:null;}).filter(Boolean);
+  const built=items.map(({t})=>{try{return presetArmyFor(t).army;}catch{return null;}});
+  let review=null;try{review=reviewArmyCoexistence(built.filter(Boolean),state.data);}catch{}
+  const nameOf=id=>state.idx.hero.get(id)?.name||`ID ${id}`;
+  const prior=[];
+  const cards=items.map(({e,t,i})=>{
+    const p=planDeck(t,availFor(t.id,prior));prior.push(e);
+    return h('article',{class:'lineup-card'},
+      h('div',{class:'top'},h('span',{class:'order',text:String(i+1)}),h('strong',{text:t.label}),fitTag(p)),
+      h('p',{class:'heroes'},t.heroes.map((x,j)=>[j?' · ':'',h('span',{class:p.heroes[j].own!=null?'own':'miss',text:x.name})])),
+      h('div',{class:'deck-actions'},
+        h('button',{type:'button',class:'solid-btn small ally-btn',dataset:{lineupSend:'left',tid:t.id},text:'배틀: 아군으로'}),
+        h('button',{type:'button',class:'ghost-btn small',dataset:{lineupSend:'right',tid:t.id},text:'배틀: 상대로'}),
+        h('button',{type:'button',class:'ghost-btn small',dataset:{lineupView:t.id},text:'추천덱에서 보기'}),
+        h('button',{type:'button',class:'ghost-btn small danger',dataset:{lineupRemove:t.id},text:'빼기'})));
+  });
+  const a=availFor(null);
+  const rv=review?h('section',{class:'panel'},h('h4',null,'구성 점검',h('span',{text:'추천덱 원문 기준 · 보유 풀 반영'})),
+    review.duplicate_heroes.length?h('p',{class:'army-status bad',text:`여러 부대에 겹친 무장: ${review.duplicate_heroes.map(x=>`${nameOf(x.hero_id)}(${x.army_indexes.map(n=>n+1).join('·')}번)`).join(', ')}`}):h('p',{class:'army-status ok',text:'부대끼리 겹치는 무장이 없습니다.'}),
+    review.shared_tactics.length?h('p',{class:'muted-note',text:`여러 부대가 같이 쓰는 전법: ${review.shared_tactics.map(x=>`${x.name}(${[...new Set(x.usage.map(u=>u.army_index+1))].join('·')}번)`).join(', ')} — 보유 수량을 확인하세요.`}):null,
+    h('p',{class:'muted-note',text:`남은 보유: 무장 ${a.heroes.size}명 · 전법 ${a.tactics.size}개`})):null;
+  fill(host,help,h('div',{class:'tool-row end'},
+      h('button',{type:'button',class:'ghost-btn small',dataset:{lineupSaveAll:'1'},text:'모두 내 덱에 저장'}),
+      h('button',{type:'button',class:'ghost-btn small danger',dataset:{lineupClear:'1'},text:'구성 비우기'})),
+    rv,h('div',{class:'lineup-list'},cards));
+}
+
+/* 4) 내 덱 */
+const pendingDeck={};
+function renderDecksView(){
+  const host=$('roster-decks'),list=decks.forSeason(state.season),other=decks.all().length-list.length;
+  const help=h('p',{class:'sub-help',text:`배틀 화면이나 추천덱에서 저장한 덱입니다. ★ 기본 편성은 처음 열 때와 '기본 편성으로'를 누를 때 아군에 들어갑니다. 한국 시즌 ${state.season} 덱만 보입니다${other?` (다른 시즌 ${other}개)`:''}.`});
+  if(!list.length){fill(host,help,h('div',{class:'empty-box'},h('p',{text:'저장한 덱이 없습니다.'}),rosterLink('presets','추천덱에서 가져오기','solid-btn small')));return;}
   const btn=(text,act,id,cls='ghost-btn small')=>h('button',{type:'button',class:cls,dataset:{deckAct:act,id},text});
-  fill($('deck-list'),list.length?list.map(d=>{
+  fill(host,help,h('div',{class:'deck-list'},list.map(d=>{
     const names=(d.army.heroes||[]).slice().sort((a,b)=>a.slot-b.slot).map(x=>state.idx.hero.get(x.hero_id)?.name||`ID ${x.hero_id}`).join(' · ');
     return h('div',{class:'deck-item'+(d.base?' is-base':'')},
       h('div',{class:'top'},h('strong',{text:d.name}),d.base?h('span',{class:'tag legend',text:'★ 기본 편성'}):null),
       h('span',{class:'heroes',text:`${names} · ${new Date(d.updated).toLocaleString('ko-KR',{dateStyle:'short',timeStyle:'short'})}`}),
       h('div',{class:'deck-actions'},
-        btn(`${SIDE_NAME[deckSide]}에 불러오기`,'load',d.id,'solid-btn small'),
+        btn('배틀: 아군으로','left',d.id,'solid-btn small ally-btn'),btn('배틀: 상대로','right',d.id),
         btn(d.base?'기본 해제':'★ 기본으로','base',d.id),
-        btn(pending[d.id]==='overwrite'?'한 번 더 누르면 덮어씀':'현재 편성으로 덮어쓰기','overwrite',d.id),
-        btn(pending[d.id]==='delete'?'한 번 더 누르면 삭제':'삭제','delete',d.id,'ghost-btn small danger')));
-  }):h('p',{class:'deck-empty',text:'저장한 덱이 없습니다. 추천덱을 불러와 수정하거나, 지금 편성을 위에서 저장해 보세요.'}));
+        btn(pendingDeck[d.id]?'한 번 더 누르면 삭제':'삭제','delete',d.id,'ghost-btn small danger')));
+  })));
+}
+
+/* ── 배틀: 내 덱 저장 대화상자 ─────────────────────────── */
+let deckSide='left';const pending={};
+function showDeckSave(side){
+  deckSide=side;Object.keys(pending).forEach(k=>delete pending[k]);
+  $('deck-title').textContent=`${SIDE_NAME[side]} 편성을 내 덱에 저장`;
+  $('deck-save-label').textContent='새 이름으로 저장';
+  $('deck-name').value=state.armies[side].name;
+  renderDeckSave();$('deck-dialog').showModal();
+}
+function renderDeckSave(){
+  const list=decks.forSeason(state.season);
+  $('deck-sub').textContent=`한국 시즌 ${state.season} · 저장된 덱 ${list.length}개`;
+  fill($('deck-list'),list.map(d=>h('div',{class:'deck-item'+(d.base?' is-base':'')},
+    h('div',{class:'top'},h('strong',{text:d.name}),d.base?h('span',{class:'tag legend',text:'★ 기본 편성'}):null),
+    h('div',{class:'deck-actions'},h('button',{type:'button',class:'ghost-btn small',dataset:{deckAct:'overwrite',id:d.id},text:pending[d.id]?'한 번 더 누르면 덮어씀':'지금 편성으로 덮어쓰기'})))));
 }
 $('deck-save-form').onsubmit=e=>{
   e.preventDefault();
-  try{validateArmy(state.data,state.armies[deckSide]);decks.add($('deck-name').value,state.armies[deckSide]);renderDecks();render();notify('내 덱에 저장했습니다.');}
+  try{validateArmy(state.data,state.armies[deckSide]);decks.add($('deck-name').value,state.armies[deckSide]);$('deck-dialog').close();render();notify('내 덱에 저장했습니다. 보유 풀 → 내 덱에서 관리할 수 있습니다.');}
   catch(err){notify(message(err),true);}
 };
 $('deck-list').onclick=e=>{
-  const b=e.target.closest('[data-deck-act]');if(!b)return;
-  const {deckAct:act,id}=b.dataset,d=decks.all().find(x=>x.id===id);if(!d)return;
-  try{
-    if(act==='load'){
-      const army=loadable(state.data,prep(d.army));
-      state.armies[deckSide]=army;state.view=deckSide;dirty();render();$('deck-dialog').close();notify(`'${d.name}'을(를) ${SIDE_NAME[deckSide]} 부대에 불러왔습니다.`);return;
-    }
-    if(act==='base'){decks.update(id,{base:!d.base});notify(d.base?'기본 편성을 해제했습니다.':`'${d.name}'을(를) 기본 편성으로 지정했습니다.`);}
-    else if(act==='overwrite'||act==='delete'){
-      if(pending[id]!==act){Object.keys(pending).forEach(k=>delete pending[k]);pending[id]=act;renderDecks();return;}
-      delete pending[id];
-      if(act==='delete'){decks.remove(id);notify('덱을 삭제했습니다.');}
-      else{validateArmy(state.data,state.armies[deckSide]);decks.update(id,{army:clone(state.armies[deckSide])});notify(`'${d.name}'을(를) 현재 편성으로 덮어썼습니다.`);}
-    }
-    renderDecks();render();
-  }catch(err){notify(`이 덱을 쓸 수 없습니다: ${message(err)}`,true);}
+  const b=e.target.closest('[data-deck-act="overwrite"]');if(!b)return;const id=b.dataset.id,d=decks.all().find(x=>x.id===id);if(!d)return;
+  if(!pending[id]){Object.keys(pending).forEach(k=>delete pending[k]);pending[id]=true;renderDeckSave();return;}
+  try{validateArmy(state.data,state.armies[deckSide]);decks.update(id,{army:clone(state.armies[deckSide])});$('deck-dialog').close();render();notify(`'${d.name}'을(를) 지금 편성으로 덮어썼습니다.`);}
+  catch(err){notify(message(err),true);}
 };
 
 /* ── 공유 코드·링크 ────────────────────────────────────── */
 let codeSide='left',codeMode='share',codeValue='';
-const shareUrl=params=>{const u=new URL(location.href);u.search='';u.hash=new URLSearchParams(params).toString();return u.toString();};
+const shareUrl=params=>{const u=new URL(location.href);u.search='';u.hash='/battle?'+new URLSearchParams(params).toString();return u.toString();};
+// 예전 공유 링크(#s=…&a=…)와 새 링크(#/battle?s=…&a=…)를 모두 읽습니다.
+const hashParams=hash=>{const raw=(hash||'').replace(/^#/,'');return new URLSearchParams(raw.startsWith('/')?(raw.split('?')[1]||''):raw);};
 async function showCode(side,mode){
   codeSide=side;codeMode=mode;$('code-error').textContent='';
   const ta=$('army-code');
@@ -807,7 +838,7 @@ async function showCode(side,mode){
 function extractCode(input){
   const text=input.trim();
   if(text.startsWith('TC1.'))return text;
-  try{const p=new URLSearchParams(new URL(text).hash.slice(1));const c=p.get('a')||p.get('b');if(c)return c;}catch{}
+  try{const p=hashParams(new URL(text).hash);const c=p.get('a')||p.get('b');if(c)return c;}catch{}
   return text;
 }
 async function applyCode(){
@@ -825,7 +856,7 @@ async function shareMatch(){
 }
 function readHashCodes(){
   if(!location.hash||location.hash.length<6)return null;
-  const p=new URLSearchParams(location.hash.slice(1));const a=p.get('a'),b=p.get('b'),n=Number(p.get('n'));
+  const p=hashParams(location.hash);const a=p.get('a'),b=p.get('b'),n=Number(p.get('n'));
   if(n)state.maxEng=n;
   return a||b?{a,b}:null;
 }
@@ -1028,8 +1059,7 @@ $('armies').addEventListener('click',e=>{
   if(state.busy)return;
   const t=e.target.closest('button');if(!t)return;
   const army=t.closest('.army'),side=army?.dataset.side,slot=Number(t.closest('[data-slot]')?.dataset.slot);
-  if(t.dataset.presetSide)task(()=>showPresets(t.dataset.presetSide));
-  else if(t.dataset.deckSide)showDecks(t.dataset.deckSide);
+  if(t.dataset.deckSave)showDeckSave(t.dataset.deckSave);
   else if(t.dataset.codeMode)task(()=>showCode(t.dataset.side,t.dataset.codeMode));
   else if(t.dataset.alloc)applyEdit(side,slot,'allocation_mode',t.dataset.alloc);
   else if(t.dataset.allocAll){
@@ -1076,40 +1106,24 @@ $('picker-list').onkeydown=e=>{
   opts[Math.min(opts.length-1,Math.max(0,i+(e.key==='ArrowDown'?1:-1)))]?.focus();
 };
 
-$('preset-search').oninput=()=>{presetSelection=null;renderPresets();};
-$('preset-sort').onclick=e=>{const b=e.target.closest('[data-sort]');if(!b)return;presetSort=b.dataset.sort;presetSelection=null;renderPresets();};
-$('preset-lineup').onclick=e=>{
-  const b=e.target.closest('button');if(!b)return;
-  if(b.dataset.openPool)showPool();
-  else if(b.dataset.lineupGo){presetSelection=b.dataset.lineupGo;presetSeason='all';$('preset-seasons').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.season==='all')));renderPresets();}
-  else if(b.dataset.lineupRemove){saveLineup(readLineup().filter(x=>x.tid!==b.dataset.lineupRemove));renderPresets();notify('구성에서 뺐습니다. 남은 풀로 적합성을 다시 계산했습니다.');}
-  else if(b.dataset.lineupClear){saveLineup([]);renderPresets();notify('구성을 비웠습니다.');}
-};
-$('preset-lineup-toggle').onclick=toggleLineup;
-
-$('open-pool').onclick=()=>{if(state.data)showPool();};
+/* ── 보유 풀 메뉴 이벤트 ───────────────────────────────── */
 $('pool-tabs').onclick=e=>{const b=e.target.closest('[data-pool-tab]');if(!b)return;poolTab=b.dataset.poolTab;$('pool-search').value='';renderPool();};
 $('pool-search').oninput=renderPool;
 $('pool-chips').onclick=e=>{const b=e.target.closest('[data-pool-group]');if(!b)return;poolSel[b.dataset.poolGroup]=b.dataset.v;renderPool();};
 $('pool-grid').onclick=e=>{
   const b=e.target.closest('[data-pool-id]');if(!b)return;
   const set=poolTab==='heroes'?myPool.heroes:myPool.tactics,id=Number(b.dataset.poolId);
-  set.has(id)?set.delete(id):set.add(id);savePool();
-  b.setAttribute('aria-pressed',String(set.has(id)));renderPool();
+  set.has(id)?set.delete(id):set.add(id);savePool();renderPool();
   $('pool-grid').querySelector(`[data-pool-id="${id}"]`)?.focus();
 };
 for(const [id,on] of [['pool-all',true],['pool-none',false]])$(id).onclick=()=>{
   const set=poolTab==='heroes'?myPool.heroes:myPool.tactics;
   for(const r of poolRows())on?set.add(r.id):set.delete(r.id);savePool();renderPool();
 };
-$('pool-dialog').addEventListener('close',()=>{
-  // 풀이 바뀌면 이미 잡아 둔 구성의 점유도 남은 풀 기준으로 다시 계산합니다.
-  const list=[];for(const e of readLineup()){const t=presetRows.find(x=>x.id===e.tid);if(!t)continue;
-    const keep=list.slice();saveLineup(keep);const p=planDeck(t,availFor(t.id));list.push({tid:e.tid,heroes:p.usedH,tactics:p.usedT});}
-  if(presets)saveLineup(list);
-  if($('preset-dialog').open){if(poolActive())presetSort='fit';presetSelection=null;renderPresets();}
-});
-$('preset-seasons').onclick=e=>{const b=e.target.closest('[data-season]');if(!b)return;presetSeason=b.dataset.season;presetSelection=null;$('preset-seasons').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderPresets();};
+$('preset-search').oninput=()=>{presetSelection=null;renderPresets();};
+$('preset-sort').onclick=e=>{const b=e.target.closest('[data-sort]');if(!b)return;presetSort=b.dataset.sort;presetSelection=null;renderPresets();};
+$('preset-mode').onclick=e=>{const b=e.target.closest('[data-mode]');if(!b)return;presetMode=b.dataset.mode;presetSelection=null;renderPresets();};
+$('preset-seasons').onclick=e=>{const b=e.target.closest('[data-season]');if(!b)return;presetSeason=b.dataset.season==='all'?'all':Number(b.dataset.season);presetSelection=null;renderPresets();};
 $('preset-list').onclick=e=>{const b=e.target.closest('[data-template-id]');if(!b)return;presetSelection=b.dataset.templateId;$('preset-list').querySelectorAll('[data-template-id]').forEach(x=>x.setAttribute('aria-selected',String(x===b)));renderPresetPreview();};
 $('preset-list').onkeydown=e=>{
   if(!['ArrowUp','ArrowDown','Home','End'].includes(e.key))return;
@@ -1117,20 +1131,36 @@ $('preset-list').onkeydown=e=>{
   const i=bs.indexOf(document.activeElement),n=e.key==='Home'?0:e.key==='End'?bs.length-1:Math.max(0,Math.min(bs.length-1,i+(e.key==='ArrowDown'?1:-1)));
   bs[n].focus();bs[n].click();
 };
-$('preset-save').onclick=()=>task(async()=>{const {t,army,notes}=presetArmy();decks.add(t.label,army);render();notify(`'${t.label}'을(를) 내 덱에 저장했습니다.${notes.length?` ${notes.join(' · ')}.`:''}`);},'preset-error');
-$('preset-base').onclick=()=>task(async()=>{
-  const {t,army,notes}=presetArmy();decks.add(t.label,army,true);
-  state.armies.left=clone(army);state.view='left';dirty();render();$('preset-dialog').close();
-  notify(`기본 편성으로 지정했습니다. ${presetNote(t,notes,army)}`,!isValid(state.data,army));
-},'preset-error');
-$('preset-apply').onclick=()=>task(async()=>{
-  const {t,army,notes}=presetArmy();
-  state.armies[presetSide]=army;state.view=presetSide;dirty();render();$('preset-dialog').close();
-  notify(presetNote(t,notes,army),!isValid(state.data,army));
-},'preset-error');
+const currentPreset=()=>{const t=presetRows.find(x=>x.id===presetSelection);if(!t)throw new Error('덱을 먼저 고르세요.');return presetArmyFor(t);};
+$('preset-lineup-toggle').onclick=toggleLineup;
+$('preset-save').onclick=()=>task(async()=>{const {t,army,notes}=currentPreset();decks.add(t.label,army);updateRosterCounts();render();notify(`'${t.label}'을(를) 내 덱에 저장했습니다.${notes.length?` ${notes.join(' · ')}.`:''}`);},'preset-error');
+$('preset-base').onclick=()=>task(async()=>{const {t,army,notes}=currentPreset();decks.add(t.label,army,true);sendToBattle(clone(army),'left',`기본 편성으로 지정했습니다. ${presetNote(t,notes,army)}`,!isValid(state.data,army));},'preset-error');
+for(const side of SIDES)$(`preset-send-${side}`).onclick=()=>task(async()=>{const {t,army,notes}=currentPreset();sendToBattle(army,side,`${SIDE_NAME[side]}: ${presetNote(t,notes,army)}`,!isValid(state.data,army));},'preset-error');
+$('roster-lineup').onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const t=b.dataset.tid&&presetRows.find(x=>x.id===b.dataset.tid);
+  if(b.dataset.lineupSend&&t){try{const {army,notes}=presetArmyFor(t);sendToBattle(army,b.dataset.lineupSend,`${SIDE_NAME[b.dataset.lineupSend]}: ${presetNote(t,notes,army)}`,!isValid(state.data,army));}catch(err){notify(message(err),true);}}
+  else if(b.dataset.lineupView)openPreset(b.dataset.lineupView);
+  else if(b.dataset.lineupRemove){saveLineup(readLineup().filter(x=>x.tid!==b.dataset.lineupRemove));recomputeLineup();renderLineupView();notify('내 구성에서 뺐습니다.');}
+  else if(b.dataset.lineupClear){saveLineup([]);renderLineupView();notify('내 구성을 비웠습니다.');}
+  else if(b.dataset.lineupSaveAll){let n=0;for(const e2 of readLineup()){const tt=presetRows.find(x=>x.id===e2.tid);if(!tt)continue;try{decks.add(tt.label,presetArmyFor(tt).army);n++;}catch{}}updateRosterCounts();render();notify(`${n}개 덱을 내 덱에 저장했습니다.`);}
+};
+$('roster-decks').onclick=e=>{
+  const b=e.target.closest('[data-deck-act]');if(!b)return;
+  const {deckAct:act,id}=b.dataset,d=decks.all().find(x=>x.id===id);if(!d)return;
+  try{
+    if(act==='left'||act==='right'){sendToBattle(loadable(state.data,prep(d.army)),act,`'${d.name}'을(를) ${SIDE_NAME[act]} 부대로 불러왔습니다.`);return;}
+    if(act==='base'){decks.update(id,{base:!d.base});notify(d.base?'기본 편성을 해제했습니다.':`'${d.name}'을(를) 기본 편성으로 지정했습니다.`);}
+    else if(act==='delete'){
+      if(!pendingDeck[id]){Object.keys(pendingDeck).forEach(k=>delete pendingDeck[k]);pendingDeck[id]=true;renderDecksView();return;}
+      delete pendingDeck[id];decks.remove(id);notify('덱을 삭제했습니다.');
+    }
+    renderDecksView();updateRosterCounts();render();
+  }catch(err){notify(`이 덱을 쓸 수 없습니다: ${message(err)}`,true);}
+};
 
 for(const r of document.querySelectorAll('#season-switch input'))r.addEventListener('change',()=>task(async()=>{
-  const kept=await switchSeason(Number(r.value));dirty();render();
+  const kept=await switchSeason(Number(r.value));dirty();render();presetSeason=null;route();
   notify(kept?`한국 시즌 ${state.season}로 바꿨습니다. 현재 편성을 그대로 쓸 수 있습니다.`:`한국 시즌 ${state.season}에서 쓸 수 없는 항목이 있어 예시 편성으로 바꿨습니다.`);
 }));
 
@@ -1159,7 +1189,7 @@ $('download-report').onclick=()=>{
   document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 };
 $('page-origin').textContent=location.origin;
-updatePoolBadge();
+updateRosterCounts();
 
 // 숨김 메뉴: '전투 전보' 제목을 빠르게 3번 누르면 턴별 전보 표시를 켜고 끕니다.
 let taps=[];
@@ -1170,6 +1200,40 @@ $('report-heading').addEventListener('click',()=>{
   notify(state.dev?'턴별 전보를 표시합니다.':'턴별 전보를 숨겼습니다.');
 });
 
+/* ── 메뉴(해시 라우팅) ─────────────────────────────────── */
+let guideView=null;
+function parseRoute(){
+  const raw=location.hash.replace(/^#/,'');
+  if(!raw.startsWith('/'))return {view:'battle',parts:[]};
+  const parts=raw.split('?')[0].split('/').filter(Boolean);
+  return {view:['battle','roster','guides'].includes(parts[0])?parts[0]:'battle',parts:parts.slice(1)};
+}
+async function route(){
+  if(!state.data)return;
+  const r=parseRoute();
+  for(const v of ['battle','roster','guides'])$(`view-${v}`).hidden=v!==r.view;
+  document.querySelectorAll('.main-nav [data-nav]').forEach(a=>a.setAttribute('aria-current',a.dataset.nav===r.view?'page':'false'));
+  document.body.dataset.view=r.view;
+  try{
+    if(r.view==='roster'){
+      const sub=['pool','presets','lineup','decks'].includes(r.parts[0])?r.parts[0]:(poolActive()?'presets':'pool');
+      await renderRoster(sub);
+    }else if(r.view==='guides'){
+      if(!guideView){const mod=await import('./guide-view.js');guideView=await mod.createGuideView(guideCtx());}
+      await guideView.show(r.parts);
+    }
+  }catch(error){notify(message(error),true);}
+}
+function guideCtx(){
+  return {state,h,fill,notify,message,clone,prep,loadable,isValid,validateArmy,store,SIDE_NAME,
+    poolHeroIds:()=>poolActive()?[...myPool.heroes]:null,
+    ensurePresets,openPreset,addTemplatesToLineup,
+    sendToBattle:(army,side,text,warn)=>sendToBattle(army,side,text,warn),
+    presetsData:()=>presets,
+    switchSeason:async n=>{await switchSeason(n);dirty();render();presetSeason=null;}};
+}
+window.addEventListener('hashchange',route);
+
 /* ── 시작 ─────────────────────────────────────────────── */
 async function init(){
   applyTheme();
@@ -1179,7 +1243,7 @@ async function init(){
     if(codes){
       const [a,b]=await Promise.all([codes.a,codes.b].map(c=>c?decodeArmyCode(c).catch(()=>null):null));
       if(a||b)shared={a,b};else notify('링크에 담긴 공유 코드를 읽지 못했습니다. 기본 편성으로 시작합니다.',true);
-      history.replaceState(null,'',location.pathname+location.search);
+      history.replaceState(null,'',location.pathname+location.search+'#/battle');
     }
     const draft=shared?null:readDraft();
     state.season=shared?(shared.a||shared.b).season:draft?.season||2;
@@ -1203,5 +1267,6 @@ async function init(){
     }
     updateConnection();
   });
+  await route();
 }
 init();

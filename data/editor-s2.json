@@ -1,11 +1,19 @@
 {
-  "data_version": "kr-editor-4f9ef2c3b811772f",
+  "region": "KR",
+  "locale": "ko-KR",
+  "data_version": "kr-editor-1c6a232569ebd6bd",
   "season": 2,
   "experimental": false,
   "heroes": [
     {
       "id": 1000,
       "name": "조조",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "조조",
       "variant": "base",
       "faction": 1,
@@ -329,6 +337,12 @@
     {
       "id": 1001,
       "name": "허저",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "허저",
       "variant": "base",
       "faction": 1,
@@ -682,6 +696,12 @@
     {
       "id": 1002,
       "name": "전위",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "전위",
       "variant": "base",
       "faction": 1,
@@ -1020,6 +1040,11 @@
     {
       "id": 1004,
       "name": "가후",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "base_name": "가후",
       "variant": "base",
       "faction": 1,
@@ -1235,6 +1260,12 @@
     {
       "id": 1005,
       "name": "곽가",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "곽가",
       "variant": "base",
       "faction": 1,
@@ -1486,6 +1517,12 @@
     {
       "id": 1007,
       "name": "우금",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "우금",
       "variant": "base",
       "faction": 1,
@@ -1713,6 +1750,12 @@
     {
       "id": 1008,
       "name": "순욱",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "순욱",
       "variant": "base",
       "faction": 1,
@@ -1973,6 +2016,11 @@
     {
       "id": 1009,
       "name": "사마의",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "base_name": "사마의",
       "variant": "base",
       "faction": 1,
@@ -2224,6 +2272,12 @@
     {
       "id": 1010,
       "name": "장합",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "장합",
       "variant": "base",
       "faction": 1,
@@ -2547,6 +2601,12 @@
     {
       "id": 1012,
       "name": "등애",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "등애",
       "variant": "base",
       "faction": 1,
@@ -2891,6 +2951,12 @@
     {
       "id": 1013,
       "name": "서황",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "서황",
       "variant": "base",
       "faction": 1,
@@ -3214,6 +3280,11 @@
     {
       "id": 1014,
       "name": "악진",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "base_name": "악진",
       "variant": "base",
       "faction": 1,
@@ -3441,6 +3512,12 @@
     {
       "id": 1016,
       "name": "하후연",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "하후연",
       "variant": "base",
       "faction": 1,
@@ -3791,6 +3868,12 @@
     {
       "id": 1019,
       "name": "정욱",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "정욱",
       "variant": "base",
       "faction": 1,
@@ -4042,6 +4125,12 @@
     {
       "id": 1023,
       "name": "하후돈",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "하후돈",
       "variant": "base",
       "faction": 1,
@@ -4284,6 +4373,12 @@
     {
       "id": 1024,
       "name": "조인",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "조인",
       "variant": "base",
       "faction": 1,
@@ -4556,6 +4651,12 @@
     {
       "id": 1026,
       "name": "견희",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "견희",
       "variant": "base",
       "faction": 1,
@@ -4912,6 +5013,12 @@
     {
       "id": 2000,
       "name": "유비",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "유비",
       "variant": "base",
       "faction": 2,
@@ -5280,6 +5387,12 @@
     {
       "id": 2001,
       "name": "관우",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "관우",
       "variant": "base",
       "faction": 2,
@@ -5606,6 +5719,12 @@
     {
       "id": 2002,
       "name": "장비",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "장비",
       "variant": "base",
       "faction": 2,
@@ -5929,6 +6048,12 @@
     {
       "id": 2003,
       "name": "제갈량",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "제갈량",
       "variant": "base",
       "faction": 2,
@@ -6210,6 +6335,11 @@
     {
       "id": 2004,
       "name": "방통",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "base_name": "방통",
       "variant": "base",
       "faction": 2,
@@ -6554,6 +6684,12 @@
     {
       "id": 2005,
       "name": "서서",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "서서",
       "variant": "base",
       "faction": 2,
@@ -6925,6 +7061,12 @@
     {
       "id": 2007,
       "name": "황충",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "황충",
       "variant": "base",
       "faction": 2,
@@ -7239,6 +7381,12 @@
     {
       "id": 2009,
       "name": "황월영",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "황월영",
       "variant": "base",
       "faction": 2,
@@ -7568,6 +7716,12 @@
     {
       "id": 2012,
       "name": "조운",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "조운",
       "variant": "base",
       "faction": 2,
@@ -7948,6 +8102,11 @@
     {
       "id": 2013,
       "name": "마운록",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "base_name": "마운록",
       "variant": "base",
       "faction": 2,
@@ -8379,6 +8538,12 @@
     {
       "id": 2015,
       "name": "마초",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "마초",
       "variant": "base",
       "faction": 2,
@@ -8687,6 +8852,11 @@
     {
       "id": 2018,
       "name": "법정",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "base_name": "법정",
       "variant": "base",
       "faction": 2,
@@ -9058,6 +9228,11 @@
     {
       "id": 2019,
       "name": "감부인",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "base_name": "감부인",
       "variant": "base",
       "faction": 2,
@@ -9375,6 +9550,12 @@
     {
       "id": 3000,
       "name": "손권",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "손권",
       "variant": "base",
       "faction": 3,
@@ -9749,6 +9930,12 @@
     {
       "id": 3001,
       "name": "손책",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "손책",
       "variant": "base",
       "faction": 3,
@@ -10075,6 +10262,12 @@
     {
       "id": 3002,
       "name": "손상향",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "손상향",
       "variant": "base",
       "faction": 3,
@@ -10434,6 +10627,12 @@
     {
       "id": 3003,
       "name": "소교",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "소교",
       "variant": "base",
       "faction": 3,
@@ -10718,6 +10917,12 @@
     {
       "id": 3004,
       "name": "대교",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "대교",
       "variant": "base",
       "faction": 3,
@@ -11044,6 +11249,12 @@
     {
       "id": 3005,
       "name": "노숙",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "노숙",
       "variant": "base",
       "faction": 3,
@@ -11382,6 +11593,12 @@
     {
       "id": 3006,
       "name": "감녕",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "감녕",
       "variant": "base",
       "faction": 3,
@@ -11783,6 +12000,12 @@
     {
       "id": 3007,
       "name": "주유",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "주유",
       "variant": "base",
       "faction": 3,
@@ -12079,6 +12302,11 @@
     {
       "id": 3008,
       "name": "육손",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "base_name": "육손",
       "variant": "base",
       "faction": 3,
@@ -12333,6 +12561,12 @@
     {
       "id": 3009,
       "name": "정보",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "정보",
       "variant": "base",
       "faction": 3,
@@ -12725,6 +12959,12 @@
     {
       "id": 3010,
       "name": "여몽",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "여몽",
       "variant": "base",
       "faction": 3,
@@ -13057,6 +13297,12 @@
     {
       "id": 3011,
       "name": "태사자",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "태사자",
       "variant": "base",
       "faction": 3,
@@ -13497,6 +13743,12 @@
     {
       "id": 3012,
       "name": "황개",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "황개",
       "variant": "base",
       "faction": 3,
@@ -13832,6 +14084,12 @@
     {
       "id": 3013,
       "name": "손견",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "손견",
       "variant": "base",
       "faction": 3,
@@ -14032,6 +14290,11 @@
     {
       "id": 3014,
       "name": "주태",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "base_name": "주태",
       "variant": "base",
       "faction": 3,
@@ -14400,6 +14663,12 @@
     {
       "id": 4000,
       "name": "여포",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "여포",
       "variant": "base",
       "faction": 4,
@@ -14792,6 +15061,11 @@
     {
       "id": 4001,
       "name": "장료",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "base_name": "장료",
       "variant": "base",
       "faction": 1,
@@ -15142,6 +15416,12 @@
     {
       "id": 4002,
       "name": "채문희",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "채문희",
       "variant": "base",
       "faction": 4,
@@ -15468,6 +15748,12 @@
     {
       "id": 4004,
       "name": "원소",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "원소",
       "variant": "base",
       "faction": 4,
@@ -15821,6 +16107,12 @@
     {
       "id": 4010,
       "name": "이유",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "이유",
       "variant": "base",
       "faction": 4,
@@ -16045,6 +16337,12 @@
     {
       "id": 4011,
       "name": "장각",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "장각",
       "variant": "base",
       "faction": 4,
@@ -16269,6 +16567,11 @@
     {
       "id": 4013,
       "name": "진궁",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "base_name": "진궁",
       "variant": "base",
       "faction": 4,
@@ -16622,6 +16925,12 @@
     {
       "id": 4014,
       "name": "화웅",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "화웅",
       "variant": "base",
       "faction": 4,
@@ -17011,6 +17320,11 @@
     {
       "id": 4016,
       "name": "전풍",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "base_name": "전풍",
       "variant": "base",
       "faction": 4,
@@ -17364,6 +17678,12 @@
     {
       "id": 4017,
       "name": "안량",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "안량",
       "variant": "base",
       "faction": 4,
@@ -17714,6 +18034,12 @@
     {
       "id": 4018,
       "name": "문추",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "문추",
       "variant": "base",
       "faction": 4,
@@ -18064,6 +18390,12 @@
     {
       "id": 4019,
       "name": "화타",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "화타",
       "variant": "base",
       "faction": 4,
@@ -18393,6 +18725,11 @@
     {
       "id": 4021,
       "name": "공손찬",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "base_name": "공손찬",
       "variant": "base",
       "faction": 4,
@@ -18746,6 +19083,12 @@
     {
       "id": 4023,
       "name": "초선",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "초선",
       "variant": "base",
       "faction": 4,
@@ -19048,6 +19391,12 @@
     {
       "id": 4026,
       "name": "방덕",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "방덕",
       "variant": "base",
       "faction": 4,
@@ -19473,6 +19822,12 @@
     {
       "id": 4028,
       "name": "동탁",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "동탁",
       "variant": "base",
       "faction": 4,
@@ -19733,6 +20088,12 @@
     {
       "id": 4029,
       "name": "추씨",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "추씨",
       "variant": "base",
       "faction": 4,
@@ -20059,6 +20420,12 @@
     {
       "id": 5000,
       "name": "양수",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "양수",
       "variant": "base",
       "faction": 1,
@@ -20388,6 +20755,12 @@
     {
       "id": 5001,
       "name": "유엽",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "유엽",
       "variant": "base",
       "faction": 1,
@@ -20717,6 +21090,12 @@
     {
       "id": 5002,
       "name": "문빙",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "문빙",
       "variant": "base",
       "faction": 1,
@@ -20941,6 +21320,12 @@
     {
       "id": 5003,
       "name": "진림",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "진림",
       "variant": "base",
       "faction": 1,
@@ -20972,6 +21357,12 @@
     {
       "id": 5004,
       "name": "조홍",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "조홍",
       "variant": "base",
       "faction": 1,
@@ -21292,6 +21683,12 @@
     {
       "id": 5005,
       "name": "종요",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "종요",
       "variant": "base",
       "faction": 1,
@@ -21621,6 +22018,12 @@
     {
       "id": 5006,
       "name": "조진",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "조진",
       "variant": "base",
       "faction": 1,
@@ -21845,6 +22248,12 @@
     {
       "id": 5007,
       "name": "왕랑",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "왕랑",
       "variant": "base",
       "faction": 1,
@@ -21876,6 +22285,12 @@
     {
       "id": 5008,
       "name": "장패",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "장패",
       "variant": "base",
       "faction": 1,
@@ -22196,6 +22611,12 @@
     {
       "id": 5009,
       "name": "곽회",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "곽회",
       "variant": "base",
       "faction": 1,
@@ -22420,6 +22841,12 @@
     {
       "id": 5012,
       "name": "미축",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "미축",
       "variant": "base",
       "faction": 2,
@@ -22451,6 +22878,12 @@
     {
       "id": 5016,
       "name": "관평",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "관평",
       "variant": "base",
       "faction": 2,
@@ -22783,6 +23216,12 @@
     {
       "id": 5018,
       "name": "간옹",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "간옹",
       "variant": "base",
       "faction": 2,
@@ -23079,6 +23518,12 @@
     {
       "id": 5019,
       "name": "마속",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "마속",
       "variant": "base",
       "faction": 2,
@@ -23408,6 +23853,12 @@
     {
       "id": 5020,
       "name": "주창",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "주창",
       "variant": "base",
       "faction": 2,
@@ -23635,6 +24086,12 @@
     {
       "id": 5021,
       "name": "마량",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "마량",
       "variant": "base",
       "faction": 2,
@@ -23964,6 +24421,12 @@
     {
       "id": 5022,
       "name": "사마가",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "사마가",
       "variant": "base",
       "faction": 2,
@@ -24311,6 +24774,12 @@
     {
       "id": 5023,
       "name": "진무",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "진무",
       "variant": "base",
       "faction": 3,
@@ -24631,6 +25100,12 @@
     {
       "id": 5025,
       "name": "한당",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "한당",
       "variant": "base",
       "faction": 3,
@@ -24978,6 +25453,12 @@
     {
       "id": 5027,
       "name": "동습",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "동습",
       "variant": "base",
       "faction": 3,
@@ -25298,6 +25779,12 @@
     {
       "id": 5028,
       "name": "장흠",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "장흠",
       "variant": "base",
       "faction": 3,
@@ -25627,6 +26114,12 @@
     {
       "id": 5029,
       "name": "정봉",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "정봉",
       "variant": "base",
       "faction": 3,
@@ -25974,6 +26467,12 @@
     {
       "id": 5032,
       "name": "반장",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "반장",
       "variant": "base",
       "faction": 3,
@@ -26321,6 +26820,12 @@
     {
       "id": 5034,
       "name": "서성",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "서성",
       "variant": "base",
       "faction": 3,
@@ -26548,6 +27053,12 @@
     {
       "id": 5039,
       "name": "공융",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "공융",
       "variant": "base",
       "faction": 4,
@@ -26844,6 +27355,12 @@
     {
       "id": 5044,
       "name": "장만성",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "장만성",
       "variant": "base",
       "faction": 4,
@@ -27068,6 +27585,12 @@
     {
       "id": 5047,
       "name": "황보숭",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "황보숭",
       "variant": "base",
       "faction": 4,
@@ -27292,6 +27815,12 @@
     {
       "id": 5048,
       "name": "장량",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "장량",
       "variant": "base",
       "faction": 4,
@@ -27615,6 +28144,12 @@
     {
       "id": 5051,
       "name": "노식",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "노식",
       "variant": "base",
       "faction": 4,
@@ -27839,6 +28374,12 @@
     {
       "id": 5052,
       "name": "곽도",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "곽도",
       "variant": "base",
       "faction": 4,
@@ -28135,6 +28676,12 @@
     {
       "id": 5054,
       "name": "유표",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "유표",
       "variant": "base",
       "faction": 4,
@@ -28166,6 +28713,12 @@
     {
       "id": 5055,
       "name": "장보",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "base_name": "장보",
       "variant": "base",
       "faction": 4,
@@ -28447,6 +29000,12 @@
       "id": 20000,
       "name": "청풍 질주",
       "description": "랜덤 아군 2명의 디버프 상태 1가지를 제거하며, 병력을 회복시킨다(치유율 180%, 지력의 영향 받음).",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28454,6 +29013,12 @@
       "id": 20010,
       "name": "문무겸비",
       "description": "무력이 가장 높은 적군 단일 목표에게 220%의 책략 피해를 주며, 지력이 가장 높은 적군 단일 목표에게 220%의 병기 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28461,6 +29026,12 @@
       "id": 20020,
       "name": "일인천군",
       "description": "일반 공격 후, 60% 확률로 공격 목표의 우군 2명에게 이번 일반 공격의 100%의 피해 전달을(를) 준다. 자신의 무력이 목표보다 높으면 추가로 30%의 병기 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28468,6 +29039,12 @@
       "id": 20030,
       "name": "퇴로 매복",
       "description": "랜덤 적군 단일 목표에게 110%의 병기 피해를 주며, 4회 발동된다. 발동 기간 동안 25%의 회심 확률이 적용된다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28475,6 +29052,12 @@
       "id": 20040,
       "name": "보급 차단",
       "description": "턴 시작 시 적군 단일 목표에게 2턴 동안 지속되는 군량 고갈을(를) 부여한다.\n턴 종료 시 군량 고갈 상태를 보유한 적군에게 110%의 책략 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -28482,6 +29065,12 @@
       "id": 20050,
       "name": "예측의 신",
       "description": "랜덤 적군 2명에게 180%의 책략 피해를 주며, 50% 확률로 1턴 동안 지속되는 침묵을(를) 부여한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28489,6 +29078,12 @@
       "id": 20060,
       "name": "예리한 판단",
       "description": "랜덤 아군 단일 목표(전열 우선)의 병력을 회복시키고(치유율 260%, 지력의 영향 받음), 해당 목표에게 2턴 동안 정신 회복을(를) 부여한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28496,6 +29091,12 @@
       "id": 20070,
       "name": "포위 돌파",
       "description": "1턴 동안 준비 후 2턴 동안 랜덤 적군 단일 목표가 받는 피해를 30% 증가시키며, 해당 목표에게 440%의 병기 피해를 준다. 해당 전법은 첫 턴 발동 시 준비할 필요 없다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28503,6 +29104,12 @@
       "id": 20080,
       "name": "전략 계획",
       "description": "2턴 동안 랜덤 적군 2명의 무력, 지력, 통솔, 선공이 25 감소한다(지력의 영향 받음), 2회 중첩될 수 있다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28510,6 +29117,12 @@
       "id": 20100,
       "name": "철기병 돌격",
       "description": "일반 공격 후, 2턴 동안 자신의 회심 확률이 20% 증가하며, 이후 해당 목표에게 400%의 병기 피해를 준다. 발동 여부와 상관 없이 해당 피해 계수가 매 턴 25% 감소한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28517,6 +29130,12 @@
       "id": 20110,
       "name": "천군 소탕",
       "description": "일반 공격 후, 전체 적군에게 120%의 병기 피해를 준다. 시전 성공 후, 추격 전법 피해가 8% 증가하고, 최대 5회 중첩되며, 전투 종료까지 지속된다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28524,6 +29143,12 @@
       "id": 20120,
       "name": "정의의 희생",
       "description": "전투 시작 후 2턴 동안 전체 아군의 연타 확률이 30% 증가하며, 2턴 동안 무력이 가장 높은 아군 단일 목표가 정신 회복을(를) 획득하고, 자신이 무장 해제을(를) 획득한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -28531,6 +29156,12 @@
       "id": 20130,
       "name": "천하평론",
       "description": "무력이 가장 높은 아군 단일 목표가 적군 전체에게 80% 병기 피해를 주게 하며, 지력이 가장 높은 아군 단일 목표가 적군 전체에게 80%의 책략 피해를 주게 한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28538,6 +29169,12 @@
       "id": 20140,
       "name": "칠군수몰",
       "description": "1턴 동안 준비 후 적군 전체에게 2턴 동안 지속되는 홍수을(를) 부여한다. 그리고 260%의 병기 피해를 주며, 65%의 확률로 1턴 동안 지속되는 침묵 및 무장 해제 상태를 부여한다. 각 상태는 개별적으로 판정된다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28545,6 +29182,12 @@
       "id": 20150,
       "name": "출기불의",
       "description": "랜덤 적군 단일 목표에게 350%의 책략 피해를 주며, 목표가 디버프 상태를 보유한 경우, 이번 피해 수치가 25% 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28552,6 +29195,12 @@
       "id": 20170,
       "name": "기문둔갑",
       "description": "1턴 동안 준비 후 전체 적군에게 250%의 책략 피해를 주며, 25% 확률로 1턴 동안 지속되는 공포을(를) 부여한다. 목표가 보유 중인 기타 이상 상태 하나 당 책략 피해 계수가 25% 증가하고, 공포 부여 확률이 8% 증가한다. 5회까지 증가할 수 있다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28559,6 +29208,12 @@
       "id": 20180,
       "name": "청천벽력",
       "description": "1턴 동안 준비 후 랜덤 적군 단일 목표에게 160%의 책략 피해를 주며, 총 5회 시전한다. 홍수 상태인 목표를 명중할 때마다 해당 피해가 40% 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28566,6 +29221,12 @@
       "id": 20190,
       "name": "인재 기용",
       "description": "3번째 턴부터 우군 2명은 매 턴 80% 확률로 다음 피해에 회심 또는 묘책(이)가 반드시 발동되며, 해당 회심 또는 묘책 피해가 40% 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -28573,6 +29234,12 @@
       "id": 20200,
       "name": "견고한 방어",
       "description": "적군 전체를 조롱하고, 2턴 동안 자신이 받는 피해가 30% 감소한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28580,6 +29247,12 @@
       "id": 20210,
       "name": "강철의 의지",
       "description": "2턴 동안 우군 2명의 연타 확률이 45%, 회유이(가) 20% 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28587,6 +29260,12 @@
       "id": 20220,
       "name": "압도적 승리",
       "description": "통솔이 가장 낮은 적군 단일 목표에게 220%의 병기 피해를 주며, 2턴 동안 지속되는 군량 고갈을(를) 부여한다. 목표가 군량 고갈 상태를 보유한 경우, 추가로 80%의 병기 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28594,6 +29273,12 @@
       "id": 20230,
       "name": "파죽지세",
       "description": "2턴 동안 자신의 회심 확률이 20% 증가한다. 전체 적군에게 140%의 병기 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28601,6 +29286,12 @@
       "id": 20240,
       "name": "최상의 지략",
       "description": "랜덤 적군 단일 목표에게 1턴 동안 지속되는 혼란을(를) 부여하며, 300%의 책략 피해를 준다. 목표가 혼란 상태면 추가로 해당 목표에게 150%의 책략 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28608,6 +29299,12 @@
       "id": 20250,
       "name": "예리한 통찰",
       "description": "자신의 관통이(가) 16%, 주는 피해가 35% 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28615,6 +29312,12 @@
       "id": 20260,
       "name": "화공전술",
       "description": "전체 적군에게 80%의 책략 피해를 주고, 2턴 동안 지속되는 화공 상태를 부여한다. 이후 다시 소각을 3회 진행한다. 소각: 랜덤 적군 단일 목표에게 80%의 책략 피해를 준다. 목표가 폭풍 상태면 적진 소각의 피해 수치가 30% 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28622,6 +29325,12 @@
       "id": 20270,
       "name": "구름과 바람",
       "description": "랜덤 적군 2명에게 190%의 병기 피해를 주며, 목표가 폭풍 상태면 2턴 동안 자신이 주는 피해가 15% 증가한다(2회 중첩 가능).\n자신이 폭풍 상태면 2턴 동안 자신의 피신 확률이 10% 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28629,6 +29338,12 @@
       "id": 20280,
       "name": "찬란한 위명",
       "description": "2턴 동안 자신의 회유이(가) 30% 증가한다. 이후 랜덤 적군 2명에게 220%의 병기 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28636,6 +29351,12 @@
       "id": 20290,
       "name": "전력 지원",
       "description": "자신이 피해를 받기 직전, 50% 확률로 우군 2명의 병력을 회복시킨다(치유율 50%, 지력과 통솔의 영향 받음).",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28643,6 +29364,12 @@
       "id": 20300,
       "name": "청낭 치료",
       "description": "병력이 가장 낮은 아군 단일 목표의 디버프 상태 3가지를 제거하며, 병력을 회복시킨다(치유율 260%, 지력의 영향 받음).",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28650,6 +29377,12 @@
       "id": 20310,
       "name": "재해 이용",
       "description": "자신을 제외한 전체 적군과 아군에게 140%의 책략 피해를 준다. \n적군 목표가 화공 상태면 40% 확률로 1턴 동안 지속되는 혼란을(를) 부여한다.\n적군 목표가 홍수 상태면 40% 확률로 1턴 동안 지속되는 무장 해제을(를) 부여한다.\n적군 목표가 폭풍 상태면 40% 확률로 1턴 동안 지속되는 침묵을(를) 부여한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28657,6 +29390,12 @@
       "id": 20320,
       "name": "광풍의 분노",
       "description": "2번째와 4번째 턴 시작 시, 전체 적군과 아군이 2턴 동안 폭풍 상태가 된다.\n홀수 턴 시작 시, 60% 확률로 전체 적군에게 100%의 책략 피해를 준다.\n짝수 턴 시작 시, 60% 확률로 랜덤 적군 단일 목표에게 280%의 책략 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -28664,6 +29403,12 @@
       "id": 20330,
       "name": "팔방전",
       "description": "전체 적군에게 130%의 병기 피해를 주고 2턴 동안 지속되는 위협을(를) 부여한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28671,6 +29416,12 @@
       "id": 20340,
       "name": "방화범",
       "description": "1턴 동안 준비 후 랜덤 적군 2명에게 220%의 책략과 병기 피해를 주며, 목표가 화공 상태면 추가로 2턴 동안 지속되는 혼란 상태를 부여한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28678,6 +29429,12 @@
       "id": 20350,
       "name": "결사의 다짐",
       "description": "전투 시작 시, 랜덤 아군 단일 목표(전열 우선)가 결사를 획득한다. 결사: 행동 전, 자신의 병력을 회복하며(치유율 80%, 목표의 지력과 통솔의 영향 받음), 받는 병기 피해가 20% 감소한다.\n무력이 가장 높은 아군 단일 목표가 다짐을 획득한다. 다짐: 일반 공격 후, 50% 확률로 랜덤 적군 단일 목표에게 100%의 병기 피해를 1회 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -28685,6 +29442,12 @@
       "id": 20360,
       "name": "고요한 제압",
       "description": "홀수 턴에 자신이 일반 공격할 수 없으며, 자신과 랜덤 우군 단일 목표가 받는 병기 피해, 받는 일반 공격 피해, 받는 추격 전법 피해가 20% 감소한다(통솔의 영향을 받음).\n짝수 턴에 자신이 액티브 전법을 발동할 수 없으며, 자신과 랜덤 우군 단일 목표가 받는 책략 피해, 받는 액티브 전법 피해가 20% 감소한다(통솔의 영향을 받음).",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28692,6 +29455,12 @@
       "id": 20370,
       "name": "무방비 공격",
       "description": "일반 공격 후, 공격 목표에게 280%의 병기 피해를 주고 1턴 동안 지속되는 침묵을(를) 부여한다. 목표가 침묵 상태면 50% 확률로 1턴 동안 지속되는 공포을(를) 부여한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28699,6 +29468,12 @@
       "id": 20380,
       "name": "창고 기습",
       "description": "일반 공격 후, 공격 목표에게 300%의 책략 피해를 주며, 2턴 동안 지속되는 군량 고갈을(를) 부여한다. 목표가 이미 군량 고갈 상태를 보유한 경우, 추가로 해당 목표에게 100%의 책략 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28706,6 +29481,12 @@
       "id": 20390,
       "name": "천리기습",
       "description": "일반 공격 후, 선공이 가장 낮은 적군 단일 목표에게 280%의 병기 피해(추가로 양측 선공 차이의 영향 받음)를 주며, 목표가 후열이면 추가로 100%의 병기 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28713,6 +29494,12 @@
       "id": 20400,
       "name": "원문사극",
       "description": "일반 공격 후, 목표에게 220%의 병기 피해를 부여한다. 자신이 후열이면 75% 확률로 2턴 동안 자신의 액티브 전법 발동률이 10% 증가하며, 3회 중첩할 수 있다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28720,6 +29507,12 @@
       "id": 20410,
       "name": "경무장",
       "description": "일반 공격 후, 랜덤 아군 2명에게 1스택의 방어을(를) 부여하고, 2턴 동안 해당 아군의 받는 피해를 20% 감소시킨다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28727,6 +29520,12 @@
       "id": 20420,
       "name": "기습 제압",
       "description": "1턴 동안 준비 후 전체 적군에게 300%의 병기 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28734,6 +29533,12 @@
       "id": 20430,
       "name": "허점 공격",
       "description": "일반 공격 후, 랜덤 적군 단일 목표에게 280%의 병기 피해를 준다. 목표가 허약 상태면 이번 피해 수치가 30% 증가하며, 허약 상태가 아니면 80% 확률로 1턴 동안 지속되는 허약을(를) 부여한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28741,6 +29546,12 @@
       "id": 20440,
       "name": "신속전개",
       "description": "일반 공격 후 2턴 동안 자신의 선공이 30포인트 증가하며, 랜덤 적군 2명에게 180%의 병기 피해(추가로 선공의 영향 받음)를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28748,6 +29559,12 @@
       "id": 20460,
       "name": "세금 과징수",
       "description": "전투 중 디버프 효과 부여 후, 자신의 병력을 회복하며(치유율 40%, 지력과 통솔의 영향 받음), 2턴 동안 자신이 받는 피해가 10% 감소한다, 4회 중첩될 수 있다. 턴마다 최대 10회 발동된다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28755,6 +29572,12 @@
       "id": 20470,
       "name": "용맹한 삼군",
       "description": "자신의 회유이(가) 30% 증가하며, 일반 공격 후, 자신이 주는 병기 피해가 6% 증가한다, 6회 중첩될 수 있다. 일반 공격을 3회 시전한 후 랜덤 적군 단일 목표에게 200%의 병기 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28762,6 +29585,12 @@
       "id": 20480,
       "name": "백전불태",
       "description": "통솔/지력/무력이 가장 높은 아군 단일 목표가 피해를 받으면 60% 확률로 통솔/지력/무력이 7포인트 증가하며, 8회 중첩될 수 있고, 전투 종료까지 지속된다. 동일한 목표에게 적용될 수 있다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -28769,6 +29598,12 @@
       "id": 20490,
       "name": "충신의 기재",
       "description": "자신의 묘책 확률이 24% 증가한다(지력의 영향 받음). 책략 피해를 준 후, 50% 확률로 2턴 동안 자신의 지력이 10포인트 증가하며, 4회 중첩될 수 있다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28776,6 +29611,12 @@
       "id": 20500,
       "name": "준비 완료",
       "description": "매 턴 시작 시, 우군 2명의 주는 피해가 7% 증가하며, 중첩될 수 있고, 전투 종료까지 지속된다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -28783,6 +29624,11 @@
       "id": 20530,
       "name": "요새 함락",
       "description": "자신의 회심 확률이 20% 증가하며, 매 턴 행동 종료 시마다 랜덤 적군 2명에게 110%의 병기 피해를 준다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28790,6 +29636,11 @@
       "id": 20540,
       "name": "적재적소",
       "description": "2턴 동안 지력이 가장 높은 아군 단일 목표가 받는 피해가 25% 감소하며(지력의 영향 받음), 1스택의 방어을(를) 획득한다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28797,6 +29648,11 @@
       "id": 20550,
       "name": "삼군 압도",
       "description": "일반 공격 후, 3턴 동안 공격 목표의 무력, 지력, 통솔이 30포인트 감소하며, 최대 5회 중첩될 수 있다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28804,6 +29660,11 @@
       "id": 20560,
       "name": "틈새 공략",
       "description": "일반 공격 후 랜덤 적군 단일 목표에게 1턴 동안 지속되는 혼란을(를) 부여하며, 180%의 책략 피해를 준다. 목표가 혼란 상태면 목표의 랜덤 우군 단일 목표에게 100%의 책략 피해를 준다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28811,6 +29672,11 @@
       "id": 20570,
       "name": "도광양회",
       "description": "고유 액티브 전법 발동률이 6% 증가하며(지력의 영향 받음), 매 턴 시작 시, 자신이 주는 책략 피해가 8% 증가한다. 중첩될 수 있으며, 전투 종료까지 지속된다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28818,6 +29684,11 @@
       "id": 20580,
       "name": "음과 양",
       "description": "2번째 턴부터 턴 시작 시, 65% 확률로 랜덤 아군 2명의 병력을 회복한다(치유율 150%, 지력의 영향 받음). 턴 종료 시, 65% 확률로 랜덤 적군 2명에게 150%의 책략 피해를 준다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -28825,6 +29696,11 @@
       "id": 20590,
       "name": "난공불락",
       "description": "자신의 통솔이 20% 증가하며, 2번째 턴부터 매 턴 시작 시, 60% 확률로(통솔의 영향 받음) 2턴 동안 랜덤 적군 2~3명을 조롱한다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -28832,6 +29708,11 @@
       "id": 20600,
       "name": "연전연승",
       "description": "병기 피해를 준 후, 자신의 무력이 16포인트 증가하며, 최대 8회 중첩된다. 책략 피해를 준 후, 자신의 지력이 16포인트 증가하며, 최대 8회 중첩된다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28839,6 +29720,11 @@
       "id": 20610,
       "name": "병력 강화",
       "description": "자신의 반격 확률이 50% 증가한다(무력의 영향 받음). 일반 공격 성공 후 2턴 동안 자신이 받는 병기 피해가 5% 감소하며, 6회 중첩될 수 있다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28846,6 +29732,11 @@
       "id": 20620,
       "name": "일심협력",
       "description": "매 턴 행동 시, 자신과 랜덤 우군 1명의 병력을 회복한다(치유율 90%, 지력과 통솔의 영향 받음).",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -28853,6 +29744,11 @@
       "id": 20630,
       "name": "금성의 철벽",
       "description": "턴 시작 시, 전체 아군이 80% 확률로 1스택의 방어을(를) 획득하며, 매 턴 확률이 8% 감소한다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -28860,6 +29756,11 @@
       "id": 20640,
       "name": "허실 간파",
       "description": "2턴 동안 랜덤 적군 2명의 지력과 통솔(지력의 영향 받음)을 20포인트 탈취하고, 140%의 책략 피해를 준다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28867,6 +29768,11 @@
       "id": 20650,
       "name": "맹렬한 화염",
       "description": "전체 적군에게 2턴 동안 지속되는 화공을(를) 부여하며, 90%의 책략과 병기 피해를 준다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28874,6 +29780,11 @@
       "id": 20660,
       "name": "기민한 전술",
       "description": "적군 랜덤 단일 목표에게 360%의 병기 피해를 주고, 자신이 다음에 시전하는 준비 전법이 준비를 1턴 건너뛴다. 건너뛰는 횟수는 중첩할 수 있다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28881,6 +29792,12 @@
       "id": 70000,
       "name": "순간 돌습",
       "description": "일반 공격 후, 2턴 동안 목표의 통솔을 30포인트 감소시키며, 이후 해당 목표에게 250%의 병기 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28888,6 +29805,12 @@
       "id": 70010,
       "name": "측면 공격",
       "description": "랜덤 적군 단일 목표에게 150%의 병기 피해를 주며, 2턴 동안 지속되는 위협을(를) 부여한다. 2회 발동된다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28895,6 +29818,12 @@
       "id": 70020,
       "name": "수중전",
       "description": "랜덤 적군 2명에게 100%의 책략 피해를 주며, 목표가 홍수 상태면 추가로 60%의 책략 피해를 준다. 그렇지 않으면 2턴 동안 지속되는 홍수을(를) 부여한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28902,6 +29831,12 @@
       "id": 70030,
       "name": "속수무책",
       "description": "랜덤 적군 단일 목표에게 200%의 책략 피해를 주고, 1턴 동안 지속되는 침묵을(를) 부여한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28909,6 +29844,12 @@
       "id": 70040,
       "name": "청야 전술",
       "description": "적군 전체를 조롱하며, 2턴 동안 자신의 통솔이 36포인트 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28916,6 +29857,12 @@
       "id": 70050,
       "name": "패잔병 척결",
       "description": "책략 피해를 준 후, 60% 확률로 랜덤 적군 단일 목표에게 일반 공격을 1회 부여하며, 매 턴 최대 1회 발동된다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28923,6 +29870,12 @@
       "id": 70060,
       "name": "허점 공략",
       "description": "전투 시작 후 4턴 동안 자신과 랜덤 우군 단일 목표가 받는 피해가 26% 감소한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -28930,6 +29883,12 @@
       "id": 70070,
       "name": "전쟁 종식",
       "description": "전투 시작 후 첫 3턴 동안 전체 아군이 턴 시작 시 65% 확률로 방어 1스택을 획득한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -28937,6 +29896,12 @@
       "id": 70080,
       "name": "적진 교란",
       "description": "일반 공격 후, 공격 목표에게 220%의 병기 피해를 주며, 1턴 동안 지속되는 혼란을(를) 부여한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28944,6 +29909,12 @@
       "id": 70090,
       "name": "전장의 노래",
       "description": "랜덤 아군 2명의 병력을 회복시키며(치유율 130%, 지력의 영향 받음) 2턴 동안 통솔을 16포인트 증가시킨다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28951,6 +29922,12 @@
       "id": 70100,
       "name": "기풍당당",
       "description": "랜덤 적군 단일 목표에게 240%의 병기 피해(후열 우선 선택)를 주며, 2턴 동안 지속되는 폭풍을(를) 부여한다. 목표가 폭풍 상태면 2턴 동안 추가로 목표의 선공을 25포인트 감소시킨다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28958,6 +29935,12 @@
       "id": 70110,
       "name": "넘치는 계책",
       "description": "일반 공격 후, 랜덤 적군 단일 목표에게 250%의 책략 피해를 주며, 후열 적군을 우선 선택한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -28965,6 +29948,12 @@
       "id": 70120,
       "name": "평화의 기운",
       "description": "매 턴 종료 시, 전열 아군 전체의 병력을 회복한다(치유율 90%, 지력의 영향 받음).",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28972,6 +29961,12 @@
       "id": 70130,
       "name": "독설가",
       "description": "적군이 디버프 상태를 받으면 60% 확률로 랜덤 적군 단일 목표에게 110%의 책략 피해를 주며, 매 턴 최대 2회 발동된다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28979,6 +29974,12 @@
       "id": 70140,
       "name": "화검",
       "description": "전체 적군에게 150%의 병기 피해를 주고 2턴 동안 지속되는 화공을(를) 부여한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -28986,6 +29987,12 @@
       "id": 70150,
       "name": "전쟁 조달",
       "description": "무력이 20포인트 증가하며, 일반 공격 후, 자신의 병력을 회복한다(치유율 110%, 지력과 무력의 영향 받음).",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -28993,6 +30000,12 @@
       "id": 70160,
       "name": "비상한 전략",
       "description": "턴 시작 시, 랜덤 적군 단일 목표에게 120%의 책략 피해를 주며, 비상한 전략의 피해는 턴 수에 따라 매 턴 10% 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -29000,6 +30013,12 @@
       "id": 70170,
       "name": "응전",
       "description": "1턴 동안 준비 후 2턴 동안 자신의 관통이(가) 20% 증가하며, 이후 적군 단일 목표에게 440%의 병기 피해를 준다. 전열 목표를 우선적으로 선택한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -29007,6 +30026,12 @@
       "id": 70180,
       "name": "야습",
       "description": "일반 공격 후, 랜덤 적군 2명에게 120%의 병기 피해를 주며, 자신의 선공이 목표보다 높으면 추가로 50%의 병기 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "추격",
       "max_per_army": 1
     },
@@ -29014,6 +30039,12 @@
       "id": 70190,
       "name": "민중 봉기",
       "description": "랜덤 적군 2명에게 150%의 병기 피해를 주며, 목표에게 1턴 동안 지속되는 군량 고갈을(를) 부여한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -29021,6 +30052,12 @@
       "id": 70200,
       "name": "문과 무",
       "description": "매 턴 행동 시, 60% 확률로 랜덤 적군 2명에게 100%의 병기와 책략 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "지휘",
       "max_per_army": 1
     },
@@ -29028,6 +30065,12 @@
       "id": 70210,
       "name": "늠름한 자태",
       "description": "자신의 연타 확률이 60% 증가하며, 주는 피해가 10% 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -29035,6 +30078,12 @@
       "id": 70220,
       "name": "양책 수립",
       "description": "2턴 동안 자신의 지력이 20포인트 증가하며, 랜덤 적군 2명에게 160%의 책략 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -29042,6 +30091,12 @@
       "id": 70230,
       "name": "적군 굴복",
       "description": "랜덤 적군 2명에게 1턴 동안 지속되는 무장 해제을(를) 부여한다. 목표가 무장 해제를 이미 보유한 경우, 2턴 동안 목표가 주는 피해가 15% 감소한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -29049,6 +30104,12 @@
       "id": 70240,
       "name": "지혜의 바람",
       "description": "매 턴 행동 시, 자신의 병력을 회복한다(치유율 140%, 지력과 통솔의 영향 받음).",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -29056,6 +30117,12 @@
       "id": 70250,
       "name": "강습",
       "description": "일반 공격 후, 랜덤 적군 단일 목표에게 이번 일반 공격 80%의 피해 전달을(를) 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -29063,6 +30130,12 @@
       "id": 70260,
       "name": "신의 가호",
       "description": "액티브 전법 발동률이 8% 증가하며, 액티브 전법 피해가 15% 증가한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -29070,6 +30143,12 @@
       "id": 70280,
       "name": "결정적인 수",
       "description": "1턴 동안 준비 후 랜덤 적군 2명에게 220%의 책략 피해를 주며. 2턴 동안 지속되는 허약 상태를 부여한다. 목표가 허약 상태면 추가로 50%의 책략 피해를 준다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -29077,6 +30156,12 @@
       "id": 70290,
       "name": "위기의 결전",
       "description": "자신의 반격 확률이 40% 증가하며, 받는 일반 공격 피해가 20% 감소한다.",
+      "season": 1,
+      "available_seasons": [
+        1,
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     },
@@ -29084,6 +30169,11 @@
       "id": 70300,
       "name": "유현정책",
       "description": "2턴 동안 랜덤 아군 2명의 주는 피해가 15%, 통솔이 25포인트 증가한다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "액티브",
       "max_per_army": 1
     },
@@ -29091,6 +30181,11 @@
       "id": 70310,
       "name": "투혼의 추격",
       "description": "매 턴 행동 시, 60% 확률로 이상 상태을(를) 보유한 적군에게 120%의 병기 피해를 주며, 목표마다 개별적으로 판정된다.",
+      "season": 2,
+      "available_seasons": [
+        2,
+        3
+      ],
       "type_name": "패시브",
       "max_per_army": 1
     }
@@ -32425,7 +33520,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32437,7 +33531,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32449,7 +33542,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32461,7 +33553,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32473,7 +33564,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32485,7 +33575,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32497,7 +33586,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32509,7 +33597,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32521,7 +33608,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32533,7 +33619,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32545,7 +33630,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32557,7 +33641,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32569,7 +33652,6 @@
       "kind_name": "무기",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32581,7 +33663,6 @@
       "kind_name": "무기",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32593,7 +33674,6 @@
       "kind_name": "무기",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32605,7 +33685,6 @@
       "kind_name": "무기",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32617,7 +33696,6 @@
       "kind_name": "무기",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32629,7 +33707,6 @@
       "kind_name": "무기",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32641,7 +33718,6 @@
       "kind_name": "무기",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32653,7 +33729,6 @@
       "kind_name": "무기",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32665,7 +33740,6 @@
       "kind_name": "무기",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32677,7 +33751,6 @@
       "kind_name": "무기",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32689,7 +33762,6 @@
       "kind_name": "무기",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32701,7 +33773,6 @@
       "kind_name": "무기",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32713,7 +33784,6 @@
       "kind_name": "방어구",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32725,7 +33795,6 @@
       "kind_name": "방어구",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32737,7 +33806,6 @@
       "kind_name": "방어구",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32749,7 +33817,6 @@
       "kind_name": "방어구",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32761,7 +33828,6 @@
       "kind_name": "방어구",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32773,7 +33839,6 @@
       "kind_name": "방어구",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32785,7 +33850,6 @@
       "kind_name": "방어구",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32797,7 +33861,6 @@
       "kind_name": "방어구",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32809,7 +33872,6 @@
       "kind_name": "방어구",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32821,7 +33883,6 @@
       "kind_name": "방어구",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32833,7 +33894,6 @@
       "kind_name": "방어구",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32845,7 +33905,6 @@
       "kind_name": "방어구",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32857,7 +33916,6 @@
       "kind_name": "방어구",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32869,7 +33927,6 @@
       "kind_name": "방어구",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32881,7 +33938,6 @@
       "kind_name": "방어구",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32893,7 +33949,6 @@
       "kind_name": "방어구",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32905,7 +33960,6 @@
       "kind_name": "보물",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32917,7 +33971,6 @@
       "kind_name": "보물",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32929,7 +33982,6 @@
       "kind_name": "보물",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32941,7 +33993,6 @@
       "kind_name": "보물",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32953,7 +34004,6 @@
       "kind_name": "보물",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32965,7 +34015,6 @@
       "kind_name": "보물",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32977,7 +34026,6 @@
       "kind_name": "보물",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -32989,7 +34037,6 @@
       "kind_name": "보물",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33001,7 +34048,6 @@
       "kind_name": "보물",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33013,7 +34059,6 @@
       "kind_name": "보물",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33025,7 +34070,6 @@
       "kind_name": "보물",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33037,7 +34081,6 @@
       "kind_name": "보물",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33049,7 +34092,6 @@
       "kind_name": "보물",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33061,7 +34103,6 @@
       "kind_name": "보물",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33073,7 +34114,6 @@
       "kind_name": "보물",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33085,7 +34125,6 @@
       "kind_name": "보물",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33097,7 +34136,6 @@
       "kind_name": "무기",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33109,7 +34147,6 @@
       "kind_name": "방어구",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33121,7 +34158,6 @@
       "kind_name": "보물",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33133,7 +34169,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33145,7 +34180,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33157,7 +34191,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33169,7 +34202,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33181,7 +34213,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33193,7 +34224,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33205,7 +34235,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33217,7 +34246,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33229,7 +34257,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33241,7 +34268,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33253,7 +34279,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33265,7 +34290,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33277,7 +34301,6 @@
       "kind_name": "방어구",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33289,7 +34312,6 @@
       "kind_name": "방어구",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33301,7 +34323,6 @@
       "kind_name": "방어구",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33313,7 +34334,6 @@
       "kind_name": "방어구",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33325,7 +34345,6 @@
       "kind_name": "방어구",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33337,7 +34356,6 @@
       "kind_name": "방어구",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33349,7 +34367,6 @@
       "kind_name": "방어구",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33361,7 +34378,6 @@
       "kind_name": "방어구",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33373,7 +34389,6 @@
       "kind_name": "보물",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33385,7 +34400,6 @@
       "kind_name": "보물",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33397,7 +34411,6 @@
       "kind_name": "보물",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33409,7 +34422,6 @@
       "kind_name": "보물",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33421,7 +34433,6 @@
       "kind_name": "보물",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33433,7 +34444,6 @@
       "kind_name": "보물",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33445,7 +34455,6 @@
       "kind_name": "보물",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33457,7 +34466,6 @@
       "kind_name": "보물",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33469,7 +34477,6 @@
       "kind_name": "방어구",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33481,7 +34488,6 @@
       "kind_name": "보물",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33493,7 +34499,6 @@
       "kind_name": "방어구",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33505,7 +34510,6 @@
       "kind_name": "보물",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33517,7 +34521,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33529,7 +34532,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33541,7 +34543,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33553,7 +34554,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33565,7 +34565,6 @@
       "kind_name": "방어구",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33577,7 +34576,6 @@
       "kind_name": "방어구",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33589,7 +34587,6 @@
       "kind_name": "방어구",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33601,7 +34598,6 @@
       "kind_name": "방어구",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33613,7 +34609,6 @@
       "kind_name": "보물",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33625,7 +34620,6 @@
       "kind_name": "보물",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33637,7 +34631,6 @@
       "kind_name": "무기",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33649,7 +34642,6 @@
       "kind_name": "무기",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     }
@@ -33663,7 +34655,6 @@
       "kind_name": "말",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33675,7 +34666,6 @@
       "kind_name": "말",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33687,7 +34677,6 @@
       "kind_name": "말",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33699,7 +34688,6 @@
       "kind_name": "말",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33711,7 +34699,6 @@
       "kind_name": "말",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33723,7 +34710,6 @@
       "kind_name": "말",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33735,7 +34721,6 @@
       "kind_name": "말",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33747,7 +34732,6 @@
       "kind_name": "말",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33759,7 +34743,6 @@
       "kind_name": "말",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33771,7 +34754,6 @@
       "kind_name": "말",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33783,7 +34765,6 @@
       "kind_name": "말",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33795,7 +34776,6 @@
       "kind_name": "말",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33807,7 +34787,6 @@
       "kind_name": "말",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33819,7 +34798,6 @@
       "kind_name": "말",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33831,7 +34809,6 @@
       "kind_name": "말",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33843,7 +34820,6 @@
       "kind_name": "말",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33855,7 +34831,6 @@
       "kind_name": "말",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33867,7 +34842,6 @@
       "kind_name": "말",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33879,7 +34853,6 @@
       "kind_name": "말",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33891,7 +34864,6 @@
       "kind_name": "말",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33903,7 +34875,6 @@
       "kind_name": "말",
       "rarity": 2,
       "rarity_name": "A",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33915,7 +34886,6 @@
       "kind_name": "말",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33927,7 +34897,6 @@
       "kind_name": "말",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33939,7 +34908,6 @@
       "kind_name": "말",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33951,7 +34919,6 @@
       "kind_name": "말",
       "rarity": 1,
       "rarity_name": "B",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33963,7 +34930,6 @@
       "kind_name": "말",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33975,7 +34941,6 @@
       "kind_name": "말",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33987,7 +34952,6 @@
       "kind_name": "말",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -33999,7 +34963,6 @@
       "kind_name": "말",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -34011,7 +34974,6 @@
       "kind_name": "말",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -34023,7 +34985,6 @@
       "kind_name": "말",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -34035,7 +34996,6 @@
       "kind_name": "말",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -34047,7 +35007,6 @@
       "kind_name": "말",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -34059,7 +35018,6 @@
       "kind_name": "말",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -34071,7 +35029,6 @@
       "kind_name": "말",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -34083,7 +35040,6 @@
       "kind_name": "말",
       "rarity": 4,
       "rarity_name": "SS",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     },
@@ -34095,7 +35051,6 @@
       "kind_name": "말",
       "rarity": 3,
       "rarity_name": "S",
-      "season_availability": "unverified",
       "attribute_input": "actual_attribute_totals",
       "special_effects_supported": false
     }
@@ -34410,12 +35365,6 @@
     }
   ],
   "notices": [
-    "추정 전투입니다. 일부 효과의 반영 범위가 제한되며 실제 게임 결과와 다를 수 있습니다.",
-    "무장 breakthrough는 배분점수, 무장 promotion은 고유 전법 강화, learned[].breakthrough는 학습 전법 강화입니다. 기존 grade는 같은 강화 단계의 호환 필드이며 중복 가산하지 않습니다.",
-    "추천 배분은 레벨 구간·무장 돌파 배분점을 자동 적용합니다. 직접 배분·총 능력치 입력에는 돌파분을 중복 추가하지 않습니다.",
-    "무장 base_stats는 Lv1 기준이며 growth_stats는 레벨당 증가값입니다. total_stats는 미사용 시 null로 유지하세요.",
-    "고유·학습 전법 레벨의 기본값은10, 입력 범위는1~10입니다. 설명문은 레벨10·강화0 기준입니다.",
-    "장비·말 목록은 원본 수록 정보입니다. 시즌별 획득 가능 여부는 미검증이며, 실제 능력치 옵션을 직접 입력해야 합니다. 아이템 ID만으로 수치·특수 효과를 자동 적용하지 않습니다.",
-    "일반 병법 후보는 정적 허용 범위입니다. 계정 보유·재추첨 결과·재화 지불 해금과 특수 페이지는 반영하지 않습니다."
+    "일부 전투 효과는 미반영 또는 추정 적용입니다."
   ]
 }
