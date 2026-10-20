@@ -125,7 +125,7 @@ main{max-width:1320px;margin:0 auto;padding:22px 20px 40px}
 
 .hero-stack{display:grid;gap:10px}
 .hero-card{border:1px solid var(--line-soft);border-radius:var(--r-card);background:var(--raise);padding:12px 12px 4px}
-.hc-top{display:grid;grid-template-columns:auto minmax(0,1fr) 108px;gap:10px;align-items:center}
+.hc-top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center}
 .slot-badge{display:grid;place-items:center;width:42px;height:46px;border-radius:10px;background:var(--side-soft);color:var(--side-ink);line-height:1.05}
 .slot-badge b{font-family:var(--font-display);font-size:19px;font-weight:800}
 .slot-badge small{font-size:10.5px;font-weight:650}
@@ -411,7 +411,7 @@ dialog[open]{animation:pop .2s ease-out}
   dialog[open]{animation:sheet .24s ease-out}
   @keyframes sheet{from{transform:translateY(40px);opacity:.6}}
   .hc-top{grid-template-columns:auto minmax(0,1fr);row-gap:8px}
-  .troops-field{grid-column:1/-1;grid-template-columns:auto 1fr;align-items:center;gap:10px}
+  .troops-field{grid-template-columns:auto 1fr;align-items:center;gap:10px}
   .grid-3{grid-template-columns:1fr}
   .dmg-row{grid-template-columns:86px minmax(0,1fr) 60px}
   .verdict{padding:20px}
@@ -636,3 +636,26 @@ input.narrow{width:90px}
 dialog.modal.wide-form{width:min(720px,calc(100vw - 32px))}
 .backup-options{display:grid;gap:6px}
 #backup-code{min-height:150px}
+
+/* 레벨·병력 직접 지정 (v1.4.0) */
+.lv-troops{display:grid;grid-template-columns:62px 100px;gap:6px}
+.troops-field input:disabled{opacity:.65;cursor:not-allowed;background:var(--bg)}
+.lv-troops.fixed .troops-field{color:color-mix(in srgb,var(--muted) 80%,transparent)}
+.field>input:disabled{opacity:.65;cursor:not-allowed}
+.level-mode{display:grid;gap:6px;padding:10px 12px;border-radius:var(--r-card);border:1px dashed var(--line);margin-bottom:12px}
+.level-mode.on{border-style:solid;border-color:color-mix(in srgb,var(--ally) 45%,var(--line));background:var(--bg)}
+.level-bulk{display:grid;grid-template-columns:90px 130px auto;gap:8px;align-items:end;justify-content:start}
+/* 학습 전법 여러 개 선택 */
+.pick-opt .pick-no{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;border:1.5px solid var(--line);font-size:11px;font-weight:800;flex:none}
+.pick-opt[aria-selected="true"] .pick-no{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.picker-picked{display:flex;flex-wrap:wrap;gap:6px;flex:1;min-width:0}
+.picked-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--bg);font-size:12.5px;font-weight:650}
+.picked-chip b{font-size:11px;color:var(--muted)}
+.picked-chip span{color:var(--muted);font-size:11px}
+#picker-foot{flex-wrap:wrap}
+@media (max-width:600px){
+  .lv-troops{grid-column:1/-1;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr)}
+  .level-bulk{grid-template-columns:1fr 1fr}
+  .level-bulk button{grid-column:1/-1}
+}
+.tactic-btn.empty.wide{grid-column:1/-1}

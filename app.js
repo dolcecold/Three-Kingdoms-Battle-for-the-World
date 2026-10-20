@@ -39,6 +39,8 @@ function h(tag,attrs,...kids){
 }
 /** replaceChildren은 배열을 펼치지 않으므로 배열·null을 정리해서 넣습니다. */
 const fill=(el,...kids)=>el.replaceChildren(...kids.flat(Infinity).filter(k=>k!=null&&k!==false));
+/** Element.append는 null을 'null' 글자로 넣으므로, 조건부 항목이 섞인 곳은 이걸 씁니다. */
+const add=(el,...kids)=>{el.append(...kids.flat(Infinity).filter(k=>k!=null&&k!==false));return el;};
 const SVGNS='http://www.w3.org/2000/svg';
 function sv(tag,attrs={},...kids){const el=document.createElementNS(SVGNS,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,v);for(const kid of kids)if(kid!=null)el.append(kid instanceof Node?kid:String(kid));return el;}
 const chevron=()=>{const s=sv('svg',{viewBox:'0 0 16 16','aria-hidden':'true'});s.append(sv('path',{d:'M4 6l4 4 4-4'}));return s;};
@@ -62,7 +64,10 @@ async function copyText(text){
 }
 
 /* ── 상태 ─────────────────────────────────────────────── */
-const state={maxEng:Number(store.get(KEYS.eng))||0,dev:store.get(KEYS.dev)==='1',season:2,data:null,idx:null,api:null,armies:{left:null,right:null},busy:false,open:new Set(),tabs:new Map(),report:null,sample:false,dirty:false,view:'left',battleAbort:null};
+const state={maxEng:Number(store.get(KEYS.eng))||0,dev:store.get(KEYS.dev)==='1',season:2,data:null,idx:null,api:null,armies:{left:null,right:null},busy:false,open:new Set(),tabs:new Map(),report:null,sample:false,dirty:false,view:'left',battleAbort:null,
+  free:{left:false,right:false},freeAuto:{left:false,right:false},stash:{left:null,right:null}};
+/** 배틀 기본 수치입니다. 부대의 '레벨·병력 직접 지정'이 꺼져 있으면 무장 3명을 이 값으로 고정합니다. */
+const FIXED={level:50,troops:10000};
 
 function indexData(d){
   const map=rows=>new Map(rows.map(r=>[r.id,r]));
@@ -165,10 +170,11 @@ function openConnection(){$('api-url').value=state.api?.baseUrl||savedUrl();$('c
 
 /* ── 초안 자동 저장 ─────────────────────────────────────── */
 let draftTimer;
-function saveDraft(){clearTimeout(draftTimer);draftTimer=setTimeout(()=>store.set(KEYS.draft,JSON.stringify({v:1,season:state.season,left:state.armies.left,right:state.armies.right})),400);}
+function saveDraft(){clearTimeout(draftTimer);draftTimer=setTimeout(()=>store.set(KEYS.draft,JSON.stringify({v:1,season:state.season,left:state.armies.left,right:state.armies.right,free:state.free})),400);}
 function readDraft(){try{const d=JSON.parse(store.get(KEYS.draft)||'null');return d?.v===1&&[1,2,3].includes(d.season)&&d.left&&d.right?d:null;}catch{return null;}}
 function restoreDraft(draft){
-  try{const left=prep(draft.left),right=prep(draft.right);loadable(state.data,left);loadable(state.data,right);state.armies.left=left;state.armies.right=right;return true;}
+  try{const left=prep(draft.left),right=prep(draft.right);loadable(state.data,left);loadable(state.data,right);state.armies.left=left;state.armies.right=right;
+    if(draft.free)state.free={left:Boolean(draft.free.left),right:Boolean(draft.free.right)};return true;}
   catch{return false;}
 }
 
@@ -186,6 +192,7 @@ let renderQueued=false;
 function scheduleRender(){if(renderQueued)return;renderQueued=true;setTimeout(()=>{renderQueued=false;render();},0);}
 function render(){
   const key=document.activeElement?.dataset?.focus;
+  syncLevelModes();
   for(const s of SIDES)renderArmy(s);
   updateSummary();updateConnection();updateTabs();syncEngagements();
   if(key)document.querySelector(`[data-focus="${CSS.escape(key)}"]`)?.focus({preventScroll:true});
@@ -222,6 +229,7 @@ function renderArmy(side){
   host.replaceChildren(
     armyHead(side,army),
     formationBlock(side,army),
+    levelModeBlock(side,army),
     h('div',{class:'hero-stack'},[...army.heroes].sort((a,b)=>a.slot-b.slot).map(hero=>heroCard(side,army,hero))),
     armyFoot(side,army)
   );
@@ -281,7 +289,7 @@ function heroCard(side,army,hero){
     h('button',{class:'hero-pick',type:'button','aria-label':`${SIDE_NAME[side]} ${hero.slot}번 무장 ${row.name}, 바꾸기`,dataset:{pick:'hero',focus:fkey(side,hero.slot,'pick-hero')}},
       h('span',{class:'name'},h('span',{text:row.name}),chevron()),
       h('span',{class:'meta',text:[row.faction_name,row.rarity_name&&`${row.rarity_name}등급`,arm?.name||'병종 미상',`Lv${hero.level}`,hero.breakthrough?`승급·돌파${hero.breakthrough}`:null,hero.promotion?`고유 승품${hero.promotion}`:null].filter(Boolean).join(' · ')})),
-    h('label',{class:'troops-field'},'병력',num(hero.troops,{min:1,max:50000,step:1,dataset:{path:'troops',focus:fkey(side,hero.slot,'troops')}}))
+    lvTroops(side,hero)
   );
   const rom=romanceFor(d,hero),inn=innateFor(d,hero)||row.innate;
   const innate=h('details',{class:'innate'},
@@ -298,7 +306,7 @@ function heroCard(side,army,hero){
   hero.learned.forEach((s,i)=>{const t=ix.tactic.get(s.skill_id);tactics.append(h('button',{class:'tactic-btn',type:'button',dataset:{pick:'tactic',index:i,focus:fkey(side,hero.slot,`pick-tactic-${i}`)},'aria-label':`학습 전법 ${i+1}: ${t?.name||'알 수 없음'}, 바꾸기`},
     h('span',{class:'t-name',text:t?.name||`ID ${s.skill_id}`}),
     h('span',{class:'t-meta'},t?h('span',{class:`tag type-${t.type_name}`,text:t.type_name}):null,t&&t.variant&&t.variant!=='standard'?h('span',{class:'tag variant',text:t.variant_label||t.variant}):null,`Lv${s.level} · 승급·돌파${s.breakthrough??0}`)));});
-  if(hero.learned.length<2)tactics.append(h('button',{class:'tactic-btn empty',type:'button',dataset:{pick:'tactic',index:hero.learned.length,focus:fkey(side,hero.slot,`pick-tactic-${hero.learned.length}`)},text:'+ 전법 추가'}));
+  if(hero.learned.length<2)tactics.append(h('button',{class:'tactic-btn empty'+(hero.learned.length?'':' wide'),type:'button',dataset:{pick:'tactic',index:hero.learned.length,focus:fkey(side,hero.slot,`pick-tactic-${hero.learned.length}`)},text:hero.learned.length?'+ 전법 추가':'+ 전법 추가 (2개까지 한 번에 선택)'}));
   const slots=row.warbook_slots.length;
   const adv=h('details',{class:'advanced',open:state.open.has(key),dataset:{openKey:key}},
     h('summary',{dataset:{focus:fkey(side,hero.slot,'adv')}},'상세 설정',h('span',{class:'adv-meta',text:`${hero.warbook_page==='romance'&&romanceFor(state.data,hero)?'연의 병법':`병법 ${hero.warbook_slots.length}/${slots}`} · 정통 ${hero.arms_skill_ids.length}/${state.data.rules.max_proficiencies_per_hero??1}${hero.total_stats?' · 총능력치 입력':''}`})),
@@ -312,44 +320,44 @@ function advancedBody(side,army,hero,row,arm,key){
   const panel=h('div',{class:'adv-panel',role:'tabpanel'});
   if(tab==='basic'){
     const hasProfile=myPool.heroProfiles.has(hero.hero_id);
-    panel.append(h('div',{class:'profile-bar'},
+    add(panel,h('div',{class:'profile-bar'},
       h('span',{class:'muted-note',text:hasProfile?'보유 풀에 이 무장의 내 설정이 있습니다.':'지금 설정을 보유 풀에 저장해 두면 다음부터 자동으로 채워집니다.'}),
       h('button',{type:'button',class:'ghost-btn small',dataset:{profileSave:'1',focus:F('profile-save')},text:'내 설정으로 저장'}),
       h('button',{type:'button',class:'ghost-btn small',disabled:!hasProfile,dataset:{profileLoad:'1',focus:F('profile-load')},text:'내 설정 불러오기'})));
-    panel.append(h('div',{class:'grid-4'},
+    add(panel,h('div',{class:'grid-4'},
       h('label',{class:'field'},'위치',sel([1,2,3].map(id=>({id,name:`${id}번`})),hero.slot,{dataset:{path:'position_slot',focus:F('position')}})),
-      h('label',{class:'field'},'무장 레벨',num(hero.level,{min:1,max:50,step:1,dataset:{path:'level',focus:F('level')}})),
+      h('label',{class:'field'},'무장 레벨',num(hero.level,{min:1,max:50,step:1,disabled:!state.free[side],title:state.free[side]?null:FIXED_TITLE,dataset:{path:'level',focus:F('level')}})),
       h('label',{class:'field'},'장수 승급·돌파',num(hero.breakthrough,{min:0,max:5,step:1,dataset:{path:'breakthrough',focus:F('breakthrough')}})),
       h('label',{class:'field'},'고유 전법 승품',num(hero.promotion??0,{min:0,max:5,step:1,dataset:{path:'promotion',focus:F('promotion')}})),
       h('label',{class:'field'},'고유 전법 Lv',num(hero.innate.level,{min:1,max:10,step:1,dataset:{path:'innate.level',focus:F('innate.level')}}))),
       h('p',{class:'muted-note',text:`장수 승급·돌파는 단계당 능력치 배분점 ${d.rules.points_per_breakthrough??10}점을 더하고(지금 ${(hero.breakthrough||0)*(d.rules.points_per_breakthrough??10)}점), 고유 전법 승품은 고유 전법의 강화 수치에 적용됩니다.`}));
-    hero.learned.forEach((s,i)=>panel.append(
+    hero.learned.forEach((s,i)=>add(panel,
       h('p',{class:'sub-head'},ix.tactic.get(s.skill_id)?.name||'학습 전법',h('span',{text:`학습 전법 ${i+1}`})),
       h('div',{class:'grid-2'},
         h('label',{class:'field'},'레벨',num(s.level,{min:1,max:10,step:1,dataset:{path:`learned_upgrade.${i}.level`,focus:F(`lu${i}l`)}})),
         h('label',{class:'field'},'학습 전법 승급·돌파',num(s.breakthrough??0,{min:0,max:5,step:1,dataset:{path:`learned_upgrade.${i}.breakthrough`,focus:F(`lu${i}b`)}})))));
-    panel.append(h('p',{class:'muted-note',text:'위치를 바꾸면 해당 위치의 무장과 자리를 맞바꿉니다. 레벨을 낮추면 해금되지 않은 병법 슬롯은 비워집니다.'}));
+    add(panel,h('p',{class:'muted-note',text:state.free[side]?'위치를 바꾸면 해당 위치의 무장과 자리를 맞바꿉니다. 레벨을 낮추면 그 레벨에서 잠기는 병법 슬롯·고급 병종·정통은 비워집니다.':`위치를 바꾸면 해당 위치의 무장과 자리를 맞바꿉니다. 레벨은 Lv${FIXED.level} 고정입니다. 부대 위쪽 '레벨·병력 직접 지정'을 켜면 바꿀 수 있습니다.`}));
   }else if(tab==='books'){
     const rom=romanceFor(d,hero),page=hero.warbook_page||'normal';
     if(rom){
-      panel.append(h('div',{class:'seg',role:'group','aria-label':'병법 페이지'},
+      add(panel,h('div',{class:'seg',role:'group','aria-label':'병법 페이지'},
         h('button',{type:'button','aria-pressed':String(page==='normal'),dataset:{bookPage:'normal',focus:F('page-normal')},text:'일반 병법'}),
         h('button',{type:'button','aria-pressed':String(page==='romance'),dataset:{bookPage:'romance',focus:F('page-romance')},text:'연의 고정 병법'})));
     }
     if(rom&&page==='romance'){
-      panel.append(h('p',{class:'sub-head'},`${rom.name} 고정 병법`,h('span',{text:'일반 병법 대신 적용 · 중복 합산 없음'})),
+      add(panel,h('p',{class:'sub-head'},`${rom.name} 고정 병법`,h('span',{text:'일반 병법 대신 적용 · 중복 합산 없음'})),
         ...rom.warbooks.map(b=>h('p',{class:'desc-box'},h('b',{text:b.name}),' ',b.description)));
     }else for(const rule of row.warbook_slots){
       const current=hero.warbook_slots.find(s=>s.slot===rule.slot),locked=hero.level<rule.unlock_level;
       const choices=[...bookChoices(d,hero,rule.slot)].sort((a,b)=>b.quality-a.quality||a.id-b.id);
       const book=current&&ix.book.get(current.warbook_id);
-      panel.append(h('div',{class:'field'},
+      add(panel,h('div',{class:'field'},
         h('label',{class:'sub-head',for:`wb-${side}-${hero.slot}-${rule.slot}`},`슬롯 ${rule.slot}`,h('span',{text:locked?`Lv${rule.unlock_level}에 해금`:`Lv${rule.unlock_level} 해금 · ${choices.length}개 선택 가능`})),
         sel(choices,current?.warbook_id,{id:`wb-${side}-${hero.slot}-${rule.slot}`,disabled:locked,dataset:{path:`warbook.${rule.slot}`,focus:F(`wb${rule.slot}`)}},{empty:true,group:b=>b.quality_name}),
         book?h('p',{class:'desc-box'},h('span',{class:'tag'+(book.quality===3?' legend':''),text:book.quality_name}),' ',book.description):null));
     }
-    if(!row.warbook_slots.length)panel.append(h('p',{class:'muted-note',text:'이 무장은 병법 슬롯 정보가 없습니다.'}));
-    panel.append(h('p',{class:'muted-note',text:'전설 병법은 무장당 1개, 같은 그룹 병법은 중복 불가입니다. 고를 수 있는 것만 표시합니다. 계정 보유 여부는 반영하지 않습니다.'}));
+    if(!row.warbook_slots.length)add(panel,h('p',{class:'muted-note',text:'이 무장은 병법 슬롯 정보가 없습니다.'}));
+    add(panel,h('p',{class:'muted-note',text:'전설 병법은 무장당 1개, 같은 그룹 병법은 중복 불가입니다. 고를 수 있는 것만 표시합니다. 계정 보유 여부는 반영하지 않습니다.'}));
   }else if(tab==='arms'){
     const armSel=sel(d.arms.map(a=>({id:a.id,name:a.is_base?a.name:`${a.name} (고급 · Lv${a.unlock_level??35})`})),arm?.id,{dataset:{path:'advanced_arms_id',focus:F('arms')}});
     const romType=romanceFor(d,hero)?.arms_id;
@@ -359,7 +367,7 @@ function advancedBody(side,army,hero,row,arm,key){
     const many=hero.arms_skill_ids.length>1,cur=many?null:hero.arms_skill_ids[0];
     const profs=d.proficiencies.filter(p=>arm?.proficiency_ids.includes(p.id));
     const picked=cur!=null&&ix.prof.get(cur);
-    panel.append(
+    add(panel,
       h('label',{class:'field'},'병종',armSel),
       arm?.description?h('p',{class:'desc-box',text:arm.description}):null,
       romType!=null?h('p',{class:'muted-note',text:'연의 분기가 정한 병종 계열만 고를 수 있습니다.'}):null,
@@ -371,29 +379,99 @@ function advancedBody(side,army,hero,row,arm,key){
   }else{
     const pts=allocPoints(hero),attr=STAT_FIELDS.find(([k])=>k===row.recommended_attribute)?.[1];
     const rec=hero.allocation_mode==='recommended';
-    panel.append(h('div',{class:'seg alloc-seg',role:'group','aria-label':'능력치 배분 방식'},
+    add(panel,h('div',{class:'seg alloc-seg',role:'group','aria-label':'능력치 배분 방식'},
       h('button',{type:'button','aria-pressed':String(rec),disabled:!attr,dataset:{alloc:'recommended',focus:F('alloc-rec')},text:'추천 자동 배분'}),
       h('button',{type:'button','aria-pressed':String(!rec),dataset:{alloc:'manual',focus:F('alloc-man')},text:'직접 배분'})));
-    if(rec)panel.append(h('p',{class:'desc-box',text:`배분점 ${pts}점을 ${attr}에 자동 배분합니다. (레벨 ${hero.level} 기준 ${pts-(hero.breakthrough||0)*(d.rules.points_per_breakthrough??10)}점 + 장수 승급·돌파 ${hero.breakthrough||0}단계 × ${d.rules.points_per_breakthrough??10}점)`}));
+    if(rec)add(panel,h('p',{class:'desc-box',text:`배분점 ${pts}점을 ${attr}에 자동 배분합니다. (레벨 ${hero.level} 기준 ${pts-(hero.breakthrough||0)*(d.rules.points_per_breakthrough??10)}점 + 장수 승급·돌파 ${hero.breakthrough||0}단계 × ${d.rules.points_per_breakthrough??10}점)`}));
     else{
       const sum=STAT_FIELDS.reduce((n,[k])=>n+Number(hero.allocation[k]||0),0);
-      panel.append(h('p',{class:'sub-head'},'능력치 배분',h('span',{text:`합계 ${fmt(sum)}점 · 기본 배분점 ${pts}점`})),statGrid(hero.allocation,'allocation',F),
+      add(panel,h('p',{class:'sub-head'},'능력치 배분',h('span',{text:`합계 ${fmt(sum)}점 · 기본 배분점 ${pts}점`})),statGrid(hero.allocation,'allocation',F),
         h('p',{class:'muted-note',text:attr?`장수 승급·돌파로 늘어난 배분점까지 포함한 실제 배분 총점을 입력합니다. 이 무장의 추천 속성은 ${attr}입니다.`:'장수 승급·돌파로 늘어난 배분점까지 포함한 실제 배분 총점을 입력합니다.'}));
     }
     for(const [k,label,idKey,catalog] of [['equipment','장비','equipment_item_id',d.equipment],['horse','말','horse_item_id',d.horses]]){
       const item=hero[idKey]!=null?catalog?.find(x=>x.id===hero[idKey]):null;
-      panel.append(h('p',{class:'sub-head'},label,h('span',{text:'게임에 표시된 실제 옵션 입력'})),
+      add(panel,h('p',{class:'sub-head'},label,h('span',{text:'게임에 표시된 실제 옵션 입력'})),
         catalog?.length?h('button',{type:'button',class:'item-pick'+(item?'':' empty'),dataset:{pick:k,focus:F(`pick-${k}`)}},
           item?[h('b',{text:item.name}),h('span',{class:'tag',text:item.kind_name}),h('span',{class:'tag'+(item.rarity>=4?' legend':''),text:item.rarity_name})]:`${label} 이름 선택 (선택 사항)`):null,
         statGrid(hero[k],k,F));
     }
-    panel.append(h('p',{class:'muted-note',text:'이름은 기록용이고 능력치는 자동으로 채워지지 않습니다. 같은 장비도 개체마다 옵션이 달라 실제 값을 입력해야 하며, 특수 효과는 반영하지 않습니다.'}));
+    add(panel,h('p',{class:'muted-note',text:'이름은 기록용이고 능력치는 자동으로 채워지지 않습니다. 같은 장비도 개체마다 옵션이 달라 실제 값을 입력해야 하며, 특수 효과는 반영하지 않습니다.'}));
     const preview=statPreview(hero);
-    panel.append(h('label',{class:'check-row'},h('input',{type:'checkbox',checked:hero.total_stats!==null,dataset:{path:'use_total_stats',focus:F('use_total')}}),'총 능력치 직접 입력'));
-    if(hero.total_stats)panel.append(statGrid(hero.total_stats,'total_stats',F,preview.auto),h('p',{class:'muted-note',text:'게임의 진형·전법 적용 전 총 능력치 네 가지를 모두 입력합니다. 레벨·배분·장비·말을 다시 더하지 않습니다. 회색 숫자는 자동 계산 참고값입니다.'}));
-    panel.append(statBreakdown(hero,row,preview));
+    add(panel,h('label',{class:'check-row'},h('input',{type:'checkbox',checked:hero.total_stats!==null,dataset:{path:'use_total_stats',focus:F('use_total')}}),'총 능력치 직접 입력'));
+    if(hero.total_stats)add(panel,statGrid(hero.total_stats,'total_stats',F,preview.auto),h('p',{class:'muted-note',text:'게임의 진형·전법 적용 전 총 능력치 네 가지를 모두 입력합니다. 레벨·배분·장비·말을 다시 더하지 않습니다. 회색 숫자는 자동 계산 참고값입니다.'}));
+    add(panel,statBreakdown(hero,row,preview));
   }
   return h('div',null,tabs,panel);
+}
+/* ── 레벨·병력 직접 지정 ───────────────────────────────── */
+const FIXED_TITLE=`Lv${FIXED.level} · 병력 ${FIXED.troops.toLocaleString('ko-KR')} 고정 — 부대 위쪽 '레벨·병력 직접 지정'을 켜면 바꿀 수 있습니다.`;
+const isFixedArmy=army=>army.heroes.every(x=>x.level===FIXED.level&&x.troops===FIXED.troops);
+/** 고정 모드인데 다른 값이 들어온 부대(내 덱·공유 코드·내 설정)는 값을 덮어쓰지 않고 직접 지정 모드로 켭니다. */
+function syncLevelModes(){
+  for(const s of SIDES)if(!state.free[s]&&state.armies[s]&&!isFixedArmy(state.armies[s])){state.free[s]=true;state.freeAuto[s]=true;saveDraft();}
+}
+function setLevelMode(side,on){
+  const army=state.armies[side],msgs=[];
+  state.free[side]=on;state.freeAuto[side]=false;
+  if(on){
+    // 껐다 다시 켜면 끄기 직전 값을 같은 무장에게 돌려줍니다.
+    const st=state.stash[side];let back=0;
+    if(st)for(const x of army.heroes){const v=st.get(x.hero_id);if(v&&(v.level!==x.level||v.troops!==x.troops)){x.level=v.level;x.troops=v.troops;msgs.push(...fitToLevel(x));back++;}}
+    state.stash[side]=null;
+    if(back)msgs.unshift(`끄기 전 레벨·병력으로 되돌렸습니다(${back}명).`);
+  }else{
+    state.stash[side]=new Map(army.heroes.map(x=>[x.hero_id,{level:x.level,troops:x.troops}]));
+    for(const x of army.heroes){x.level=FIXED.level;x.troops=FIXED.troops;}
+    msgs.push(`${SIDE_NAME[side]} 부대를 Lv${FIXED.level} · 병력 ${fmt(FIXED.troops)}으로 맞췄습니다.`);
+  }
+  dirty();render();if(msgs.length)notify(msgs.join(' '));
+}
+function applyLevelBulk(side,armyEl){
+  const army=state.armies[side],lvEl=armyEl.querySelector('[data-bulk="level"]'),trEl=armyEl.querySelector('[data-bulk="troops"]');
+  const lv=lvEl.value===''?null:clampNum(lvEl.value,1,50,null),tr=trEl.value===''?null:clampNum(trEl.value,1,50000,null);
+  if(lv==null&&tr==null){notify('레벨이나 병력 중 하나 이상 입력하세요.',true);return;}
+  const msgs=[];
+  for(const x of army.heroes){if(tr!=null)x.troops=tr;if(lv!=null){x.level=lv;msgs.push(...fitToLevel(x));}}
+  dirty();render();
+  notify([`무장 3명에 ${[lv!=null?`Lv${lv}`:null,tr!=null?`병력 ${fmt(tr)}`:null].filter(Boolean).join(' · ')}을(를) 적용했습니다.`,...msgs].join(' '));
+}
+/** 레벨을 바꾼 뒤, 그 레벨에서 쓸 수 없는 병법 슬롯·고급 병종·정통을 비우고 알릴 문장을 돌려줍니다. */
+function fitToLevel(hero){
+  const d=state.data,ix=state.idx,row=ix.hero.get(hero.hero_id),name=row?.name||'무장',out=[];
+  const before=hero.warbook_slots.length;
+  hero.warbook_slots=hero.warbook_slots.filter(s=>hero.level>=(row?.warbook_slots.find(r=>r.slot===s.slot)?.unlock_level??99));
+  if(hero.warbook_slots.length<before)out.push(`${name}: Lv${hero.level}에서 잠기는 병법 슬롯을 비웠습니다.`);
+  const adv=hero.advanced_arms_id!=null?ix.arm.get(hero.advanced_arms_id):null;
+  if(adv&&hero.level<(adv.unlock_level??1)){hero.advanced_arms_id=null;hero.arms_skill_ids=[];out.push(`${name}: ${adv.name}은(는) Lv${adv.unlock_level}부터라 기본 병종으로 돌렸습니다.`);}
+  else if(hero.arms_skill_ids.length){
+    const profLv=armFor(d,hero)?.proficiency_unlock_level??d.rules.proficiency_unlock_level??40;
+    if(hero.level<profLv){hero.arms_skill_ids=[];out.push(`${name}: 정통은 Lv${profLv}부터라 비웠습니다.`);}
+  }
+  if(hero.allocation_mode!=='recommended'&&!hero.total_stats){
+    const sum=STAT_FIELDS.reduce((n,[k])=>n+Number(hero.allocation[k]||0),0),pts=allocPoints(hero);
+    if(sum>pts)out.push(`${name}: 직접 배분 합계 ${fmt(sum)}점이 Lv${hero.level} 배분점 ${pts}점보다 많습니다. 능력치 탭에서 확인하세요.`);
+  }
+  return out;
+}
+function levelModeBlock(side,army){
+  const on=state.free[side],F=p=>fkey(side,'army',p);
+  const same=k=>army.heroes.every(x=>x[k]===army.heroes[0][k])?army.heroes[0][k]:null;
+  const note=!on?`꺼져 있으면 무장 3명 모두 Lv${FIXED.level} · 병력 ${fmt(FIXED.troops)}으로 고정합니다.`
+    :state.freeAuto[side]?`불러온 편성에 Lv${FIXED.level}·병력 ${fmt(FIXED.troops)}이 아닌 값이 있어 자동으로 켰습니다. 끄면 모두 기본값으로 맞춥니다.`
+    :'레벨을 바꾸면 능력치·배분점과 병법 슬롯·고급 병종·정통 해금이 함께 바뀝니다.';
+  return h('div',{class:'level-mode'+(on?' on':'')},
+    h('label',{class:'check-row'},h('input',{type:'checkbox',checked:on,dataset:{levelMode:side,focus:F('level-mode')}}),'레벨·병력 직접 지정'),
+    h('p',{class:'muted-note',text:note}),
+    on?h('div',{class:'level-bulk'},
+      h('label',{class:'field'},'레벨',num(same('level'),{min:1,max:50,step:1,placeholder:'1~50',dataset:{bulk:'level',focus:F('bulk-level')}})),
+      h('label',{class:'field'},'병력',num(same('troops'),{min:1,max:50000,step:100,placeholder:'1~50,000',dataset:{bulk:'troops',focus:F('bulk-troops')}})),
+      h('button',{type:'button',class:'ghost-btn small',dataset:{levelBulk:side,focus:F('bulk-apply')},text:'3명 모두 적용'})):null);
+}
+function lvTroops(side,hero){
+  const on=state.free[side],t=on?null:FIXED_TITLE;
+  return h('div',{class:'lv-troops'+(on?'':' fixed')},
+    h('label',{class:'troops-field lv'},'레벨',num(hero.level,{min:1,max:50,step:1,disabled:!on,title:t,dataset:{path:'level',focus:fkey(side,hero.slot,'card-level')}})),
+    h('label',{class:'troops-field'},'병력',num(hero.troops,{min:1,max:50000,step:100,disabled:!on,title:t,dataset:{path:'troops',focus:fkey(side,hero.slot,'troops')}})));
 }
 function allocPoints(hero){
   const r=state.data.rules;
@@ -469,8 +547,12 @@ function applyEdit(side,slot,path,value){
   }
   else if(path==='warbook_page'){hero.warbook_page=value;if(value==='romance')hero.warbook_slots=[];}
   else if(path==='use_total_stats')hero.total_stats=value?Object.fromEntries(STAT_FIELDS.map(([k])=>[k,null])):null;
+  else if(path==='level'||path==='troops'){
+    if(!state.free[side]){scheduleRender();return;}
+    hero[path]=path==='level'?clampNum(value,1,50,hero.level):clampNum(value,1,50000,hero.troops);
+    if(path==='level'){const m=fitToLevel(hero);if(m.length)notify(m.join(' '));}
+  }
   else setPath(hero,path,value);
-  if(path==='level'&&hero){const row=state.idx.hero.get(hero.hero_id);hero.warbook_slots=hero.warbook_slots.filter(s=>hero.level>=(row.warbook_slots.find(r=>r.slot===s.slot)?.unlock_level??99));}
   dirty();scheduleRender();
 }
 function onChange(event){
@@ -481,6 +563,7 @@ function onChange(event){
     catch(err){notify(`이 덱을 쓸 수 없습니다: ${message(err)}`,true);render();}
     return;
   }
+  if(c.dataset.levelMode){setLevelMode(c.dataset.levelMode,c.checked);return;}
   const path=c.dataset.path;if(!path)return;
   const side=c.closest('.army').dataset.side,slot=Number(c.closest('[data-slot]')?.dataset.slot);
   const value=c.type==='checkbox'?c.checked:(c.type==='number'||c.tagName==='SELECT')?(c.value===''?null:Number(c.value)):c.value;
@@ -488,11 +571,20 @@ function onChange(event){
 }
 
 /* ── 무장·전법 선택 창 ─────────────────────────────────── */
-const picker={items:[],groups:[],sel:{},current:null,onPick:null,focusKey:null};
-function openPicker({title,sub,items,groups,current,allowClear,onPick,focusKey}){
+const picker={items:[],groups:[],sel:{},current:null,onPick:null,focusKey:null,multi:null};
+/** multi: {max, selected:[id], build(selected)→items, replaceAt, onApply(selected)} — 여러 개를 고른 뒤 '적용'으로 한 번에 넣습니다. */
+function openPicker({title,sub,items,groups,current,allowClear,onPick,focusKey,multi=null}){
   groups=groups.filter(g=>g.options.length>1);
-  Object.assign(picker,{items,groups,sel:Object.fromEntries(groups.map(g=>[g.key,'all'])),current,onPick,focusKey});
-  $('picker-title').textContent=title;$('picker-sub').textContent=sub||'';$('picker-search').value='';$('picker-clear').hidden=!allowClear;
+  if(multi){
+    multi={...multi,selected:[...multi.selected]};items=multi.build(multi.selected);
+    // 고를 때마다 막힘 여부가 바뀌어도 목록 순서가 흔들리지 않게, 연 시점의 순서를 고정합니다.
+    multi.order=new Map([...items].sort((a,b)=>Number(a.disabled)-Number(b.disabled)).map((it,i)=>[it.id,i]));
+  }
+  Object.assign(picker,{items,groups,sel:Object.fromEntries(groups.map(g=>[g.key,'all'])),current,onPick,focusKey,multi});
+  $('picker-title').textContent=title;$('picker-sub').textContent=sub||'';$('picker-search').value='';
+  $('picker-clear').hidden=multi?false:!allowClear;$('picker-clear').textContent=multi?'모두 해제':'선택 해제';
+  $('picker-apply').hidden=!multi;$('picker-picked').hidden=!multi;
+  $('picker-list').setAttribute('aria-multiselectable',String(Boolean(multi)));
   fill($('picker-chips'),groups.map(g=>h('div',{class:'chip-row',role:'group','aria-label':g.label},
     h('span',{class:'chip-label',text:g.label}),
     [['all','전체'],...g.options.map(o=>[o,o])].map(([v,t])=>h('button',{type:'button','aria-pressed':String(v==='all'),dataset:{group:g.key,chip:v},text:t})))));
@@ -504,13 +596,33 @@ function openPicker({title,sub,items,groups,current,allowClear,onPick,focusKey})
 function renderPicker(){
   const q=$('picker-search').value.replace(/\s/g,'').toLowerCase();
   const rows=picker.items.filter(it=>Object.entries(picker.sel).every(([k,v])=>v==='all'||it.facets[k]===v)&&(!q||it.search.includes(q)));
-  rows.sort((a,b)=>Number(a.disabled)-Number(b.disabled));
-  $('picker-list').replaceChildren(...rows.map(it=>h('button',{class:'pick-opt',type:'button',role:'option','aria-selected':String(it.id===picker.current),disabled:it.disabled,dataset:{id:it.id}},
-    h('span',{class:'row1'},h('span',{class:'nm',text:it.name}),it.tags),
+  const m=picker.multi,isSel=id=>m?m.selected.includes(id):id===picker.current;
+  if(m)rows.sort((a,b)=>(m.order.get(a.id)??0)-(m.order.get(b.id)??0));
+  else rows.sort((a,b)=>Number(a.disabled)-Number(b.disabled));
+  $('picker-list').replaceChildren(...rows.map(it=>h('button',{class:'pick-opt'+(m?' multi':''),type:'button',role:'option','aria-selected':String(isSel(it.id)),disabled:it.disabled,dataset:{id:it.id}},
+    h('span',{class:'row1'},m?h('span',{class:'pick-no',text:isSel(it.id)?String(m.selected.indexOf(it.id)+1):''}):null,h('span',{class:'nm',text:it.name}),it.tags),
     it.desc?h('span',{class:'ds',text:it.desc}):null,
     it.disabled&&it.why?h('span',{class:'why',text:it.why}):null)));
   if(!rows.length)$('picker-list').append(h('p',{class:'muted-note',style:'padding:20px;text-align:center',text:'조건에 맞는 항목이 없습니다. 검색어나 분류를 바꿔 보세요.'}));
-  $('picker-count').textContent=`${rows.filter(r=>!r.disabled).length}개 선택 가능`;
+  $('picker-count').textContent=m?`${m.selected.length}/${m.max} 선택`:`${rows.filter(r=>!r.disabled).length}개 선택 가능`;
+  if(m){
+    const name=id=>picker.items.find(x=>x.id===id)?.name||`ID ${id}`;
+    fill($('picker-picked'),m.selected.map((id,i)=>h('button',{type:'button',class:'picked-chip',dataset:{unpick:id},'aria-label':`${name(id)} 선택 해제`},h('b',{text:i+1}),name(id),h('span',{'aria-hidden':'true',text:'✕'}))));
+  }
+}
+function toggleMulti(id){
+  const m=picker.multi,i=m.selected.indexOf(id);
+  if(i>=0)m.selected.splice(i,1);
+  else if(m.selected.length<m.max)m.selected.push(id);
+  else m.selected[m.replaceAt]=id;
+  const focused=document.activeElement?.closest?.('.pick-opt')?.dataset.id;
+  picker.items=m.build(m.selected);renderPicker();
+  if(focused)$('picker-list').querySelector(`.pick-opt[data-id="${focused}"]`)?.focus({preventScroll:true});
+}
+function applyMulti(){
+  const m=picker.multi;if(!m)return;
+  $('picker-dialog').close();const key=picker.focusKey;m.onApply([...m.selected]);
+  if(key)requestAnimationFrame(()=>document.querySelector(`[data-focus="${CSS.escape(key)}"]`)?.focus());
 }
 function finishPick(id){
   $('picker-dialog').close();const key=picker.focusKey;picker.onPick?.(id);
@@ -552,20 +664,38 @@ function pickItem(side,slot,kind){
     onPick:id=>{hero[idKey]=id;dirty();render();}});
 }
 function pickTactic(side,slot,index){
-  const army=state.armies[side],hero=army.heroes.find(x=>x.slot===slot),d=state.data;
-  const allowed=new Set(tacticChoices(d,army,hero,index).map(t=>t.id));
+  const army=state.armies[side],hero=army.heroes.find(x=>x.slot===slot),d=state.data,ix=state.idx;
+  const max=d.rules.max_learned_per_hero??2,replaceAt=Math.min(index,max-1);
   const groupOf=t=>t.exclusive_group_id??t.base_skill_id??t.id;
-  const groupClash=t=>{for(const x of army.heroes)for(const [i,s] of x.learned.entries()){if(x===hero&&i===index)continue;const o=state.idx.tactic.get(s.skill_id);if(o&&o.id!==t.id&&groupOf(o)===groupOf(t))return o.name;}return null;};
-  const items=d.tactics.map(t=>{
-    const own=hero.learned.some((s,i)=>i!==index&&s.skill_id===t.id),dis=!allowed.has(t.id);
-    return {id:t.id,name:t.name,tags:[h('span',{class:`tag type-${t.type_name}`,text:t.type_name}),t.rarity_name?h('span',{class:'tag'+(t.rarity>=3?' legend':''),text:t.rarity_name}):null,t.variant&&t.variant!=='standard'?h('span',{class:'tag variant',text:t.variant_label||t.variant}):null,t.expires_with_season?h('span',{class:'tag warn',text:'이번 시즌 전용'}):null,t.effect_status==='not_implemented'?h('span',{class:'tag warn',text:'효과 미반영'}):null,t.max_per_army>1?h('span',{class:'tag',text:`부대당 ${t.max_per_army}개`}):null],facets:{type:t.type_name,rarity:t.rarity_name,variant:t.variant_label||'일반'},desc:t.description,search:(t.name+t.description+t.type_name+(t.variant_label||'')).replace(/\s/g,'').toLowerCase(),disabled:dis,why:dis?(own?'이 무장이 이미 배웠습니다.':groupClash(t)?`같은 원본의 ${groupClash(t)}이(가) 이미 부대에 있습니다. 일반·투영·반전은 함께 쓸 수 없습니다.`:`부대 내 사용 한도(${t.max_per_army}개)에 도달했습니다.`):''};
-  });
+  const others=army.heroes.filter(x=>x!==hero);
+  // 창에서 고른 상태를 임시 부대에 넣고, 편성 규칙(tacticChoices)으로 다음에 고를 수 있는 전법을 다시 계산합니다.
+  const build=selected=>{
+    const at=selected.length>=max?replaceAt:selected.length;
+    const temp={...hero,learned:selected.map(id=>({skill_id:id}))},tempArmy={heroes:[...others,temp]};
+    const allowed=new Set(tacticChoices(d,tempArmy,temp,at).map(t=>t.id));
+    const clash=t=>{for(const x of tempArmy.heroes)for(const [i,s] of x.learned.entries()){if(x===temp&&i===at)continue;const o=ix.tactic.get(s.skill_id);if(o&&o.id!==t.id&&groupOf(o)===groupOf(t))return {name:o.name,mine:x===temp};}return null;};
+    return d.tactics.map(t=>{
+      const dis=!selected.includes(t.id)&&!allowed.has(t.id),c=dis?clash(t):null;
+      const why=!dis?'':c?(c.mine?`방금 고른 ${c.name}과(와) 같은 원본입니다. 일반·투영·반전은 함께 쓸 수 없습니다.`:`같은 원본의 ${c.name}이(가) 이미 부대에 있습니다. 일반·투영·반전은 함께 쓸 수 없습니다.`):`부대 내 사용 한도(${t.max_per_army}개)에 도달했습니다.`;
+      return {id:t.id,name:t.name,tags:[h('span',{class:`tag type-${t.type_name}`,text:t.type_name}),t.rarity_name?h('span',{class:'tag'+(t.rarity>=3?' legend':''),text:t.rarity_name}):null,t.variant&&t.variant!=='standard'?h('span',{class:'tag variant',text:t.variant_label||t.variant}):null,t.expires_with_season?h('span',{class:'tag warn',text:'이번 시즌 전용'}):null,t.effect_status==='not_implemented'?h('span',{class:'tag warn',text:'효과 미반영'}):null,t.max_per_army>1?h('span',{class:'tag',text:`부대당 ${t.max_per_army}개`}):null],facets:{type:t.type_name,rarity:t.rarity_name,variant:t.variant_label||'일반'},desc:t.description,search:(t.name+t.description+t.type_name+(t.variant_label||'')).replace(/\s/g,'').toLowerCase(),disabled:dis,why};
+    });
+  };
+  const onApply=selected=>{
+    const prev=new Map(hero.learned.map(s=>[s.skill_id,s])),added=[];
+    hero.learned=selected.map(id=>{const old=prev.get(id);if(old)return old;const s={skill_id:id,level:d.rules.skill_level?.default||10,grade:0,breakthrough:0};added.push(s);return s;});
+    // 새로 넣은 전법에만 보유 풀의 내 설정을 채웁니다. 유지한 전법은 지금 입력한 레벨·돌파를 그대로 둡니다.
+    for(const s of added){const p=myPool.tacticProfiles.get(s.skill_id);if(p){s.level=clampNum(p.level,1,10,10);s.breakthrough=clampNum(p.breakthrough,0,5,0);}}
+    dirty();scheduleRender();
+  };
   const order=['액티브','패시브','지휘','추격'];
   const groups=[{key:'type',label:'유형',options:[...new Set(d.tactics.map(t=>t.type_name))].sort((a,b)=>(order.indexOf(a)+1||9)-(order.indexOf(b)+1||9))},
     {key:'rarity',label:'등급',options:['S','A','B'].filter(r=>d.tactics.some(t=>t.rarity_name===r))},
     {key:'variant',label:'구분',options:[...new Set(d.tactics.map(t=>t.variant_label||'일반'))]}];
-  const row=state.idx.hero.get(hero.hero_id);
-  openPicker({title:`${row.name} · 학습 전법 ${index+1}`,sub:`설명 기준 Lv${d.rules.description_skill_level}·강화${d.rules.description_skill_grade} · 실제 전투는 입력한 레벨·돌파로 계산합니다.`,items,current:hero.learned[index]?.skill_id,groups,allowClear:index<hero.learned.length,focusKey:fkey(side,slot,`pick-tactic-${Math.min(index,1)}`),onPick:id=>{applyEdit(side,slot,`learned.${index}`,id);applyTacticProfiles(hero);}});
+  const row=ix.hero.get(hero.hero_id);
+  openPicker({title:`${row.name} · 학습 전법 (최대 ${max}개)`,
+    sub:`눌러서 고르고 다시 누르면 해제합니다. ${max}개가 찬 뒤 다른 전법을 누르면 ${replaceAt+1}번째를 바꿉니다. 설명 기준 Lv${d.rules.description_skill_level}·강화${d.rules.description_skill_grade}.`,
+    groups,focusKey:fkey(side,slot,`pick-tactic-${Math.min(index,hero.learned.length,max-1)}`),
+    multi:{max,selected:hero.learned.map(s=>s.skill_id),replaceAt,build,onApply}});
 }
 
 /* ── 보유 풀 메뉴: 추천덱 데이터 ─────────────────────────── */
@@ -1323,6 +1453,7 @@ $('armies').addEventListener('click',e=>{
   else if(t.dataset.alloc)applyEdit(side,slot,'allocation_mode',t.dataset.alloc);
   else if(t.dataset.bookPage)applyEdit(side,slot,'warbook_page',t.dataset.bookPage);
   else if(t.dataset.profileSave)saveProfileFromBattle(side,slot);
+  else if(t.dataset.levelBulk)applyLevelBulk(side,army);
   else if(t.dataset.profileLoad){const x=state.armies[side].heroes.find(y=>y.slot===slot);applyHeroProfile(x);applyTacticProfiles(x);dirty();render();notify('내 설정을 불러왔습니다.');}
   else if(t.dataset.allocAll){
     for(const x of state.armies[side].heroes)if(!x.total_stats&&Object.values(x.allocation).every(v=>!v)&&state.idx.hero.get(x.hero_id)?.recommended_attribute)x.allocation_mode='recommended';
@@ -1358,8 +1489,10 @@ $('picker-chips').onclick=e=>{
   const b=e.target.closest('[data-chip]');if(!b)return;picker.sel[b.dataset.group]=b.dataset.chip;
   b.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));renderPicker();
 };
-$('picker-list').onclick=e=>{const b=e.target.closest('.pick-opt');if(b&&!b.disabled)finishPick(Number(b.dataset.id));};
-$('picker-clear').onclick=()=>finishPick(null);
+$('picker-list').onclick=e=>{const b=e.target.closest('.pick-opt');if(!b||b.disabled)return;if(picker.multi)toggleMulti(Number(b.dataset.id));else finishPick(Number(b.dataset.id));};
+$('picker-clear').onclick=()=>{if(picker.multi){picker.multi.selected=[];picker.items=picker.multi.build([]);renderPicker();}else finishPick(null);};
+$('picker-apply').onclick=applyMulti;
+$('picker-picked').onclick=e=>{const b=e.target.closest('[data-unpick]');if(b)toggleMulti(Number(b.dataset.unpick));};
 $('picker-search').onkeydown=e=>{if(e.key==='ArrowDown'){e.preventDefault();$('picker-list').querySelector('.pick-opt:not(:disabled)')?.focus();}if(e.key==='Enter'){e.preventDefault();$('picker-list').querySelector('.pick-opt:not(:disabled)')?.click();}};
 $('picker-list').onkeydown=e=>{
   if(!['ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();
@@ -1432,10 +1565,13 @@ for(const r of document.querySelectorAll('#season-switch input'))r.addEventListe
 document.addEventListener('click',e=>{
   const b=e.target.closest('[data-action]');if(!b||state.busy)return;
   const a=b.dataset.action;
-  if(a==='swap'){[state.armies.left,state.armies.right]=[state.armies.right,state.armies.left];state.open.clear();state.tabs.clear();dirty();render();notify('아군과 상대 편성을 맞바꿨습니다.');}
+  if(a==='swap'){[state.armies.left,state.armies.right]=[state.armies.right,state.armies.left];
+    for(const k of ['free','freeAuto','stash'])[state[k].left,state[k].right]=[state[k].right,state[k].left];state.open.clear();state.tabs.clear();dirty();render();notify('아군과 상대 편성을 맞바꿨습니다.');}
   else if(a==='reset'){
     if(!state.data)return;const hasBase=Boolean(baseArmy(state.data));
-    [state.armies.left,state.armies.right]=startArmies(state.data);state.open.clear();state.tabs.clear();dirty();render();
+    [state.armies.left,state.armies.right]=startArmies(state.data);state.open.clear();state.tabs.clear();
+    for(const s of SIDES){state.free[s]=false;state.freeAuto[s]=false;state.stash[s]=null;}
+    dirty();render();
     notify(hasBase?'아군은 내 기본 편성, 상대는 예시 편성으로 되돌렸습니다.':'두 부대를 예시 편성으로 되돌렸습니다. 내 덱에서 ★ 기본 편성을 지정할 수 있습니다.');
   }
   else if(a==='share-match')task(shareMatch);
