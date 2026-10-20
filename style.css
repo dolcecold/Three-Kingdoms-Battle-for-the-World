@@ -659,3 +659,9 @@ dialog.modal.wide-form{width:min(720px,calc(100vw - 32px))}
   .level-bulk button{grid-column:1/-1}
 }
 .tactic-btn.empty.wide{grid-column:1/-1}
+/* 내 덱 편집 연결 */
+.origin-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:9px 12px;margin-bottom:12px;border-radius:var(--r-card);background:var(--bg);border:1px solid var(--line-soft);font-size:13px}
+.origin-bar>span{flex:1 1 200px;color:var(--muted)}
+.origin-bar b{color:var(--ink)}
+.origin-bar.changed{border-color:color-mix(in srgb,var(--brass) 55%,var(--line))}
+.origin-bar.changed>span{color:var(--ink)}
