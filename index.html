@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;700;800&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="./style.css?v=1.4.2">
+  <link rel="stylesheet" href="./style.css?v=1.4.3">
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 바로 가기</a>
@@ -104,14 +104,22 @@
        <p class="view-sub">한국 추천덱과 시즌별 참고 편성을 비교합니다. 무장의 딜·탱·힐·보조 역할, 스탯 배분 순서, 장비·말 메모는 <b>원문이 확인된 항목만</b> 표시합니다.</p>
      </div>
      <div class="recommend-panel">
-       <div id="rec-source" class="rec-tabs" role="tablist" aria-label="추천 덱 자료 구분">
-         <button type="button" data-rec-source="presets" role="tab" aria-selected="true">기존 추천덱 <b>128</b></button>
-         <button type="button" data-rec-source="s2" role="tab" aria-selected="false">한국 S2 참고 <b>57</b></button>
-         <button type="button" data-rec-source="s3" role="tab" aria-selected="false">한국 S3 세팅 <b>90</b></button>
+       <div class="rec-season-row">
+         <span class="rec-season-title">추천덱 시즌</span>
+         <div id="rec-seasons" class="rec-season-buttons" role="group" aria-label="추천덱 조회 시즌">
+           <button type="button" data-rec-season="1" aria-pressed="false">시즌 1</button>
+           <button type="button" data-rec-season="2" aria-pressed="false">시즌 2</button>
+           <button type="button" data-rec-season="3" aria-pressed="false">시즌 3</button>
+         </div>
+         <small>추천덱 조회만 변경하며 배틀의 시즌·편성은 바뀌지 않습니다.</small>
+       </div>
+       <div id="rec-source" class="rec-tabs" role="tablist" aria-label="현재 시즌 자료 구분">
+         <button type="button" data-rec-source="presets" role="tab" aria-selected="true">시즌 추천덱 <b id="rec-presets-count">0</b></button>
+         <button type="button" data-rec-source="s2" role="tab" aria-selected="false" hidden>시즌 2 참고 <b>57</b></button>
+         <button type="button" data-rec-source="s3" role="tab" aria-selected="false" hidden>시즌 3 세팅 <b>90</b></button>
        </div>
        <div class="rec-controls">
-         <input type="search" id="rec-search" placeholder="덱·무장·전법·가이드 문구 검색" aria-label="추천덱 자료 검색">
-         <label class="rec-control-label" id="rec-guide-season-wrap">가이드 기준 시즌 <select id="rec-guide-season" aria-label="가이드 기준 한국 시즌"><option value="1">한국 S1</option><option value="2">한국 S2</option><option value="3">한국 S3</option></select></label>
+         <input type="search" id="rec-search" placeholder="현재 시즌 덱·무장·전법·가이드 문구 검색" aria-label="추천덱 자료 검색">
          <label class="rec-control-label">역할 <select id="rec-role" aria-label="명시된 역할 필터"><option value="all">전체</option><option value="damage">딜러</option><option value="tank">탱커</option><option value="healer">힐러</option><option value="support">보조</option></select></label>
          <label class="rec-guide-only"><input type="checkbox" id="rec-guided">표시 가이드 있는 덱만</label>
        </div>
@@ -155,7 +163,7 @@
       <div class="preset-filters">
         <input id="preset-search" type="search" placeholder="덱 이름, 무장, 전법으로 검색" aria-label="추천덱 검색">
         <div id="preset-mode" class="seg" role="group" aria-label="용도"><button type="button" data-mode="combat" aria-pressed="true">일반 전투</button><button type="button" data-mode="opening" aria-pressed="false">개척</button></div>
-        <div id="preset-seasons" class="seg" role="group" aria-label="한국 시즌"></div>
+        <div id="preset-seasons" class="preset-current-season" role="status" aria-label="현재 추천덱 시즌"></div>
         <div id="preset-sort" class="seg" role="group" aria-label="정렬"><button type="button" data-sort="fit" aria-pressed="true">적합성 순</button><button type="button" data-sort="name" aria-pressed="false">이름 순</button></div>
       </div>
       <p id="preset-count" class="muted-note"></p>
@@ -271,6 +279,6 @@
   </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <script type="module" src="./app.js?v=1.4.2"></script>
+  <script type="module" src="./app.js?v=1.4.3"></script>
 </body>
 </html>

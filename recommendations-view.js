@@ -5,16 +5,18 @@ const stringify=x=>String(x??'').replace(/\s+/g,'').toLocaleLowerCase('ko');
 const present=x=>Array.isArray(x)?x.filter(Boolean).join(' · '):String(x??'');
 export function createRecommendationsView({state,h,fill,ensurePresets,presetsData,openPreset}){
   const $=id=>document.getElementById(id);
-  let source='presets',guideSeason=state.season,role='all',query='',guided=false,selection=null;
+  let source='presets',season=state.season,lastEditorSeason=state.season,role='all',query='',guided=false,selection=null;
   let s2=null,s3=null;
   let loaded=false;
   const sourceButtons=[...$('rec-source').querySelectorAll('button')];
+  const seasonButtons=[...$('rec-seasons').querySelectorAll('button')];
+  const sourceAllowed=value=>value==='presets'||(value==='s2'&&season===2)||(value==='s3'&&season===3);
   const toRows=()=>{
-    if(source==='presets')return (presetsData()?.templates??[]).map(t=>({id:t.id,title:t.name,heroes:t.heroes?.map(x=>x.name)??[],sourceSeason:t.season||null,raw:t,subtitle:t.mode==='opening'?'개척용':'일반 전투'}));
-    if(source==='s2')return (s2?.entries??[]).map(t=>({id:t.id,title:t.heading?.split('\n')[0]||t.generals?.join(' · '),heroes:t.generals??[],raw:t,subtitle:t.source_sheet||''}));
-    return (s3?.variants??[]).map(t=>({id:t.id,title:t.label||t.presentation_label,heroes:t.members?.map(x=>x.general)||[],raw:t,subtitle:[t.presentation_label,t.formation].filter(Boolean).join(' · ')}));
+    if(source==='presets')return (presetsData()?.templates??[]).filter(t=>(t.season??t.source_kr_season)===season).map(t=>({id:t.id,title:t.name,heroes:t.heroes?.map(x=>x.name)??[],sourceSeason:t.season||null,raw:t,subtitle:t.mode==='opening'?'개척용':'일반 전투'}));
+    if(source==='s2')return (season===2?s2?.entries??[]:[]).map(t=>({id:t.id,title:t.heading?.split('\n')[0]||t.generals?.join(' · '),heroes:t.generals??[],raw:t,subtitle:t.source_sheet||''}));
+    return (season===3?s3?.variants??[]:[]).map(t=>({id:t.id,title:t.label||t.presentation_label,heroes:t.members?.map(x=>x.general)||[],raw:t,subtitle:[t.presentation_label,t.formation].filter(Boolean).join(' · ')}));
   };
-  function guideFor(row){return displayGuideFor(row.raw,{season:source==='s2'?2:source==='s3'?3:guideSeason});}
+  function guideFor(row){return displayGuideFor(row.raw,{season});}
   function terms(row,guide){
     const g=guide.members.flatMap(m=>[m.name,...m.role_labels,...m.role_notes,...m.action_notes,...m.equipment_notes,...m.horse_notes,...m.stat_guides.map(s=>s.text)]);
     const raw=row.raw;
@@ -36,7 +38,7 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
     const box=$('rec-detail');if(!row){fill(box,h('p',{class:'rec-guide-empty',text:'조건에 해당하는 덱이 없습니다. 필터를 조정해 주세요.'}));return;}
     const t=row.raw,common=[h('h3',{text:row.title})];
     if(source==='presets'){
-      common.push(h('p',{class:'muted-note',text:`추천 출처: 한국 S${t.season} · ${row.subtitle} · 현재 배틀 시즌: S${state.season}`}),
+      common.push(h('p',{class:'muted-note',text:`한국 S${t.season} 전용 추천덱 · ${row.subtitle} · 배틀 편집 시즌: S${state.season}`}),
         h('div',{class:'rec-roster'},...(t.heroes||[]).map(x=>h('div',{class:'rec-roster-member'},h('b',{text:x.name}),h('small',{text:present(x.learned_tactics?.map(y=>y.name))||'전법 미기재'})))),
         h('div',{class:'rec-actions'},h('button',{type:'button',class:'solid-btn',onClick:()=>openPreset(t.id),text:'내 보유 풀에서 편성하기'})));
     }else if(source==='s2'){
@@ -49,23 +51,27 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
         h('p',{class:'rec-source-description',text:'세팅별 원문을 그대로 표시합니다. 전법과 배분 수치, 선택지는 자동으로 합치지 않으며, 원문 순서를 실제 전후열로 간주하지 않습니다.'}),
         h('div',{class:'rec-roster'},...(t.members||[]).map(m=>h('div',{class:'rec-roster-member'},h('b',{text:m.general}),h('small',{text:[m.fields?.strategy_1,m.fields?.strategy_2].filter(Boolean).join(' · ')||'전법 미기재'})))));
     }
-    const note=!row.guide.has_guidance&&source==='presets'&&guideSeason!==3?'현재 선택한 가이드 시즌에는 명시된 지침이 없습니다. S3 전용 메모를 보려면 상단 가이드 기준 시즌을 변경하세요.':undefined;
+    const note=!row.guide.has_guidance&&source==='presets'?'이 시즌 추천덱에 명시된 역할·스탯 지침이 없습니다. 다른 시즌 메모는 섞어서 표시하지 않습니다.':undefined;
     common.push(createDeckGuideCards(h,row.guide,{heading:'무장별 역할과 스탯 배분',emptyText:note||'이 자료에는 해당 시즌의 역할·스탯 지침이 명시되지 않았습니다.'}));
     const url=source==='s2'?t.source_url:source==='s3'?t.evidence?.[0]?.url:null;
     if(url&&/^https:\/\/docs\.google\.com\//.test(url))common.push(h('p',{class:'rec-source-link'},h('a',{href:url,target:'_blank',rel:'noopener noreferrer',text:'원본 시트 보기 ↗'})));
     fill(box,...common);
   }
   function render(){
-    $('rec-guide-season').value=String(guideSeason);
-    $('rec-guide-season-wrap').hidden=source!=='presets';
-    sourceButtons.forEach(b=>b.setAttribute('aria-selected',String(b.dataset.recSource===source)));
+    if(!sourceAllowed(source)){source='presets';selection=null;}
+    seasonButtons.forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.recSeason)===season)));
+    sourceButtons.forEach(b=>{
+      b.hidden=!sourceAllowed(b.dataset.recSource);
+      b.setAttribute('aria-selected',String(b.dataset.recSource===source));
+    });
+    $('rec-presets-count').textContent=String((presetsData()?.templates??[]).filter(t=>(t.season??t.source_kr_season)===season).length);
     const note=source==='presets'?
-      `기존 추천덱 128개. 가이드 시즌 S${guideSeason} 기준으로만 역할·배분 메모를 표시합니다. S3 원문은 S1·S2 배분으로 자동 적용하지 않습니다.`:
+      `한국 시즌${season} 추천덱만 표시합니다. 이전·이후 시즌 추천덱을 섞거나 하위 시즌 덱을 자동 포함하지 않습니다. 역할·배분 가이드도 S${season} 자료만 표시합니다.`:
       source==='s2'?'한국 시즌2 시트 참고 편성 57개. 실제 진형 배치나 전후열을 확정한 자료가 아닙니다.':
       '한국 시즌3 시트의 90개 개별 세팅. 같은 3명이라도 variant별 스탯·장비·말 가이드가 다릅니다. →는 배분 우선순위, /는 대안입니다.';
     $('rec-source-note').textContent=note;
     const rows=allRows(),selected=selectRow(rows);
-    $('rec-count').textContent=`${SOURCES[source]} · ${rows.length}개 표시${role!=='all'?' · 명시된 역할만 필터링':''}`;
+    $('rec-count').textContent=`한국 S${season} · ${SOURCES[source]} · ${rows.length}개 표시${role!=='all'?' · 명시된 역할만 필터링':''}`;
     fill($('rec-list'),rows.length?rows.map(row=>h('button',{class:'rec-list-option',type:'button',role:'option','aria-selected':String(row.id===selection),dataset:{recId:row.id}},
       h('strong',{text:row.title}),h('span',{class:'rec-list-heroes',text:present(row.heroes)}),
       h('span',{class:'rec-list-tags'},
@@ -80,16 +86,22 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
       await ensurePresets();
       const load=async file=>{const response=await fetch(file,{cache:'no-cache'});if(!response.ok)throw new Error(`${file} 참조 파일을 불러오지 못했습니다.`);return response.json();};
       [s2,s3]=await Promise.all([load('./references/data/kr_s2_deck_references.json'),load('./references/data/kr_s3_deck_references.json')]);
-      $('rec-guide-season').value=String(guideSeason);
       loaded=true;
+    }
+    if(state.season!==lastEditorSeason){
+      lastEditorSeason=state.season;season=state.season;source='presets';selection=null;
     }
     render();
   }
-  $('rec-source').addEventListener('click',e=>{const b=e.target.closest('[data-rec-source]');if(!b)return;source=b.dataset.recSource;selection=null;render();});
+  $('rec-seasons').addEventListener('click',e=>{
+    const button=e.target.closest('[data-rec-season]');if(!button)return;
+    const next=Number(button.dataset.recSeason);if(![1,2,3].includes(next))return;
+    season=next;source='presets';selection=null;render();
+  });
+  $('rec-source').addEventListener('click',e=>{const b=e.target.closest('[data-rec-source]');if(!b||!sourceAllowed(b.dataset.recSource))return;source=b.dataset.recSource;selection=null;render();});
   $('rec-search').addEventListener('input',e=>{query=e.target.value;selection=null;render();});
   $('rec-role').addEventListener('change',e=>{role=e.target.value;selection=null;render();});
   $('rec-guided').addEventListener('change',e=>{guided=e.target.checked;selection=null;render();});
-  $('rec-guide-season').addEventListener('change',e=>{guideSeason=Number(e.target.value);selection=null;render();});
   $('rec-list').addEventListener('click',e=>{const b=e.target.closest('[data-rec-id]');if(!b)return;selection=b.dataset.recId;render();});
   $('rec-list').addEventListener('keydown',e=>{
     if(!['ArrowDown','ArrowUp','Home','End'].includes(e.key))return;

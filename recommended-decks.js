@@ -21,6 +21,8 @@ export function templateAvailability(template,season,editor){
 export function filterRecommendedDecks(data,{season,editor,source,query='',mode='combat',includeBlocked=false,role=null}={}){
   const q=query.replace(/\s/g,'').toLowerCase();
   return data.templates.filter(t=>{
+    // 추천 검색은 원본에 기재된 한국 시즌만 사용한다. available_seasons는 전투 불러오기 가능 여부일 뿐 추천 시즌은 아니다.
+    if([1,2,3].includes(season)&&(t.season??t.source_kr_season)!==season)return false;
     if(!data.schema_version.startsWith('2.')&&source&&source!=='all'&&t.source?.kind!==source)return false;
     if(mode!=='all'&&(t.mode??t.scope??'combat')!==mode)return false;
     if(!includeBlocked&&!templateAvailability(t,season,editor).can_import)return false;

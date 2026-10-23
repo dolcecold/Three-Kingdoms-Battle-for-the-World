@@ -5,7 +5,7 @@ import {BattleApi,encodeArmyCode,decodeArmyCode} from './api-client.js';
 import {normalizeArmy} from './army-code.js';
 import {STAT_FIELDS,armFor,bookChoices,tacticChoices,validateArmy,previewHeroStats,migrateProgression,romanceFor,innateFor} from './editor.js';
 import {API_BASE_URL} from './config.js';
-import {loadRecommendedDecks,filterRecommendedDecks,displayGuideFor} from './recommended-decks.js';
+import {loadRecommendedDecks,filterRecommendedDecks,displayGuideFor} from './recommended-decks.js?v=1.4.3';
 import {createDeckGuideCards} from './deck-guide-cards.js';
 import {reviewArmyCoexistence} from './guide-content.js';
 import {encodePoolCode,decodePoolCode} from './pool-code.js';
@@ -729,7 +729,7 @@ function pickTactic(side,slot,index){
 }
 
 /* ── 보유 풀 메뉴: 추천덱 데이터 ─────────────────────────── */
-let presets=null,presetRows=[],presetSelection=null,presetSeason=null,presetSort='fit',presetMode='combat';
+let presets=null,presetRows=[],presetSelection=null,presetSort='fit',presetMode='combat';
 const deckSeason=t=>t.season??null;
 const seasonName=n=>n==null?'시즌 미상':`한국 S${n}`;
 // 같은 용도·시즌·편성 내용은 하나만 남기고, 이름이 같은 변형은 '1안·2안'으로 구분합니다.
@@ -1084,10 +1084,7 @@ function renderPool(){
 /* 2) 추천덱 찾기 */
 function renderPresets(){
   const lineup=readLineup(),lineupIds=new Set(lineup.map(e=>e.tid));
-  if(presetSeason==null)presetSeason=presetRows.some(t=>deckSeason(t)===state.season)?state.season:'all';
-  const have=[...new Set(presetRows.filter(t=>t.mode===presetMode).map(deckSeason))].sort((a,b)=>(a??99)-(b??99));
-  if(presetSeason!=='all'&&!have.includes(Number(presetSeason)))presetSeason='all';
-  fill($('preset-seasons'),[['all','전체'],...have.map(n=>[n,seasonName(n)])].map(([v,t])=>h('button',{type:'button','aria-pressed':String(String(v)===String(presetSeason)),dataset:{season:v},text:t})));
+  fill($('preset-seasons'),h('span',{text:`한국 S${state.season} 추천덱만 표시`}));
   $('preset-mode').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===presetMode)));
   const fitOn=poolActive()&&presetSort==='fit';
   $('preset-sort').hidden=!poolActive();
@@ -1098,7 +1095,6 @@ function renderPresets(){
     :['보유 무장·전법을 등록하면 내가 맞출 수 있는 덱부터 보여줍니다. ',rosterLink('pool','보유 등록하기','text-link')]);
   const best={};for(const t of presetRows)best[t.name]=Math.max(best[t.name]??0,(t.heroes||[]).reduce((n,x)=>n+(x.learned_tactics||[]).length,0));
   const rows=filterRecommendedDecks({schema_version:'2.0.0',templates:presetRows},{season:state.season,query:$('preset-search').value,mode:presetMode,includeBlocked:true})
-    .filter(t=>presetSeason==='all'||deckSeason(t)===Number(presetSeason))
     .map(t=>({t,p:poolActive()?planDeck(t,availFor(t.id,lineup)):null}));
   rows.sort(fitOn
     ?(x,y)=>Number(lineupIds.has(y.t.id))-Number(lineupIds.has(x.t.id))||y.p.fit-x.p.fit||y.p.heroCount-x.p.heroCount
@@ -1114,7 +1110,7 @@ function renderPresets(){
 }
 function renderPresetPreview(){
   const host=$('preset-preview');$('preset-error').textContent='';
-  const t=presetRows.find(x=>x.id===presetSelection);
+  const t=presetRows.find(x=>x.id===presetSelection&&deckSeason(x)===state.season);
   for(const id of ['preset-send-left','preset-send-right','preset-save','preset-base','preset-lineup-toggle'])$(id).disabled=!t;
   const inLineup=Boolean(t&&readLineup().some(e=>e.tid===t.id));
   $('preset-lineup-toggle').hidden=!poolActive();$('preset-lineup-toggle').textContent=inLineup?'내 구성에서 빼기':'내 구성에 추가';
@@ -1142,7 +1138,7 @@ function renderPresetPreview(){
       h('strong',null,x.name,heroMark(i)),
       line('전법',tacticLine(x,i)),
       books(x).length?line('병법',books(x).join(', ')):null)),
-    createDeckGuideCards(h,displayGuideFor(t,{season:state.season}),{heading:'원본 추천덱 역할·스탯 가이드',emptyText:'현재 한국 시즌에 확인된 역할·스탯 가이드가 없습니다. 한국 S3용 자료는 상단 추천 덱 메뉴의 가이드 기준 시즌을 S3로 선택해 확인하세요.'}),
+    createDeckGuideCards(h,displayGuideFor(t,{season:state.season}),{heading:'원본 추천덱 역할·스탯 가이드',emptyText:'이 시즌 추천덱에 확인된 역할·스탯 가이드가 없습니다. 다른 시즌의 지침은 자동 적용하지 않습니다.'}),
     p?h('p',{class:'muted-note',text:'초록은 보유, 취소선은 미보유입니다. 미보유 전법 칸은 비워서 불러옵니다.'}):null);
 }
 function toggleLineup(){
@@ -1153,9 +1149,13 @@ function toggleLineup(){
     notify(`'${t.label}'을(를) 내 구성에 추가했습니다. 무장 ${p.heroCount}명·전법 ${p.tacticCount}개를 차지하고, 남은 풀로 적합성을 다시 계산했습니다.`);}
   renderPresets();
 }
-function openPreset(tid){
+async function openPreset(tid){
   const t=presetRows.find(x=>x.id===tid);if(!t){notify('추천덱을 찾을 수 없습니다.',true);return;}
-  presetMode=t.mode;presetSeason='all';presetSelection=tid;$('preset-search').value='';
+  if(deckSeason(t)!==state.season){
+    try{await switchSeason(deckSeason(t));dirty();render();notify(`원본 추천덱의 한국 S${state.season} 시즌으로 전환했습니다.`);}
+    catch(error){notify(`해당 시즌 추천덱을 열 수 없습니다: ${message(error)}`,true);return;}
+  }
+  presetMode=t.mode;presetSelection=tid;$('preset-search').value='';
   if(location.hash==='#/roster/presets')renderRoster('presets');else location.hash='#/roster/presets';
   requestAnimationFrame(()=>$('preset-list').querySelector('[aria-selected="true"]')?.scrollIntoView({block:'nearest'}));
 }
@@ -1673,7 +1673,6 @@ for(const [id,on] of [['pool-all',true],['pool-none',false]])$(id).onclick=()=>{
 $('preset-search').oninput=()=>{presetSelection=null;renderPresets();};
 $('preset-sort').onclick=e=>{const b=e.target.closest('[data-sort]');if(!b)return;presetSort=b.dataset.sort;presetSelection=null;renderPresets();};
 $('preset-mode').onclick=e=>{const b=e.target.closest('[data-mode]');if(!b)return;presetMode=b.dataset.mode;presetSelection=null;renderPresets();};
-$('preset-seasons').onclick=e=>{const b=e.target.closest('[data-season]');if(!b)return;presetSeason=b.dataset.season==='all'?'all':Number(b.dataset.season);presetSelection=null;renderPresets();};
 $('preset-list').onclick=e=>{const b=e.target.closest('[data-template-id]');if(!b)return;presetSelection=b.dataset.templateId;$('preset-list').querySelectorAll('[data-template-id]').forEach(x=>x.setAttribute('aria-selected',String(x===b)));renderPresetPreview();};
 $('preset-list').onkeydown=e=>{
   if(!['ArrowUp','ArrowDown','Home','End'].includes(e.key))return;
@@ -1710,7 +1709,7 @@ $('roster-decks').onclick=e=>{
 };
 
 for(const r of document.querySelectorAll('#season-switch input'))r.addEventListener('change',()=>task(async()=>{
-  const kept=await switchSeason(Number(r.value));dirty();render();presetSeason=null;route();
+  const kept=await switchSeason(Number(r.value));dirty();render();route();
   notify(kept?`한국 시즌 ${state.season}로 바꿨습니다. 현재 편성을 그대로 쓸 수 있습니다.`:`한국 시즌 ${state.season}에서 쓸 수 없는 항목이 있어 예시 편성으로 바꿨습니다.`);
 }));
 
@@ -1775,7 +1774,7 @@ async function route(){
       if(!guideView){const mod=await import('./guide-view.js');guideView=await mod.createGuideView(guideCtx());}
       await guideView.show(r.parts);
     }else if(r.view==='recommendations'){
-      if(!recommendationsView){const mod=await import('./recommendations-view.js');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset});}
+      if(!recommendationsView){const mod=await import('./recommendations-view.js?v=1.4.3');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset});}
       await recommendationsView.show();
     }
   }catch(error){notify(message(error),true);}
@@ -1797,7 +1796,7 @@ function guideCtx(){
       notify(`${SIDE_NAME[side]} ${name}에 연의 '${rom?.name}'을(를) 적용했습니다. 고정 병법은 배틀 → 상세 설정 → 병법 탭에서 고릅니다.`,!isValid(state.data,state.armies[side]));
       return true;
     },
-    switchSeason:async n=>{await switchSeason(n);dirty();render();presetSeason=null;}};
+    switchSeason:async n=>{await switchSeason(n);dirty();render();}};
 }
 window.addEventListener('hashchange',route);
 

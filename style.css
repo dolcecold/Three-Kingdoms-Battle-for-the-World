@@ -741,3 +741,12 @@ dialog.modal.wide-form{width:min(720px,calc(100vw - 32px))}
 .preset-preview .rec-guide-cards{grid-template-columns:1fr}
 @media(max-width:970px){.rec-browser{grid-template-columns:1fr}.rec-list{max-height:300px}.rec-guide-cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:620px){.rec-detail{padding:12px}.rec-roster{grid-template-columns:1fr}.rec-guide-cards{grid-template-columns:1fr}.rec-controls{align-items:stretch}.rec-control-label{justify-content:space-between}.rec-control-label select{max-width:none;flex:1}.rec-tabs button{flex:1 1 25%;padding:9px 6px;font-size:12px}.rec-list{max-height:290px}}
+
+/* v1.4.3: 추천덱 시즌별 엄격 분리 */
+.rec-season-row{display:flex;flex-wrap:wrap;align-items:center;gap:9px 14px}
+.rec-season-title{font-size:13px;font-weight:800}
+.rec-season-buttons{display:flex;gap:5px;flex-wrap:wrap;background:var(--surface-2);padding:4px;border-radius:11px}
+.rec-season-buttons button{font-size:13px;padding:7px 13px;border-radius:8px;color:var(--muted);font-weight:750;transition:background .15s}
+.rec-season-buttons button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.rec-season-row>small{color:var(--muted);font-size:11px}
+.preset-current-season{display:inline-flex;align-items:center;padding:8px 11px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);font-size:13px;font-weight:750}
