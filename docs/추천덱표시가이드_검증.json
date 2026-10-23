@@ -1,0 +1,35 @@
+{
+  "recommendation_version": "kr-deck-guides-dbde4af5293c04d5",
+  "editor_data_version": "kr-editor-1b3c4ae82c1b432c",
+  "backend_changes": false,
+  "templates": {
+    "total": 128,
+    "with_stat_guide": 62,
+    "with_role_tags": 6,
+    "with_action_note": 10
+  },
+  "kr_s3_setups": {
+    "total": 90,
+    "with_stat_guide": 90,
+    "with_role_tags": 13,
+    "with_action_note": 0
+  },
+  "kr_s2_references": {
+    "total": 57,
+    "with_stat_guide": 0,
+    "with_role_tags": 1,
+    "with_action_note": 0
+  },
+  "rejected_template_links": [],
+  "frontend_tests": {
+    "passed": 44,
+    "failed": 0
+  },
+  "public_editor_api_codec_files_byte_identical": 9,
+  "army_payloads_unchanged": 128,
+  "existing_share_codes_unchanged": true,
+  "kr_s3_s2_reference_source_values_unchanged": true,
+  "schema_internal_references_valid": true,
+  "backend_modified": false,
+  "backend_redeployment_required": false
+}

@@ -5,7 +5,8 @@ import {BattleApi,encodeArmyCode,decodeArmyCode} from './api-client.js';
 import {normalizeArmy} from './army-code.js';
 import {STAT_FIELDS,armFor,bookChoices,tacticChoices,validateArmy,previewHeroStats,migrateProgression,romanceFor,innateFor} from './editor.js';
 import {API_BASE_URL} from './config.js';
-import {loadRecommendedDecks,filterRecommendedDecks} from './recommended-decks.js';
+import {loadRecommendedDecks,filterRecommendedDecks,displayGuideFor} from './recommended-decks.js';
+import {createDeckGuideCards} from './deck-guide-cards.js';
 import {reviewArmyCoexistence} from './guide-content.js';
 import {encodePoolCode,decodePoolCode} from './pool-code.js';
 
@@ -1141,6 +1142,7 @@ function renderPresetPreview(){
       h('strong',null,x.name,heroMark(i)),
       line('전법',tacticLine(x,i)),
       books(x).length?line('병법',books(x).join(', ')):null)),
+    createDeckGuideCards(h,displayGuideFor(t,{season:state.season}),{heading:'원본 추천덱 역할·스탯 가이드',emptyText:'현재 한국 시즌에 확인된 역할·스탯 가이드가 없습니다. 한국 S3용 자료는 상단 추천 덱 메뉴의 가이드 기준 시즌을 S3로 선택해 확인하세요.'}),
     p?h('p',{class:'muted-note',text:'초록은 보유, 취소선은 미보유입니다. 미보유 전법 칸은 비워서 불러옵니다.'}):null);
 }
 function toggleLineup(){
@@ -1752,17 +1754,17 @@ $('report-heading').addEventListener('click',()=>{
 });
 
 /* ── 메뉴(해시 라우팅) ─────────────────────────────────── */
-let guideView=null;
+let guideView=null,recommendationsView=null;
 function parseRoute(){
   const raw=location.hash.replace(/^#/,'');
   if(!raw.startsWith('/'))return {view:'battle',parts:[]};
   const parts=raw.split('?')[0].split('/').filter(Boolean);
-  return {view:['battle','roster','guides'].includes(parts[0])?parts[0]:'battle',parts:parts.slice(1)};
+  return {view:['battle','roster','guides','recommendations'].includes(parts[0])?parts[0]:'battle',parts:parts.slice(1)};
 }
 async function route(){
   if(!state.data)return;
   const r=parseRoute();
-  for(const v of ['battle','roster','guides'])$(`view-${v}`).hidden=v!==r.view;
+  for(const v of ['battle','roster','guides','recommendations'])$(`view-${v}`).hidden=v!==r.view;
   document.querySelectorAll('.main-nav [data-nav]').forEach(a=>a.setAttribute('aria-current',a.dataset.nav===r.view?'page':'false'));
   document.body.dataset.view=r.view;
   try{
@@ -1772,6 +1774,9 @@ async function route(){
     }else if(r.view==='guides'){
       if(!guideView){const mod=await import('./guide-view.js');guideView=await mod.createGuideView(guideCtx());}
       await guideView.show(r.parts);
+    }else if(r.view==='recommendations'){
+      if(!recommendationsView){const mod=await import('./recommendations-view.js');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset});}
+      await recommendationsView.show();
     }
   }catch(error){notify(message(error),true);}
 }

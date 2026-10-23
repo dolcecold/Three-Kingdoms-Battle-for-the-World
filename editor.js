@@ -1,4 +1,5 @@
 /** Public editor selection rules only; combat runs in the backend. */
+import {validateItemLoadout,permanentItemStats} from './loadout-options.js';
 export const STAT_FIELDS=[['might','무력'],['intelligence','지력'],['defence','통솔'],['speed','선공']];
 
 /** IDs are identity keys. In particular, S/A 황보숭 and ordinary/SP 제갈량 differ. */
@@ -9,13 +10,14 @@ export function previewHeroStats(data,hero){
   const row=data.heroes.find(h=>h.id===hero.hero_id);
   if(!row?.base_stats||!row?.growth_stats)throw new Error('무장 기본·성장 스탯이 포함된 최신 메타데이터를 조회하세요.');
   const values=STAT_FIELDS.map(([key])=>key);
+  const itemStats=permanentItemStats(data,hero);
   if(hero.total_stats!=null){
     if(values.some(k=>typeof hero.total_stats[k]!=='number'||!Number.isFinite(hero.total_stats[k])||hero.total_stats[k]<0||hero.total_stats[k]>2000)||!values.some(k=>hero.total_stats[k]>0))throw new Error('총 능력치는 네 속성을 모두 입력하세요. 직접 입력을 사용하지 않으면 null로 유지하세요.');
-    return {...hero.total_stats};
+    return Object.fromEntries(values.map(k=>[k,hero.total_stats[k]+itemStats[k]]));
   }
   const recommended=hero.allocation_mode==='recommended',points=Math.floor(hero.level/10)*10+(hero.breakthrough??0)*10;
   if(recommended&&!row.recommended_attribute)throw new Error('추천 배분 속성이 확인되지 않았습니다.');
-  return Object.fromEntries(values.map(key=>[key,row.base_stats[key]+row.growth_stats[key]*(hero.level-1)+(recommended?(key===row.recommended_attribute?points:0):(hero.allocation?.[key]??0))+(hero.equipment?.[key]??0)+(hero.horse?.[key]??0)]));
+  return Object.fromEntries(values.map(key=>[key,row.base_stats[key]+row.growth_stats[key]*(hero.level-1)+(recommended?(key===row.recommended_attribute?points:0):(hero.allocation?.[key]??0))+(hero.equipment?.[key]??0)+(hero.horse?.[key]??0)+itemStats[key]]));
 }
 
 /** Migrate alias names only. Do not choose/drop a proficiency or repair total stats. */
@@ -83,6 +85,7 @@ export function validateArmy(data,army){
   if(typeof army.name!=='string'||!army.name.trim()||army.name.length>80)fail('부대 이름은 1~80자로 입력하세요.');
   if(!data.formations.some(f=>f.id===army.formation_id))fail('현재 시즌에서 선택할 수 없는 진형입니다.');
   if(!integer(army.supply,0,100))fail('보급은 0~100 사이의 정수로 입력하세요.');
+  if(!['player','land_guard','city_guard','bandit'].includes(army.army_kind??'player'))fail('부대 유형을 확인하세요.');
   if(new Set(army.heroes.map(h=>h.slot)).size!==3||army.heroes.some(h=>![1,2,3].includes(h.slot)))fail('무장 위치는 1·2·3번이어야 합니다.');
   if(new Set(army.heroes.map(h=>h.hero_id)).size!==3)fail('같은 부대에 무장을 중복 배치할 수 없습니다.');
   const learnedCounts=new Map();
@@ -91,6 +94,7 @@ export function validateArmy(data,army){
   for(const h of army.heroes){
     const row=data.heroes.find(x=>x.id===h.hero_id);
     if(!row)fail('현재 시즌에서 선택할 수 없는 무장이 있습니다.');
+    validateItemLoadout(data,h);
     const romance=romanceFor(data,h);
     if(h.romance_trait_id!=null&&(!Number.isInteger(h.romance_trait_id)||!romance||data.season!==3))fail(`${row.name}: 한국 시즌3의 해당 무장 연의 분기를 선택하세요.`);
     if(!['normal','romance'].includes(h.warbook_page??'normal'))fail('병법 페이지를 확인하세요.');

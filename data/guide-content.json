@@ -1,11 +1,11 @@
 {
-  "schema_version": "1.2.0",
+  "schema_version": "1.3.0",
   "region": "KR",
   "locale": "ko-KR",
   "seasons": [
     3
   ],
-  "catalog_data_version": "kr-editor-6f0584625c9d0200",
+  "catalog_data_version": "kr-editor-1b3c4ae82c1b432c",
   "scope_note": "한국 시즌3의 실제 편성 목록과 콘텐츠 가이드입니다. 연의6무장·12분기의 병종·변경 고유 전법·선택한 병법 페이지를 추정 전투에 반영합니다. 직업·장비 특수 옵션은 설명용이며 계산 미지원입니다.",
   "menus": [
     {
@@ -889,7 +889,7 @@
       "seasons": [
         3
       ],
-      "summary": "장비·말의 특기·특효 81개를 이름과 효과로 검색합니다.",
+      "summary": "장비·말 옵션81개를 검색하고 실제 슬롯별 특기·특효 ID로 선택합니다.",
       "blocks": [
         {
           "type": "paragraph",
@@ -984,9 +984,10 @@
         {
           "type": "bullets",
           "items": [
-            "옵션 도감 ID는 가이드에서 검색·북마크하기 위한 값입니다. 장비 item ID나 학습 전법 ID로 보내지 않습니다.",
-            "현재 API는 장비·말의 실제 능력치 합계를 입력받지만 이 도감의 특기·특효를 선택하는 입력은 없습니다.",
-            "예를 들어 질주의 초반 선공 보너스를 영구 능력치에 더하면 지속 시간이 사라집니다. 시간 제한 옵션을 총 능력치에 합산해 우회 입력하지 않습니다."
+            "옵션 도감의 option-문자열 ID는 검색·북마크용입니다. 편성 요청에는 native_option_ids 중 현재 슬롯에 맞는 숫자 ID를 선택합니다.",
+            "아이템별로 특기1개·특효1개를 선택하며 전용 장비와 전용 무장 조건은 editor 메타를 따릅니다.",
+            "계승·황천은 기본 고유 전법 미구현으로 연동 발동하지 않는 부분 지원입니다. 근학은 경험치 효과여서 전투 피해·회복에 영향이 없습니다.",
+            "질주의 초반 선공 보너스처럼 시간 제한이 있는 효과는 총 능력치에 영구 가산하지 않습니다. 고정 특효 스탯은 포함 여부를 선택해 중복 가산을 막습니다."
           ]
         }
       ]
@@ -3773,17 +3774,31 @@
       "description": "특기, 전투 7번째 턴에 회심과 묘책 확률이 12% 증가하며, 전투 종료까지 지속된다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        4,
+        5,
+        6
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-7cbfdcc1108f",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "의지",
-      "description": "특기, 전투 4번째 턴에 자신이 1턴 동안 지속되는 정신 회복 상태를 획득한다.",
+      "description": "특기, 전투 4번째 턴에 자신이 턴 종료 시까지 지속되는 정신 회복 상태를 획득한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        14,
+        28,
+        42
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-a8a9e07fae7c",
@@ -3793,7 +3808,14 @@
       "description": "특기, 전투 1번째 턴에 1턴 동안 자신이 무장 해제 상태로부터 면역된다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        15,
+        29,
+        43
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-f70f092df23a",
@@ -3803,7 +3825,14 @@
       "description": "특기, 전투 3번째 턴에 자신이 1턴 동안 침묵 상태로부터 면역된다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        16,
+        30,
+        44
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-46ed0b41473a",
@@ -3813,17 +3842,31 @@
       "description": "특기, 전투 2번째 턴에 자신이 방어 1스택을 획득한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        12,
+        26,
+        40
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-ca6b03bdfd20",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "패기",
-      "description": "특기, 책략피해를 준 후, 30% 확률로 목표의 통솔이 1턴 동안 6포인트 감소한다.",
+      "description": "특기, 책략 피해를 준 후, 30% 확률로 목표의 통솔이 1턴 동안 6포인트 감소한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        8,
+        22,
+        36
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-fe39d1352a20",
@@ -3833,7 +3876,14 @@
       "description": "특기, 전투 4번째 턴에 자신이 턴 종료 시까지 지속되는 백발백중 상태를 획득한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        9,
+        23,
+        37
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-840c8cb601fe",
@@ -3843,7 +3893,14 @@
       "description": "특기, 전투 3번째 턴에 랜덤 적군 단일 목표를 1턴 동안 조롱한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        13,
+        27,
+        41
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-1f67732ee1b6",
@@ -3853,7 +3910,14 @@
       "description": "특기, 전투 4번째 턴에 회유와 심리 공격이 2턴 동안 9% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        11,
+        25,
+        39
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-1e7226b9b533",
@@ -3863,7 +3927,14 @@
       "description": "특기, 누적 병기 피해를 준 뒤 자신의 무력이 1포인트 증가한다. 최대 10회까지 중첩되며, 전투 종료까지 지속된다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        7,
+        21,
+        35
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-59ec2a97b8f2",
@@ -3873,7 +3944,14 @@
       "description": "특기, 전투 2번째 턴에 병력이 가장 낮은 적군에게 30%의 병기 피해를 준다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        10,
+        24,
+        38
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-f561bb00b137",
@@ -3883,37 +3961,65 @@
       "description": "특기, 전투 1번째 턴에 1턴 동안 자신이 혼란 상태로부터 면역된다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        17,
+        31,
+        45
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-fac45970515b",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "지원",
-      "description": "특기, 전투 2번째 턴에 랜덤 우군 단일 목표의 병력이 회복된다. (치유율 60%)",
+      "description": "특기, 전투 2번째 턴에 랜덤 우군 단일 목표의 병력이 회복된다.(치유율 60%)",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        18,
+        32,
+        46
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-560ef83f6a74",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "궤술",
-      "description": "특기, 전투 6번째 턴에 랜덤 적군 단일 목표에게 1턴 동안 지속되는 무장 해제 또는 침묵을 부여한다.",
+      "description": "특기, 전투 4번째 턴에 랜덤 적군 단일 목표에게 1턴 동안 지속되는 무장 해제 또는 침묵을 부여한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        19,
+        33,
+        47
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-b29c13b8adec",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "비공",
-      "description": "특기, 전투 2번째 턴에 랜덤 적군 단일 목표의 회심과 묘책 피해가 2턴 동안 10% 감소한다.",
+      "description": "특기, 전투 2번째 턴에 랜덤 적군 단일 목표의 주는 피해가 2턴 동안 6% 감소한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        20,
+        34,
+        48
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-010aacb0de6b",
@@ -3923,7 +4029,12 @@
       "description": "방천극의 전용 특기, 여포가 장착 시, 고유 전법 발동률이 15% 증가한다. 해당 효과는 발동 성공 후 사라진다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        100
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-326fc6e7c044",
@@ -3933,17 +4044,27 @@
       "description": "화씨벽의 전용 특기, 자신이 현재 병력의 5%를 초과하는 피해를 받으면 55% 확률로 이번 피해로부터 면역된다. 최대 2회까지 발동한다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        107
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-5c7c77c92b84",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "숙고",
-      "description": "여장군 갑옷의 전용 특기, 사마의가 장착 시 4번째 턴 시작 후 묘책 확률과 묘책 피해가 15% 증가한다.",
+      "description": "여장군 갑옷의 전용 특기, 사마의가 장착 시, 4번째 턴 시작 후 묘책 확률과 묘책 피해가 15% 증가한다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        105
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-4fb3961646a7",
@@ -3953,47 +4074,72 @@
       "description": "황금중갑의 전용 특기, 전투 시작 후 첫 2턴 동안 자신의 통솔이 35포인트 증가한다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        106
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-7897514cdc41",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "천기",
-      "description": "칠성등 전용 특기, 제갈량이 장착 시 자신이 고유 전법으로 피해를 준 후 목표가 다음에 받는 책략 피해가 12% 증가한다.",
+      "description": "칠성등 전용 특기, 제갈량이 장착 시, 자신이 고유 전법으로 피해를 준 후 목표가 다음에 받는 책략 피해가 12% 증가한다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        108
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-587dae6cbbed",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "무성",
-      "description": "청룡언월도의 전용 특기, 관우가 장착 시 전투 1번째 턴에 고유 전법 발동률이 8% 증가하며, 침묵으로부터 면역된다.",
+      "description": "청룡언월도의 전용 특기, 관우가 장착 시, 전투 1번째 턴에 고유 전법 발동률이 8% 증가하며, 침묵으로부터 면역된다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        102
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-a03de02eabba",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "간계",
-      "description": "상아 바둑돌의 전용 특기, 가후가 장착 시 적군 전체가 자신들의 우군에게 주는 피해가 30% 증가한다.",
+      "description": "상아 바둑돌의 전용 특기, 가후가 장착 시, 적군 전체가 자신들의 우군에게 주는 피해가 30% 증가한다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        109
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-6f71103e42ef",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "인덕",
-      "description": "자웅쌍고검의 전용 특기, 유비가 장착 시 전투 시작 시 우군 2명의 전체 속성이 3% 증가한다.",
+      "description": "자웅쌍고검의 전용 특기, 유비가 장착 시, 전투 시작 시 우군 2명의 전체 속성이 3% 증가한다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        101
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-64dcc9b0976c",
@@ -4003,47 +4149,72 @@
       "description": "청강검의 전용 특기, 조조가 장착 시, 전투 1번째 턴에 랜덤 적군 2명의 최고 속성이 2턴 동안 8% 감소한다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        104
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-2804775d7862",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "풍운",
-      "description": "공작털 부채의 전용 특기, 주유가 장착 시 묘책 확률이 10% 증가한다.",
+      "description": "공작털 부채의 전용 특기, 주유가 장착 시, 묘책 확률이 10% 증가한다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        103
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-d486b57d0e4b",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "선술",
-      "description": "둔갑천서 전용 특기 좌자가 장착 시 전투 후 3턴까지 턴 종료 시마다 병력이 가장 낮은 아군 단일 목표가 방어 1스택을 획득한다.",
+      "description": "둔갑천서 전용 특기. 좌자가 장착 시 전투 시작  후 3턴 동안 턴 종료 시마다 병력이 가장 낮은 아군 단일 목표가 방어 1스택을 획득한다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        114
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-7d0f04dd0ae7",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "효희",
-      "description": "홍란궁 전용 특기, 손상향이 장착 시 전투 시작 후 3턴 동안 회심 확률이 15% 증가한다.",
+      "description": "홍란궁 전용 특기, 손상향이 장착 시 전투 시작 후 3턴 동안 회심 확률이 15% 증가하고, 후열에게 주는 피해가 5% 증가한다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        115
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-6544e8579a8b",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "황천",
-      "description": "구원자의 도포 전용 특기, 장각이 장착 시 고유 전법을 발동할 경우 전체 적군이 받는 책략 피해가 2턴 동안 8% 증가한다. 2회 중첩 가능",
+      "description": "구원자의 도포 전용 특기. 장각이 장착 시, 고유 전법을 발동할 경우 전체 적군이 받는 책략 피해가 2턴 동안 8% 증가한다. 2회 중첩 가능.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "partial",
+      "native_option_ids": [
+        113
+      ],
+      "scope_note": "고유 전법 발동 후 적군 책략 취약 8%·2턴·최대2중첩을 구현했습니다. 기본 장각 고유 전법이 미구현이라 현재 해당 연동은 발동하지 않습니다."
     },
     {
       "id": "option-321954059642",
@@ -4053,27 +4224,44 @@
       "description": "천운궁의 전용 특기, 태사자가 장착 시 일반 공격을 시전한 후 추격 전법 피해가 4% 증가한다. 최대 4회 중첩된다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        117
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-bed8429a929c",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "혈투",
-      "description": "현절 견갑의 전용 특기, 하후돈이 장착 시 3번째 턴부터 주는 피해와 무력이 14% 증가한다.",
+      "description": "현철 견갑의 전용 특기, 하후돈이 장착 시, 3번째 턴부터 주는 피해와 무력이 14% 증가한다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        116
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-6ef66dc081d0",
       "slot_type": "equipment",
       "kind": "trait",
       "name": "근학",
-      "description": "영웅 장비의 전용 특기, 토지 수비군과 교전 후 전체 부대의 획득 경험치가 3% 증가한다. 효과 중첩 가능",
+      "description": "영웅 장비의 전용 특기, 토지 수비군과 교전 후 전체 부대의 획득 경험치가 3% 증가한다. 효과 중첩 가능.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": false,
+      "effect_status": "not_combat",
+      "native_option_ids": [
+        110,
+        111,
+        112
+      ],
+      "scope_note": "전투 후 경험치 효과입니다. 선택은 보존하며 피해·회복 계산에는 영향이 없습니다."
     },
     {
       "id": "option-076bcbd67da7",
@@ -4083,7 +4271,14 @@
       "description": "이펙트, 주는 병기 피해가 3% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        1,
+        17,
+        33
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-4f10d06a3d46",
@@ -4093,7 +4288,14 @@
       "description": "이펙트, 주는 책략 피해가 3% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        12,
+        28,
+        44
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-815c8d33a724",
@@ -4103,7 +4305,14 @@
       "description": "이펙트, 액티브 전법 피해가 3% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        4,
+        20,
+        36
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-e54f330cb0ae",
@@ -4113,7 +4322,14 @@
       "description": "이펙트, 추격 전법 피해가 3% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        5,
+        21,
+        37
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-76eced46164f",
@@ -4123,7 +4339,14 @@
       "description": "이펙트, 회심과 묘책 확률이 2% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        15,
+        31,
+        47
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-a3f12331441f",
@@ -4133,7 +4356,14 @@
       "description": "이펙트, 회심과 묘책 피해가 4% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        16,
+        32,
+        48
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-fcc16a4e3afe",
@@ -4143,7 +4373,14 @@
       "description": "이펙트, 관통과 간파가 2% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        2,
+        18,
+        34
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-7d0038491904",
@@ -4153,7 +4390,14 @@
       "description": "이펙트, 일반 공격 피해가 5% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        3,
+        19,
+        35
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-b953e445817d",
@@ -4163,7 +4407,14 @@
       "description": "이펙트, 받는 치유 효과가 4% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        6,
+        22,
+        38
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-518213b26c44",
@@ -4173,7 +4424,14 @@
       "description": "이펙트, 받는 병기 피해가 3% 감소한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        7,
+        23,
+        39
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-d12c001e6478",
@@ -4183,7 +4441,14 @@
       "description": "이펙트, 받는 피해가 2% 감소한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        8,
+        24,
+        40
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-b9e8e6de8d73",
@@ -4193,7 +4458,14 @@
       "description": "이펙트, 받는 추격 전법 피해가 5% 감소한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        9,
+        25,
+        41
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-f64c1e80c619",
@@ -4203,7 +4475,14 @@
       "description": "이펙트, 받는 액티브 전법 피해가 5% 감소한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        10,
+        26,
+        42
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-8f6a2e4eeffc",
@@ -4213,7 +4492,14 @@
       "description": "이펙트, 받는 일반 공격 피해가 8% 감소한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        11,
+        27,
+        43
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-0d78016a5012",
@@ -4223,7 +4509,14 @@
       "description": "이펙트, 회유와 심리 공격이 3% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        13,
+        29,
+        45
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-c197d29330ee",
@@ -4233,7 +4526,14 @@
       "description": "이펙트, 통솔이 6포인트 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        14,
+        30,
+        46
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-aa08aaf468e8",
@@ -4243,7 +4543,14 @@
       "description": "이펙트, 역도에게 주는 피해가 8% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        63,
+        64,
+        65
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-b25adda73b89",
@@ -4253,7 +4560,14 @@
       "description": "이펙트, 성지 수비군에게 주는 피해가 7% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        67,
+        68,
+        69
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-c049d2487650",
@@ -4263,7 +4577,14 @@
       "description": "이펙트, 토지 수비군에게 주는 피해가 7% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        71,
+        72,
+        73
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-fca7e4cc9c84",
@@ -4273,7 +4594,12 @@
       "description": "특기, 전투 2번째 턴에 랜덤 우군 단일 목표의 주는 피해가 2턴 동안 6% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        57
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-6b5d675a2f53",
@@ -4283,7 +4609,12 @@
       "description": "특기, 전투 2번째 턴에 우군 단일 목표의 디버프 상태 1종이 랜덤으로 제거된다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        50
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-c51bf4fb76dd",
@@ -4293,7 +4624,12 @@
       "description": "특기, 전투 2번째 턴에 랜덤 우군 단일 목표의 전체 속성이 2턴 동안 2% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        49
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-780337a608d5",
@@ -4303,7 +4639,12 @@
       "description": "특기, 전투 2번째 턴에 랜덤 적군 단일 목표에게 2턴 동안 지속되는 화공 상태를 부여한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        58
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-df530b4c978d",
@@ -4313,7 +4654,12 @@
       "description": "특기, 전투 시작 시 선공이 2턴 동안 10포인트 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        51
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-b80f3e9501ac",
@@ -4323,7 +4669,12 @@
       "description": "특기, 전투 1번째 턴에 첫 일반 공격 후 선공 수치 100%만큼의 탈주병이 생성된다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        52
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-bbbe04bf1e4c",
@@ -4333,7 +4684,12 @@
       "description": "특기, 전투 2번째 턴에 2턴 동안 관통과 간파가 5% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        53
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-3aa9f6747f73",
@@ -4343,7 +4699,12 @@
       "description": "특기, 전투 2번째 턴에 랜덤 적군 단일 목표에게 2턴 동안 지속되는 폭풍 상태를 부여한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        54
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-7c586fd6a058",
@@ -4353,7 +4714,12 @@
       "description": "특기, 전투 2번째 턴에 랜덤 적군 단일 목표에게 2턴 동안 지속되는 홍수 상태를 부여한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        55
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-de8824f3eda1",
@@ -4363,7 +4729,12 @@
       "description": "특기, 최초로 현재 병력의 10%를 초과하는 피해를 받을 시, 2턴 동안 통솔이 20포인트 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        56
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-dd55913fe573",
@@ -4373,37 +4744,57 @@
       "description": "설원흑운의 전용 특기, 장비가 장착 시, 전투 2번째 턴에 자신의 관통이 2턴 동안 60% 증가한다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        304
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-5f01f4b03cca",
       "slot_type": "horse",
       "kind": "trait",
       "name": "뇌룡",
-      "description": "백야옥사자의 전용 특기, 조운이 장착 시 피신 성공 후 랜덤 아군 단일 목표의 병력이 회복된다(치유율 35%, 무력의 영향 받음).",
+      "description": "백야옥사자의 전용 특기, 조운이 장착 시, 피신 성공 후 랜덤 아군 단일 목표의 병력이 회복된다(치유율 35%, 무력의 영향 받음).",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        305
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-bec1d73bf94b",
       "slot_type": "horse",
       "kind": "trait",
       "name": "등소",
-      "description": "쾌항의 전용 특기, 손권이 장착 시, 선공이 8% 증가하며, 병력이 최초로 70% 미만으로 감소되면 통솔이 10% 증가하고, 전투 종료까지 지속된다.",
+      "description": "쾌항의 전용 특기, 손권이 장착 시, 최고 속성이 8% 증가하며, 병력이 최초로 70% 미만으로 감소되면 통솔이 10% 증가하고, 전투 종료까지 지속된다.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        306
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-c0f5e8eab0ff",
       "slot_type": "horse",
       "kind": "trait",
       "name": "측략",
-      "description": "백설 전속 특기, 곽가 장비 시 액티브 전법 사용 후 자신이 주는 피해가 5% 증가한다 2턴 지속, 최대 4회 중첩 가능.",
+      "description": "백설 전속 특기, 곽가 장비 시 액티브 전법 사용 후 자신이 주는 피해가 5% 증가한다. 2턴 지속, 최대 4회 중첩 가능.",
       "rare": true,
       "dedicated": true,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        307
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-ecdafcfab5de",
@@ -4413,7 +4804,12 @@
       "description": "진귀한 이펙트, 주는 피해가 3% 증가한다.",
       "rare": true,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        61
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-09a20fdd46ed",
@@ -4423,7 +4819,12 @@
       "description": "진귀한 이펙트, 회심과 묘책 확률이 3% 증가한다.",
       "rare": true,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        60
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-6af352809be6",
@@ -4433,7 +4834,12 @@
       "description": "진귀한 이펙트, 받는 책략 피해가 4% 감소한다.",
       "rare": true,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        56
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-225928f33a27",
@@ -4443,7 +4849,12 @@
       "description": "진귀한 이펙트, 선공이 8포인트 증가한다.",
       "rare": true,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        57
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-063c3ffb2fd8",
@@ -4453,7 +4864,12 @@
       "description": "진귀한 이펙트, 회심과 묘책 피해가 6% 증가한다.",
       "rare": true,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        58
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-653914a4fe87",
@@ -4463,7 +4879,12 @@
       "description": "진귀한 이펙트, 관통과 간파가 3% 증가한다.",
       "rare": true,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        59
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-3a0ba3212153",
@@ -4473,7 +4894,12 @@
       "description": "진귀한 이펙트, 피신율이 3% 증가한다.",
       "rare": true,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        62
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-0a49a3d65d5a",
@@ -4483,7 +4909,12 @@
       "description": "이펙트, 주는 피해가 2% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        54
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-d8070dc1c24b",
@@ -4493,7 +4924,12 @@
       "description": "이펙트, 회심과 묘책 확률이 2% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        53
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-b38953b14bca",
@@ -4503,7 +4939,12 @@
       "description": "이펙트, 받는 책략 피해가 3% 감소한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        49
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-38fbe865b176",
@@ -4513,7 +4954,12 @@
       "description": "이펙트, 선공이 6포인트 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        50
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-32ad25dc8351",
@@ -4523,7 +4969,12 @@
       "description": "이펙트, 회심과 묘책 피해가 5% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        51
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-d0f03ca6ed84",
@@ -4533,7 +4984,12 @@
       "description": "이펙트, 관통과 간파가 2% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        52
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-ea19f4d1c0c8",
@@ -4543,7 +4999,12 @@
       "description": "이펙트, 피신율이 2% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        55
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-29e3e566a78c",
@@ -4553,7 +5014,12 @@
       "description": "이펙트, 역도에게 주는 피해가 8% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        66
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-17749291c834",
@@ -4563,7 +5029,12 @@
       "description": "이펙트, 성지 수비군에게 주는 피해가 7% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        70
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     },
     {
       "id": "option-ce87d70eb428",
@@ -4573,8 +5044,13 @@
       "description": "이펙트, 토지 수비군에게 주는 피해가 7% 증가한다.",
       "rare": false,
       "dedicated": false,
-      "simulation_supported": false
+      "simulation_supported": true,
+      "effect_status": "estimated",
+      "native_option_ids": [
+        74
+      ],
+      "scope_note": "실제 보유한 옵션을 선택하세요. 세부 효과 순서와 중첩은 추정 계산입니다."
     }
   ],
-  "content_version": "kr-guides-45ceab32404b2a86"
+  "content_version": "kr-guides-3c64116b32d35162"
 }

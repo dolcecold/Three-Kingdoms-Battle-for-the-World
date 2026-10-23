@@ -20,13 +20,13 @@ function resolveDeck(content,deckOrId){
   return deck;
 }
 function validateContent(content){
-  if(!['1.0.0','1.1.0','1.2.0'].includes(content?.schema_version)||content.region!=='KR'||!Array.isArray(content.seasons)||
+  if(!['1.0.0','1.1.0','1.2.0','1.3.0'].includes(content?.schema_version)||content.region!=='KR'||!Array.isArray(content.seasons)||
       !Array.isArray(content.menus)||!Array.isArray(content.articles)||!Array.isArray(content.opening_decks)||
       !Array.isArray(content.coexistence_plans)||!Array.isArray(content.stat_notes)||!Array.isArray(content.glossary)||
       typeof content.catalog_data_version!=='string'||typeof content.content_version!=='string'){
     throw new Error('지원하지 않는 가이드 데이터 형식입니다.');
   }
-  if(['1.1.0','1.2.0'].includes(content.schema_version)&&['romance_stages','romance_options','romance_skills','profession_profiles','equipment_options'].some(key=>!Array.isArray(content[key]))){
+  if(['1.1.0','1.2.0','1.3.0'].includes(content.schema_version)&&['romance_stages','romance_options','romance_skills','profession_profiles','equipment_options'].some(key=>!Array.isArray(content[key]))){
     throw new Error('확장 가이드의 연의·직업·장비 목록이 누락되었습니다.');
   }
   return content;

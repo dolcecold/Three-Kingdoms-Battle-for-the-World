@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;700;800&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="./style.css?v=1.4.1">
+  <link rel="stylesheet" href="./style.css?v=1.4.2">
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 바로 가기</a>
@@ -27,6 +27,7 @@
     </a>
     <nav class="main-nav" aria-label="메뉴">
       <a href="#/guides" data-nav="guides"><span class="nav-ico" aria-hidden="true">書</span>가이드</a>
+      <a href="#/recommendations" data-nav="recommendations"><span class="nav-ico" aria-hidden="true">策</span>추천 덱</a>
       <a href="#/battle" data-nav="battle"><span class="nav-ico" aria-hidden="true">戰</span>배틀</a>
       <a href="#/roster" data-nav="roster"><span class="nav-ico" aria-hidden="true">將</span>보유 풀</a>
     </nav>
@@ -95,6 +96,32 @@
       </div>
     </section>
 
+   </section>
+
+   <section id="view-recommendations" class="view" hidden aria-labelledby="rec-title">
+     <div class="view-head">
+       <h1 id="rec-title">추천 덱 도감</h1>
+       <p class="view-sub">한국 추천덱과 시즌별 참고 편성을 비교합니다. 무장의 딜·탱·힐·보조 역할, 스탯 배분 순서, 장비·말 메모는 <b>원문이 확인된 항목만</b> 표시합니다.</p>
+     </div>
+     <div class="recommend-panel">
+       <div id="rec-source" class="rec-tabs" role="tablist" aria-label="추천 덱 자료 구분">
+         <button type="button" data-rec-source="presets" role="tab" aria-selected="true">기존 추천덱 <b>128</b></button>
+         <button type="button" data-rec-source="s2" role="tab" aria-selected="false">한국 S2 참고 <b>57</b></button>
+         <button type="button" data-rec-source="s3" role="tab" aria-selected="false">한국 S3 세팅 <b>90</b></button>
+       </div>
+       <div class="rec-controls">
+         <input type="search" id="rec-search" placeholder="덱·무장·전법·가이드 문구 검색" aria-label="추천덱 자료 검색">
+         <label class="rec-control-label" id="rec-guide-season-wrap">가이드 기준 시즌 <select id="rec-guide-season" aria-label="가이드 기준 한국 시즌"><option value="1">한국 S1</option><option value="2">한국 S2</option><option value="3">한국 S3</option></select></label>
+         <label class="rec-control-label">역할 <select id="rec-role" aria-label="명시된 역할 필터"><option value="all">전체</option><option value="damage">딜러</option><option value="tank">탱커</option><option value="healer">힐러</option><option value="support">보조</option></select></label>
+         <label class="rec-guide-only"><input type="checkbox" id="rec-guided">표시 가이드 있는 덱만</label>
+       </div>
+       <p class="rec-source-note" id="rec-source-note"></p>
+       <p id="rec-count" class="muted-note" role="status"></p>
+       <div class="rec-browser">
+         <div id="rec-list" class="rec-list" role="listbox" aria-label="추천덱과 참고 세팅 목록"></div>
+         <article id="rec-detail" class="rec-detail" aria-live="polite"></article>
+       </div>
+     </div>
    </section>
 
    <section id="view-roster" class="view" hidden aria-labelledby="roster-title">
@@ -244,6 +271,6 @@
   </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <script type="module" src="./app.js?v=1.4.1"></script>
+  <script type="module" src="./app.js?v=1.4.2"></script>
 </body>
 </html>

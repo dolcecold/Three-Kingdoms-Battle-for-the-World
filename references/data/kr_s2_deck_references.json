@@ -1,0 +1,2511 @@
+{
+  "source_scope": "KR_GUIDE_S2",
+  "reference_only": true,
+  "entries": [
+    {
+      "id": "S2_TIER_2_B2",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 조감초",
+      "heading_cell": "B2",
+      "generals": [
+        "조운",
+        "감부인",
+        "초선"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조운": "D3",
+        "감부인": "C5",
+        "초선": "E5"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=B2",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 2012,
+            "hero_name": "조운",
+            "entries": []
+          },
+          {
+            "hero_id": 2019,
+            "hero_name": "감부인",
+            "entries": []
+          },
+          {
+            "hero_id": 4023,
+            "hero_name": "초선",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_F2",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 태황유",
+      "heading_cell": "F2",
+      "generals": [
+        "주태",
+        "황개",
+        "주유"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "주태": "H3",
+        "황개": "I3",
+        "주유": "G5"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=F2",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3014,
+            "hero_name": "주태",
+            "entries": []
+          },
+          {
+            "hero_id": 3012,
+            "hero_name": "황개",
+            "entries": []
+          },
+          {
+            "hero_id": 3007,
+            "hero_name": "주유",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_J2",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0선등 주유 (순욱·주유 투입)\n* 선등은 악진 스킬 효과임, 보통 선등(속공) 덱 이라는 이명이 붙음",
+      "heading_cell": "J2",
+      "generals": [
+        "악진",
+        "주유",
+        "순욱"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "악진": "K3",
+        "주유": "M3",
+        "순욱": "L5"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=J2",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          },
+          {
+            "hero_id": 3007,
+            "hero_name": "주유",
+            "entries": []
+          },
+          {
+            "hero_id": 1008,
+            "hero_name": "순욱",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_N2",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 조순의 (신태위)",
+      "heading_cell": "N2",
+      "generals": [
+        "조조",
+        "순욱",
+        "사마의"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조조": "P3",
+        "순욱": "P5",
+        "사마의": "Q5"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=N2",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1000,
+            "hero_name": "조조",
+            "entries": []
+          },
+          {
+            "hero_id": 1008,
+            "hero_name": "순욱",
+            "entries": []
+          },
+          {
+            "hero_id": 1009,
+            "hero_name": "사마의",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_R2",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0선등 여포 (백문기)\n* 백운루에서 여포 처형당해서 백문 + 기병 백문기임.",
+      "heading_cell": "R2",
+      "generals": [
+        "악진",
+        "여포",
+        "진궁"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "악진": "S3",
+        "여포": "U3",
+        "진궁": "T5"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=R2",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          },
+          {
+            "hero_id": 4000,
+            "hero_name": "여포",
+            "entries": []
+          },
+          {
+            "hero_id": 4013,
+            "hero_name": "진궁",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_B18",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1+ 태원마",
+      "heading_cell": "B18",
+      "generals": [
+        "주태",
+        "원소",
+        "마초"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "주태": "D19",
+        "원소": "E19",
+        "마초": "C21"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=B18",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3014,
+            "hero_name": "주태",
+            "entries": []
+          },
+          {
+            "hero_id": 4004,
+            "hero_name": "원소",
+            "entries": []
+          },
+          {
+            "hero_id": 2015,
+            "hero_name": "마초",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_F18",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1+ 쌍황육",
+      "heading_cell": "F18",
+      "generals": [
+        "조조",
+        "손권",
+        "육손"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조조": "H19",
+        "손권": "H21",
+        "육손": "I21"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=F18",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1000,
+            "hero_name": "조조",
+            "entries": []
+          },
+          {
+            "hero_id": 3000,
+            "hero_name": "손권",
+            "entries": []
+          },
+          {
+            "hero_id": 3008,
+            "hero_name": "육손",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_J18",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1+ 쌍감 사마의 (늙태위)",
+      "heading_cell": "J18",
+      "generals": [
+        "하후돈",
+        "조조",
+        "사마의"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "하후돈": "L19",
+        "조조": "L21",
+        "사마의": "M21"
+      },
+      "confidence": "high",
+      "composition_verification": "user_confirmed_and_source_cell_crosschecked",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=J18",
+      "deployment_positions_verified": false,
+      "alternative_generals": [
+        {
+          "general": "조조",
+          "alternatives": [
+            "등애"
+          ],
+          "source_cell": "L21",
+          "source_text": "조조>등애"
+        }
+      ],
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1023,
+            "hero_name": "하후돈",
+            "entries": []
+          },
+          {
+            "hero_id": 1000,
+            "hero_name": "조조",
+            "entries": []
+          },
+          {
+            "hero_id": 1009,
+            "hero_name": "사마의",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_N18",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1+ 초원마",
+      "heading_cell": "N18",
+      "generals": [
+        "조조",
+        "마초",
+        "원소"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조조": "P19",
+        "마초": "P21",
+        "원소": "Q21"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=N18",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1000,
+            "hero_name": "조조",
+            "entries": []
+          },
+          {
+            "hero_id": 2015,
+            "hero_name": "마초",
+            "entries": []
+          },
+          {
+            "hero_id": 4004,
+            "hero_name": "원소",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_R18",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 문추",
+      "heading_cell": "R18",
+      "generals": [
+        "화타",
+        "진궁",
+        "문추"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "화타": "T19",
+        "진궁": "U19",
+        "문추": "S21"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=R18",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 4019,
+            "hero_name": "화타",
+            "entries": []
+          },
+          {
+            "hero_id": 4013,
+            "hero_name": "진궁",
+            "entries": []
+          },
+          {
+            "hero_id": 4018,
+            "hero_name": "문추",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_B34",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1장서각 도원",
+      "heading_cell": "B34",
+      "generals": [
+        "장비",
+        "유비",
+        "관우"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "장비": "C35",
+        "유비": "D35",
+        "관우": "E35"
+      },
+      "confidence": "high",
+      "composition_verification": "user_confirmed_and_source_cell_crosschecked",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=B34",
+      "deployment_positions_verified": false,
+      "alternative_generals": [],
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 2002,
+            "hero_name": "장비",
+            "entries": []
+          },
+          {
+            "hero_id": 2000,
+            "hero_name": "유비",
+            "entries": []
+          },
+          {
+            "hero_id": 2001,
+            "hero_name": "관우",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_F34",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 손노육",
+      "heading_cell": "F34",
+      "generals": [
+        "노숙",
+        "손권",
+        "육손"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "노숙": "H35",
+        "손권": "H37",
+        "육손": "I37"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=F34",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3005,
+            "hero_name": "노숙",
+            "entries": []
+          },
+          {
+            "hero_id": 3000,
+            "hero_name": "손권",
+            "entries": []
+          },
+          {
+            "hero_id": 3008,
+            "hero_name": "육손",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_J34",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 조인태위",
+      "heading_cell": "J34",
+      "generals": [
+        "조인",
+        "순욱",
+        "사마의"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조인": "L35",
+        "순욱": "L37",
+        "사마의": "M37"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=J34",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1024,
+            "hero_name": "조인",
+            "entries": []
+          },
+          {
+            "hero_id": 1008,
+            "hero_name": "순욱",
+            "entries": []
+          },
+          {
+            "hero_id": 1009,
+            "hero_name": "사마의",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_N34",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 조감태",
+      "heading_cell": "N34",
+      "generals": [
+        "조운",
+        "감부인",
+        "주태"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조운": "P35",
+        "감부인": "O37",
+        "주태": "Q37"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=N34",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 2012,
+            "hero_name": "조운",
+            "entries": []
+          },
+          {
+            "hero_id": 2019,
+            "hero_name": "감부인",
+            "entries": []
+          },
+          {
+            "hero_id": 3014,
+            "hero_name": "주태",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_R34",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 조감관",
+      "heading_cell": "R34",
+      "generals": [
+        "조운",
+        "감부인",
+        "관우"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조운": "T35",
+        "감부인": "S37",
+        "관우": "U37"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=R34",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 2012,
+            "hero_name": "조운",
+            "entries": []
+          },
+          {
+            "hero_id": 2019,
+            "hero_name": "감부인",
+            "entries": []
+          },
+          {
+            "hero_id": 2001,
+            "hero_name": "관우",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_B50",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 장서각 대비마",
+      "heading_cell": "B50",
+      "generals": [
+        "대교",
+        "장비",
+        "마초"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "대교": "D51",
+        "장비": "D53",
+        "마초": "E53"
+      },
+      "confidence": "high",
+      "composition_verification": "user_confirmed_and_source_cell_crosschecked",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=B50",
+      "deployment_positions_verified": false,
+      "alternative_generals": [],
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3004,
+            "hero_name": "대교",
+            "entries": []
+          },
+          {
+            "hero_id": 2002,
+            "hero_name": "장비",
+            "entries": []
+          },
+          {
+            "hero_id": 2015,
+            "hero_name": "마초",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_F50",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 선등 답설기\n매우 빠른 속공 추격 기병 덱임.",
+      "heading_cell": "F50",
+      "generals": [
+        "견희",
+        "마운록",
+        "악진"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "견희": "I51",
+        "마운록": "G53",
+        "악진": "H53"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=F50",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1026,
+            "hero_name": "견희",
+            "entries": []
+          },
+          {
+            "hero_id": 2013,
+            "hero_name": "마운록",
+            "entries": []
+          },
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_J50",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 선등 하후연 (대진연)",
+      "heading_cell": "J50",
+      "generals": [
+        "악진",
+        "하후연",
+        "대교"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "악진": "K51",
+        "하후연": "M51",
+        "대교": "L53"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=J50",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          },
+          {
+            "hero_id": 1016,
+            "hero_name": "하후연",
+            "entries": []
+          },
+          {
+            "hero_id": 3004,
+            "hero_name": "대교",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_N50",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 선등 장료 (견진료)",
+      "heading_cell": "N50",
+      "generals": [
+        "악진",
+        "장료",
+        "견희"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "악진": "O51",
+        "장료": "Q51",
+        "견희": "P53"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=N50",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          },
+          {
+            "hero_id": 4001,
+            "hero_name": "장료",
+            "entries": []
+          },
+          {
+            "hero_id": 1026,
+            "hero_name": "견희",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_R50",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1선등 마초 (대진마)",
+      "heading_cell": "R50",
+      "generals": [
+        "악진",
+        "대교",
+        "마초"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "악진": "S51",
+        "대교": "T53",
+        "마초": "U51"
+      },
+      "confidence": "high",
+      "composition_verification": "user_confirmed_and_source_cell_crosschecked",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=R50",
+      "deployment_positions_verified": false,
+      "alternative_generals": [
+        {
+          "general": "대교",
+          "alternatives": [
+            "방통"
+          ],
+          "source_cell": "T53",
+          "source_text": "대교/방통"
+        }
+      ],
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          },
+          {
+            "hero_id": 3004,
+            "hero_name": "대교",
+            "entries": []
+          },
+          {
+            "hero_id": 2015,
+            "hero_name": "마초",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_B66",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1장서각 황황제",
+      "heading_cell": "B66",
+      "generals": [
+        "제갈량",
+        "황월영",
+        "황개"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "제갈량": "D67",
+        "황월영": "C69",
+        "황개": "E69"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=B66",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 2003,
+            "hero_name": "제갈량",
+            "entries": []
+          },
+          {
+            "hero_id": 2009,
+            "hero_name": "황월영",
+            "entries": []
+          },
+          {
+            "hero_id": 3012,
+            "hero_name": "황개",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_F66",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 태황제",
+      "heading_cell": "F66",
+      "generals": [
+        "주태",
+        "황개",
+        "제갈량"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "주태": "H67",
+        "황개": "I67",
+        "제갈량": "G69"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=F66",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3014,
+            "hero_name": "주태",
+            "entries": []
+          },
+          {
+            "hero_id": 3012,
+            "hero_name": "황개",
+            "entries": []
+          },
+          {
+            "hero_id": 2003,
+            "hero_name": "제갈량",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_J66",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 서황유",
+      "heading_cell": "J66",
+      "generals": [
+        "서성",
+        "황개",
+        "주유"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "서성": "L67",
+        "황개": "M67",
+        "주유": "K69"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=J66",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 5034,
+            "hero_name": "서성",
+            "entries": []
+          },
+          {
+            "hero_id": 3012,
+            "hero_name": "황개",
+            "entries": []
+          },
+          {
+            "hero_id": 3007,
+            "hero_name": "주유",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_N66",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 신박한 가힐량 조합\n 가후+힐러+제갈량",
+      "heading_cell": "N66",
+      "generals": [
+        "가후",
+        "제갈량",
+        "순욱"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "가후": "O67",
+        "제갈량": "P67",
+        "순욱": "Q67"
+      },
+      "confidence": "high",
+      "composition_verification": "user_confirmed_and_source_cell_crosschecked",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=N66",
+      "deployment_positions_verified": false,
+      "alternative_generals": [
+        {
+          "general": "순욱",
+          "alternatives": [
+            "견희"
+          ],
+          "source_cell": "Q67",
+          "source_text": "순욱>견희"
+        }
+      ],
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1004,
+            "hero_name": "가후",
+            "entries": []
+          },
+          {
+            "hero_id": 2003,
+            "hero_name": "제갈량",
+            "entries": []
+          },
+          {
+            "hero_id": 1008,
+            "hero_name": "순욱",
+            "entries": [
+              {
+                "seasons": [
+                  2
+                ],
+                "roles": [
+                  "healer"
+                ],
+                "role_note": "가후+힐러+제갈량 편성의 힐러 자리. 이 세팅은 순욱이며 원문 대안은 견희입니다.",
+                "action_note": null,
+                "stat_guide": null,
+                "equipment_note": null,
+                "horse_note": null,
+                "source": {
+                  "kind": "kr_s2_heading",
+                  "id": "S2_TIER_2_N66",
+                  "label": "시즌2 가후+힐러+제갈량",
+                  "url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=N66"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_B83",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1+ 태원마",
+      "heading_cell": "B83",
+      "generals": [
+        "주태",
+        "원소",
+        "마초"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "주태": "D84",
+        "원소": "E84",
+        "마초": "C86"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=B83",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3014,
+            "hero_name": "주태",
+            "entries": []
+          },
+          {
+            "hero_id": 4004,
+            "hero_name": "원소",
+            "entries": []
+          },
+          {
+            "hero_id": 2015,
+            "hero_name": "마초",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_F83",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1+쌍황육 (선등 여포 / 조순의로 교체 가능)",
+      "heading_cell": "F83",
+      "generals": [
+        "조조",
+        "손권",
+        "육손"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조조": "H84",
+        "손권": "H86",
+        "육손": "I86"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=F83",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1000,
+            "hero_name": "조조",
+            "entries": []
+          },
+          {
+            "hero_id": 3000,
+            "hero_name": "손권",
+            "entries": []
+          },
+          {
+            "hero_id": 3008,
+            "hero_name": "육손",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_J83",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 태황유",
+      "heading_cell": "J83",
+      "generals": [
+        "주태",
+        "황개",
+        "주유"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "주태": "L84",
+        "황개": "M84",
+        "주유": "K86"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=J83",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3014,
+            "hero_name": "주태",
+            "entries": []
+          },
+          {
+            "hero_id": 3012,
+            "hero_name": "황개",
+            "entries": []
+          },
+          {
+            "hero_id": 3007,
+            "hero_name": "주유",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_N83",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0선등 여포 (조순의 / 쌍황육으로 교체 가능)",
+      "heading_cell": "N83",
+      "generals": [
+        "악진",
+        "여포",
+        "진궁"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "악진": "O84",
+        "여포": "Q84",
+        "진궁": "P86"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=N83",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          },
+          {
+            "hero_id": 4000,
+            "hero_name": "여포",
+            "entries": []
+          },
+          {
+            "hero_id": 4013,
+            "hero_name": "진궁",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_R83",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 선등주유",
+      "heading_cell": "R83",
+      "generals": [
+        "악진",
+        "주유",
+        "순욱"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "악진": "S84",
+        "주유": "U84",
+        "순욱": "T86"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=R83",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          },
+          {
+            "hero_id": 3007,
+            "hero_name": "주유",
+            "entries": []
+          },
+          {
+            "hero_id": 1008,
+            "hero_name": "순욱",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_V83",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1+ 태원마",
+      "heading_cell": "V83",
+      "generals": [
+        "주태",
+        "원소",
+        "마초"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "주태": "X84",
+        "원소": "Y84",
+        "마초": "W86"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=V83",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3014,
+            "hero_name": "주태",
+            "entries": []
+          },
+          {
+            "hero_id": 4004,
+            "hero_name": "원소",
+            "entries": []
+          },
+          {
+            "hero_id": 2015,
+            "hero_name": "마초",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_B99",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1+ 태원마",
+      "heading_cell": "B99",
+      "generals": [
+        "주태",
+        "원소",
+        "마초"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "주태": "D100",
+        "원소": "E100",
+        "마초": "C102"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=B99",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3014,
+            "hero_name": "주태",
+            "entries": []
+          },
+          {
+            "hero_id": 4004,
+            "hero_name": "원소",
+            "entries": []
+          },
+          {
+            "hero_id": 2015,
+            "hero_name": "마초",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_F99",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 조감초",
+      "heading_cell": "F99",
+      "generals": [
+        "조운",
+        "감부인",
+        "초선"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조운": "H100",
+        "감부인": "G102",
+        "초선": "I102"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=F99",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 2012,
+            "hero_name": "조운",
+            "entries": []
+          },
+          {
+            "hero_id": 2019,
+            "hero_name": "감부인",
+            "entries": []
+          },
+          {
+            "hero_id": 4023,
+            "hero_name": "초선",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_J99",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 조순의 (선등 주유 / 쌍황육으로 교체 가능)",
+      "heading_cell": "J99",
+      "generals": [
+        "조조",
+        "순욱",
+        "사마의"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조조": "L100",
+        "순욱": "L102",
+        "사마의": "M102"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=J99",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1000,
+            "hero_name": "조조",
+            "entries": []
+          },
+          {
+            "hero_id": 1008,
+            "hero_name": "순욱",
+            "entries": []
+          },
+          {
+            "hero_id": 1009,
+            "hero_name": "사마의",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_N99",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 태황유",
+      "heading_cell": "N99",
+      "generals": [
+        "주태",
+        "황개",
+        "주유"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "주태": "P100",
+        "황개": "Q100",
+        "주유": "O102"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=N99",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3014,
+            "hero_name": "주태",
+            "entries": []
+          },
+          {
+            "hero_id": 3012,
+            "hero_name": "황개",
+            "entries": []
+          },
+          {
+            "hero_id": 3007,
+            "hero_name": "주유",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_R99",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 조감초",
+      "heading_cell": "R99",
+      "generals": [
+        "조운",
+        "감부인",
+        "초선"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조운": "T100",
+        "감부인": "S102",
+        "초선": "U102"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=R99",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 2012,
+            "hero_name": "조운",
+            "entries": []
+          },
+          {
+            "hero_id": 2019,
+            "hero_name": "감부인",
+            "entries": []
+          },
+          {
+            "hero_id": 4023,
+            "hero_name": "초선",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_V99",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0선등 여포 (조순의 / 쌍황육으로 교체 가능)",
+      "heading_cell": "V99",
+      "generals": [
+        "악진",
+        "여포",
+        "진궁"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "악진": "W100",
+        "여포": "Y100",
+        "진궁": "X102"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=V99",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          },
+          {
+            "hero_id": 4000,
+            "hero_name": "여포",
+            "entries": []
+          },
+          {
+            "hero_id": 4013,
+            "hero_name": "진궁",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_B115",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 선등주유",
+      "heading_cell": "B115",
+      "generals": [
+        "악진",
+        "주유",
+        "순욱"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "악진": "C116",
+        "주유": "E116",
+        "순욱": "D118"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=B115",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          },
+          {
+            "hero_id": 3007,
+            "hero_name": "주유",
+            "entries": []
+          },
+          {
+            "hero_id": 1008,
+            "hero_name": "순욱",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_F115",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 조감초",
+      "heading_cell": "F115",
+      "generals": [
+        "조운",
+        "감부인",
+        "초선"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조운": "H116",
+        "감부인": "G118",
+        "초선": "I118"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=F115",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 2012,
+            "hero_name": "조운",
+            "entries": []
+          },
+          {
+            "hero_id": 2019,
+            "hero_name": "감부인",
+            "entries": []
+          },
+          {
+            "hero_id": 4023,
+            "hero_name": "초선",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_J115",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1+ 태원마",
+      "heading_cell": "J115",
+      "generals": [
+        "주태",
+        "원소",
+        "마초"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "주태": "L116",
+        "원소": "M116",
+        "마초": "K118"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=J115",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3014,
+            "hero_name": "주태",
+            "entries": []
+          },
+          {
+            "hero_id": 4004,
+            "hero_name": "원소",
+            "entries": []
+          },
+          {
+            "hero_id": 2015,
+            "hero_name": "마초",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_N115",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 조순의 (쌍황육으로 교체 가능)",
+      "heading_cell": "N115",
+      "generals": [
+        "조조",
+        "순욱",
+        "사마의"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조조": "P116",
+        "순욱": "P118",
+        "사마의": "Q118"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=N115",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1000,
+            "hero_name": "조조",
+            "entries": []
+          },
+          {
+            "hero_id": 1008,
+            "hero_name": "순욱",
+            "entries": []
+          },
+          {
+            "hero_id": 1009,
+            "hero_name": "사마의",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_R115",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 조감초",
+      "heading_cell": "R115",
+      "generals": [
+        "조운",
+        "감부인",
+        "초선"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조운": "T116",
+        "감부인": "S118",
+        "초선": "U118"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=R115",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 2012,
+            "hero_name": "조운",
+            "entries": []
+          },
+          {
+            "hero_id": 2019,
+            "hero_name": "감부인",
+            "entries": []
+          },
+          {
+            "hero_id": 4023,
+            "hero_name": "초선",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_V115",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0선등 여포 (태황유 / 태원마로 교체 가능)",
+      "heading_cell": "V115",
+      "generals": [
+        "악진",
+        "여포",
+        "진궁"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "악진": "W116",
+        "여포": "Y116",
+        "진궁": "X118"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=V115",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          },
+          {
+            "hero_id": 4000,
+            "hero_name": "여포",
+            "entries": []
+          },
+          {
+            "hero_id": 4013,
+            "hero_name": "진궁",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_B131",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1+ 태원마(태황유 로 교체 가능)",
+      "heading_cell": "B131",
+      "generals": [
+        "주태",
+        "원소",
+        "마초"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "주태": "D132",
+        "원소": "E132",
+        "마초": "C134"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=B131",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3014,
+            "hero_name": "주태",
+            "entries": []
+          },
+          {
+            "hero_id": 4004,
+            "hero_name": "원소",
+            "entries": []
+          },
+          {
+            "hero_id": 2015,
+            "hero_name": "마초",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_F131",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 조감초",
+      "heading_cell": "F131",
+      "generals": [
+        "조운",
+        "감부인",
+        "초선"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조운": "H132",
+        "감부인": "G134",
+        "초선": "I134"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=F131",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 2012,
+            "hero_name": "조운",
+            "entries": []
+          },
+          {
+            "hero_id": 2019,
+            "hero_name": "감부인",
+            "entries": []
+          },
+          {
+            "hero_id": 4023,
+            "hero_name": "초선",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_J131",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 선등여포",
+      "heading_cell": "J131",
+      "generals": [
+        "악진",
+        "여포",
+        "진궁"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "악진": "K132",
+        "여포": "M132",
+        "진궁": "L134"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=J131",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          },
+          {
+            "hero_id": 4000,
+            "hero_name": "여포",
+            "entries": []
+          },
+          {
+            "hero_id": 4013,
+            "hero_name": "진궁",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_N131",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 조순의",
+      "heading_cell": "N131",
+      "generals": [
+        "조조",
+        "순욱",
+        "사마의"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조조": "P132",
+        "순욱": "P134",
+        "사마의": "Q134"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=N131",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1000,
+            "hero_name": "조조",
+            "entries": []
+          },
+          {
+            "hero_id": 1008,
+            "hero_name": "순욱",
+            "entries": []
+          },
+          {
+            "hero_id": 1009,
+            "hero_name": "사마의",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_R131",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 손노육",
+      "heading_cell": "R131",
+      "generals": [
+        "노숙",
+        "손권",
+        "육손"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "노숙": "T132",
+        "손권": "T134",
+        "육손": "U134"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=R131",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3005,
+            "hero_name": "노숙",
+            "entries": []
+          },
+          {
+            "hero_id": 3000,
+            "hero_name": "손권",
+            "entries": []
+          },
+          {
+            "hero_id": 3008,
+            "hero_name": "육손",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_B147",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 선등주유",
+      "heading_cell": "B147",
+      "generals": [
+        "악진",
+        "주유",
+        "순욱"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "악진": "C148",
+        "주유": "E148",
+        "순욱": "D150"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=B147",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          },
+          {
+            "hero_id": 3007,
+            "hero_name": "주유",
+            "entries": []
+          },
+          {
+            "hero_id": 1008,
+            "hero_name": "순욱",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_F147",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 조감초",
+      "heading_cell": "F147",
+      "generals": [
+        "조운",
+        "감부인",
+        "초선"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조운": "H148",
+        "감부인": "G150",
+        "초선": "I150"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=F147",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 2012,
+            "hero_name": "조운",
+            "entries": []
+          },
+          {
+            "hero_id": 2019,
+            "hero_name": "감부인",
+            "entries": []
+          },
+          {
+            "hero_id": 4023,
+            "hero_name": "초선",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_J147",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1+ 태원마",
+      "heading_cell": "J147",
+      "generals": [
+        "주태",
+        "원소",
+        "마초"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "주태": "L148",
+        "원소": "M148",
+        "마초": "K150"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=J147",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3014,
+            "hero_name": "주태",
+            "entries": []
+          },
+          {
+            "hero_id": 4004,
+            "hero_name": "원소",
+            "entries": []
+          },
+          {
+            "hero_id": 2015,
+            "hero_name": "마초",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_N147",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1+ 늙태위",
+      "heading_cell": "N147",
+      "generals": [
+        "하후돈",
+        "조조",
+        "사마의"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "하후돈": "P148",
+        "조조": "P150",
+        "사마의": "Q150"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=N147",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1023,
+            "hero_name": "하후돈",
+            "entries": []
+          },
+          {
+            "hero_id": 1000,
+            "hero_name": "조조",
+            "entries": []
+          },
+          {
+            "hero_id": 1009,
+            "hero_name": "사마의",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_R147",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 손노육",
+      "heading_cell": "R147",
+      "generals": [
+        "손권",
+        "노숙",
+        "육손"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "손권": "T148",
+        "노숙": "U148",
+        "육손": "S150"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=R147",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3000,
+            "hero_name": "손권",
+            "entries": []
+          },
+          {
+            "hero_id": 3005,
+            "hero_name": "노숙",
+            "entries": []
+          },
+          {
+            "hero_id": 3008,
+            "hero_name": "육손",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_B163",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 태황유(태원마로 교체 가능)",
+      "heading_cell": "B163",
+      "generals": [
+        "주태",
+        "황개",
+        "주유"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "주태": "D164",
+        "황개": "E164",
+        "주유": "C166"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=B163",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 3014,
+            "hero_name": "주태",
+            "entries": []
+          },
+          {
+            "hero_id": 3012,
+            "hero_name": "황개",
+            "entries": []
+          },
+          {
+            "hero_id": 3007,
+            "hero_name": "주유",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_F163",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 조감초",
+      "heading_cell": "F163",
+      "generals": [
+        "조운",
+        "감부인",
+        "초선"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조운": "H164",
+        "감부인": "G166",
+        "초선": "I166"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=F163",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 2012,
+            "hero_name": "조운",
+            "entries": []
+          },
+          {
+            "hero_id": 2019,
+            "hero_name": "감부인",
+            "entries": []
+          },
+          {
+            "hero_id": 4023,
+            "hero_name": "초선",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_J163",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 선등여포",
+      "heading_cell": "J163",
+      "generals": [
+        "악진",
+        "여포",
+        "진궁"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "악진": "K164",
+        "여포": "M164",
+        "진궁": "L166"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=J163",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1014,
+            "hero_name": "악진",
+            "entries": []
+          },
+          {
+            "hero_id": 4000,
+            "hero_name": "여포",
+            "entries": []
+          },
+          {
+            "hero_id": 4013,
+            "hero_name": "진궁",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_N163",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T0 신태위（쌍황육으로 교체 가능）",
+      "heading_cell": "N163",
+      "generals": [
+        "조조",
+        "순욱",
+        "사마의"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "조조": "P164",
+        "순욱": "P166",
+        "사마의": "Q166"
+      },
+      "confidence": "medium",
+      "composition_verification": "source_text_three_names",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=N163",
+      "deployment_positions_verified": false,
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 1000,
+            "hero_name": "조조",
+            "entries": []
+          },
+          {
+            "hero_id": 1008,
+            "hero_name": "순욱",
+            "entries": []
+          },
+          {
+            "hero_id": 1009,
+            "hero_name": "사마의",
+            "entries": []
+          }
+        ]
+      }
+    },
+    {
+      "id": "S2_TIER_2_R163",
+      "season": "S2",
+      "source_sheet": "시즌2 티어덱 ②",
+      "heading": "T1 장서각 도원",
+      "heading_cell": "R163",
+      "generals": [
+        "장비",
+        "유비",
+        "관우"
+      ],
+      "members_count": 3,
+      "member_source_cells": {
+        "장비": "S164",
+        "유비": "T164",
+        "관우": "U164"
+      },
+      "confidence": "high",
+      "composition_verification": "user_confirmed_and_source_cell_crosschecked",
+      "source_url": "https://docs.google.com/spreadsheets/d/1HqKv31nFCBqB5DF-D-ezuAkM-k_TLl0vRWTtAnLYDXc/edit#gid=1684868989&range=R163",
+      "deployment_positions_verified": false,
+      "alternative_generals": [],
+      "display_guide": {
+        "schema_version": "1.0.0",
+        "usage": "display_only",
+        "members": [
+          {
+            "hero_id": 2002,
+            "hero_name": "장비",
+            "entries": []
+          },
+          {
+            "hero_id": 2000,
+            "hero_name": "유비",
+            "entries": []
+          },
+          {
+            "hero_id": 2001,
+            "hero_name": "관우",
+            "entries": []
+          }
+        ]
+      }
+    }
+  ],
+  "display_guidance_version": "kr-deck-guides-dbde4af5293c04d5"
+}
