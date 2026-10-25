@@ -5,7 +5,7 @@ import {BattleApi,encodeArmyCode,decodeArmyCode} from './api-client.js';
 import {normalizeArmy} from './army-code.js';
 import {STAT_FIELDS,armFor,bookChoices,tacticChoices,validateArmy,previewHeroStats,migrateProgression,romanceFor,innateFor} from './editor.js';
 import {API_BASE_URL} from './config.js';
-import {loadRecommendedDecks,filterRecommendedDecks,displayGuideFor} from './recommended-decks.js?v=1.4.3';
+import {loadRecommendedDecks,filterRecommendedDecks,displayGuideFor} from './recommended-decks.js?v=1.4.5';
 import {createDeckGuideCards} from './deck-guide-cards.js';
 import {reviewArmyCoexistence} from './guide-content.js';
 import {encodePoolCode,decodePoolCode} from './pool-code.js';
@@ -1101,11 +1101,18 @@ function renderPresets(){
     :(x,y)=>(deckSeason(x.t)??99)-(deckSeason(y.t)??99)||(best[y.t.name]-best[x.t.name])||x.t.name.localeCompare(y.t.name,'ko'));
   $('preset-count').textContent=`${rows.length}개 · 불러오면 지금 편집 중인 한국 시즌 ${state.season}에 맞춰집니다.${poolActive()?' 보유하지 않은 전법 칸은 비워서 불러옵니다.':''}`;
   if(!rows.some(r=>r.t.id===presetSelection))presetSelection=rows[0]?.t.id||null;
-  fill($('preset-list'),rows.length?rows.map(({t,p})=>h('button',{class:'preset-opt',type:'button',role:'option','aria-selected':String(t.id===presetSelection),dataset:{templateId:t.id}},
-    h('strong',{text:t.label}),
-    h('span',{class:'heroes',text:t.heroes.map(x=>x.name).join(' · ')}),
-    h('span',{class:'meta'},lineupIds.has(t.id)?h('span',{class:'tag in-lineup',text:'내 구성'}):null,p?fitTag(p):null,h('span',{class:'tag',text:seasonName(deckSeason(t))}))))
-    :h('p',{class:'muted-note',text:'조건에 맞는 덱이 없습니다.'}));
+  // 동일한 3명 조합은 한 부모 노드, 전법/진형 변형은 자식 노드로 그룹화한다.
+  const groups=new Map();
+  for(const row of rows){const key='id:'+row.t.heroes.map(x=>x.id).sort((a,b)=>a-b).join('|');
+    if(!groups.has(key))groups.set(key,{key,names:row.t.heroes.map(x=>x.name),rows:[]});
+    groups.get(key).rows.push(row);
+  }
+  fill($('preset-list'),groups.size?[...groups.values()].map((g,i)=>h('details',{class:'preset-tree-group',open:g.rows.some(r=>r.t.id===presetSelection)||i===0},
+    h('summary',null,h('strong',{text:g.names.join(' · ')}),h('small',{text:`${g.rows.length}개 세팅`}),h('span',{text:'⌄'})),
+    h('div',{class:'preset-tree-children'},...g.rows.map(({t,p})=>h('button',{class:'preset-opt',type:'button',role:'option','aria-selected':String(t.id===presetSelection),dataset:{templateId:t.id}},
+      h('strong',{text:t.label}),
+      h('span',{class:'meta'},lineupIds.has(t.id)?h('span',{class:'tag in-lineup',text:'내 구성'}):null,p?fitTag(p):null,h('span',{class:'tag',text:seasonName(deckSeason(t))})))))))
+    :h('p',{class:'muted-note',text:'조건에 맞는 덱이 없습니다.'}'));
   renderPresetPreview();
 }
 function renderPresetPreview(){
@@ -1137,7 +1144,9 @@ function renderPresetPreview(){
     t.heroes.map((x,i)=>h('div',{class:'preset-member'},
       h('strong',null,x.name,heroMark(i)),
       line('전법',tacticLine(x,i)),
-      books(x).length?line('병법',books(x).join(', ')):null)),
+      books(x).length?line('병법',books(x).join(', ')):line('병법','원본 미기재'),
+      line('병종',armyHero(x.id)?.advanced_arms_id?ix.arm.get(armyHero(x.id).advanced_arms_id)?.name||'ID 확인 필요':'상급 병종 미지정'),
+      (armyHero(x.id)?.arms_skill_ids||[]).length?line('병종 정통',(armyHero(x.id).arms_skill_ids||[]).map(id=>ix.prof.get(id)?.name||`#${id}`).join(' · ')):line('병종 정통','원본 미기재'))),
     createDeckGuideCards(h,displayGuideFor(t,{season:state.season}),{heading:'원본 추천덱 역할·스탯 가이드',emptyText:'이 시즌 추천덱에 확인된 역할·스탯 가이드가 없습니다. 다른 시즌의 지침은 자동 적용하지 않습니다.'}),
     p?h('p',{class:'muted-note',text:'초록은 보유, 취소선은 미보유입니다. 미보유 전법 칸은 비워서 불러옵니다.'}):null);
 }
@@ -1753,17 +1762,17 @@ $('report-heading').addEventListener('click',()=>{
 });
 
 /* ── 메뉴(해시 라우팅) ─────────────────────────────────── */
-let guideView=null,recommendationsView=null;
+let guideView=null,recommendationsView=null,plannerView=null;
 function parseRoute(){
   const raw=location.hash.replace(/^#/,'');
   if(!raw.startsWith('/'))return {view:'battle',parts:[]};
   const parts=raw.split('?')[0].split('/').filter(Boolean);
-  return {view:['battle','roster','guides','recommendations'].includes(parts[0])?parts[0]:'battle',parts:parts.slice(1)};
+  return {view:['battle','roster','guides','recommendations','planner'].includes(parts[0])?parts[0]:'battle',parts:parts.slice(1)};
 }
 async function route(){
   if(!state.data)return;
   const r=parseRoute();
-  for(const v of ['battle','roster','guides','recommendations'])$(`view-${v}`).hidden=v!==r.view;
+  for(const v of ['battle','roster','guides','recommendations','planner'])$(`view-${v}`).hidden=v!==r.view;
   document.querySelectorAll('.main-nav [data-nav]').forEach(a=>a.setAttribute('aria-current',a.dataset.nav===r.view?'page':'false'));
   document.body.dataset.view=r.view;
   try{
@@ -1774,8 +1783,11 @@ async function route(){
       if(!guideView){const mod=await import('./guide-view.js');guideView=await mod.createGuideView(guideCtx());}
       await guideView.show(r.parts);
     }else if(r.view==='recommendations'){
-      if(!recommendationsView){const mod=await import('./recommendations-view.js?v=1.4.3');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset});}
+      if(!recommendationsView){const mod=await import('./recommendations-view.js?v=1.4.5');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset});}
       await recommendationsView.show();
+    }else if(r.view==='planner'){
+      if(!plannerView){const mod=await import('./planner-view.js?v=1.4.5');plannerView=mod.createPlannerView({state,h,fill,ensurePresets,presetsData:()=>presets,poolSnapshot,readLineup,addTemplatesToLineup,notify});}
+      await plannerView.show();
     }
   }catch(error){notify(message(error),true);}
 }
