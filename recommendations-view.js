@@ -1,14 +1,23 @@
 import {displayGuideFor} from './deck-display-guides.js';
 import {createDeckGuideCards} from './deck-guide-cards.js';
-import {rosterKey,tierOf} from './planner-core.js';
+import {rosterKey,tierOf,fitCandidate,buildCandidates} from './planner-core.js';
+import {familyName,mentionsOfDeck,matchupTargets,countersForTarget} from './matchup-explorer.js';
 const SOURCES={presets:'기존 추천덱',s2:'한국 S2 참고 편성',s3:'한국 S3 세팅'};
 const stringify=x=>String(x??'').replace(/\s+/g,'').toLocaleLowerCase('ko');
 const present=x=>Array.isArray(x)?x.filter(Boolean).join(' · '):String(x??'');
 const text=x=>String(x??'').trim();
-export function createRecommendationsView({state,h,fill,ensurePresets,presetsData,openPreset}){
+export function createRecommendationsView({state,h,fill,ensurePresets,presetsData,openPreset,poolSnapshot,saveRecommendedDeck,saveReferenceDraft,notify}){
   const $=id=>document.getElementById(id);
   let source='presets',season=state.season,lastEditorSeason=state.season,role='all',query='',guided=false,selection=null;
   let s2=null,s3=null,matchups=null,loaded=false,detailOpened=false,savedScrollY=0,priorFocusId=null;
+  let matchupTarget='',shortlistOnly=false;
+  const detailHistory=[];
+  const SAVED_KEY='cheonha-matchup-shortlist-v1';
+  const savedCandidates=()=>{try{return JSON.parse(localStorage.getItem(SAVED_KEY)||'[]').filter(x=>x?.id&&x?.season);}catch{return [];}};
+  function writeSaved(rows){try{localStorage.setItem(SAVED_KEY,JSON.stringify(rows));return true;}catch{notify('이 기기에서 후보 목록을 저장하지 못했습니다.',true);return false;}}
+  const savedHas=id=>savedCandidates().some(x=>x.id===id&&x.season===season&&x.source===source);
+  function toggleSaved(row){const rows=savedCandidates(),idx=rows.findIndex(x=>x.id===row.id&&x.season===season);if(idx>=0)rows.splice(idx,1);else rows.push({id:row.id,season,source,title:row.title});if(writeSaved(rows)){notify(idx>=0?'대응 후보에서 제외했습니다.':'내 덱 후보에 담았습니다.');render();}}
+  const savedSet=()=>new Set(savedCandidates().filter(x=>x.season===season&&x.source===source).map(x=>x.id));
   const expanded=new Set();
   const sourceButtons=[...$('rec-source').querySelectorAll('button')],seasonButtons=[...$('rec-seasons').querySelectorAll('button')];
   const sourceAllowed=value=>value==='presets'||(value==='s2'&&season===2)||(value==='s3'&&season===3);
@@ -28,6 +37,7 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
   }
   const matchupFor=row=>source==='s3'?(matchups?.items?.[row.id]||null):null;
   const allRows=()=>toRows().map(row=>({...row,guide:guideFor(row),matchup:matchupFor(row)})).filter(row=>{
+    if(shortlistOnly&&!savedSet().has(row.id))return false;
     if(role!=='all'&&!row.guide.members.some(m=>m.roles.includes(role)))return false;
     if(guided&&!row.guide.has_guidance)return false;
     return !query||terms(row,row.guide).includes(stringify(query));
@@ -109,11 +119,79 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
       h('p',{class:'rec-source-description',text:'슬래시(/)·선택지는 원문 대안입니다. 미확정 병법과 등급 선택은 그대로 표시하며 자동 확정하지 않습니다. 원문 표시 순서는 실제 슬롯/전후열 근거가 아닙니다.'}),...sections,
       t.notes?.length?h('details',{class:'rec-source-notes'},h('summary',{text:`원본 운용·상성 메모 (${t.notes.length})`}),...t.notes.map(n=>h('p',{text:n}))):null);
   }
+  function candidateFit(variant){
+    const pool=poolSnapshot();
+    const built=buildCandidates({season:3,presets:[],s2:[],s3:[variant]})[0];
+    return fitCandidate(built,{heroes:new Set(pool.heroes),tactics:new Set(pool.tactics)});
+  }
+  function matchupBrowser(row){
+    if(season!==3||source!=='s3')return null;
+    const targets=matchupTargets(matchups?.items);
+    const mentions=mentionsOfDeck(row.raw,s3?.variants,matchups?.items);
+    const direct=matchupFor(row);
+    const buttons=(items,kind)=>items.map(({variant,condition,relation,target})=>{
+      const fit=candidateFit(variant);
+      const type=relation||'good';
+      const message=kind==='mention'?type==='good'?'다른 세팅이 이 덱에 유리하다는 원문':type==='bad'?'다른 세팅이 이 덱에 불리하다는 원문':type==='even'?'비등 원문':'상대 메모에 언급 · 우열 미확정':'이 상대 유형에 유리하다는 원문';
+      return h('article',{class:'rec-counter-card'},
+        h('div',{class:'rec-counter-main'},h('b',{text:variant.label}),
+          h('small',{text:message}),
+          target?h('small',{class:'rec-counter-condition',text:`${target}${condition?' · '+condition:''}`}):null,
+          h('span',{class:'rec-counter-own',text:`보유 장수 ${fit.ownedHeroes}/3 · 대체 전법 ${fit.matchedSkills}/${fit.candidate.skillSlots.length}`})),
+        h('div',{class:'rec-counter-actions'},
+          h('button',{type:'button',class:'ghost-btn small',dataset:{recJump:variant.id},text:'세팅 자세히'}),
+          h('button',{type:'button',class:'ghost-btn small',dataset:{recSaveCandidate:variant.id},text:savedHas(variant.id)?'후보 해제':'내 덱 후보 담기'})));
+    });
+    const selectedTarget=targets.find(x=>x.key===matchupTarget);
+    const matching=selectedTarget?countersForTarget(selectedTarget.target,s3?.variants,matchups?.items):[];
+    const directHint=(direct?.good||[]).map(e=>e.target);
+    return h('section',{class:'rec-counter-explorer',id:'rec-counter-explorer'},
+      h('div',{class:'rec-counter-header'},h('h4',{text:'상성으로 대응덱 찾기'}),h('small',{text:'S3 세팅 원문 기준'})),
+      h('p',{class:'rec-counter-note',text:'직접 유·불리, 다른 세팅의 관련 언급, 상대 유형별 카운터를 구분합니다. 유형에 유리하다고 기록돼도 그 유형의 모든 개별 덱에 대한 승률을 보장하지 않습니다.'}),
+      !direct?.good?.length&&!direct?.bad?.length&&!direct?.even?.length?
+        h('p',{class:'rec-counter-unknown',text:'선택한 세팅의 직접 유·불리 원문은 없습니다. 아래 관련 언급이나 유형별 카운터를 참고하세요.'}):null,
+      mentions.length?h('div',{class:'rec-counter-section'},h('h5',{text:`다른 세팅에서 '${familyName(row.raw)}' 언급 (${mentions.length})`}),...buttons(mentions,'mention')):
+        h('p',{class:'rec-counter-none',text:'다른 세팅에서 이 덱 이름을 직접 언급한 상성 기록도 없습니다.'}),
+      h('div',{class:'rec-counter-section'},
+        h('h5',{text:'상대 유형을 골라 유리한 세팅 찾기'}),
+        h('label',{class:'rec-counter-select-label'},'상대 유형',h('select',{class:'rec-counter-target-select','aria-label':'상대 유형 선택',onChange:e=>{
+          matchupTarget=e.currentTarget.value;
+          const scroll=$('rec-detail').scrollTop;details(row);$('rec-detail').scrollTop=scroll;
+        }},h('option',{value:'',text:'원문에 기재된 상대 유형 선택',selected:!selectedTarget}),
+          ...targets.map(t=>h('option',{value:t.key,text:`${t.target} (${t.count}개 세팅)`,selected:matchupTarget===t.key})))),
+        selectedTarget?h('div',{class:'rec-counter-results'},
+          h('p',{class:'rec-counter-note',text:`'${selectedTarget.target}'에 유리하다고 명시된 세팅 ${matching.length}개`}),
+          ...buttons(matching,'target')):
+          h('p',{class:'rec-counter-none',text:directHint.length?`이 덱의 유리 상대: ${directHint.join(' · ')}. 아래에서 상대 유형을 선택하면 그 유형을 잡는 덱을 탐색할 수 있습니다.`:'상대 유형을 탭하면 원문에 해당 유형을 카운터한다고 적힌 세팅만 모아 보여줍니다.'})),
+      h('div',{class:'rec-counter-footer'},
+        h('button',{type:'button',class:'ghost-btn small',dataset:{recSaveCandidate:row.id},text:savedHas(row.id)?'내 덱 후보에서 제거':'이 세팅을 내 덱 후보에 담기'}),
+        h('p',{class:'rec-counter-note',text:'후보 담기는 이 기기 브라우저에 참고 세팅을 보관합니다. 실제 배틀용 편성은 별도 검수가 필요합니다.'})));
+  }
+  function saveActions(row){
+    if(source==='s2')return h('div',{class:'rec-draft-save'},
+      h('p',{class:'rec-counter-note',text:'시즌2 티어 편성은 전법·전후열 미확정 자료라 배틀용 덱을 자동 생성하지 않습니다.'}),
+      h('button',{type:'button',class:'ghost-btn small',onClick:()=>toggleSaved(row),text:savedHas(row.id)?'내 덱 후보에서 제거':'내 덱 후보에 담기'}));
+    if(source==='presets')return h('div',{class:'rec-actions'},
+      h('button',{type:'button',class:'ghost-btn',onClick:()=>toggleSaved(row),text:savedHas(row.id)?'후보에서 제거':'내 덱 후보 담기'}),
+      h('button',{type:'button',class:'solid-btn',onClick:async()=>{try{await saveRecommendedDeck(row.raw);notify('원본 추천덱을 내 덱에 저장했습니다.');}catch(e){notify(e.message||String(e),true);}},text:'내 덱에 저장'}));
+    const eligible=row.raw.hero_roster_resolved&&row.raw.members.length===3;
+    return h('div',{class:'rec-draft-save'},
+      h('h4',{text:'내 덱에 편성 초안 저장'}),
+      h('p',{class:'rec-counter-note',text:'시즌3 참고 세팅은 전후열이 검증되지 않았습니다. 장수는 원문 표시 순서로 임시 배치하고, 보유한 단일 전법만 확정해 저장합니다. 병법·전법 대안·스탯·장비·말은 내 덱에서 직접 확인해야 합니다.'}),
+      h('label',{class:'rec-draft-check'},h('input',{type:'checkbox',class:'rec-draft-consent',disabled:!eligible}), '임시 배치·미완성 초안임을 확인했습니다.'),
+      h('button',{type:'button',class:'solid-btn',disabled:!eligible,onClick:async e=>{
+        const box=e.currentTarget.closest('.rec-draft-save');
+        if(!box.querySelector('.rec-draft-consent')?.checked){notify('초안 저장 안내를 확인해 주세요.',true);return;}
+        e.currentTarget.disabled=true;
+        try{const result=await saveReferenceDraft(row.raw);notify(result);}catch(error){notify(error.message||String(error),true);}finally{e.currentTarget.disabled=false;}
+      },text:eligible?'내 덱에 검수용 초안 저장':'무장 ID 미확정 · 저장 불가'}));
+  }
   function details(row){
     const host=$('rec-detail');if(!row){fill(host,h('p',{class:'rec-guide-empty',text:'조건에 해당하는 덱이 없습니다. 필터를 조정해 주세요.'}));return;}
     const t=row.raw,common=[h('div',{class:'rec-detail-head'},
       h('div',{class:'rec-detail-title'},h('small',{text:`한국 S${season} · ${SOURCES[source]}`}),h('h3',{id:'rec-detail-title',text:row.title})),
       h('button',{class:'rec-detail-close',type:'button','aria-label':'추천덱 상세 닫기',text:'닫기 ×'}))];
+    if(detailHistory.length)common.push(h('button',{type:'button',class:'rec-counter-back',dataset:{recBack:'1'},text:`← ${detailHistory.at(-1).title}로 돌아가기`}));
     if(source==='presets'){
       common.push(h('p',{class:'muted-note',text:`한국 S${t.season} 전용 · ${row.subtitle} · 배틀 편집 시즌 S${state.season}`}),
         h('div',{class:'rec-roster'},...(t.heroes||[]).map(x=>h('div',{class:'rec-roster-member'},h('b',{text:x.name}),h('small',{text:present(x.learned_tactics?.map(y=>y.name))||'전법 미기재'})))),
@@ -128,7 +206,8 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
         h('div',{class:'rec-roster'},...(t.members||[]).map(m=>h('span',{class:'rec-roster-member',text:m.general}))),
         referenceExtra(t));
     }
-    common.splice(2,0,matchDetail(row));
+    common.splice(2,0,matchDetail(row),matchupBrowser(row));
+    common.push(saveActions(row));
     common.push(createDeckGuideCards(h,row.guide,{heading:'무장별 역할 · 스탯 우선순위',emptyText:'이 시즌에 명시된 역할·스탯 지침이 없습니다.'}));
     const url=source==='s2'?t.source_url:source==='s3'?t.evidence?.[0]?.url:null;
     if(url&&/^https:\/\/docs\.google\.com\//.test(url))common.push(h('p',{class:'rec-source-link'},h('a',{href:url,target:'_blank',rel:'noopener noreferrer',text:'원본 시트 보기 ↗'})));
@@ -136,7 +215,7 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
   }
   function closeDetail(restoreFocus=true){
     if(!detailOpened)return;
-    detailOpened=false;
+    detailOpened=false;detailHistory.length=0;
     const box=$('rec-detail'),back=$('rec-backdrop');
     box.hidden=true;box.classList.remove('is-open');back.hidden=true;
     document.body.classList.remove('rec-modal-active');document.body.style.top='';
@@ -178,6 +257,8 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
       '시즌3은 같은 장수 3명도 서로 다른 세팅으로 관리합니다. 전법 대안·병법·병종·장비·말 원문을 각 세팅에 표시합니다.';
     const rows=allRows(),selected=selectRow(rows),groups=grouping(rows);
     $('rec-count').textContent=`한국 S${season} · ${SOURCES[source]} · ${groups.length}개 장수 조합 / ${rows.length}개 세팅`;
+    $('rec-shortlist').textContent=`현재 자료 후보 ${savedCandidates().filter(x=>x.season===season&&x.source===source).length}개`;
+    $('rec-shortlist').setAttribute('aria-pressed',String(shortlistOnly));
     const activeKey=selected?keyFor(selected):null;
     fill($('rec-list'),groups.length?groups.map((g,i)=>{
       const isOpen=query||expanded.has(g.key)||(!expanded.size&&g.key===activeKey);
@@ -212,13 +293,31 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
     if(state.season!==lastEditorSeason){lastEditorSeason=state.season;season=state.season;source='presets';selection=null;expanded.clear();closeDetail(false);}
     render();
   }
-  $('rec-seasons').addEventListener('click',e=>{const b=e.target.closest('[data-rec-season]');if(!b)return;season=Number(b.dataset.recSeason);source='presets';selection=null;expanded.clear();closeDetail(false);render();});
-  $('rec-source').addEventListener('click',e=>{const b=e.target.closest('[data-rec-source]');if(!b||!sourceAllowed(b.dataset.recSource))return;source=b.dataset.recSource;selection=null;expanded.clear();closeDetail(false);render();});
+  $('rec-seasons').addEventListener('click',e=>{const b=e.target.closest('[data-rec-season]');if(!b)return;season=Number(b.dataset.recSeason);source='presets';selection=null;expanded.clear();matchupTarget='';shortlistOnly=false;closeDetail(false);render();});
+  $('rec-source').addEventListener('click',e=>{const b=e.target.closest('[data-rec-source]');if(!b||!sourceAllowed(b.dataset.recSource))return;source=b.dataset.recSource;selection=null;expanded.clear();matchupTarget='';closeDetail(false);render();});
   $('rec-search').addEventListener('input',e=>{query=e.target.value;selection=null;expanded.clear();closeDetail(false);render();});
   $('rec-role').addEventListener('change',e=>{role=e.target.value;selection=null;expanded.clear();closeDetail(false);render();});
   $('rec-guided').addEventListener('change',e=>{guided=e.target.checked;selection=null;expanded.clear();closeDetail(false);render();});
+  $('rec-shortlist').addEventListener('click',()=>{shortlistOnly=!shortlistOnly;selection=null;expanded.clear();closeDetail(false);render();});
+  $('rec-detail').addEventListener('click',e=>{
+    const jump=e.target.closest('[data-rec-jump]');
+    if(jump){const dest=s3?.variants?.find(v=>v.id===jump.dataset.recJump);if(!dest)return;
+      const current=s3?.variants?.find(v=>v.id===selection);if(current)detailHistory.push({id:current.id,title:current.label});
+      source='s3';season=3;query='';$('rec-search').value='';role='all';$('rec-role').value='all';guided=false;$('rec-guided').checked=false;shortlistOnly=false;selection=dest.id;matchupTarget='';expanded.add(keyFor({raw:dest,heroes:dest.members.map(m=>m.general)}));render();$('rec-detail').scrollTop=0;return;}
+    const back=e.target.closest('[data-rec-back]');
+    if(back&&detailHistory.length){const previous=detailHistory.pop(),dest=s3?.variants?.find(v=>v.id===previous.id);if(!dest)return;selection=dest.id;matchupTarget='';render();$('rec-detail').scrollTop=0;return;}
+    const save=e.target.closest('[data-rec-save-candidate]');
+    if(save){const id=save.dataset.recSaveCandidate;
+      const variant=s3?.variants?.find(v=>v.id===id);
+      const preset=(presetsData()?.templates||[]).find(v=>v.id===id);
+      const found=variant||preset; if(!found)return;
+      toggleSaved({id,title:found.label||found.name||id});return;}
+    const target=e.target.closest('[data-rec-target]');
+    if(target){matchupTarget=target.dataset.recTarget==='__all__'?'':target.dataset.recTarget;
+      const saved=$('rec-detail').scrollTop;const id=selection;const rows=allRows();const row=rows.find(x=>x.id===id);if(row){details(row);$('rec-detail').scrollTop=saved;}return;}
+  });
   $('rec-list').addEventListener('click',e=>{const b=e.target.closest('[data-rec-id]');if(!b)return;
-    priorFocusId=b.dataset.recId;selection=b.dataset.recId;
+    priorFocusId=b.dataset.recId;selection=b.dataset.recId;matchupTarget='';detailHistory.length=0;
     expanded.add(b.closest('[data-group-key]').dataset.groupKey);render();openDetail();});
   $('rec-detail').addEventListener('click',e=>{if(e.target.closest('.rec-detail-close'))closeDetail();});
   $('rec-backdrop').addEventListener('click',()=>closeDetail());
