@@ -5,7 +5,7 @@ import {BattleApi,encodeArmyCode,decodeArmyCode} from './api-client.js';
 import {normalizeArmy} from './army-code.js';
 import {STAT_FIELDS,armFor,bookChoices,tacticChoices,validateArmy,previewHeroStats,migrateProgression,romanceFor,innateFor} from './editor.js';
 import {API_BASE_URL} from './config.js';
-import {loadRecommendedDecks,filterRecommendedDecks,displayGuideFor} from './recommended-decks.js?v=1.4.5';
+import {loadRecommendedDecks,filterRecommendedDecks,displayGuideFor} from './recommended-decks.js?v=1.4.5.1';
 import {createDeckGuideCards} from './deck-guide-cards.js';
 import {reviewArmyCoexistence} from './guide-content.js';
 import {encodePoolCode,decodePoolCode} from './pool-code.js';
@@ -1107,12 +1107,36 @@ function renderPresets(){
     if(!groups.has(key))groups.set(key,{key,names:row.t.heroes.map(x=>x.name),rows:[]});
     groups.get(key).rows.push(row);
   }
-  fill($('preset-list'),groups.size?[...groups.values()].map((g,i)=>h('details',{class:'preset-tree-group',open:g.rows.some(r=>r.t.id===presetSelection)||i===0},
-    h('summary',null,h('strong',{text:g.names.join(' · ')}),h('small',{text:`${g.rows.length}개 세팅`}),h('span',{text:'⌄'})),
-    h('div',{class:'preset-tree-children'},...g.rows.map(({t,p})=>h('button',{class:'preset-opt',type:'button',role:'option','aria-selected':String(t.id===presetSelection),dataset:{templateId:t.id}},
-      h('strong',{text:t.label}),
-      h('span',{class:'meta'},lineupIds.has(t.id)?h('span',{class:'tag in-lineup',text:'내 구성'}):null,p?fitTag(p):null,h('span',{class:'tag',text:seasonName(deckSeason(t))})))))))
-    :h('p',{class:'muted-note',text:'조건에 맞는 덱이 없습니다.'}'));
+  // UI 노드를 단계별로 생성해 긴 map/h 중첩 괄호에 의한 배포 파싱 오류를 방지한다.
+  const groupNodes=[];
+  let groupIndex=0;
+  for(const group of groups.values()){
+    const variants=[];
+    for(const {t,p} of group.rows){
+      const badges=[];
+      if(lineupIds.has(t.id))badges.push(h('span',{class:'tag in-lineup',text:'내 구성'}));
+      if(p)badges.push(fitTag(p));
+      badges.push(h('span',{class:'tag',text:seasonName(deckSeason(t))}));
+      variants.push(h('button',{
+        class:'preset-opt',type:'button',role:'option',
+        'aria-selected':String(t.id===presetSelection),
+        dataset:{templateId:t.id}
+      },h('strong',{text:t.label}),h('span',{class:'meta'},...badges)));
+    }
+    const heading=h('summary',null,
+      h('strong',{text:group.names.join(' · ')}),
+      h('small',{text:`${group.rows.length}개 세팅`}),
+      h('span',{text:'⌄'}));
+    const children=h('div',{class:'preset-tree-children'},...variants);
+    groupNodes.push(h('details',{
+      class:'preset-tree-group',
+      open:group.rows.some(row=>row.t.id===presetSelection)||groupIndex===0
+    },heading,children));
+    groupIndex++;
+  }
+  fill($('preset-list'),groupNodes.length?groupNodes:h('p',{
+    class:'muted-note',text:'조건에 맞는 덱이 없습니다.'
+  }));
   renderPresetPreview();
 }
 function renderPresetPreview(){
@@ -1783,10 +1807,10 @@ async function route(){
       if(!guideView){const mod=await import('./guide-view.js');guideView=await mod.createGuideView(guideCtx());}
       await guideView.show(r.parts);
     }else if(r.view==='recommendations'){
-      if(!recommendationsView){const mod=await import('./recommendations-view.js?v=1.4.5');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset});}
+      if(!recommendationsView){const mod=await import('./recommendations-view.js?v=1.4.5.1');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset});}
       await recommendationsView.show();
     }else if(r.view==='planner'){
-      if(!plannerView){const mod=await import('./planner-view.js?v=1.4.5');plannerView=mod.createPlannerView({state,h,fill,ensurePresets,presetsData:()=>presets,poolSnapshot,readLineup,addTemplatesToLineup,notify});}
+      if(!plannerView){const mod=await import('./planner-view.js?v=1.4.5.1');plannerView=mod.createPlannerView({state,h,fill,ensurePresets,presetsData:()=>presets,poolSnapshot,readLineup,addTemplatesToLineup,notify});}
       await plannerView.show();
     }
   }catch(error){notify(message(error),true);}
