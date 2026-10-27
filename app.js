@@ -5,10 +5,11 @@ import {BattleApi,encodeArmyCode,decodeArmyCode} from './api-client.js';
 import {normalizeArmy} from './army-code.js';
 import {STAT_FIELDS,armFor,bookChoices,tacticChoices,validateArmy,previewHeroStats,migrateProgression,romanceFor,innateFor} from './editor.js';
 import {API_BASE_URL} from './config.js';
-import {loadRecommendedDecks,filterRecommendedDecks,displayGuideFor} from './recommended-decks.js?v=1.4.8';
+import {loadRecommendedDecks,filterRecommendedDecks,displayGuideFor} from './recommended-decks.js?v=1.4.9';
 import {createDeckGuideCards} from './deck-guide-cards.js';
 import {reviewArmyCoexistence} from './guide-content.js';
 import {encodePoolCode,decodePoolCode} from './pool-code.js';
+import {PROJECTIONS,isProjection} from './planner-core.js?v=1.4.9';
 
 /* ── 기본 도구 ─────────────────────────────────────────── */
 const $=id=>document.getElementById(id);
@@ -31,7 +32,7 @@ function h(tag,attrs,...kids){
     if(k==='class')el.className=v;
     else if(k==='text')el.textContent=v;
     else if(k==='dataset')Object.assign(el.dataset,v);
-    else if(k.startsWith('on')&&typeof v==='function')el.addEventListener(k.slice(2),v);
+    else if(k.startsWith('on')&&typeof v==='function')el.addEventListener(k.slice(2).toLowerCase(),v);
     else if(PROPS.has(k))el[k]=v;
     else el.setAttribute(k,v===true?'':String(v));
   }
@@ -108,7 +109,7 @@ const decks={
     const list=this.all();
     if(base)list.forEach(d=>{if(d.season===(meta.season||state.season))d.base=false;});
     const id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-    list.push({id,name:(name||'').trim().slice(0,80)||'이름 없는 덱',season:meta.season||state.season,army:clone(army),base,updated:Date.now(),...(meta.review_required?{review_required:true,reference_id:meta.reference_id||null}: {})});
+    list.push({id,name:(name||'').trim().slice(0,80)||'이름 없는 덱',season:meta.season||state.season,army:army==null?null:clone(army),base,updated:Date.now(),...(meta.review_required?{review_required:true,reference_id:meta.reference_id||null}: {}),...(meta.planning_draft?{planning_draft:clone(meta.planning_draft)}:{})});
     this.write(list);return id;
   },
   update(id,patch){
@@ -164,6 +165,15 @@ async function saveReferenceDraft(v){
 }
 async function saveCandidateDraft(fit){
   const c=fit?.candidate;if(!c)throw new Error('저장할 추천 후보가 없습니다.');
+  if(!fit.complete||c.heroes.length!==3||c.kind==='s2-ref'){
+    // 실제 배틀 스키마에 가짜 hero ID를 대입하지 않는다. 결손 칸은 별도 계획 초안으로만 저장.
+    const taken=new Set(fit.usedHeroes||[]);const slots=(c.heroNames||[]).map((name,i)=>{
+      const id=Number(c.heroes[i]);return {hero_id:taken.has(id)?id:null,name,owned:taken.has(id),
+        tactics:(fit.selected||[]).filter(x=>x.hero===name).map(x=>({slot:x.slot,id:x.chosen?.id??null,name:x.chosen?.name||null,projection:!!x.chosen?.projection}))};});
+    const season=c.kind==='s2-ref'?2:c.kind==='s3-ref'?3:Number(c.template?.season??state.season);
+    decks.add(`[계획] ${c.title}`,null,false,{season,review_required:true,reference_id:c.id,planning_draft:{slots,source:c.kind,missing_heroes:3-fit.ownedHeroes,missing_tactics:fit.missingSlots}});
+    updateRosterCounts();return `${c.title}의 빈칸 포함 계획 초안을 저장했습니다.`;
+  }
   if(c.kind==='s3-ref'&&c.variant)return saveReferenceDraftFromFit(c.variant,fit.selected||[]);
   if(c.kind==='preset'&&c.template){
     const t=c.template;const season=Number(t.season??t.source_kr_season??state.season);
@@ -175,6 +185,7 @@ async function saveCandidateDraft(fit){
       const name=t.heroes?.find(x=>x.id===hero.hero_id)?.name||state.idx?.hero.get(hero.hero_id)?.name||'';
       const keys=[...perHero.keys()].filter(k=>k.startsWith(`${name}::`)).sort((a,b)=>Number(a.split('::')[1])-Number(b.split('::')[1]));
       hero.learned=keys.map(k=>({skill_id:Number(perHero.get(k)),level:10,breakthrough:null,grade:0}));
+      hero.warbook_slots=[];hero.advanced_arms_id=null;hero.arms_skill_ids=[];hero.equipment_item_id=null;hero.horse_item_id=null;hero.equipment_loadout=[];hero.horse_loadout=null;
     }
     loadable(data,army);
     decks.add(army.name,army,false,{season,review_required:true});
@@ -206,7 +217,7 @@ async function saveReferenceDraftFromFit(v,selected){
     x.horse={might:0,intelligence:0,defence:0,speed:0};x.total_stats=null;
     for(const choice of m.learned_choices||[]){
       const chosenId=selectedMap.get(`${m.general}::${choice.slot}`);
-      if(chosenId&&ix.tactic.has(chosenId)&&myPool.tactics.has(chosenId)&&!usedTactics.has(chosenId)){
+      if(chosenId&&ix.tactic.has(chosenId)&&(myPool.tactics.has(chosenId)||(isProjection(chosenId)&&PROJECTIONS.some(p=>p.shadow===chosenId&&myPool.tactics.has(p.base))))&&!usedTactics.has(chosenId)){
         x.learned.push({skill_id:chosenId,level:10,breakthrough:null,grade:0});usedTactics.add(chosenId);usedCount++;continue;
       }
     }
@@ -1342,6 +1353,17 @@ function renderDecksView(){
   if(!list.length){fill(host,help,h('div',{class:'empty-box'},h('p',{text:'저장한 덱이 없습니다.'}),rosterLink('presets','추천덱에서 가져오기','solid-btn small')));return;}
   const btn=(text,act,id,cls='ghost-btn small')=>h('button',{type:'button',class:cls,dataset:{deckAct:act,id},text});
   fill(host,help,h('div',{class:'deck-list'},list.map(d=>{
+    if(d.planning_draft){
+      const plan=d.planning_draft;
+      return h('article',{class:'deck-item planning-draft'},
+        h('div',{class:'top'},h('strong',{text:d.name}),h('span',{class:'tag warn',text:'빈칸 포함 · 계획 초안'})),
+        h('p',{class:'muted-note',text:`장수 빈칸 ${plan.missing_heroes}명 · 전법 빈칸 ${plan.missing_tactics}개. 실제 편성 데이터가 아니므로 배틀에 바로 불러올 수 없습니다.`}),
+        ...plan.slots.map((slot,i)=>h('div',{class:'planning-draft-row'},
+          h('strong',{text:`${i+1}번 · ${slot.owned?slot.name:'빈칸'}`}),
+          !slot.owned?h('small',{text:`필요 무장: ${slot.name}`}):null,
+          ...(slot.tactics||[]).map(t=>h('span',{class:'muted-note',text:`전법${t.slot}: ${t.name||'빈칸'}${t.projection?' (투영)':''}`})))),
+        h('div',{class:'deck-actions'},btn(pendingDeck[d.id]?'한 번 더 누르면 삭제':'초안 삭제','delete',d.id,'ghost-btn small danger')));
+    }
     const ids=orderedHeroIds(d.army);
     return h('div',{class:'deck-item'+(d.base?' is-base':'')},
       h('div',{class:'top'},h('strong',{text:d.name}),d.base?h('span',{class:'tag legend',text:'★ 기본 편성'}):null),
@@ -1380,7 +1402,7 @@ $('deck-save-form').onsubmit=e=>{
 $('deck-list').onclick=e=>{
   const b=e.target.closest('[data-deck-act="overwrite"]');if(!b)return;const id=b.dataset.id,d=decks.all().find(x=>x.id===id);if(!d)return;
   if(!pending[id]){Object.keys(pending).forEach(k=>delete pending[k]);pending[id]=true;renderDeckSave();return;}
-  try{validateArmy(state.data,state.armies[deckSide]);decks.update(id,{army:clone(state.armies[deckSide]),review_required:false});$('deck-dialog').close();render();notify(`'${d.name}'을(를) 지금 편성으로 덮어썼습니다.`);}
+  try{validateArmy(state.data,state.armies[deckSide]);decks.update(id,{army:clone(state.armies[deckSide]),review_required:false,planning_draft:null});$('deck-dialog').close();render();notify(`'${d.name}'을(를) 지금 편성으로 덮어썼습니다.`);}
   catch(err){notify(message(err),true);}
 };
 
@@ -1913,13 +1935,13 @@ async function route(){
       if(!guideView){const mod=await import('./guide-view.js');guideView=await mod.createGuideView(guideCtx());}
       await guideView.show(r.parts);
     }else if(r.view==='recommendations'){
-      if(!recommendationsView){const mod=await import('./recommendations-view.js?v=1.4.8');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset,poolSnapshot,saveRecommendedDeck,saveReferenceDraft,notify});}
+      if(!recommendationsView){const mod=await import('./recommendations-view.js?v=1.4.9');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset,poolSnapshot,saveRecommendedDeck,saveReferenceDraft,notify});}
       await recommendationsView.show();
     }else if(r.view==='planner'){
-      if(!plannerView){const mod=await import('./planner-view.js?v=1.4.8');plannerView=mod.createPlannerView({state,h,fill,ensurePresets,presetsData:()=>presets,poolSnapshot,readLineup,addTemplatesToLineup,savePlanDrafts,notify});}
+      if(!plannerView){const mod=await import('./planner-view.js?v=1.4.9');plannerView=mod.createPlannerView({state,h,fill,ensurePresets,presetsData:()=>presets,poolSnapshot,readLineup,addTemplatesToLineup,savePlanDrafts,notify});}
       await plannerView.show();
     }else if(r.view==='matchups'){
-      if(!matchupBoardView){const mod=await import('./matchup-board-view.js?v=1.4.8');matchupBoardView=mod.createMatchupBoardView({h,fill,notify});}
+      if(!matchupBoardView){const mod=await import('./matchup-board-view.js?v=1.4.9');matchupBoardView=mod.createMatchupBoardView({h,fill,notify});}
       await matchupBoardView.show();
     }
   }catch(error){notify(message(error),true);}

@@ -1,0 +1,1835 @@
+{
+  "schema_version": "1.0.0",
+  "season": 3,
+  "description": "S3 탐색기/5군 입력의 단일 참조 인덱스. 원본 편성이나 세팅 값의 중복 사본이 아니며 id로 원본 파일을 조회한다.",
+  "source_counts": {
+    "preset": 6,
+    "s3-reference": 90
+  },
+  "items": [
+    {
+      "id": "s3-family-d8db534e21f0-roster-83001281a1f2-setup-3021780457",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 1",
+      "family": "원화궁",
+      "heroes": [
+        "연의 원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-83001281a1f2-setup-c6929e2de6",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 2",
+      "family": "원화궁",
+      "heroes": [
+        "연의 원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-83001281a1f2-setup-231b79167f",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 3",
+      "family": "원화궁",
+      "heroes": [
+        "연의 원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-83001281a1f2-setup-2634a0e002",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 4",
+      "family": "원화궁",
+      "heroes": [
+        "연의 원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-83001281a1f2-setup-6e600cf96d",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 5",
+      "family": "원화궁",
+      "heroes": [
+        "연의 원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-83001281a1f2-setup-79fccf3e60",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 6",
+      "family": "원화궁",
+      "heroes": [
+        "연의 원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-83001281a1f2-setup-8e3fa2debd",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 7",
+      "family": "원화궁",
+      "heroes": [
+        "연의 원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-83001281a1f2-setup-8ea6028507",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 8",
+      "family": "원화궁",
+      "heroes": [
+        "연의 원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-83001281a1f2-setup-b39d6e4f89",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 9",
+      "family": "원화궁",
+      "heroes": [
+        "연의 원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-83001281a1f2-setup-cc3aeead82",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 10",
+      "family": "원화궁",
+      "heroes": [
+        "연의 원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-83001281a1f2-setup-e5285f1981",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 11",
+      "family": "원화궁",
+      "heroes": [
+        "연의 원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-83001281a1f2-setup-e6f97a5b67",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 12",
+      "family": "원화궁",
+      "heroes": [
+        "연의 원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-83001281a1f2-setup-f8c97f5848",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 13",
+      "family": "원화궁",
+      "heroes": [
+        "연의 원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-269ded1fc607-setup-efa84d7c55",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 1",
+      "family": "원화궁",
+      "heroes": [
+        "원소",
+        "손권",
+        "육손"
+      ],
+      "hero_ids": [
+        4004,
+        3000,
+        3008
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-d8db534e21f0-roster-7bb480d30aea-setup-91de20426d",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "원화궁 · 세팅 1",
+      "family": "원화궁",
+      "heroes": [
+        "육손",
+        "연의 원소",
+        "좌자"
+      ],
+      "hero_ids": [
+        3008,
+        4004,
+        4012
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5564a37c1385-roster-72c601479849-setup-baf828ff81",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "북벌창 · 세팅 1",
+      "family": "북벌창",
+      "heroes": [
+        "강유",
+        "유비",
+        "SP제갈량"
+      ],
+      "hero_ids": [
+        2021,
+        2000,
+        2022
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5564a37c1385-roster-72c601479849-setup-1774416ea3",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "북벌창 · 세팅 2",
+      "family": "북벌창",
+      "heroes": [
+        "강유",
+        "유비",
+        "SP제갈량"
+      ],
+      "hero_ids": [
+        2021,
+        2000,
+        2022
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5564a37c1385-roster-72c601479849-setup-7a415759da",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "북벌창 · 세팅 3",
+      "family": "북벌창",
+      "heroes": [
+        "강유",
+        "SP제갈량",
+        "유비"
+      ],
+      "hero_ids": [
+        2021,
+        2022,
+        2000
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5564a37c1385-roster-72c601479849-setup-0a26f0141f",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "북벌창 · 세팅 4",
+      "family": "북벌창",
+      "heroes": [
+        "강유",
+        "유비",
+        "SP제갈량"
+      ],
+      "hero_ids": [
+        2021,
+        2000,
+        2022
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5564a37c1385-roster-72c601479849-setup-0ac8babb25",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "북벌창 · 세팅 5",
+      "family": "북벌창",
+      "heroes": [
+        "SP제갈량",
+        "강유",
+        "유비"
+      ],
+      "hero_ids": [
+        2022,
+        2021,
+        2000
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5564a37c1385-roster-72c601479849-setup-a86bd965d9",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "북벌창 · 세팅 6",
+      "family": "북벌창",
+      "heroes": [
+        "강유",
+        "SP제갈량",
+        "유비"
+      ],
+      "hero_ids": [
+        2021,
+        2022,
+        2000
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5564a37c1385-roster-72c601479849-setup-d1fc9619a0",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "북벌창 · 세팅 7",
+      "family": "북벌창",
+      "heroes": [
+        "강유",
+        "유비",
+        "SP제갈량"
+      ],
+      "hero_ids": [
+        2021,
+        2000,
+        2022
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5564a37c1385-roster-72c601479849-setup-fbf7dfcfa3",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "북벌창 · 세팅 8",
+      "family": "북벌창",
+      "heroes": [
+        "유비",
+        "강유",
+        "SP제갈량"
+      ],
+      "hero_ids": [
+        2000,
+        2021,
+        2022
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5564a37c1385-roster-752fd1050782-setup-19d0f4d31f",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "북벌창 · 세팅 1",
+      "family": "북벌창",
+      "heroes": [
+        "강유",
+        "SP제갈량",
+        "노숙"
+      ],
+      "hero_ids": [
+        2021,
+        2022,
+        3005
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-ab123cac7565-roster-0a2680f13a2b-setup-c9e0675275",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "악마제갈 · 세팅 1",
+      "family": "악마제갈",
+      "heroes": [
+        "마초",
+        "SP제갈량",
+        "악진"
+      ],
+      "hero_ids": [
+        2015,
+        2022,
+        1014
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-ab123cac7565-roster-0a2680f13a2b-setup-14cf2c4d13",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "악마제갈 · 세팅 2",
+      "family": "악마제갈",
+      "heroes": [
+        "마초",
+        "SP제갈량",
+        "악진"
+      ],
+      "hero_ids": [
+        2015,
+        2022,
+        1014
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-ab123cac7565-roster-0a2680f13a2b-setup-55c65995b0",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "악마제갈 · 세팅 3",
+      "family": "악마제갈",
+      "heroes": [
+        "마초",
+        "SP제갈량",
+        "악진"
+      ],
+      "hero_ids": [
+        2015,
+        2022,
+        1014
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-ab123cac7565-roster-0a2680f13a2b-setup-5ac74f3982",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "악마제갈 · 세팅 4",
+      "family": "악마제갈",
+      "heroes": [
+        "마초",
+        "SP제갈량",
+        "악진"
+      ],
+      "hero_ids": [
+        2015,
+        2022,
+        1014
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-ab123cac7565-roster-0a2680f13a2b-setup-88188e61da",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "악마제갈 · 세팅 5",
+      "family": "악마제갈",
+      "heroes": [
+        "마초",
+        "SP제갈량",
+        "악진"
+      ],
+      "hero_ids": [
+        2015,
+        2022,
+        1014
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-ab123cac7565-roster-0a2680f13a2b-setup-96772847d7",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "악마제갈 · 세팅 6",
+      "family": "악마제갈",
+      "heroes": [
+        "마초",
+        "SP제갈량",
+        "악진"
+      ],
+      "hero_ids": [
+        2015,
+        2022,
+        1014
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-ab123cac7565-roster-43a1d963344c-setup-473bb0f339",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "악마제갈 · 세팅 1",
+      "family": "악마제갈",
+      "heroes": [
+        "마초",
+        "제갈량",
+        "악진"
+      ],
+      "hero_ids": [
+        2015,
+        2003,
+        1014
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-355ee59f5d0d-roster-93e2005a3a58-setup-8215fbedf5",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "공손마마 · 세팅 1",
+      "family": "공손마마",
+      "heroes": [
+        "마운록",
+        "연의 공손찬",
+        "마등"
+      ],
+      "hero_ids": [
+        2013,
+        4021,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-355ee59f5d0d-roster-93e2005a3a58-setup-7b9886330a",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "공손마마 · 세팅 2",
+      "family": "공손마마",
+      "heroes": [
+        "마운록",
+        "연의 공손찬",
+        "마등"
+      ],
+      "hero_ids": [
+        2013,
+        4021,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-355ee59f5d0d-roster-93e2005a3a58-setup-a48b97bd4a",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "공손마마 · 세팅 3",
+      "family": "공손마마",
+      "heroes": [
+        "연의 공손찬",
+        "마운록",
+        "마등"
+      ],
+      "hero_ids": [
+        4021,
+        2013,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-355ee59f5d0d-roster-93e2005a3a58-setup-a82a493eb1",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "공손마마 · 세팅 4",
+      "family": "공손마마",
+      "heroes": [
+        "연의 공손찬",
+        "마운록",
+        "마등"
+      ],
+      "hero_ids": [
+        4021,
+        2013,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-355ee59f5d0d-roster-93e2005a3a58-setup-e401f78ffc",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "공손마마 · 세팅 5",
+      "family": "공손마마",
+      "heroes": [
+        "연의 공손찬",
+        "마운록",
+        "마등"
+      ],
+      "hero_ids": [
+        4021,
+        2013,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-8055357ca335-roster-2ec66595a22b-setup-24e0ae6e2e",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "조순이 · 세팅 1",
+      "family": "조순이",
+      "heroes": [
+        "조조",
+        "순욱",
+        "왕이"
+      ],
+      "hero_ids": [
+        1000,
+        1008,
+        1020
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-8055357ca335-roster-2ec66595a22b-setup-98aaa2c487",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "조순이 · 세팅 2",
+      "family": "조순이",
+      "heroes": [
+        "조조",
+        "순욱",
+        "왕이"
+      ],
+      "hero_ids": [
+        1000,
+        1008,
+        1020
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-8055357ca335-roster-2ec66595a22b-setup-268e9512dd",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "조순이 · 세팅 3",
+      "family": "조순이",
+      "heroes": [
+        "조조",
+        "순욱",
+        "왕이"
+      ],
+      "hero_ids": [
+        1000,
+        1008,
+        1020
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-8055357ca335-roster-2ec66595a22b-setup-5cc8143ac3",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "조순이 · 세팅 4",
+      "family": "조순이",
+      "heroes": [
+        "조조",
+        "순욱",
+        "왕이"
+      ],
+      "hero_ids": [
+        1000,
+        1008,
+        1020
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-363c608abae2-roster-c5737c45e2a5-setup-b91a71fd37",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "요연기 · 세팅 1",
+      "family": "요연기",
+      "heroes": [
+        "하후연",
+        "연의 장료",
+        "마등"
+      ],
+      "hero_ids": [
+        1016,
+        4001,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-363c608abae2-roster-c5737c45e2a5-setup-1c66efa823",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "요연기 · 세팅 2",
+      "family": "요연기",
+      "heroes": [
+        "하후연",
+        "연의 장료",
+        "마등"
+      ],
+      "hero_ids": [
+        1016,
+        4001,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-363c608abae2-roster-c5737c45e2a5-setup-1aefe3eae9",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "요연기 · 세팅 3",
+      "family": "요연기",
+      "heroes": [
+        "하후연",
+        "연의 장료",
+        "마등"
+      ],
+      "hero_ids": [
+        1016,
+        4001,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-363c608abae2-roster-c5737c45e2a5-setup-25f7d6ebc0",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "요연기 · 세팅 4",
+      "family": "요연기",
+      "heroes": [
+        "하후연",
+        "연의 장료",
+        "마등"
+      ],
+      "hero_ids": [
+        1016,
+        4001,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-363c608abae2-roster-c5737c45e2a5-setup-4bd2a16639",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "요연기 · 세팅 5",
+      "family": "요연기",
+      "heroes": [
+        "하후연",
+        "연의 장료",
+        "마등"
+      ],
+      "hero_ids": [
+        1016,
+        4001,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-363c608abae2-roster-c5737c45e2a5-setup-5c39793f13",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "요연기 · 세팅 6",
+      "family": "요연기",
+      "heroes": [
+        "하후연",
+        "연의 장료",
+        "마등"
+      ],
+      "hero_ids": [
+        1016,
+        4001,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-363c608abae2-roster-c5737c45e2a5-setup-b613b03f53",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "요연기 · 세팅 7",
+      "family": "요연기",
+      "heroes": [
+        "하후연",
+        "연의 장료",
+        "마등"
+      ],
+      "hero_ids": [
+        1016,
+        4001,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-363c608abae2-roster-c5737c45e2a5-setup-c177ec53a0",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "요연기 · 세팅 8",
+      "family": "요연기",
+      "heroes": [
+        "하후연",
+        "연의 장료",
+        "마등"
+      ],
+      "hero_ids": [
+        1016,
+        4001,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-363c608abae2-roster-c5737c45e2a5-setup-d73bd0e907",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "요연기 · 세팅 9",
+      "family": "요연기",
+      "heroes": [
+        "하후연",
+        "연의 장료",
+        "마등"
+      ],
+      "hero_ids": [
+        1016,
+        4001,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-759450824d6d-roster-22b1327a513d-setup-7e5b9b8c90",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "요공기 · 세팅 1",
+      "family": "요공기",
+      "heroes": [
+        "연의 공손찬",
+        "연의 장료",
+        "마등"
+      ],
+      "hero_ids": [
+        4021,
+        4001,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-759450824d6d-roster-22b1327a513d-setup-a7ceb61e19",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "요공기 · 세팅 2",
+      "family": "요공기",
+      "heroes": [
+        "연의 공손찬",
+        "연의 장료",
+        "마등"
+      ],
+      "hero_ids": [
+        4021,
+        4001,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-759450824d6d-roster-b3e1a55631c0-setup-a9498cbdbd",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "요공기 · 세팅 1",
+      "family": "요공기",
+      "heroes": [
+        "연의 공손찬",
+        "하후연",
+        "마등"
+      ],
+      "hero_ids": [
+        4021,
+        1016,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-b618fcbea8f1-roster-ea71ad6f5f07-setup-cc36a93379",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "인왕창 · 세팅 1",
+      "family": "인왕창",
+      "heroes": [
+        "조조",
+        "전위",
+        "연의 조인"
+      ],
+      "hero_ids": [
+        1000,
+        1002,
+        1024
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-b618fcbea8f1-roster-ea71ad6f5f07-setup-2424eac8ed",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "인왕창 · 세팅 2",
+      "family": "인왕창",
+      "heroes": [
+        "조조",
+        "전위",
+        "연의 조인"
+      ],
+      "hero_ids": [
+        1000,
+        1002,
+        1024
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-b618fcbea8f1-roster-ea71ad6f5f07-setup-52aa13ae2c",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "인왕창 · 세팅 3",
+      "family": "인왕창",
+      "heroes": [
+        "조조",
+        "전위",
+        "연의 조인"
+      ],
+      "hero_ids": [
+        1000,
+        1002,
+        1024
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-b618fcbea8f1-roster-ea71ad6f5f07-setup-5f8de2fa2e",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "인왕창 · 세팅 4",
+      "family": "인왕창",
+      "heroes": [
+        "조조",
+        "전위",
+        "연의 조인"
+      ],
+      "hero_ids": [
+        1000,
+        1002,
+        1024
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-b618fcbea8f1-roster-ea71ad6f5f07-setup-73b4d215fc",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "인왕창 · 세팅 5",
+      "family": "인왕창",
+      "heroes": [
+        "조조",
+        "전위",
+        "연의 조인"
+      ],
+      "hero_ids": [
+        1000,
+        1002,
+        1024
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-b618fcbea8f1-roster-ea71ad6f5f07-setup-ff31fd74fd",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "인왕창 · 세팅 6",
+      "family": "인왕창",
+      "heroes": [
+        "조조",
+        "전위",
+        "연의 조인"
+      ],
+      "hero_ids": [
+        1000,
+        1002,
+        1024
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-b618fcbea8f1-roster-1ad1d7d5651a-setup-b08c3b47df",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "인왕창 · 세팅 1",
+      "family": "인왕창",
+      "heroes": [
+        "조조",
+        "전위",
+        "조인"
+      ],
+      "hero_ids": [
+        1000,
+        1002,
+        1024
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5ff94f10db01-roster-527a9713beb2-setup-e0835337a8",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "준숭술 · 세팅 1",
+      "family": "준숭술",
+      "heroes": [
+        "원술",
+        "황보숭",
+        "주준"
+      ],
+      "hero_ids": [
+        4027,
+        null,
+        4007
+      ],
+      "hero_mapping_complete": false,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5ff94f10db01-roster-527a9713beb2-setup-349faeb1eb",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "준숭술 · 세팅 2",
+      "family": "준숭술",
+      "heroes": [
+        "주준",
+        "황보숭",
+        "원술"
+      ],
+      "hero_ids": [
+        4007,
+        null,
+        4027
+      ],
+      "hero_mapping_complete": false,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5ff94f10db01-roster-527a9713beb2-setup-0c56e2d65d",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "준숭술 · 세팅 3",
+      "family": "준숭술",
+      "heroes": [
+        "주준",
+        "황보숭",
+        "원술"
+      ],
+      "hero_ids": [
+        4007,
+        null,
+        4027
+      ],
+      "hero_mapping_complete": false,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5ff94f10db01-roster-527a9713beb2-setup-72133d0459",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "준숭술 · 세팅 4",
+      "family": "준숭술",
+      "heroes": [
+        "원술",
+        "황보숭",
+        "주준"
+      ],
+      "hero_ids": [
+        4027,
+        null,
+        4007
+      ],
+      "hero_mapping_complete": false,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5ff94f10db01-roster-527a9713beb2-setup-802721c120",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "준숭술 · 세팅 5",
+      "family": "준숭술",
+      "heroes": [
+        "주준",
+        "황보숭",
+        "원술"
+      ],
+      "hero_ids": [
+        4007,
+        null,
+        4027
+      ],
+      "hero_mapping_complete": false,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5ff94f10db01-roster-527a9713beb2-setup-c626bc1f36",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "준숭술 · 세팅 6",
+      "family": "준숭술",
+      "heroes": [
+        "원술",
+        "황보숭",
+        "주준"
+      ],
+      "hero_ids": [
+        4027,
+        null,
+        4007
+      ],
+      "hero_mapping_complete": false,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5ff94f10db01-roster-eda348361b93-setup-437cb904c5",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "준숭술 · 세팅 1",
+      "family": "준숭술",
+      "heroes": [
+        "원술",
+        "황보숭",
+        "가후"
+      ],
+      "hero_ids": [
+        4027,
+        null,
+        1004
+      ],
+      "hero_mapping_complete": false,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-a782df633183-roster-f8b01be4a9b9-setup-1ae9bc79d1",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "조감유 · 세팅 1",
+      "family": "조감유",
+      "heroes": [
+        "감부인",
+        "조운",
+        "강유"
+      ],
+      "hero_ids": [
+        2019,
+        2012,
+        2021
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-a782df633183-roster-f8b01be4a9b9-setup-2112d22646",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "조감유 · 세팅 2",
+      "family": "조감유",
+      "heroes": [
+        "감부인",
+        "조운",
+        "강유"
+      ],
+      "hero_ids": [
+        2019,
+        2012,
+        2021
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-a782df633183-roster-f8b01be4a9b9-setup-ae4e2867e5",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "조감유 · 세팅 3",
+      "family": "조감유",
+      "heroes": [
+        "감부인",
+        "조운",
+        "강유"
+      ],
+      "hero_ids": [
+        2019,
+        2012,
+        2021
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-a782df633183-roster-f8b01be4a9b9-setup-c18462f44c",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "조감유 · 세팅 4",
+      "family": "조감유",
+      "heroes": [
+        "감부인",
+        "조운",
+        "강유"
+      ],
+      "hero_ids": [
+        2019,
+        2012,
+        2021
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-a782df633183-roster-f8b01be4a9b9-setup-cca51c64e8",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "조감유 · 세팅 5",
+      "family": "조감유",
+      "heroes": [
+        "감부인",
+        "조운",
+        "강유"
+      ],
+      "hero_ids": [
+        2019,
+        2012,
+        2021
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-a782df633183-roster-f8b01be4a9b9-setup-cfe2e1705a",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "조감유 · 세팅 6",
+      "family": "조감유",
+      "heroes": [
+        "감부인",
+        "조운",
+        "강유"
+      ],
+      "hero_ids": [
+        2019,
+        2012,
+        2021
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-92b5dacd8b77-roster-07271086b873-setup-bc78f9bdda",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "조감태 · 세팅 1",
+      "family": "조감태",
+      "heroes": [
+        "감부인",
+        "조운",
+        "주태"
+      ],
+      "hero_ids": [
+        2019,
+        2012,
+        3014
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-92b5dacd8b77-roster-07271086b873-setup-2ce102b33f",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "조감태 · 세팅 2",
+      "family": "조감태",
+      "heroes": [
+        "감부인",
+        "조운",
+        "주태"
+      ],
+      "hero_ids": [
+        2019,
+        2012,
+        3014
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-83ff8a623479-roster-8d119bae5db0-setup-6687b1421a",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "관장제마 · 세팅 1",
+      "family": "관장제마",
+      "heroes": [
+        "마초",
+        "SP제갈량",
+        "관은병"
+      ],
+      "hero_ids": [
+        2015,
+        2022,
+        2011
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-5016d4ea5c22-roster-c8323c65b260-setup-5471cb4c21",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "미확인-내부인 · 세팅 1",
+      "family": "미확인-내부인",
+      "heroes": [
+        "내부인",
+        "조운",
+        "주태"
+      ],
+      "hero_ids": [
+        null,
+        2012,
+        3014
+      ],
+      "hero_mapping_complete": false,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-fd58b5712aeb-roster-99ce569ed7d4-setup-5d5d7d857b",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "반격왕 · 세팅 1",
+      "family": "반격왕",
+      "heroes": [
+        "대교",
+        "감녕",
+        "연의 조인"
+      ],
+      "hero_ids": [
+        3004,
+        3006,
+        1024
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-fd58b5712aeb-roster-99ce569ed7d4-setup-b510b92654",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "반격왕 · 세팅 2",
+      "family": "반격왕",
+      "heroes": [
+        "대교",
+        "감녕",
+        "연의 조인"
+      ],
+      "hero_ids": [
+        3004,
+        3006,
+        1024
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-fd58b5712aeb-roster-222ad55abe32-setup-67da04c1aa",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "반격왕 · 세팅 1",
+      "family": "반격왕",
+      "heroes": [
+        "서성",
+        "연의 감녕",
+        "대교"
+      ],
+      "hero_ids": [
+        5034,
+        3006,
+        3004
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-fd58b5712aeb-roster-4a71cc49db78-setup-c8f869f742",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "반격왕 · 세팅 1",
+      "family": "반격왕",
+      "heroes": [
+        "서성",
+        "연의 감녕",
+        "손권/대교"
+      ],
+      "hero_ids": [
+        5034,
+        3006,
+        null
+      ],
+      "hero_mapping_complete": false,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-2c365e22a5f9-roster-c2779462bcaa-setup-082318d985",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "악연마 · 세팅 1",
+      "family": "악연마",
+      "heroes": [
+        "하후연",
+        "마등",
+        "악진"
+      ],
+      "hero_ids": [
+        1016,
+        4015,
+        1014
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-2c365e22a5f9-roster-c2779462bcaa-setup-2b3d3e57f1",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "악연마 · 세팅 2",
+      "family": "악연마",
+      "heroes": [
+        "하후연",
+        "마등",
+        "악진"
+      ],
+      "hero_ids": [
+        1016,
+        4015,
+        1014
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-6cf35015e68a-roster-829b8b394e00-setup-23dc39859c",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "제갈마마 · 세팅 1",
+      "family": "제갈마마",
+      "heroes": [
+        "마운록",
+        "SP제갈량",
+        "마등"
+      ],
+      "hero_ids": [
+        2013,
+        2022,
+        4015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-e39dd6b50323-roster-2dfc9d781f9f-setup-6b1b4a8a13",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "좌공관 · 세팅 1",
+      "family": "좌공관",
+      "heroes": [
+        "좌자",
+        "연의 공손찬",
+        "연의 관우"
+      ],
+      "hero_ids": [
+        4012,
+        4021,
+        2001
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-e39dd6b50323-roster-2dfc9d781f9f-setup-6086389406",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "좌공관 · 세팅 2",
+      "family": "좌공관",
+      "heroes": [
+        "좌자",
+        "연의 공손찬",
+        "연의 관우"
+      ],
+      "hero_ids": [
+        4012,
+        4021,
+        2001
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-b63de854c356-roster-471947ff946e-setup-902b39b8c8",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "호위 · 세팅 1",
+      "family": "호위",
+      "heroes": [
+        "조조",
+        "전위",
+        "SP제갈량"
+      ],
+      "hero_ids": [
+        1000,
+        1002,
+        2022
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-b63de854c356-roster-471947ff946e-setup-f212a1a9fe",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "호위 · 세팅 2",
+      "family": "호위",
+      "heroes": [
+        "조조",
+        "전위",
+        "SP제갈량"
+      ],
+      "hero_ids": [
+        1000,
+        1002,
+        2022
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-b63de854c356-roster-4fa63501b019-setup-2cc2c7cdcd",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "호위 · 세팅 1",
+      "family": "호위",
+      "heroes": [
+        "조조",
+        "전위",
+        "조순"
+      ],
+      "hero_ids": [
+        1000,
+        1002,
+        1015
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-80147316b6c5-roster-8820bed8597c-setup-fe91dee755",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "황천궁 · 세팅 1",
+      "family": "황천궁",
+      "heroes": [
+        "장녕",
+        "좌자",
+        "연의 원소"
+      ],
+      "hero_ids": [
+        4024,
+        4012,
+        4004
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "s3-family-80147316b6c5-roster-8820bed8597c-setup-9469600a6c",
+      "source": "s3-reference",
+      "source_path": "references/data/kr_s3_deck_references.json",
+      "name": "황천궁 · 세팅 2",
+      "family": "황천궁",
+      "heroes": [
+        "좌자",
+        "연의 원소",
+        "장녕"
+      ],
+      "hero_ids": [
+        4012,
+        4004,
+        4024
+      ],
+      "hero_mapping_complete": true,
+      "detail_key": "variants"
+    },
+    {
+      "id": "sheet:dcg_s4_yueliangma",
+      "source": "preset",
+      "source_path": "data/recommended-decks.json",
+      "detail_key": "templates",
+      "name": "월량마",
+      "family": "월량마",
+      "heroes": [
+        "마초",
+        "SP 제갈량",
+        "방통"
+      ],
+      "hero_ids": [
+        2015,
+        2022,
+        2004
+      ],
+      "hero_mapping_complete": true
+    },
+    {
+      "id": "sheet:dcg_s4_zhaoganjiang",
+      "source": "preset",
+      "source_path": "data/recommended-decks.json",
+      "detail_key": "templates",
+      "name": "조감강",
+      "family": "조감강",
+      "heroes": [
+        "감부인",
+        "조운",
+        "강유"
+      ],
+      "hero_ids": [
+        2019,
+        2012,
+        2021
+      ],
+      "hero_mapping_complete": true
+    },
+    {
+      "id": "sheet:dcg_s4_pingmin_xinhuo",
+      "source": "preset",
+      "source_path": "data/recommended-decks.json",
+      "detail_key": "templates",
+      "name": "평민 신화창",
+      "family": "평민 신화창",
+      "heroes": [
+        "강유",
+        "SP 제갈량",
+        "조조"
+      ],
+      "hero_ids": [
+        2021,
+        2022,
+        1000
+      ],
+      "hero_mapping_complete": true
+    },
+    {
+      "id": "sheet:dcg_s4_caoxunyi",
+      "source": "preset",
+      "source_path": "data/recommended-decks.json",
+      "detail_key": "templates",
+      "name": "조순이",
+      "family": "조순이",
+      "heroes": [
+        "조조",
+        "순욱",
+        "왕이"
+      ],
+      "hero_ids": [
+        1000,
+        1008,
+        1020
+      ],
+      "hero_mapping_complete": true
+    },
+    {
+      "id": "sheet:dcg_s4_fanzhen_xinhuo",
+      "source": "preset",
+      "source_path": "data/recommended-decks.json",
+      "detail_key": "templates",
+      "name": "추형 반격 신화창",
+      "family": "추형 반격 신화창",
+      "heroes": [
+        "유비",
+        "강유",
+        "SP 제갈량"
+      ],
+      "hero_ids": [
+        2000,
+        2021,
+        2022
+      ],
+      "hero_mapping_complete": true
+    },
+    {
+      "id": "sheet:dcg_s5_zuotianning",
+      "source": "preset",
+      "source_path": "data/recommended-decks.json",
+      "detail_key": "templates",
+      "name": "좌전녕",
+      "family": "좌전녕",
+      "heroes": [
+        "좌자",
+        "전풍",
+        "장녕"
+      ],
+      "hero_ids": [
+        4012,
+        4016,
+        4024
+      ],
+      "hero_mapping_complete": true
+    }
+  ]
+}

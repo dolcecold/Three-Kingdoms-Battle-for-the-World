@@ -1,15 +1,16 @@
 /** 보유 풀 기반 다부대 추천. 현 시즌의 확인 가능한 티어만 가중하고 기존 저장 데이터는 변경하지 않음. */
-import {buildCandidates,recommendLineups} from './planner-core.js';
+import {buildCandidates,recommendLineups,PROJECTIONS,isProjection} from './planner-core.js?v=1.4.9';
 const $=id=>document.getElementById(id);
 export function createPlannerView({state,h,fill,ensurePresets,presetsData,poolSnapshot,readLineup,addTemplatesToLineup,savePlanDrafts,notify}){
-  let datasets=null;
+  let datasets=null,projectionMode='auto';
+  const manuallySelected=new Set();
   const html=(tag,attrs,...children)=>h(tag,attrs,...children);
   async function load(){
     if(datasets)return;
     await ensurePresets();
     const get=async uri=>{const res=await fetch(uri,{cache:'no-cache'});if(!res.ok)throw new Error('추천 참고 데이터 로딩 실패: '+uri);return res.json();};
-    const [s2,s3]=await Promise.all([get('./references/data/kr_s2_deck_references.json'),get('./references/data/kr_s3_deck_references.json')]);
-    datasets={s2:s2.entries,s3:s3.variants};
+    const [s2,s3,index]=await Promise.all([get('./references/data/kr_s2_deck_references.json'),get('./references/data/kr_s3_deck_references.json'),get('./data/unified-s3-recommendations.json')]);
+    datasets={s2:s2.entries,s3:s3.variants,index};
   }
   const stat=(label,value)=>html('span',{class:'planner-stat'},html('b',{text:String(value)}),html('small',{text:label}));
   const meter=(label,have,total)=>html('span',{class:'planner-meter'},html('b',{text:`${have}/${total}`}),html('small',{text:label}));
@@ -32,6 +33,7 @@ export function createPlannerView({state,h,fill,ensurePresets,presetsData,poolSn
         info.append(html('div',{class:'planner-hero-tactics'},html('strong',{text:hero}),...lines.map(l=>html('p',null,
           `전법${l.slot} · `,
           html('span',{class:l.chosen?'planner-equipped':'planner-unavailable',text:l.chosen?.name||'비워 둠'}),
+          l.chosen?.projection?html('small',{class:'planner-projection-label',text:' · 투영 사용'}):null,
           l.alternatives.length?html('small',{text:` (원문 후보: ${l.alternatives.map(a=>a.name).join(' / ')})`}):null,
           l.unresolved?html('small',{text:' · 미확정 선택지 제외'}):null))));
       }
@@ -43,12 +45,15 @@ export function createPlannerView({state,h,fill,ensurePresets,presetsData,poolSn
   function planCard(plan,i){
     const templateIds=plan.entries.filter(p=>p.candidate.templateId).map(p=>p.candidate.templateId);
     const totalHeroes=plan.entries.reduce((n,e)=>n+e.ownedHeroes,0);
+    const usedProjection=[...plan.usedTactics].filter(isProjection);
+    const projectionNames=PROJECTIONS.filter(p=>usedProjection.includes(p.shadow)).map(p=>p.name);
     const totalSkills=plan.entries.reduce((n,e)=>n+e.matchedSkills,0);
     const totalSkillSlots=plan.entries.reduce((n,e)=>n+e.candidate.skillSlots.length,0);
     return html('article',{class:'planner-plan war-card'},
       html('header',{class:'planner-plan-head'},
         html('div',null,html('h3',{text:i===0?'1순위 최적 5군':`대안 조합 ${i+1}`}),html('p',{class:'planner-plan-explain',text:'장수/전법 적합도, 원문 티어, 대체 전법 반영 여부를 함께 비교한 결과입니다.'})),
         html('div',{class:'planner-plan-head-stats'},stat('구성 부대',plan.entries.length),stat('보유 무장 충족',`${totalHeroes}/15`),stat('보유 전법 충족',totalSkillSlots?`${totalSkills}/${totalSkillSlots}`:'미기재'))),
+      html('div',{class:'planner-projection-used'},html('strong',{text:`사용한 투영 ${usedProjection.length}/3`}),...projectionNames.map(name=>html('span',{text:`영·${name}`}))),
       html('div',{class:'planner-plan-actions'},
         html('button',{type:'button',class:'solid-btn',onClick:async()=>{
           try{const saved=await savePlanDrafts(plan.entries);notify(`${saved}개 덱 초안을 내 덱에 저장했습니다.`);}catch(err){notify(err.message||String(err),true);}
@@ -62,13 +67,24 @@ export function createPlannerView({state,h,fill,ensurePresets,presetsData,poolSn
     const season=state.season;
     $('planner-season').textContent=`한국 시즌 ${season}`;
     const pool=poolSnapshot();const lineup=readLineup();
+    const owned=new Set(pool.tactics);const valid=PROJECTIONS.filter(p=>owned.has(p.base)||owned.has(p.shadow));
+    for(const id of [...manuallySelected])if(!valid.some(p=>p.shadow===id))manuallySelected.delete(id);
+    const projectionSettings=season===3?(projectionMode==='auto'?'auto':[...manuallySelected]):[];
+    $('planner-projection-panel').hidden=season!==3;
+    $('planner-projection-label').textContent=projectionMode==='auto'?'자동 배분 · 최대 3종':`직접 선택 · ${manuallySelected.size}/3종`;
+    $('planner-projection-hint').textContent=`사용 가능한 투영 원본 ${valid.length}/6종 · 선택 가능한 종류별 투영 1개씩, 전체 최대 3개`;
+    fill($('planner-projection-options'),...PROJECTIONS.map(p=>html('label',{class:valid.some(x=>x.shadow===p.shadow)?'':'is-disabled'},
+      html('input',{type:'checkbox',value:p.shadow,disabled:projectionMode!=='manual'||!valid.some(x=>x.shadow===p.shadow),checked:manuallySelected.has(p.shadow)}),
+      html('span',{text:`영·${p.name}`}))));
     const reserve=$('planner-reserve').checked;
     const reservedHeroes=reserve?lineup.flatMap(e=>e.heroes||[]):[];
     const reservedTactics=reserve?lineup.flatMap(e=>e.tactics||[]):[];
     const candidates=buildCandidates({season,presets:presetsData()?.templates||[],s2:datasets.s2,s3:datasets.s3});
+    if(season===3){const expected=new Set(datasets.index.items.map(e=>e.id));
+      if(candidates.length!==expected.size||candidates.some(c=>!expected.has(c.id)))throw new Error('시즌3 통합 추천덱 목록이 원본과 일치하지 않습니다.');}
     const result=recommendLineups(candidates,{
       heroes:pool.heroes,tactics:pool.tactics,reservedHeroes,reservedTactics,
-      count:Number($('planner-count').value),allowPartial:$('planner-partial').checked,tacticCatalog:state.idx?.tactic||new Map()});
+      count:Number($('planner-count').value),allowPartial:$('planner-partial').checked,tacticCatalog:state.idx?.tactic||new Map(),projectionSelection:projectionSettings});
     fill($('planner-overview'),stat('후보 덱',candidates.length),stat('보유 장수',pool.heroes.length),stat('보유 전법',pool.tactics.length),stat('조건 충족 후보',result.eligible));
     $('planner-explain').textContent=season===2?
       '시즌2는 T0 > T1+ > T1 원문 티어를 우선 반영합니다. 같은 장수 조합이라도 원본 추천덱과 티어표 참고 세팅을 함께 훑고, 투영/반전 등 같은 계열의 보유 전법도 사용 가능한 후보로 계산합니다.':
@@ -80,5 +96,9 @@ export function createPlannerView({state,h,fill,ensurePresets,presetsData,poolSn
   }
   async function show(){await load();render();}
   for(const id of ['planner-count','planner-reserve','planner-partial'])$(id).addEventListener('change',render);
+  document.querySelectorAll('input[name=projection-mode]').forEach(input=>input.addEventListener('change',e=>{if(!e.target.checked)return;projectionMode=e.target.value;render();}));
+  $('planner-projection-options').addEventListener('change',e=>{const input=e.target.closest('input[type=checkbox]');if(!input)return;const id=Number(input.value);
+    if(input.checked){if(manuallySelected.size>=3){input.checked=false;notify('투영은 서로 다른 3종까지 선택할 수 있습니다.',true);return;}manuallySelected.add(id);}
+    else manuallySelected.delete(id);render();});
   return {show};
 }

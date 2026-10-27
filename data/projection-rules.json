@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "season": 3,
+  "type": "projection",
+  "description": "보유 원본 전법에 대응하는 서로 다른 투영 전법을 최대 3종만 추가 생성하며 종류당 투영 한 개만 허용.",
+  "max_distinct_shadows": 3,
+  "requires_owned_base": true,
+  "cannot_duplicate_shadow_of_same_base": true,
+  "options": [
+    {
+      "name": "침략 방어",
+      "base_id": 20670,
+      "shadow_id": 800028
+    },
+    {
+      "name": "천하평론",
+      "base_id": 20130,
+      "shadow_id": 800035
+    },
+    {
+      "name": "연전연승",
+      "base_id": 20600,
+      "shadow_id": 800006
+    },
+    {
+      "name": "병력 강화",
+      "base_id": 20610,
+      "shadow_id": 800036
+    },
+    {
+      "name": "정의의 희생",
+      "base_id": 20120,
+      "shadow_id": 800004
+    },
+    {
+      "name": "허실 간파",
+      "base_id": 20640,
+      "shadow_id": 800027
+    }
+  ]
+}

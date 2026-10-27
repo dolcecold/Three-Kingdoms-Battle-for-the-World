@@ -1,44 +1,54 @@
 import {displayGuideFor} from './deck-display-guides.js';
 import {createDeckGuideCards} from './deck-guide-cards.js';
-import {rosterKey,tierOf,fitCandidate,buildCandidates} from './planner-core.js';
+import {rosterKey,tierOf,fitCandidate,buildCandidates} from './planner-core.js?v=1.4.9';
 import {familyName,mentionsOfDeck,matchupTargets,countersForTarget} from './matchup-explorer.js';
-const SOURCES={presets:'기존 추천덱',s2:'한국 S2 참고 편성',s3:'한국 S3 세팅'};
+const SOURCES={presets:'시즌 추천덱',s2:'한국 S2 참고 편성',s3:'한국 S3 세팅'};
 const stringify=x=>String(x??'').replace(/\s+/g,'').toLocaleLowerCase('ko');
 const present=x=>Array.isArray(x)?x.filter(Boolean).join(' · '):String(x??'');
 const text=x=>String(x??'').trim();
 export function createRecommendationsView({state,h,fill,ensurePresets,presetsData,openPreset,poolSnapshot,saveRecommendedDeck,saveReferenceDraft,notify}){
   const $=id=>document.getElementById(id);
   let source='presets',season=state.season,lastEditorSeason=state.season,role='all',query='',guided=false,selection=null;
-  let s2=null,s3=null,matchups=null,loaded=false,detailOpened=false,savedScrollY=0,priorFocusId=null;
+  let s2=null,s3=null,matchups=null,unified=null,loaded=false,detailOpened=false,savedScrollY=0,priorFocusId=null;
   let matchupTarget='',shortlistOnly=false;
   const detailHistory=[];
   const SAVED_KEY='cheonha-matchup-shortlist-v1';
   const savedCandidates=()=>{try{return JSON.parse(localStorage.getItem(SAVED_KEY)||'[]').filter(x=>x?.id&&x?.season);}catch{return [];}};
   function writeSaved(rows){try{localStorage.setItem(SAVED_KEY,JSON.stringify(rows));return true;}catch{notify('이 기기에서 후보 목록을 저장하지 못했습니다.',true);return false;}}
-  const savedHas=id=>savedCandidates().some(x=>x.id===id&&x.season===season&&x.source===source);
+  const savedHas=id=>savedCandidates().some(x=>x.id===id&&x.season===season&&(season===3||x.source===source));
   function toggleSaved(row){const rows=savedCandidates(),idx=rows.findIndex(x=>x.id===row.id&&x.season===season);if(idx>=0)rows.splice(idx,1);else rows.push({id:row.id,season,source,title:row.title});if(writeSaved(rows)){notify(idx>=0?'대응 후보에서 제외했습니다.':'내 덱 후보에 담았습니다.');render();}}
-  const savedSet=()=>new Set(savedCandidates().filter(x=>x.season===season&&x.source===source).map(x=>x.id));
+  const savedSet=()=>new Set(savedCandidates().filter(x=>x.season===season&&(season===3||x.source===source)).map(x=>x.id));
   const expanded=new Set();
   const familyExpanded=new Set();
   const familyClosed=new Set(),rosterClosed=new Set();
   let lastDeepLink=null;
   const sourceButtons=[...$('rec-source').querySelectorAll('button')],seasonButtons=[...$('rec-seasons').querySelectorAll('button')];
-  const sourceAllowed=value=>value==='presets'||(value==='s2'&&season===2)||(value==='s3'&&season===3);
+  const sourceAllowed=value=>value==='presets'||(value==='s2'&&season===2);
+  const actualSource=row=>row?.dataSource||source;
+  const presetRows=()=> (presetsData()?.templates??[]).filter(t=>(t.season??t.source_kr_season)===season).map(t=>({
+    id:t.id,title:t.name,heroes:t.heroes?.map(x=>x.name)??[],raw:t,subtitle:t.mode==='opening'?'개척용':'일반 전투',dataSource:'presets'}));
+  const s3Rows=()=> (s3?.variants??[]).map(t=>({
+    id:t.id,title:t.label||t.presentation_label,heroes:t.members?.map(x=>x.general)||[],raw:t,
+    subtitle:[t.presentation_label,t.formation].filter(Boolean).join(' · '),dataSource:'s3'}));
   const toRows=()=>{
-    if(source==='presets')return (presetsData()?.templates??[]).filter(t=>(t.season??t.source_kr_season)===season).map(t=>({id:t.id,title:t.name,heroes:t.heroes?.map(x=>x.name)??[],raw:t,subtitle:t.mode==='opening'?'개척용':'일반 전투'}));
-    if(source==='s2')return (season===2?s2?.entries??[]:[]).map(t=>({id:t.id,title:t.heading?.split('\n')[0]||t.generals?.join(' · '),heroes:t.generals??[],raw:t,subtitle:t.source_sheet||''}));
-    return (season===3?s3?.variants??[]:[]).map(t=>({id:t.id,title:t.label||t.presentation_label,heroes:t.members?.map(x=>x.general)||[],raw:t,subtitle:[t.presentation_label,t.formation].filter(Boolean).join(' · ')}));
+    if(source==='presets'){
+      if(season!==3)return presetRows();
+      const rows=[...s3Rows(),...presetRows()];
+      const order=new Map((unified?.items||[]).map((x,i)=>[x.id,i]));
+      return rows.sort((a,b)=>(order.get(a.id)??999)-(order.get(b.id)??999));
+    }
+    return (season===2?s2?.entries??[]:[]).map(t=>({id:t.id,title:t.heading?.split('\n')[0]||t.generals?.join(' · '),heroes:t.generals??[],raw:t,subtitle:t.source_sheet||'',dataSource:'s2'}));
   };
   function guideFor(row){return displayGuideFor(row.raw,{season});}
   function terms(row,guide){
     const g=guide.members.flatMap(m=>[m.name,...m.role_labels,...m.role_notes,...m.action_notes,...m.equipment_notes,...m.horse_notes,...m.stat_guides.map(s=>s.text)]);
     const raw=row.raw;
-    const extra=source==='presets'?raw.heroes?.flatMap(m=>m.learned_tactics?.map(x=>x.name)||[])||[]:
-      source==='s3'?raw.members?.flatMap(m=>[...Object.values(m.fields||{}),...(m.learned_choices||[]).flatMap(c=>(c.options||[]).map(o=>o.text))])||[]:
+    const extra=actualSource(row)==='presets'?raw.heroes?.flatMap(m=>m.learned_tactics?.map(x=>x.name)||[])||[]:
+      actualSource(row)==='s3'?raw.members?.flatMap(m=>[...Object.values(m.fields||{}),...(m.learned_choices||[]).flatMap(c=>(c.options||[]).map(o=>o.text))])||[]:
       [raw.heading,raw.source_sheet];
     return stringify([row.title,...row.heroes,row.subtitle,...extra,...g].join(' '));
   }
-  const matchupFor=row=>source==='s3'?(matchups?.items?.[row.id]||null):null;
+  const matchupFor=row=>actualSource(row)==='s3'?(matchups?.items?.[row.id]||null):null;
   const allRows=()=>toRows().map(row=>({...row,guide:guideFor(row),matchup:matchupFor(row)})).filter(row=>{
     if(shortlistOnly&&!savedSet().has(row.id))return false;
     if(role!=='all'&&!row.guide.members.some(m=>m.roles.includes(role)))return false;
@@ -48,8 +58,8 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
   const keyFor=row=>{
     // 명칭 변형(연의/별칭)이어도 원문에 확정된 무장 ID가 같으면 같은 트리로 묶는다.
     const raw=row.raw;
-    const ids=source==='presets'?(raw.heroes||[]).map(x=>x.id):
-      source==='s2'?(raw.display_guide?.members||[]).map(x=>x.hero_id):
+    const ids=actualSource(row)==='presets'?(raw.heroes||[]).map(x=>x.id):
+      actualSource(row)==='s2'?(raw.display_guide?.members||[]).map(x=>x.hero_id):
       (raw.members||[]).map(m=>m.hero_choice?.status==='resolved'&&m.hero_choice?.candidates?.length===1?m.hero_choice.candidates[0].id:null);
     return ids.length===3&&ids.every(x=>x!=null)?'id:'+ids.map(Number).sort((a,b)=>a-b).join('|'):
       'name:'+rosterKey(row.heroes);
@@ -128,7 +138,7 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
     return fitCandidate(built,{heroes:new Set(pool.heroes),tactics:new Set(pool.tactics),tacticCatalog:state.idx?.tactic||new Map()});
   }
   function matchupBrowser(row){
-    if(season!==3||source!=='s3')return null;
+    if(season!==3||actualSource(row)!=='s3')return null;
     const targets=matchupTargets(matchups?.items);
     const mentions=mentionsOfDeck(row.raw,s3?.variants,matchups?.items);
     const direct=matchupFor(row);
@@ -171,10 +181,10 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
         h('p',{class:'rec-counter-note',text:'후보 담기는 이 기기 브라우저에 참고 세팅을 보관합니다. 실제 배틀용 편성은 별도 검수가 필요합니다.'})));
   }
   function saveActions(row){
-    if(source==='s2')return h('div',{class:'rec-draft-save'},
+    if(actualSource(row)==='s2')return h('div',{class:'rec-draft-save'},
       h('p',{class:'rec-counter-note',text:'시즌2 티어 편성은 전법·전후열 미확정 자료라 배틀용 덱을 자동 생성하지 않습니다.'}),
       h('button',{type:'button',class:'ghost-btn small',onClick:()=>toggleSaved(row),text:savedHas(row.id)?'내 덱 후보에서 제거':'내 덱 후보에 담기'}));
-    if(source==='presets')return h('div',{class:'rec-actions'},
+    if(actualSource(row)==='presets')return h('div',{class:'rec-actions'},
       h('button',{type:'button',class:'ghost-btn',onClick:()=>toggleSaved(row),text:savedHas(row.id)?'후보에서 제거':'내 덱 후보 담기'}),
       h('button',{type:'button',class:'solid-btn',onClick:async()=>{try{await saveRecommendedDeck(row.raw);notify('원본 추천덱을 내 덱에 저장했습니다.');}catch(e){notify(e.message||String(e),true);}},text:'내 덱에 저장'}));
     const eligible=row.raw.hero_roster_resolved&&row.raw.members.length===3;
@@ -192,14 +202,14 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
   function details(row){
     const host=$('rec-detail');if(!row){fill(host,h('p',{class:'rec-guide-empty',text:'조건에 해당하는 덱이 없습니다. 필터를 조정해 주세요.'}));return;}
     const t=row.raw,common=[h('div',{class:'rec-detail-head'},
-      h('div',{class:'rec-detail-title'},h('small',{text:`한국 S${season} · ${SOURCES[source]}`}),h('h3',{id:'rec-detail-title',text:row.title})),
+      h('div',{class:'rec-detail-title'},h('small',{text:`한국 S${season} · ${season===3?'통합 추천덱':SOURCES[source]}`}),h('h3',{id:'rec-detail-title',text:row.title})),
       h('button',{class:'rec-detail-close',type:'button','aria-label':'추천덱 상세 닫기',text:'닫기 ×'}))];
     if(detailHistory.length)common.push(h('button',{type:'button',class:'rec-counter-back',dataset:{recBack:'1'},text:`← ${detailHistory.at(-1).title}로 돌아가기`}));
-    if(source==='presets'){
+    if(actualSource(row)==='presets'){
       common.push(h('p',{class:'muted-note',text:`한국 S${t.season} 전용 · ${row.subtitle} · 배틀 편집 시즌 S${state.season}`}),
         h('div',{class:'rec-roster'},...(t.heroes||[]).map(x=>h('div',{class:'rec-roster-member'},h('b',{text:x.name}),h('small',{text:present(x.learned_tactics?.map(y=>y.name))||'전법 미기재'})))),
         presetExtra(t),h('div',{class:'rec-actions'},h('button',{type:'button',class:'solid-btn',onClick:()=>openPreset(t.id),text:'내 보유 풀에서 편성하기'})));
-    }else if(source==='s2'){
+    }else if(actualSource(row)==='s2'){
       common.push(h('p',{class:'muted-note',text:`${t.source_sheet||'시즌2 시트'} · ${tierOf(t.heading,2).label} · 참고자료`}),
         h('p',{class:'rec-source-description',text:'참고 편성에는 장수와 티어만 명시된 경우가 많습니다. 전법·병법·병종·실제 전후열이 수록되지 않았다면 임의 보충하지 않습니다.'}),
         h('div',{class:'rec-roster'},...(t.generals||[]).map(x=>h('span',{class:'rec-roster-member',text:x}))),
@@ -212,7 +222,7 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
     common.splice(2,0,matchDetail(row),matchupBrowser(row));
     common.push(saveActions(row));
     common.push(createDeckGuideCards(h,row.guide,{heading:'무장별 역할 · 스탯 우선순위',emptyText:'이 시즌에 명시된 역할·스탯 지침이 없습니다.'}));
-    const url=source==='s2'?t.source_url:source==='s3'?t.evidence?.[0]?.url:null;
+    const url=actualSource(row)==='s2'?t.source_url:actualSource(row)==='s3'?t.evidence?.[0]?.url:null;
     if(url&&/^https:\/\/docs\.google\.com\//.test(url))common.push(h('p',{class:'rec-source-link'},h('a',{href:url,target:'_blank',rel:'noopener noreferrer',text:'원본 시트 보기 ↗'})));
     fill(host,...common.filter(Boolean));
   }
@@ -245,7 +255,7 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
   const grouping=rows=>{
     const folders=new Map();
     for(const row of rows){
-      const family=source==='s3'?familyName(row.raw):String(row.title).split(' · ')[0];
+      const family=actualSource(row)==='s3'?familyName(row.raw):String(row.title).split(' · ')[0];
       const fk='family:'+source+':'+family;
       if(!folders.has(fk))folders.set(fk,{key:fk,title:family,rosters:new Map(),count:0});
       const folder=folders.get(fk),roster=keyFor(row)||row.id;
@@ -258,7 +268,7 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
   function treeContent(groups,active){
     const tree=h('div',{class:'war-file-tree',role:'tree','aria-label':'덱 계열, 장수 조합, 세팅 선택 트리'},
       h('div',{class:'war-file-root'},h('span',{class:'war-tree-chevron',text:'▾'}),h('span',{class:'war-folder-icon','aria-hidden':'true',text:'▣'}),
-        h('strong',{text:`한국 시즌 ${season} / ${SOURCES[source]}`}),h('small',{text:`${groups.length}계열 · ${groups.reduce((n,g)=>n+g.count,0)}세팅`})));
+        h('strong',{text:`한국 시즌 ${season} / ${season===3?'통합 추천덱':SOURCES[source]}`}),h('small',{text:`${groups.length}계열 · ${groups.reduce((n,g)=>n+g.count,0)}세팅`})));
     for(const [i,folder] of groups.entries()){
       const fOpen=Boolean(query)||(!familyClosed.has(folder.key)&&(familyExpanded.has(folder.key)||(!familyExpanded.size&&i===0)||folder.rosters.has(active)));
       const branch=h('div',{class:'war-tree-branch',role:'group',hidden:!fOpen});
@@ -267,11 +277,11 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
         const rOpen=Boolean(query)||(!rosterClosed.has(roster.key)&&(expanded.has(roster.key)||roster.key===active||(!expanded.size&&fOpen&&j===0)));
         const children=h('div',{class:'war-tree-leaves',role:'group',hidden:!rOpen});
         for(const [n,row] of roster.rows.entries()){
-          const leafLabel=source==='s3'?(row.title.startsWith(folder.title)?row.title.slice(folder.title.length).replace(/^[\s·-]+/,''):`${row.title}`)||`세팅 ${n+1}`:row.title;
+          const leafLabel=actualSource(row)==='s3'?(row.title.startsWith(folder.title)?row.title.slice(folder.title.length).replace(/^[\s·-]+/,''):`${row.title}`)||`세팅 ${n+1}`:row.title;
           const leaf=h('button',{type:'button',class:'war-tree-leaf',role:'treeitem','aria-current':String(row.id===selection),dataset:{recId:row.id}},
             h('span',{class:'war-leaf-glyph','aria-hidden':'true',text:'▤'}),
-            h('span',{class:'war-tree-leaf-label'},h('strong',{text:leafLabel}),source==='s3'&&row.raw.presentation_label?h('small',{text:row.raw.presentation_label}):null),
-            h('span',{class:'war-tree-leaf-tags'},source==='s2'?h('small',{text:tierOf(row.raw.heading,2).label}):null,row.matchup?h('small',{text:'相剋'}):null),
+            h('span',{class:'war-tree-leaf-label'},h('strong',{text:leafLabel}),actualSource(row)==='s3'&&row.raw.presentation_label?h('small',{text:row.raw.presentation_label}):null),
+            h('span',{class:'war-tree-leaf-tags'},actualSource(row)==='s2'?h('small',{text:tierOf(row.raw.heading,2).label}):null,row.matchup?h('small',{text:'相剋'}):null),
             matchMini(row.matchup));
           children.append(leaf);
         }
@@ -291,13 +301,14 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
     if(!sourceAllowed(source)){source='presets';selection=null;}
     seasonButtons.forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.recSeason)===season)));
     sourceButtons.forEach(b=>{b.hidden=!sourceAllowed(b.dataset.recSource);b.setAttribute('aria-selected',String(b.dataset.recSource===source));});
-    $('rec-presets-count').textContent=String((presetsData()?.templates??[]).filter(t=>(t.season??t.source_kr_season)===season).length);
-    $('rec-source-note').textContent=source==='presets'?`한국 S${season} 원본 추천덱만 조회합니다. 다른 시즌을 섞지 않습니다.`:
+    $('rec-presets-label').textContent=season===3?'시즌3 통합 추천덱':'시즌 추천덱';
+    $('rec-presets-count').textContent=String((presetsData()?.templates??[]).filter(t=>(t.season??t.source_kr_season)===season).length+(season===3?(s3?.variants?.length||0):0));
+    $('rec-source-note').textContent=source==='presets'?(season===3?'한국 S3 원본 추천덱 6개와 세부 참고 세팅 90개를 하나의 트리로 통합했습니다. 원본 편성과 참고 세팅은 상세 화면에서 구분합니다.':`한국 S${season} 원본 추천덱만 조회합니다. 다른 시즌을 섞지 않습니다.`):
       source==='s2'?'시즌2 티어별 참고 편성. 전법·병법 등 없는 정보는 임의 확정하지 않습니다.':
       '시즌3은 같은 장수 3명도 서로 다른 세팅으로 관리합니다. 전법 대안·병법·병종·장비·말 원문을 각 세팅에 표시합니다.';
     const rows=allRows(),selected=selectRow(rows),groups=grouping(rows);
     $('rec-count').textContent=`한국 S${season} · ${SOURCES[source]} · ${groups.length}개 덱 계열 / ${rows.length}개 세팅`;
-    $('rec-shortlist').textContent=`현재 자료 후보 ${savedCandidates().filter(x=>x.season===season&&x.source===source).length}개`;
+    $('rec-shortlist').textContent=`현재 자료 후보 ${savedSet().size}개`;
     $('rec-shortlist').setAttribute('aria-pressed',String(shortlistOnly));
     const activeKey=selected?keyFor(selected):null;
     fill($('rec-list'),groups.length?treeContent(groups,selectedRowKey(selected)):h('p',{class:'rec-guide-empty',text:'조건에 맞는 자료가 없습니다.'}));
@@ -309,22 +320,26 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
       $('rec-count').textContent='추천 덱 자료를 불러오는 중입니다.';
       await ensurePresets();
       const load=async file=>{const response=await fetch(file,{cache:'no-cache'});if(!response.ok)throw new Error(`${file} 참조 파일을 불러오지 못했습니다.`);return response.json();};
-      [s2,s3,matchups]=await Promise.all([
+      [s2,s3,matchups,unified]=await Promise.all([
         load('./references/data/kr_s2_deck_references.json'),
         load('./references/data/kr_s3_deck_references.json'),
-        load('./data/recommendation-matchups.json')
-      ]);loaded=true;
+        load('./data/recommendation-matchups.json'),
+        load('./data/unified-s3-recommendations.json')
+      ]);
+      const indexed=new Set(unified.items.map(x=>x.id));
+      if(indexed.size!==96||!s3.variants.every(x=>indexed.has(x.id)))throw new Error('시즌3 통합 추천덱 인덱스가 원본과 일치하지 않습니다.');
+      loaded=true;
     }
     if(state.season!==lastEditorSeason){lastEditorSeason=state.season;season=state.season;source='presets';selection=null;expanded.clear();familyExpanded.clear();familyClosed.clear();rosterClosed.clear();closeDetail(false);}
     const qs=location.hash.split('?')[1]||'';
     const params=new URLSearchParams(qs);const requested=params.get('id'),askedSource=params.get('source');
     const deepKey=requested?`${askedSource}:${requested}`:null;
     if(requested&&(deepKey!==lastDeepLink||!detailOpened)&&s3?.variants.some(v=>v.id===requested)){ 
-      lastDeepLink=deepKey;source='s3';season=3;selection=requested;
+      lastDeepLink=deepKey;source='presets';season=3;selection=requested;
       query='';$('rec-search').value='';role='all';$('rec-role').value='all';guided=false;$('rec-guided').checked=false;
       const v=s3.variants.find(x=>x.id===requested);
-      const row={id:v.id,raw:v,heroes:v.members.map(m=>m.general)};
-      expanded.add(keyFor(row));familyExpanded.add('family:s3:'+familyName(v));
+      const row={id:v.id,raw:v,heroes:v.members.map(m=>m.general),dataSource:'s3'};
+      expanded.add(keyFor(row));familyExpanded.add('family:presets:'+familyName(v));
       render();openDetail();return;
     }
     render();
@@ -339,7 +354,7 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
     const jump=e.target.closest('[data-rec-jump]');
     if(jump){const dest=s3?.variants?.find(v=>v.id===jump.dataset.recJump);if(!dest)return;
       const current=s3?.variants?.find(v=>v.id===selection);if(current)detailHistory.push({id:current.id,title:current.label});
-      source='s3';season=3;query='';$('rec-search').value='';role='all';$('rec-role').value='all';guided=false;$('rec-guided').checked=false;shortlistOnly=false;selection=dest.id;matchupTarget='';expanded.add(keyFor({raw:dest,heroes:dest.members.map(m=>m.general)}));render();$('rec-detail').scrollTop=0;return;}
+      source='presets';season=3;query='';$('rec-search').value='';role='all';$('rec-role').value='all';guided=false;$('rec-guided').checked=false;shortlistOnly=false;selection=dest.id;matchupTarget='';expanded.add(keyFor({raw:dest,heroes:dest.members.map(m=>m.general),dataSource:'s3'}));render();$('rec-detail').scrollTop=0;return;}
     const back=e.target.closest('[data-rec-back]');
     if(back&&detailHistory.length){const previous=detailHistory.pop(),dest=s3?.variants?.find(v=>v.id===previous.id);if(!dest)return;selection=dest.id;matchupTarget='';render();$('rec-detail').scrollTop=0;return;}
     const save=e.target.closest('[data-rec-save-candidate]');
