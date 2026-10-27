@@ -122,7 +122,7 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
   function candidateFit(variant){
     const pool=poolSnapshot();
     const built=buildCandidates({season:3,presets:[],s2:[],s3:[variant]})[0];
-    return fitCandidate(built,{heroes:new Set(pool.heroes),tactics:new Set(pool.tactics)});
+    return fitCandidate(built,{heroes:new Set(pool.heroes),tactics:new Set(pool.tactics),tacticCatalog:state.idx?.tactic||new Map()});
   }
   function matchupBrowser(row){
     if(season!==3||source!=='s3')return null;
@@ -242,10 +242,10 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
   const grouping=rows=>{
     const groups=new Map();
     for(const row of rows){const key=keyFor(row)||row.id;
-      if(!groups.has(key))groups.set(key,{key,heroes:row.heroes,rows:[]});
+      if(!groups.has(key))groups.set(key,{key,heroes:row.heroes,rows:[],title:source==='s3'?familyName(row.raw):row.title});
       groups.get(key).rows.push(row);
     }
-    return [...groups.values()];
+    return [...groups.values()].sort((a,b)=>a.title.localeCompare(b.title,'ko'));
   };
   function render(){
     if(!sourceAllowed(source)){source='presets';selection=null;}
@@ -262,16 +262,21 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
     const activeKey=selected?keyFor(selected):null;
     fill($('rec-list'),groups.length?groups.map((g,i)=>{
       const isOpen=query||expanded.has(g.key)||(!expanded.size&&g.key===activeKey);
-      const list=h('details',{class:'rec-tree-group',open:Boolean(isOpen),dataset:{groupKey:g.key}},
-        h('summary',null,h('strong',{text:g.heroes.join(' · ')}),h('small',{text:`${g.rows.length}개 세팅`}),
-          g.rows.some(r=>r.matchup)?h('small',{class:'rec-group-match',text:`상성 메모 ${g.rows.filter(r=>r.matchup).length}`}):null,
-          h('span',{class:'rec-tree-chevron',text:'⌄'})),
+      const list=h('details',{class:'rec-tree-group war-card',open:Boolean(isOpen),dataset:{groupKey:g.key}},
+        h('summary',null,
+          h('div',{class:'rec-tree-summary'},
+            h('strong',{class:'rec-tree-family',text:g.title||g.heroes.join(' · ')}),
+            h('p',{class:'rec-tree-members',text:g.heroes.join(' · ')})),
+          h('div',{class:'rec-tree-summary-side'},
+            h('small',{text:`${g.rows.length}개 세팅`}),
+            g.rows.some(r=>r.matchup)?h('small',{class:'rec-group-match',text:`상성 ${g.rows.filter(r=>r.matchup).length}`}):null,
+            h('span',{class:'rec-tree-chevron',text:'⌄'}))),
         h('div',{class:'rec-tree-variants'},...g.rows.map((row,j)=>h('button',{type:'button',class:'rec-list-option',dataset:{recId:row.id},'aria-current':String(row.id===selection)},
-          h('strong',{text:row.title}),h('span',{class:'rec-list-tags'},
+          h('div',{class:'rec-list-option-head'},h('strong',{text:row.title}),source==='s3'?h('small',{class:'rec-list-option-sub',text:row.raw.presentation_label||`${j+1}안`}):null),
+          h('span',{class:'rec-list-tags'},
             source==='s2'?h('small',{class:'rec-tag role',text:tierOf(row.raw.heading,2).label}):null,
             row.guide.has_stat_guidance?h('small',{class:'rec-tag',text:'스탯 가이드'}):null,
-            row.guide.has_role_guidance?h('small',{class:'rec-tag role',text:'역할'}):null,
-            source==='s3'?h('small',{class:'rec-tag muted',text:row.raw.presentation_label||`${j+1}안`}):null),
+            row.guide.has_role_guidance?h('small',{class:'rec-tag role',text:'역할'}):null),
           matchMini(row.matchup)))));
       list.addEventListener('toggle',()=>{if(list.open)expanded.add(g.key);else expanded.delete(g.key);});
       return list;

@@ -5,7 +5,7 @@ import {BattleApi,encodeArmyCode,decodeArmyCode} from './api-client.js';
 import {normalizeArmy} from './army-code.js';
 import {STAT_FIELDS,armFor,bookChoices,tacticChoices,validateArmy,previewHeroStats,migrateProgression,romanceFor,innateFor} from './editor.js';
 import {API_BASE_URL} from './config.js';
-import {loadRecommendedDecks,filterRecommendedDecks,displayGuideFor} from './recommended-decks.js?v=1.4.6';
+import {loadRecommendedDecks,filterRecommendedDecks,displayGuideFor} from './recommended-decks.js?v=1.4.7';
 import {createDeckGuideCards} from './deck-guide-cards.js';
 import {reviewArmyCoexistence} from './guide-content.js';
 import {encodePoolCode,decodePoolCode} from './pool-code.js';
@@ -149,7 +149,6 @@ async function saveReferenceDraft(v){
     x.equipment={might:0,intelligence:0,defence:0,speed:0};
     x.horse={might:0,intelligence:0,defence:0,speed:0};x.total_stats=null;
     for(const choice of m.learned_choices||[]){
-      // 원문 대안이 여러 개라면 사용자가 직접 선택해야 하므로 자동 확정하지 않습니다.
       if(choice.options?.length!==1)continue;
       const opt=choice.options[0];
       if(opt.status!=='resolved'||opt.candidates?.length!==1)continue;
@@ -157,12 +156,71 @@ async function saveReferenceDraft(v){
       if(!ix.tactic.has(tid)||!myPool.tactics.has(tid)||usedTactics.has(tid))continue;
       x.learned.push({skill_id:tid,level:10,breakthrough:null,grade:0});usedTactics.add(tid);usedCount++;
     }
-    // 조작 가능한 편성으로만 저장합니다. 원문의 병법/배치가 검증되었다는 뜻이 아닙니다.
   }
   loadable(data,army);
   decks.add(army.name,army,false,{season:3,review_required:true,reference_id:v.id});
   updateRosterCounts();
   return `시즌3 내 덱에 검수용 초안을 저장했습니다 (확정 전법 ${usedCount}개). 전후열·대체 전법·병법·장비·말을 확인해 주세요.`;
+}
+async function saveCandidateDraft(fit){
+  const c=fit?.candidate;if(!c)throw new Error('저장할 추천 후보가 없습니다.');
+  if(c.kind==='s3-ref'&&c.variant)return saveReferenceDraftFromFit(c.variant,fit.selected||[]);
+  if(c.kind==='preset'&&c.template){
+    const t=c.template;const season=Number(t.season??t.source_kr_season??state.season);
+    const data=season===state.season?state.data:await localData(season);
+    const army=prep(t.army);army.name=`[초안] ${t.name}`.slice(0,80);
+    const perHero=new Map();
+    for(const row of fit.selected||[]){if(!row.chosen)continue;const key=`${row.hero}::${row.slot}`;perHero.set(key,row.chosen.id);}
+    for(const hero of army.heroes){
+      const name=t.heroes?.find(x=>x.id===hero.hero_id)?.name||state.idx?.hero.get(hero.hero_id)?.name||'';
+      const keys=[...perHero.keys()].filter(k=>k.startsWith(`${name}::`)).sort((a,b)=>Number(a.split('::')[1])-Number(b.split('::')[1]));
+      hero.learned=keys.map(k=>({skill_id:Number(perHero.get(k)),level:10,breakthrough:null,grade:0}));
+    }
+    loadable(data,army);
+    decks.add(army.name,army,false,{season,review_required:true});
+    updateRosterCounts();
+    return `${t.name} 초안을 저장했습니다.`;
+  }
+  if(c.kind==='s2-ref'&&c.reference)throw new Error('시즌2 참고 세팅은 실제 편성 정보가 부족해 자동 초안 저장을 지원하지 않습니다.');
+  throw new Error('이 후보는 초안 저장을 지원하지 않습니다.');
+}
+async function saveReferenceDraftFromFit(v,selected){
+  if(!v||!v.hero_roster_resolved||v.members?.length!==3)throw new Error('무장 ID가 미확정인 참고 세팅은 실제 내 덱 초안으로 만들 수 없습니다.');
+  const data=state.season===3?state.data:await localData(3);
+  const ix=indexData(data),heroIds=v.members.map(m=>m.hero_choice?.status==='resolved'&&m.hero_choice?.candidates?.length===1?Number(m.hero_choice.candidates[0].id):null);
+  if(heroIds.some(id=>!ix.hero.has(id))||new Set(heroIds).size!==3)throw new Error('시즌3에서 선택할 수 없는 무장 또는 중복 무장이 있습니다.');
+  const army=prep(data.examples[0]);army.name=`[초안] ${v.label}`.slice(0,80);
+  if(v.formation_choice?.status==='resolved'&&v.formation_choice?.candidates?.length===1){
+    const id=v.formation_choice.candidates[0].id;if(ix.formation.has(id))army.formation_id=id;
+  }
+  const selectedMap=new Map((selected||[]).filter(x=>x?.chosen).map(x=>[`${x.hero}::${x.slot}`,Number(x.chosen.id)]));
+  const usedTactics=new Set();let usedCount=0;
+  for(let i=0;i<3;i++){
+    const m=v.members[i],x=army.heroes[i];
+    x.hero_id=heroIds[i];x.slot=i+1;x.learned=[];x.warbook_slots=[];x.advanced_arms_id=null;x.arms_skill_ids=[];
+    x.allocation_mode=ix.hero.get(x.hero_id)?.recommended_attribute?'recommended':'manual';
+    x.allocation={might:0,intelligence:0,defence:0,speed:0};
+    x.equipment_item_id=null;x.horse_item_id=null;x.romance_trait_id=null;x.warbook_page='normal';
+    x.equipment_loadout=[];x.horse_loadout=null;x.permanent_item_stats_included=null;
+    x.equipment={might:0,intelligence:0,defence:0,speed:0};
+    x.horse={might:0,intelligence:0,defence:0,speed:0};x.total_stats=null;
+    for(const choice of m.learned_choices||[]){
+      const chosenId=selectedMap.get(`${m.general}::${choice.slot}`);
+      if(chosenId&&ix.tactic.has(chosenId)&&myPool.tactics.has(chosenId)&&!usedTactics.has(chosenId)){
+        x.learned.push({skill_id:chosenId,level:10,breakthrough:null,grade:0});usedTactics.add(chosenId);usedCount++;continue;
+      }
+    }
+  }
+  loadable(data,army);
+  decks.add(army.name,army,false,{season:3,review_required:true,reference_id:v.id});
+  updateRosterCounts();
+  return `${v.label} 초안을 저장했습니다.`;
+}
+async function savePlanDrafts(entries){
+  let saved=0,lastError=null;
+  for(const fit of entries||[]){try{await saveCandidateDraft(fit);saved++;}catch(err){lastError=err;}}
+  if(!saved&&lastError)throw lastError;
+  return saved;
 }
 function acceptData(data,{reset=false}={}){
   if(data.season!==state.season||!Array.isArray(data.heroes)||!data.rules||!data.examples?.length)throw new Error('이 화면과 호환되지 않는 편성 데이터입니다.');
@@ -1834,17 +1892,17 @@ $('report-heading').addEventListener('click',()=>{
 });
 
 /* ── 메뉴(해시 라우팅) ─────────────────────────────────── */
-let guideView=null,recommendationsView=null,plannerView=null;
+let guideView=null,recommendationsView=null,plannerView=null,matchupBoardView=null;
 function parseRoute(){
   const raw=location.hash.replace(/^#/,'');
   if(!raw.startsWith('/'))return {view:'battle',parts:[]};
   const parts=raw.split('?')[0].split('/').filter(Boolean);
-  return {view:['battle','roster','guides','recommendations','planner'].includes(parts[0])?parts[0]:'battle',parts:parts.slice(1)};
+  return {view:['battle','roster','guides','recommendations','planner','matchups'].includes(parts[0])?parts[0]:'battle',parts:parts.slice(1)};
 }
 async function route(){
   if(!state.data)return;
   const r=parseRoute();
-  for(const v of ['battle','roster','guides','recommendations','planner'])$(`view-${v}`).hidden=v!==r.view;
+  for(const v of ['battle','roster','guides','recommendations','planner','matchups'])$(`view-${v}`).hidden=v!==r.view;
   document.querySelectorAll('.main-nav [data-nav]').forEach(a=>a.setAttribute('aria-current',a.dataset.nav===r.view?'page':'false'));
   document.body.dataset.view=r.view;
   try{
@@ -1855,11 +1913,14 @@ async function route(){
       if(!guideView){const mod=await import('./guide-view.js');guideView=await mod.createGuideView(guideCtx());}
       await guideView.show(r.parts);
     }else if(r.view==='recommendations'){
-      if(!recommendationsView){const mod=await import('./recommendations-view.js?v=1.4.6');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset,poolSnapshot,saveRecommendedDeck,saveReferenceDraft,notify});}
+      if(!recommendationsView){const mod=await import('./recommendations-view.js?v=1.4.7');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset,poolSnapshot,saveRecommendedDeck,saveReferenceDraft,notify});}
       await recommendationsView.show();
     }else if(r.view==='planner'){
-      if(!plannerView){const mod=await import('./planner-view.js?v=1.4.6');plannerView=mod.createPlannerView({state,h,fill,ensurePresets,presetsData:()=>presets,poolSnapshot,readLineup,addTemplatesToLineup,notify});}
+      if(!plannerView){const mod=await import('./planner-view.js?v=1.4.7');plannerView=mod.createPlannerView({state,h,fill,ensurePresets,presetsData:()=>presets,poolSnapshot,readLineup,addTemplatesToLineup,savePlanDrafts,notify});}
       await plannerView.show();
+    }else if(r.view==='matchups'){
+      if(!matchupBoardView){const mod=await import('./matchup-board-view.js?v=1.4.7');matchupBoardView=mod.createMatchupBoardView({h,fill,notify});}
+      await matchupBoardView.show();
     }
   }catch(error){notify(message(error),true);}
 }

@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;700;800&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="./style.css?v=1.4.6">
+  <link rel="stylesheet" href="./style.css?v=1.4.7">
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 바로 가기</a>
@@ -28,7 +28,8 @@
     <nav class="main-nav" aria-label="메뉴">
       <a href="#/guides" data-nav="guides"><span class="nav-ico" aria-hidden="true">書</span>가이드</a>
       <a href="#/recommendations" data-nav="recommendations"><span class="nav-ico" aria-hidden="true">策</span>추천 덱</a>
-      <a href="#/planner" data-nav="planner"><span class="nav-ico" aria-hidden="true">組</span>다부대 추천</a>
+      <a href="#/planner" data-nav="planner"><span class="nav-ico" aria-hidden="true">組</span>최적 5군</a>
+      <a href="#/matchups" data-nav="matchups"><span class="nav-ico" aria-hidden="true">剋</span>상성표</a>
       <a href="#/battle" data-nav="battle"><span class="nav-ico" aria-hidden="true">戰</span>배틀</a>
       <a href="#/roster" data-nav="roster"><span class="nav-ico" aria-hidden="true">將</span>보유 풀</a>
     </nav>
@@ -138,13 +139,13 @@
 
    <section id="view-planner" class="view" hidden aria-labelledby="planner-title">
      <div class="view-head">
-       <h1 id="planner-title">내 보유 풀 · 다부대 추천</h1>
+       <h1 id="planner-title">내 보유 풀 · 최적 5군 추천</h1>
        <p class="view-sub">현재 시즌의 <b>원문 티어</b>, 보유 장수·전법, 대체 전법을 고려해 중복 없이 여러 부대를 추천합니다. 추천은 휴리스틱이며 전투 승률을 의미하지 않습니다.</p>
      </div>
      <div class="planner-panel">
        <div class="planner-controls">
          <div class="planner-season"><strong id="planner-season">한국 시즌 2</strong><a href="#/roster/pool">보유 풀 관리</a></div>
-         <label class="planner-select">목표 부대 수 <select id="planner-count" aria-label="목표 부대 수"><option value="1">1개</option><option value="2">2개</option><option value="3" selected>3개</option><option value="4">4개</option><option value="5">5개</option></select></label>
+         <label class="planner-select">목표 부대 수 <select id="planner-count" aria-label="목표 부대 수"><option value="1">1개</option><option value="2">2개</option><option value="3">3개</option><option value="4">4개</option><option value="5" selected>5개</option></select></label>
          <label class="planner-check"><input type="checkbox" id="planner-reserve" checked>내 구성에서 사용 중인 장수·전법 제외</label>
          <label class="planner-check"><input type="checkbox" id="planner-partial">미완성 덱도 보기</label>
        </div>
@@ -153,6 +154,15 @@
        <p class="planner-disclaimer">장수는 부대끼리 중복 사용하지 않습니다. 전법은 원문에 적힌 대체 후보만 보유 여부를 확인하고, 동일 전법을 다른 부대에 중복 할당하지 않습니다. 병법·병종·진형은 추천 점수에 포함하지 않았으므로 원본 상세에서 확인해 주세요.</p>
        <div id="planner-results" class="planner-results" aria-live="polite"></div>
      </div>
+   </section>
+
+
+   <section id="view-matchups" class="view" hidden aria-labelledby="matchup-title">
+     <div class="view-head war-view-head">
+       <h1 id="matchup-title">덱 상성표</h1>
+       <p class="view-sub">법령 게시판처럼 <b>대표 덱별 유·불리 상성</b>을 한 화면에서 보고, 대응 가능한 추천 세팅으로 바로 이동합니다. 첨부 자료와 기존 시즌3 상성 메타를 함께 참고한 <b>표시용 요약</b>입니다.</p>
+     </div>
+     <div id="matchup-board" class="matchup-board"></div>
    </section>
 
    <section id="view-roster" class="view" hidden aria-labelledby="roster-title">
@@ -302,6 +312,6 @@
   </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <script type="module" src="./app.js?v=1.4.6"></script>
+  <script type="module" src="./app.js?v=1.4.7"></script>
 </body>
 </html>
