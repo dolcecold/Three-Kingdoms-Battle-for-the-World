@@ -988,3 +988,194 @@ body[data-view="matchups"] .matchup-shell{background:var(--war-panel);border:1px
   .planner-plan-head-stats,.planner-entry-stats{margin-top:10px}
   .rec-tree-summary-side{justify-items:start;margin-top:10px}
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   v1.4.8 · 軍略 — 실제 관계도 / 파일 탐색형 추천덱
+   색상은 금색 테두리 장식을 없애고 먹색·주홍 인장·비취색 인과로 구분
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+body[data-view="recommendations"],body[data-view="matchups"]{
+  background:radial-gradient(ellipse 80% 540px at 85% 0,rgba(62,96,102,.26),transparent),
+             radial-gradient(ellipse 70% 600px at -15% 25%,rgba(121,47,43,.10),transparent),#0d1720;
+  color:#f4f1e8;
+}
+body[data-view="recommendations"] .view-head,body[data-view="matchups"] .view-head{border-bottom:1px solid rgba(215,225,223,.18);padding-bottom:20px;margin-bottom:22px}
+body[data-view="recommendations"] .view-head h1,body[data-view="matchups"] .view-head h1{
+  color:#f5f0e6;font-size:clamp(30px,4vw,47px);letter-spacing:-.055em;
+}
+body[data-view="recommendations"] .view-head h1::before,body[data-view="matchups"] .view-head h1::before{
+  content:'軍略';display:inline-block;margin-right:12px;vertical-align:middle;font-family:var(--font-display);color:#e5cba7;
+  background:#913d35;padding:5px 7px;font-size:12px;letter-spacing:.13em;transform:rotate(-3deg);
+}
+body[data-view="recommendations"] .view-sub,body[data-view="matchups"] .view-sub{color:#aebfc3}
+body[data-view="recommendations"] .recommend-panel{
+  --ink:#eee9df;--muted:#9aaeb4;--surface:#142431;--raise:#203440;--bg:#10202b;--line:#445862;--line-soft:#344852;
+  --brass:#d4ba94;--brass-soft:#3a332d;--ally-ink:#92c8bd;
+  background:#12222d!important;border:1px solid #304853!important;border-radius:8px!important;
+  box-shadow:0 25px 60px -38px #000c!important;padding:clamp(14px,3vw,27px);
+}
+body[data-view="recommendations"] .rec-list-help{color:#a5b8be;border-left-color:#76aaa3}
+body[data-view="recommendations"] .rec-source-note,body[data-view="recommendations"] .rec-shortlist-row span{color:#afbec2}
+body[data-view="recommendations"] .rec-season-row,body[data-view="recommendations"] .rec-tabs{border-color:#35515a}
+body[data-view="recommendations"] .rec-season-row input,body[data-view="recommendations"] .rec-controls input,body[data-view="recommendations"] .rec-controls select{background:#1e3440;color:#f1f2eb;border-color:#49606a}
+body[data-view="recommendations"] .rec-browser{overflow:visible;border-radius:0}
+body[data-view="recommendations"] .rec-list{display:block;overflow:visible;max-height:none;min-height:220px;padding:0;background:#ede9dd;border:1px solid #c0c8bb;border-radius:8px;color:#1c2c34;box-shadow:0 1px 1px #fff inset}
+.war-file-tree{font-size:14px;--tree-line:#b2bbb6;--tree-blue:#24716b}
+.war-file-root{display:flex;gap:10px;align-items:center;padding:16px 18px;background:linear-gradient(90deg,#233840,#2c4b50);color:#f2eee3;min-height:58px;border-bottom:2px solid #9baaa1}
+.war-file-root strong{font-family:var(--font-display);font-size:16px}
+.war-file-root small{margin-left:auto;color:#c1d6d1;font-size:12px}
+.war-tree-family{position:relative;padding:2px 12px 2px 17px}
+.war-tree-family+.war-tree-family{border-top:1px solid #d6d9cf}
+.war-tree-toggle{display:flex;align-items:center;gap:9px;text-align:left;width:100%;color:#233541;min-height:48px;padding:7px 12px 7px 3px;border-radius:5px;cursor:pointer}
+.war-tree-toggle.family{font-weight:760;font-size:15px}
+.war-tree-toggle.roster{font-weight:660;font-size:13.5px;color:#385763}
+.war-tree-toggle:hover{background:#dce7e1}
+.war-tree-toggle:focus-visible,.war-tree-leaf:focus-visible{outline:2px solid #317b76;outline-offset:2px}
+.war-tree-toggle .war-tree-chevron{font-size:18px;color:#4f696e;width:17px;text-align:center;flex:none}
+.war-folder-icon{color:#a16b44;font-size:18px;font-weight:800;line-height:1}
+.war-tree-node-label{flex:1;min-width:0;overflow-wrap:anywhere}
+.war-tree-toggle small{margin-left:auto;color:#667c79;font-size:11px;white-space:nowrap}
+.war-tree-branch{margin:0 0 9px 19px;padding:0 0 0 17px;border-left:1px solid var(--tree-line)}
+.war-tree-roster{position:relative;padding-left:14px}
+.war-tree-roster::before{content:"";position:absolute;top:23px;left:-17px;width:31px;border-top:1px solid var(--tree-line)}
+.war-tree-leaves{margin:0 0 4px 18px;padding-left:20px;border-left:1px solid var(--tree-line)}
+.war-tree-leaf{position:relative;display:flex;align-items:center;gap:9px;min-height:50px;width:100%;padding:8px 9px;border-radius:5px;text-align:left;color:#273c46}
+.war-tree-leaf::before{content:"";position:absolute;left:-20px;top:50%;width:20px;height:1px;background:var(--tree-line)}
+.war-tree-leaf:hover{background:#dce9e2}
+.war-tree-leaf[aria-current="true"]{background:#c5dad2;color:#184840;box-shadow:inset 3px 0 #357c70}
+.war-leaf-glyph{color:#547771;font-size:16px;flex:none}
+.war-tree-leaf-label{display:grid;gap:1px;min-width:0;flex:1}
+.war-tree-leaf-label strong{font-size:13.5px}
+.war-tree-leaf-label small{font-size:11px;color:#5e7774}
+.war-tree-leaf-tags{display:flex;gap:5px;color:#6b5d50;font-size:10px}
+.war-tree-leaf .rec-match-mini{margin:0;max-width:40%;overflow:hidden}
+.war-tree-leaf .rec-match-pill{font-size:10px;padding:2px 6px}
+.war-file-tree [hidden]{display:none!important}
+/* App 기존 라우팅과 저장/상세 시트는 보존하고, 트리 계층만 변경한다. */
+body[data-view="recommendations"] .rec-detail.is-open{--bg:#f0eee5;--surface:#fffdf6;--raise:#fff;--ink:#21323a;--muted:#607078;--line:#c8ccc3;--line-soft:#d9dcd4;background:#f0eee5;color:#21323a;border-radius:16px 0 0 16px}
+body[data-view="recommendations"] .rec-detail.is-open .rec-detail-head{background:#f0eee5}
+/* 상성: 중앙 덱과 좌·우 노드를 화살표로 연결한 인터랙티브 관계도 */
+body[data-view="matchups"] .matchup-board{--ink:#f0efe7;--muted:#a5b8c0;--surface:#172834;--raise:#223743;--line:#36515c;--bg:#10222f}
+.war-board-wrap{color:#e8ede9}
+.war-board-picker{background:#142832;border:1px solid #34515a;border-radius:8px;padding:17px 18px 14px;margin-bottom:18px}
+.war-board-picker-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:11px}
+.war-board-picker-heading h3{font-size:21px;font-family:var(--font-display);color:#ede3d3}
+.war-board-picker-heading small{color:#93a8ad}
+.war-overline{color:#a8bdbb;text-transform:uppercase;letter-spacing:.12em;font-weight:800;font-size:11px}
+.war-board-catalog{display:flex;gap:5px;flex-wrap:wrap}
+.war-board-select{display:grid;grid-template-columns:auto 1fr;column-gap:7px;align-items:center;text-align:left;padding:8px 12px;border:1px solid #324b54;min-height:47px;background:#203540;border-radius:4px;color:#c5d3d3}
+.war-board-select:hover,.war-board-select.active{background:#e3e8de;color:#1f3b42;border-color:#9ec7c3}
+.war-board-select small{grid-column:2;color:inherit;font-size:10px;opacity:.78}
+.war-board-num{color:#bb9281;font-size:11px}
+.war-board-select-label{font-weight:800;font-size:14px}
+.war-diagram{position:relative;border-radius:9px;border:1px solid #36525d;overflow:hidden;background:
+  radial-gradient(circle at 50% 52%,#28505c88,transparent 48%),
+  linear-gradient(135deg,#121f2b,#152e38 65%,#13212c);padding:clamp(14px,2.5vw,25px)}
+.war-diagram:before{content:'戰';position:absolute;right:3%;bottom:0;font-family:var(--font-display);font-size:min(35vw,420px);line-height:1;color:#b7c9c8;opacity:.025;pointer-events:none}
+.war-diagram-top{position:relative;z-index:1;border-bottom:1px solid #405b64;padding-bottom:14px}
+.war-diagram-top h2{font-family:var(--font-display);color:#f2e8d9;font-size:clamp(24px,3vw,36px)}
+.war-diagram-help{font-size:12.5px;color:#a1b8bd}
+.war-diagram-network{position:relative;display:grid;grid-template-columns:minmax(180px,1fr) minmax(220px,1.06fr) minmax(180px,1fr);grid-template-areas:'bad center good';gap:clamp(16px,3vw,42px);align-items:center;min-height:430px;padding:30px 0 20px}
+.war-diagram-wires{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:0;pointer-events:none}
+.war-wire{fill:none;stroke-width:2.5;opacity:.8;stroke-linecap:round;stroke-dasharray:7 4}
+.war-wire.good{stroke:#67d1ad}.war-wire.bad{stroke:#ed826d}
+.war-diagram-center{grid-area:center;position:relative;z-index:1;text-align:center;background:#e8e8dd;color:#20323c;padding:24px 16px;border-radius:50% 50% 14px 14px/22% 22% 14px 14px;border:1px solid #d4dcd3;box-shadow:0 17px 25px -20px #000,0 0 0 8px #93aaa911,0 0 0 1px #718e8b66;min-width:0}
+.war-diagram-center .war-overline{color:#657b7d}
+.war-center-seal{position:absolute;left:50%;top:-24px;transform:translateX(-50%) rotate(-5deg);background:#a74638;color:#fff2e3;font-family:var(--font-display);font-size:23px;display:grid;place-items:center;width:47px;height:47px;border-radius:5px;box-shadow:0 2px 3px #0005}
+.war-diagram-center h3{font-family:var(--font-display);font-size:clamp(21px,2.7vw,31px);margin:5px 0 7px;overflow-wrap:anywhere}
+.war-diagram-center p{color:#4b5a60;font-size:13px;line-height:1.5}
+.war-diagram-center small{display:block;color:#6c7a7c;font-size:11px;margin-top:7px}
+.war-center-action{margin-top:15px;background:#2f5557;color:#f4ede4;font-size:12px;padding:8px 12px;border-radius:5px;font-weight:700}
+.war-diagram-side{position:relative;z-index:1;display:grid;gap:12px;align-self:stretch;align-content:center;min-width:0}
+.war-diagram-side.bad{grid-area:bad}.war-diagram-side.good{grid-area:good}
+.war-diagram-side-title{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #6c858850;padding-bottom:8px;gap:8px}
+.war-diagram-side-title strong{font-size:14px}.war-diagram-side.bad .war-diagram-side-title strong{color:#ef998a}.war-diagram-side.good .war-diagram-side-title strong{color:#8cdbc0}
+.war-diagram-side-title span{font-size:11px;color:#9baeb1}
+.war-diagram-nodes{display:grid;gap:10px}
+.war-diagram-node{position:relative;display:flex;align-items:center;gap:8px;text-align:left;width:100%;min-height:49px;background:#243641;border:1px solid #5a6e76;color:#f0eee5;padding:10px 13px;border-radius:5px;box-shadow:0 4px 8px -6px #000}
+.war-diagram-node:hover{background:#304c57;transform:translateY(-1px)}
+.war-diagram-node.bad{border-left:3px solid #df8273}
+.war-diagram-node.good{border-right:3px solid #66c29f}
+.war-diagram-name{font-size:13px;font-weight:750;flex:1;overflow-wrap:anywhere}
+.war-diagram-index{font-size:10px;color:#b2c3c3}
+.war-diagram-node-arrow{font-size:14px;color:#a1bbb8}
+.war-diagram-legend{display:flex;gap:18px;justify-content:center;align-items:center;border-top:1px solid #405b64;padding-top:15px;color:#afc2c1;font-size:12px;flex-wrap:wrap}
+.war-diagram-legend span{display:flex;gap:7px;align-items:center}
+.war-legend-dot{width:8px;height:8px;border-radius:50%}.war-legend-dot.bad{background:#ed826d}.war-legend-dot.good{background:#67d1ad}
+.war-board-source{font-size:11.5px;line-height:1.55;margin:13px 2px;color:#97b3b6}
+/* 세팅 선택은 별도의 단일 스크롤 상세창 */
+.war-modal-lock{overflow:hidden}
+.war-modal-overlay{position:fixed;inset:0;z-index:100;display:grid;justify-items:end}
+.war-modal-shade{position:absolute;inset:0;background:#071017c9;backdrop-filter:blur(4px)}
+.war-modal-panel{z-index:1;background:#eeede3;color:#21323b;height:100dvh;width:min(680px,100vw);box-shadow:-20px 0 50px #0008;display:flex;flex-direction:column}
+.war-modal-head{position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;gap:15px;background:#223b45;color:#f0e9dc;padding:16px 20px;min-height:68px}
+.war-modal-head strong{font-family:var(--font-display);font-size:17px}
+.war-modal-close{min-height:42px;padding:7px 13px;background:#3a525b;border-radius:5px;color:#f0e9dc}
+.war-modal-body{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:20px 24px calc(36px + env(safe-area-inset-bottom));display:grid;align-content:start;gap:16px}
+.war-modal-body .war-overline{color:#7a5a4d}.war-modal-body h2{font-size:32px;font-family:var(--font-display)}
+.war-modal-description{color:#5a6a6d}.war-modal-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid #c3cbc6;padding-bottom:15px}
+.war-primary-action{background:#a9473a;color:#fff8eb;border-radius:5px;padding:10px 13px;font-weight:700;min-height:44px}
+.war-source-label{font-size:12px;color:#617578}.war-modal-setups{display:grid;gap:10px}
+.war-modal-setups h3{margin:0 0 4px;font-family:var(--font-display)}
+.war-setup{background:#faf9f1;border:1px solid #c8cfc6;border-radius:5px}
+.war-setup>summary{display:flex;gap:10px;align-items:center;min-height:54px;padding:11px 15px;cursor:pointer;list-style:none}
+.war-setup>summary::-webkit-details-marker{display:none}
+.war-setup>summary strong{flex:1}.war-setup>summary small{color:#5a6c72}
+.war-setup-content{border-top:1px solid #dde0d7;padding:13px;display:grid;gap:10px}
+.war-setup-member{padding:10px;background:#e9efe7;border-radius:5px;display:grid;gap:6px}
+.war-setup-member h4{font-size:15px;color:#2a5050}
+.war-setup-line{display:grid;grid-template-columns:60px 1fr;gap:8px;font-size:12.5px}
+.war-setup-line b{color:#53716b}.war-setup-line span{overflow-wrap:anywhere}
+.war-setup-note{font-size:12.5px;color:#526a70;white-space:pre-line}
+.war-link{color:#1b6d6b;text-decoration:underline;font-size:13px;font-weight:800}
+.war-empty-note{padding:15px;border-left:3px solid #bd7765;color:#526570;background:#f8f5ec;font-size:13px}
+@media(max-width:900px){.war-board-select{flex:1 1 130px}.war-diagram-network{gap:13px;grid-template-columns:minmax(145px,1fr) minmax(180px,1.1fr) minmax(145px,1fr)}}
+@media(max-width:800px){
+  .war-diagram-network{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:'center center' 'bad good';gap:24px 12px;padding:35px 0 20px;align-items:start}
+  .war-diagram-center{width:min(100%,360px);justify-self:center;min-height:185px;padding:22px 16px}
+  .war-diagram-side{align-content:start;gap:8px}.war-diagram-nodes{gap:8px}
+  .war-diagram-node{padding:10px 9px;min-height:53px}
+  .war-diagram-index{display:none}.war-diagram-node-arrow{display:none}
+  .war-diagram-side-title{min-height:48px;align-items:start;flex-direction:column;gap:0}
+  .war-diagram-help{font-size:12px}
+  .war-modal-panel{width:100vw;height:94dvh;align-self:end;border-radius:18px 18px 0 0;overflow:hidden}
+  .war-modal-head{padding-top:calc(18px + env(safe-area-inset-top,0px))}
+  .war-modal-body{padding:16px 15px calc(20px + env(safe-area-inset-bottom))}
+}
+@media(max-width:550px){
+  .war-board-catalog{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .war-board-select{display:grid;gap:1px;padding:8px;min-height:62px}
+  .war-board-select small{display:none}.war-board-num{font-size:10px}.war-board-select-label{font-size:12px}
+  .war-diagram{padding:13px}.war-diagram-network{min-height:530px}
+  .war-diagram-node{font-size:12px;line-height:1.3}.war-diagram-name{font-size:12px}
+  .war-diagram-center h3{font-size:24px}
+  .war-file-root{flex-wrap:wrap}.war-file-root small{width:100%;margin-left:25px}
+  .war-tree-family{padding-left:8px;padding-right:6px}
+  .war-tree-branch{margin-left:13px;padding-left:10px}
+  .war-tree-roster{padding-left:9px}
+  .war-tree-leaves{margin-left:14px;padding-left:10px}
+  .war-tree-leaf::before{left:-10px;width:10px}
+  .war-tree-leaf .rec-match-mini{display:none}
+  .war-tree-toggle small{font-size:10px}
+}
+/* 세 화면 상단도 페이지 성격에 맞게 통일. 밝은 회색 네비게이션 단절 제거 */
+body[data-view="recommendations"] .topbar,body[data-view="matchups"] .topbar,body[data-view="planner"] .topbar{
+  background:rgba(19,37,46,.95);border-bottom:1px solid #41545c;color:#f0ece3;backdrop-filter:blur(15px)
+}
+body[data-view="recommendations"] .main-nav,body[data-view="matchups"] .main-nav,body[data-view="planner"] .main-nav{background:#253c46}
+body[data-view="recommendations"] .main-nav a,body[data-view="matchups"] .main-nav a,body[data-view="planner"] .main-nav a{color:#d5e1df}
+body[data-view="recommendations"] .main-nav a[aria-current="page"],body[data-view="matchups"] .main-nav a[aria-current="page"],body[data-view="planner"] .main-nav a[aria-current="page"]{background:#e8e7dc;color:#213f43}
+body[data-view="recommendations"] .season-switch,body[data-view="matchups"] .season-switch,body[data-view="planner"] .season-switch{background:#2b454d}
+body[data-view="recommendations"] .season-switch span,body[data-view="matchups"] .season-switch span,body[data-view="planner"] .season-switch span{color:#c3d6d3}
+body[data-view="recommendations"] .season-switch input:checked+span,body[data-view="matchups"] .season-switch input:checked+span,body[data-view="planner"] .season-switch input:checked+span{background:#e4e8dc;color:#263a42}
+body[data-view="recommendations"] .conn-pill,body[data-view="matchups"] .conn-pill,body[data-view="planner"] .conn-pill{background:#263f48;border-color:#405a63;color:#d4dcd6}
+/* 다부대 추천도 금색 네모 장식을 제거하고 먹색 패널 + 부대 번호 강조로 통일 */
+body[data-view="planner"]{background:radial-gradient(ellipse 80% 450px at 90% 0,#2b4b5060,transparent),#0d1720;color:#f1eee6}
+body[data-view="planner"] .view-head h1{color:#f0eee5}
+body[data-view="planner"] .view-sub{color:#a9bcc0}
+body[data-view="planner"] .planner-panel{--ink:#eaece5;--muted:#a6b8b7;--surface:#152730;--bg:#10222b;--raise:#223843;--line:#3b5660;--line-soft:#314b55;--brass:#d6c0a5;background:#13242e!important;border:1px solid #36515a!important;border-radius:8px!important;box-shadow:none!important}
+body[data-view="planner"] .planner-plan{background:#1b303a;border:1px solid #435a60;border-left:3px solid #a54e3c;border-radius:7px!important;box-shadow:none}
+body[data-view="planner"] .planner-plan::before{display:none}
+body[data-view="planner"] .planner-plan-head h3{color:#e8e6dd}
+body[data-view="planner"] .planner-entry{background:#223842;border:1px solid #4a6269;border-radius:5px}
+body[data-view="planner"] .planner-entry-summary{background:#223842}
+body[data-view="planner"] .planner-plan-actions .solid-btn{background:#ac4b3a;color:#fff8f0}

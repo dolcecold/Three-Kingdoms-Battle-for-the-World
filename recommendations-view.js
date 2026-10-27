@@ -19,6 +19,9 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
   function toggleSaved(row){const rows=savedCandidates(),idx=rows.findIndex(x=>x.id===row.id&&x.season===season);if(idx>=0)rows.splice(idx,1);else rows.push({id:row.id,season,source,title:row.title});if(writeSaved(rows)){notify(idx>=0?'대응 후보에서 제외했습니다.':'내 덱 후보에 담았습니다.');render();}}
   const savedSet=()=>new Set(savedCandidates().filter(x=>x.season===season&&x.source===source).map(x=>x.id));
   const expanded=new Set();
+  const familyExpanded=new Set();
+  const familyClosed=new Set(),rosterClosed=new Set();
+  let lastDeepLink=null;
   const sourceButtons=[...$('rec-source').querySelectorAll('button')],seasonButtons=[...$('rec-seasons').querySelectorAll('button')];
   const sourceAllowed=value=>value==='presets'||(value==='s2'&&season===2)||(value==='s3'&&season===3);
   const toRows=()=>{
@@ -240,13 +243,50 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
     box.querySelector('.rec-detail-close')?.focus({preventScroll:true});
   }
   const grouping=rows=>{
-    const groups=new Map();
-    for(const row of rows){const key=keyFor(row)||row.id;
-      if(!groups.has(key))groups.set(key,{key,heroes:row.heroes,rows:[],title:source==='s3'?familyName(row.raw):row.title});
-      groups.get(key).rows.push(row);
+    const folders=new Map();
+    for(const row of rows){
+      const family=source==='s3'?familyName(row.raw):String(row.title).split(' · ')[0];
+      const fk='family:'+source+':'+family;
+      if(!folders.has(fk))folders.set(fk,{key:fk,title:family,rosters:new Map(),count:0});
+      const folder=folders.get(fk),roster=keyFor(row)||row.id;
+      if(!folder.rosters.has(roster))folder.rosters.set(roster,{key:roster,heroes:row.heroes,rows:[]});
+      folder.rosters.get(roster).rows.push(row);folder.count++;
     }
-    return [...groups.values()].sort((a,b)=>a.title.localeCompare(b.title,'ko'));
+    return [...folders.values()].sort((a,b)=>a.title.localeCompare(b.title,'ko'));
   };
+  const selectedRowKey=selected=>selected?keyFor(selected):null;
+  function treeContent(groups,active){
+    const tree=h('div',{class:'war-file-tree',role:'tree','aria-label':'덱 계열, 장수 조합, 세팅 선택 트리'},
+      h('div',{class:'war-file-root'},h('span',{class:'war-tree-chevron',text:'▾'}),h('span',{class:'war-folder-icon','aria-hidden':'true',text:'▣'}),
+        h('strong',{text:`한국 시즌 ${season} / ${SOURCES[source]}`}),h('small',{text:`${groups.length}계열 · ${groups.reduce((n,g)=>n+g.count,0)}세팅`})));
+    for(const [i,folder] of groups.entries()){
+      const fOpen=Boolean(query)||(!familyClosed.has(folder.key)&&(familyExpanded.has(folder.key)||(!familyExpanded.size&&i===0)||folder.rosters.has(active)));
+      const branch=h('div',{class:'war-tree-branch',role:'group',hidden:!fOpen});
+      const families=[...folder.rosters.values()];
+      for(const [j,roster] of families.entries()){
+        const rOpen=Boolean(query)||(!rosterClosed.has(roster.key)&&(expanded.has(roster.key)||roster.key===active||(!expanded.size&&fOpen&&j===0)));
+        const children=h('div',{class:'war-tree-leaves',role:'group',hidden:!rOpen});
+        for(const [n,row] of roster.rows.entries()){
+          const leafLabel=source==='s3'?(row.title.startsWith(folder.title)?row.title.slice(folder.title.length).replace(/^[\s·-]+/,''):`${row.title}`)||`세팅 ${n+1}`:row.title;
+          const leaf=h('button',{type:'button',class:'war-tree-leaf',role:'treeitem','aria-current':String(row.id===selection),dataset:{recId:row.id}},
+            h('span',{class:'war-leaf-glyph','aria-hidden':'true',text:'▤'}),
+            h('span',{class:'war-tree-leaf-label'},h('strong',{text:leafLabel}),source==='s3'&&row.raw.presentation_label?h('small',{text:row.raw.presentation_label}):null),
+            h('span',{class:'war-tree-leaf-tags'},source==='s2'?h('small',{text:tierOf(row.raw.heading,2).label}):null,row.matchup?h('small',{text:'相剋'}):null),
+            matchMini(row.matchup));
+          children.append(leaf);
+        }
+        const toggle=h('button',{type:'button',class:'war-tree-toggle roster',role:'treeitem','aria-expanded':String(rOpen),dataset:{warRoster:roster.key}},
+          h('span',{class:'war-tree-chevron',text:rOpen?'▾':'▸'}),h('span',{class:'war-folder-icon','aria-hidden':'true',text:'▣'}),
+          h('span',{class:'war-tree-node-label',text:roster.heroes.join(' · ')}),h('small',{text:`${roster.rows.length}안`}));
+        branch.append(h('div',{class:'war-tree-roster',dataset:{warRosterWrap:roster.key}},toggle,children));
+      }
+      const folderToggle=h('button',{type:'button',class:'war-tree-toggle family',role:'treeitem','aria-expanded':String(fOpen),dataset:{warFamily:folder.key}},
+        h('span',{class:'war-tree-chevron',text:fOpen?'▾':'▸'}),h('span',{class:'war-folder-icon','aria-hidden':'true',text:'▣'}),
+        h('span',{class:'war-tree-node-label',text:folder.title}),h('small',{text:`${families.length}조합 · ${folder.count}세팅`}));
+      tree.append(h('div',{class:'war-tree-family',dataset:{warFamilyWrap:folder.key}},folderToggle,branch));
+    }
+    return tree;
+  }
   function render(){
     if(!sourceAllowed(source)){source='presets';selection=null;}
     seasonButtons.forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.recSeason)===season)));
@@ -256,31 +296,11 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
       source==='s2'?'시즌2 티어별 참고 편성. 전법·병법 등 없는 정보는 임의 확정하지 않습니다.':
       '시즌3은 같은 장수 3명도 서로 다른 세팅으로 관리합니다. 전법 대안·병법·병종·장비·말 원문을 각 세팅에 표시합니다.';
     const rows=allRows(),selected=selectRow(rows),groups=grouping(rows);
-    $('rec-count').textContent=`한국 S${season} · ${SOURCES[source]} · ${groups.length}개 장수 조합 / ${rows.length}개 세팅`;
+    $('rec-count').textContent=`한국 S${season} · ${SOURCES[source]} · ${groups.length}개 덱 계열 / ${rows.length}개 세팅`;
     $('rec-shortlist').textContent=`현재 자료 후보 ${savedCandidates().filter(x=>x.season===season&&x.source===source).length}개`;
     $('rec-shortlist').setAttribute('aria-pressed',String(shortlistOnly));
     const activeKey=selected?keyFor(selected):null;
-    fill($('rec-list'),groups.length?groups.map((g,i)=>{
-      const isOpen=query||expanded.has(g.key)||(!expanded.size&&g.key===activeKey);
-      const list=h('details',{class:'rec-tree-group war-card',open:Boolean(isOpen),dataset:{groupKey:g.key}},
-        h('summary',null,
-          h('div',{class:'rec-tree-summary'},
-            h('strong',{class:'rec-tree-family',text:g.title||g.heroes.join(' · ')}),
-            h('p',{class:'rec-tree-members',text:g.heroes.join(' · ')})),
-          h('div',{class:'rec-tree-summary-side'},
-            h('small',{text:`${g.rows.length}개 세팅`}),
-            g.rows.some(r=>r.matchup)?h('small',{class:'rec-group-match',text:`상성 ${g.rows.filter(r=>r.matchup).length}`}):null,
-            h('span',{class:'rec-tree-chevron',text:'⌄'}))),
-        h('div',{class:'rec-tree-variants'},...g.rows.map((row,j)=>h('button',{type:'button',class:'rec-list-option',dataset:{recId:row.id},'aria-current':String(row.id===selection)},
-          h('div',{class:'rec-list-option-head'},h('strong',{text:row.title}),source==='s3'?h('small',{class:'rec-list-option-sub',text:row.raw.presentation_label||`${j+1}안`}):null),
-          h('span',{class:'rec-list-tags'},
-            source==='s2'?h('small',{class:'rec-tag role',text:tierOf(row.raw.heading,2).label}):null,
-            row.guide.has_stat_guidance?h('small',{class:'rec-tag',text:'스탯 가이드'}):null,
-            row.guide.has_role_guidance?h('small',{class:'rec-tag role',text:'역할'}):null),
-          matchMini(row.matchup)))));
-      list.addEventListener('toggle',()=>{if(list.open)expanded.add(g.key);else expanded.delete(g.key);});
-      return list;
-    }):h('p',{class:'rec-guide-empty',text:'조건에 맞는 자료가 없습니다.'}));
+    fill($('rec-list'),groups.length?treeContent(groups,selectedRowKey(selected)):h('p',{class:'rec-guide-empty',text:'조건에 맞는 자료가 없습니다.'}));
     details(selected);
 
   }
@@ -295,15 +315,26 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
         load('./data/recommendation-matchups.json')
       ]);loaded=true;
     }
-    if(state.season!==lastEditorSeason){lastEditorSeason=state.season;season=state.season;source='presets';selection=null;expanded.clear();closeDetail(false);}
+    if(state.season!==lastEditorSeason){lastEditorSeason=state.season;season=state.season;source='presets';selection=null;expanded.clear();familyExpanded.clear();familyClosed.clear();rosterClosed.clear();closeDetail(false);}
+    const qs=location.hash.split('?')[1]||'';
+    const params=new URLSearchParams(qs);const requested=params.get('id'),askedSource=params.get('source');
+    const deepKey=requested?`${askedSource}:${requested}`:null;
+    if(requested&&(deepKey!==lastDeepLink||!detailOpened)&&s3?.variants.some(v=>v.id===requested)){ 
+      lastDeepLink=deepKey;source='s3';season=3;selection=requested;
+      query='';$('rec-search').value='';role='all';$('rec-role').value='all';guided=false;$('rec-guided').checked=false;
+      const v=s3.variants.find(x=>x.id===requested);
+      const row={id:v.id,raw:v,heroes:v.members.map(m=>m.general)};
+      expanded.add(keyFor(row));familyExpanded.add('family:s3:'+familyName(v));
+      render();openDetail();return;
+    }
     render();
   }
-  $('rec-seasons').addEventListener('click',e=>{const b=e.target.closest('[data-rec-season]');if(!b)return;season=Number(b.dataset.recSeason);source='presets';selection=null;expanded.clear();matchupTarget='';shortlistOnly=false;closeDetail(false);render();});
-  $('rec-source').addEventListener('click',e=>{const b=e.target.closest('[data-rec-source]');if(!b||!sourceAllowed(b.dataset.recSource))return;source=b.dataset.recSource;selection=null;expanded.clear();matchupTarget='';closeDetail(false);render();});
-  $('rec-search').addEventListener('input',e=>{query=e.target.value;selection=null;expanded.clear();closeDetail(false);render();});
-  $('rec-role').addEventListener('change',e=>{role=e.target.value;selection=null;expanded.clear();closeDetail(false);render();});
-  $('rec-guided').addEventListener('change',e=>{guided=e.target.checked;selection=null;expanded.clear();closeDetail(false);render();});
-  $('rec-shortlist').addEventListener('click',()=>{shortlistOnly=!shortlistOnly;selection=null;expanded.clear();closeDetail(false);render();});
+  $('rec-seasons').addEventListener('click',e=>{const b=e.target.closest('[data-rec-season]');if(!b)return;season=Number(b.dataset.recSeason);source='presets';selection=null;expanded.clear();familyExpanded.clear();familyClosed.clear();rosterClosed.clear();matchupTarget='';shortlistOnly=false;closeDetail(false);render();});
+  $('rec-source').addEventListener('click',e=>{const b=e.target.closest('[data-rec-source]');if(!b||!sourceAllowed(b.dataset.recSource))return;source=b.dataset.recSource;selection=null;expanded.clear();familyExpanded.clear();familyClosed.clear();rosterClosed.clear();matchupTarget='';closeDetail(false);render();});
+  $('rec-search').addEventListener('input',e=>{query=e.target.value;selection=null;expanded.clear();familyExpanded.clear();familyClosed.clear();rosterClosed.clear();closeDetail(false);render();});
+  $('rec-role').addEventListener('change',e=>{role=e.target.value;selection=null;expanded.clear();familyExpanded.clear();familyClosed.clear();rosterClosed.clear();closeDetail(false);render();});
+  $('rec-guided').addEventListener('change',e=>{guided=e.target.checked;selection=null;expanded.clear();familyExpanded.clear();familyClosed.clear();rosterClosed.clear();closeDetail(false);render();});
+  $('rec-shortlist').addEventListener('click',()=>{shortlistOnly=!shortlistOnly;selection=null;expanded.clear();familyExpanded.clear();familyClosed.clear();rosterClosed.clear();closeDetail(false);render();});
   $('rec-detail').addEventListener('click',e=>{
     const jump=e.target.closest('[data-rec-jump]');
     if(jump){const dest=s3?.variants?.find(v=>v.id===jump.dataset.recJump);if(!dest)return;
@@ -321,9 +352,20 @@ export function createRecommendationsView({state,h,fill,ensurePresets,presetsDat
     if(target){matchupTarget=target.dataset.recTarget==='__all__'?'':target.dataset.recTarget;
       const saved=$('rec-detail').scrollTop;const id=selection;const rows=allRows();const row=rows.find(x=>x.id===id);if(row){details(row);$('rec-detail').scrollTop=saved;}return;}
   });
-  $('rec-list').addEventListener('click',e=>{const b=e.target.closest('[data-rec-id]');if(!b)return;
+  $('rec-list').addEventListener('click',e=>{
+    const folder=e.target.closest('[data-war-family]');
+    if(folder){const key=folder.dataset.warFamily,el=folder.nextElementSibling,opened=folder.getAttribute('aria-expanded')==='true';
+      el.hidden=opened;folder.setAttribute('aria-expanded',String(!opened));folder.querySelector('.war-tree-chevron').textContent=opened?'▸':'▾';
+      if(opened){familyExpanded.delete(key);familyClosed.add(key);}else{familyExpanded.add(key);familyClosed.delete(key);}return;}
+    const roster=e.target.closest('[data-war-roster]');
+    if(roster){const key=roster.dataset.warRoster,el=roster.nextElementSibling,opened=roster.getAttribute('aria-expanded')==='true';
+      el.hidden=opened;roster.setAttribute('aria-expanded',String(!opened));roster.querySelector('.war-tree-chevron').textContent=opened?'▸':'▾';
+      if(opened){expanded.delete(key);rosterClosed.add(key);}else{expanded.add(key);rosterClosed.delete(key);}return;}
+    const b=e.target.closest('[data-rec-id]');if(!b)return;
     priorFocusId=b.dataset.recId;selection=b.dataset.recId;matchupTarget='';detailHistory.length=0;
-    expanded.add(b.closest('[data-group-key]').dataset.groupKey);render();openDetail();});
+    const parent=b.closest('[data-war-roster-wrap]');if(parent)expanded.add(parent.dataset.warRosterWrap);
+    const f=b.closest('[data-war-family-wrap]');if(f)familyExpanded.add(f.dataset.warFamilyWrap);
+    render();openDetail();});
   $('rec-detail').addEventListener('click',e=>{if(e.target.closest('.rec-detail-close'))closeDetail();});
   $('rec-backdrop').addEventListener('click',()=>closeDetail());
   window.addEventListener('keydown',e=>{
