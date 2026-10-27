@@ -1192,3 +1192,24 @@ body[data-view="planner"] .planner-plan-actions .solid-btn{background:#ac4b3a;co
 .planner-projection-used{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin:8px 0}
 .planner-projection-used span{padding:4px 8px;border-radius:8px;background:var(--surface-2);font-size:12px}
 .planner-entry .planner-projection-label{font-size:11px;color:var(--brass);font-weight:700}
+
+/* v1.5.0 · 최적 5군 사용자 우선순위: 카드 디자인은 유지하고 조작부만 확장 */
+.planner-priority-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 12px;border-left:3px solid var(--ally);background:color-mix(in srgb,var(--ally) 8%,var(--surface));border-radius:7px}
+.planner-priority-help{font-size:12px;line-height:1.65;color:var(--muted);margin:0;flex:1 1 280px}
+.planner-priority-notice{font-size:12px;font-weight:650;line-height:1.6;color:var(--ink);padding:9px 12px;margin:0;background:color-mix(in srgb,var(--ok) 11%,var(--surface));border:1px solid color-mix(in srgb,var(--ok) 27%,var(--line));border-radius:8px}
+.planner-plan-list .planner-sort-item{position:relative;display:grid;gap:0;min-width:0;border-radius:8px;transition:box-shadow .12s ease}
+.planner-sort-tools{display:flex;align-items:center;gap:8px;padding:7px 9px;background:color-mix(in srgb,var(--bg) 68%,var(--surface));border:1px solid var(--line);border-bottom:0;border-radius:7px 7px 0 0;min-height:50px}
+.planner-sort-item .planner-entry{border-radius:0 0 7px 7px}
+.planner-drag-handle{display:inline-flex;align-items:center;justify-content:center;flex:none;min-height:44px;min-width:48px;touch-action:none;user-select:none;-webkit-user-select:none;font-size:25px;line-height:1;cursor:grab;border:1px solid var(--line);border-radius:6px;background:var(--surface-2);color:var(--ink)}
+.planner-drag-handle:active{cursor:grabbing}
+.planner-sort-rank{font-size:12px;font-weight:800;color:var(--ink);white-space:nowrap}
+.planner-sort-shortcuts{margin-left:auto;display:flex;align-items:center;gap:5px}
+.planner-sort-shortcut{display:inline-flex;align-items:center;justify-content:center;min-height:42px;min-width:42px;padding:0 9px;border-radius:6px;border:1px solid var(--line);background:var(--surface);font-size:19px;font-weight:700;color:var(--ink)}
+.planner-sort-shortcut:disabled{opacity:.28;cursor:not-allowed}
+.planner-sort-shortcut:not(:disabled):hover{background:var(--surface-2);border-color:var(--ally)}
+.planner-sort-item.planner-is-dragging{z-index:20;opacity:.85;filter:drop-shadow(0 9px 16px rgba(0,0,0,.3));pointer-events:none}
+.planner-sort-item.planner-drop-before::before,.planner-sort-item.planner-drop-after::after{content:'';position:absolute;left:5px;right:5px;height:4px;border-radius:4px;background:var(--ally);box-shadow:0 0 0 2px var(--surface);z-index:25}
+.planner-sort-item.planner-drop-before::before{top:-8px}
+.planner-sort-item.planner-drop-after::after{bottom:-8px}
+.planner-drag-handle:focus-visible,.planner-sort-shortcut:focus-visible{outline:3px solid var(--ally);outline-offset:2px}
+@media(max-width:600px){.planner-sort-tools{gap:5px;padding:6px}.planner-sort-rank{font-size:11px}.planner-sort-shortcut{min-width:39px}.planner-priority-help{font-size:11.5px}}

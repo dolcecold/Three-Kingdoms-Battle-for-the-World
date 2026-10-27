@@ -152,3 +152,51 @@ export function recommendLineups(candidates,{heroes=[],tactics=[],reservedHeroes
   }
   return {plans,eligible:eligible.length,ownedHeroes:ownedH.size,ownedTactics:ownedT.size};
 }
+
+/**
+ * 사용자가 고른 부대 조합은 유지하고 표시 우선순위에 맞춰 모든 전법을 처음부터 할당한다.
+ * 상위 부대가 일반/대체/투영 전법을 먼저 확보하고, 후순위 부대는 남은 자원으로 매칭한다.
+ * 투영 3종 한도 및 직접 선택 옵션은 원본 5군 검색과 동일한 검증 경로를 사용한다.
+ */
+export function reallocateLineupByPriority(planOrEntries,{
+  heroes=[],tactics=[],reservedHeroes=[],reservedTactics=[],
+  tacticCatalog=new Map(),projectionSelection='auto'
+}={}){
+  const entries=Array.isArray(planOrEntries)?planOrEntries:planOrEntries?.entries;
+  if(!Array.isArray(entries)||entries.length<1||entries.length>5)
+    throw new Error('우선순위를 재계산할 1~5개 부대가 필요합니다.');
+  const ownedH=new Set(ids(heroes)),ownedT=new Set(ids(tactics));
+  const usedHeroes=new Set(ids(reservedHeroes)),usedTactics=new Set(ids(reservedTactics));
+  const ordered=[],candidateIds=new Set();let total=0;
+  for(const item of entries){
+    const c=item?.candidate||item;
+    if(!c||c.id==null||candidateIds.has(c.id))throw new Error('동일한 덱 세팅을 중복 배치할 수 없습니다.');
+    candidateIds.add(c.id);
+    if(c.heroes.some(id=>ownedH.has(id)&&usedHeroes.has(id)))
+      throw new Error(`${c.title||c.id}: 앞 부대와 보유 장수가 중복됩니다.`);
+    const fit=fitCandidate(c,{heroes:ownedH,tactics:ownedT,usedHeroes,usedTactics,tacticCatalog,projectionSelection});
+    for(const id of fit.usedHeroes)usedHeroes.add(id);
+    for(const id of fit.usedTactics){
+      if(usedTactics.has(id))throw new Error('다부대 전법 배분이 중복되었습니다.');
+      usedTactics.add(id);
+    }
+    if([...usedTactics].filter(isProjection).length>3)throw new Error('투영 3종 제한을 초과했습니다.');
+    total+=fit.score+(fit.skillsComplete?30:0)+(fit.complete?25:0);
+    ordered.push(fit);
+  }
+  return {entries:ordered,usedHeroes,usedTactics,total,priorityReallocated:true};
+}
+
+/** 순서 변경 뒤 어떤 덱이 전법을 얻거나 잃었는지 비교. */
+export function compareLineupAllocations(before,after){
+  const previous=new Map((before?.entries||[]).map(f=>[String(f.candidate.id),f]));
+  return (after?.entries||[]).map(f=>{
+    const prior=previous.get(String(f.candidate.id));
+    const beforeSkills=new Map((prior?.selected||[]).map(s=>[`${s.hero}::${s.slot}`,s.chosen?.id??null]));
+    const afterSkills=new Map((f.selected||[]).map(s=>[`${s.hero}::${s.slot}`,s.chosen?.id??null]));
+    const changed=[...new Set([...beforeSkills.keys(),...afterSkills.keys()])].filter(k=>beforeSkills.get(k)!==afterSkills.get(k));
+    return {id:f.candidate.id,changedSlots:changed.length,
+      gained:f.matchedSkills-(prior?.matchedSkills||0),
+      before:prior?.matchedSkills||0,after:f.matchedSkills};
+  });
+}
