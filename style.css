@@ -1244,3 +1244,12 @@ body[data-view="planner"] .planner-plan-actions .solid-btn{background:#ac4b3a;co
   .battle-edit-actions{width:100%}.battle-edit-actions button{flex:1;white-space:normal}
   .battle-pick-modal{width:calc(100vw - 18px);max-height:90dvh}
 }
+
+/* v1.5.6: searchable warbook slot; preserve the existing guild theme */
+.warbook-search-btn{display:flex;align-items:center;gap:9px;min-height:42px;padding:9px 11px;width:100%;text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit}
+.warbook-search-btn:not(:disabled){cursor:pointer}
+.warbook-search-btn:hover:not(:disabled),.warbook-search-btn:focus-visible{border-color:var(--brass);outline-offset:2px}
+.warbook-search-btn:disabled{opacity:.55;cursor:not-allowed}
+.warbook-search-name{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650;font-size:13px}
+.warbook-search-icon{font-size:20px;color:var(--muted);line-height:1}
+.tag.effect-estimated{background:color-mix(in srgb,var(--ok) 12%,transparent);color:var(--ok);font-size:10px}

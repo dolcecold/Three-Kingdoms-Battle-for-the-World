@@ -1,7 +1,7 @@
 {
   "region": "KR",
   "locale": "ko-KR",
-  "data_version": "kr-editor-1b3c4ae82c1b432c",
+  "data_version": "kr-editor-840ee0ac81e9aa0b",
   "season": 3,
   "experimental": true,
   "heroes": [
@@ -366,7 +366,7 @@
         "id": 100101,
         "name": "백병 혈전",
         "description": "전투 시작 시, 자신의 선공과 무력이 20포인트 증가하며, 연타 확률이 100% 증가하고, 통솔이 15 포인트 감소한다. 아군 전체가 일반 공격을 4회 시전할 때마다, 아군 전체의 관통이(가) 2% 증가한다(무력의 영향을 받음), 중첩이 가능하며 전투 종료까지 지속된다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 3,
       "warbook_slots": [
@@ -725,7 +725,7 @@
         "id": 100201,
         "name": "고대의 악래",
         "description": "자신의 반격 확률이 60% 증가하며, 자신이 피해를 받은 후, 2턴 동안 자신의 반격 피해가 20%, 통솔이 20포인트 증가한다, 5회 중첩될 수 있다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 3,
       "warbook_slots": [
@@ -1067,7 +1067,7 @@
         "id": 100301,
         "name": "십이기책",
         "description": "랜덤 적군 2~3명에게 220%의 책략 피해를 주며, 2턴 동안 지속되는 1가지 이상 상태을(를) 랜덤으로 부여한다(보유하지 않은 상태 우선 부여).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -1323,7 +1323,7 @@
         "id": 100401,
         "name": "현묘한 계책",
         "description": "매 턴 시작 시, 90% 확률로 랜덤 적군 단일 목표와 우군 1명에게 2턴 동안 지속되는 혼란을(를) 부여한다. 적군 목표가 이미 혼란 상태일 경우, 추가로 300%의 책략 피해를 준다. 우군 목표가 이미 혼란 상태일 경우, 추가로 해당 목표와 자신의 병력을 회복한다(치유율 110%, 지력의 영향 받음).\n전체 아군이 자신과 우군에게 주는 피해가 60% 감소한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -2299,7 +2299,7 @@
         "id": 100901,
         "name": "매의 응시",
         "description": "포석을 진행하여 포진 상태 1가지를 랜덤으로 획득하며(다른 상태 우선 획득), 전투 종료까지 지속된다. 50% 확률로(지력의 영향 받음) 1회 재포석한다. 랜덤 적군 2명에게 50%의 책략 피해를 주며, 포석으로 제공되는 상태 1가지 당 책략 피해 계수가 20% 증가한다, 8회까지 증가할 수 있다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -2556,7 +2556,7 @@
         "id": 101001,
         "name": "적진 돌파",
         "description": "자신의 관통이(가) 5% 증가하며, 전투 종료까지 지속되고, 4회 중첩될 수 있다.\n이후 랜덤 적군 2명에게 220%의 병기 피해를 주며, 65% 확률로 1턴 동안 지속되는 무장 해제을(를) 부여한다. 목표가 이미 무장 해제 상태면 이번 피해가 30% 증가한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 3,
       "warbook_slots": [
@@ -3235,7 +3235,7 @@
         "id": 101301,
         "name": "승승장구",
         "description": "랜덤 적군 단일 목표에게 350%의 병기 피해를 주며, 1턴 동안 지속되는 침묵을(를) 부여한다. 목표가 이미 침묵 상태를 보유 중이거나 병력이 가장 낮은 적군 단일 목표면 이번 피해 수치가 30% 증가한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -3794,7 +3794,7 @@
         "id": 101501,
         "name": "천하의 정예",
         "description": "전투 시작 후, 아군 기병과 창병이 일반 공격 후 주는 피해가 5% 증가하며(최고 속성의 영향을 받음), 6회 중첩할 수 있다. \n2번째 턴부터 아군 기병과 창병이 행동 시, 랜덤 적군 단일 목표에게 추가로 140%의 병기 피해를 준다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -4426,7 +4426,7 @@
         "id": 101701,
         "name": "고통의 심계",
         "description": "지력이 가장 높은 아군 단일 목표가 일반 공격 후, 목표에게 70%의 책략 피해를 주며(추가로 심계 스택수의 영향 받음), 25% 확률로(지력의 영향 받음) 1스택의 심계를 획득한다. 심계: 책략 피해가 3% 증가하며, 최대 10스택 중첩된다. 매 턴 지력이 가장 높은 단일 목표가 행동 후, 추가로 일반 공격을 1회 시전한다(심계 스택수가 6회 미만이면 추격 전법 발동 불가).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -4731,7 +4731,7 @@
         "id": 101901,
         "name": "용맹의 화신",
         "description": "랜덤 적군 단일 목표가 탈주병을(를) 생성하게 한다(지력의 영향 받음). 이후 해당 적군에게 360%의 책략 피해를 주며, 목표가 전열이면 피해 계수가 80% 증가한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -4986,7 +4986,7 @@
         "id": 102001,
         "name": "유인전",
         "description": "자신이 일반 공격을 가하거나 추격 전법 발동 후, 40% 확률로(지력의 영향 받음) 랜덤 적군 2명에게 100%의 책략 피해를 주며, 목표가 받는 피해를 4% 증가시킨다(지력의 영향 받음). 4회 중첩될 수 있으며, 전투 종료까지 지속된다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 3,
       "warbook_slots": [
@@ -5297,7 +5297,7 @@
         "id": 102301,
         "name": "강렬",
         "description": "자신이 피해를 받은 후, 40% 확률로 피해를 준 목표에게 80%의 병기 피해를 주며(추가로 통솔의 영향 받음), 2턴 동안 해당 목표가 주는 피해가 30% 감소한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -5545,7 +5545,7 @@
         "id": 102401,
         "name": "양번 사수",
         "description": "홀수 턴에 자신이 후열로부터 받는 피해가 30% 감소하고(통솔의 영향 받음), 전열로부터 받는 피해가 15% 감소한다(통솔의 영향 받음).\n짝수 턴 시작 시, 75% 확률로 랜덤 적군 2명에게 1턴 동안 지속되는 침묵을(를) 부여하며, 확률은 목표마다 개별적으로 판정된다.\n",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -7506,7 +7506,7 @@
         "id": 200401,
         "name": "연환계",
         "description": "자신의 간파이(가) 20% 증가한다(지력의 영향 받음). 홀수 턴에 적군 전체에 1턴 동안 연환을 부여한다. 연환: 피해를 받으면 우군 2명이 25%(지력의 영향 받음)의 피해 전달을(를) 받는다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -7856,7 +7856,7 @@
         "id": 200501,
         "name": "겸손한 자세",
         "description": "랜덤 적군 단일 목표에게 220%의 책략과 병기 피해를 준다. 목표의 무력이 지력보다 높으면 무장 해제을(를) 부여하며, 반대일 경우 침묵을(를) 부여한다, 1턴 지속.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -8233,7 +8233,7 @@
         "id": 200701,
         "name": "전장 평정",
         "description": "일반 공격 후, 2턴 동안 공격 목표의 선공과 무력을 24 감소시킨다(무력의 영향 받음). 이후 디버프 상태를 보유한 적군 목표에게 180%의 병기 피해를 준다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -8886,7 +8886,7 @@
         "id": 201101,
         "name": "범의 포효",
         "description": "전투 중, 매 턴 액티브 전법이 첫 발동된 후, 40% 확률(무력과 선공의 영향 받음)로 랜덤 적군 2명에게 260%의 병기 피해를 주며, 해당 적군에게 1턴 동안 지속되는 허약 상태를 부여한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -10350,7 +10350,7 @@
         "id": 201801,
         "name": "간파력",
         "description": "전체 적군에게 도사를 부여한다. 도사: 다음에 일반 공격 외의 다른 피해를 받은 후, 공격자의 병력을 회복시키며(치유율 80%, 지력의 영향 받음), 추가로 법정으로부터 120%의 책략 피해를 받는다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -11047,7 +11047,7 @@
         "id": 202101,
         "name": "중원 토벌",
         "description": "매 턴 종료 시, 1~3회 토벌한다: 랜덤 적군 2명에게 40%의 병기와 책략 피해를 준다. 전체 아군이 피해를 준 후, 현재 턴에 토벌의 피해 계수가 5% 증가하며, 9회까지 증가할 수 있다. 총 3회 토벌 후, 병력이 가장 낮은 적군 단일 목표가 탈주병을(를) 생성하게 한다(지력과 무력의 영향 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 3,
       "warbook_slots": [
@@ -12460,7 +12460,7 @@
         "id": 300201,
         "name": "궁희",
         "description": "일반 공격 후, 랜덤 적군 단일 목표에게 320%의 병기 피해를 주며, 적에 이성이 1명 있을 때마다 해당 피해 계수가 50% 증가하고, 75% 확률로 후열 목표를 우선적으로 선택한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -12825,7 +12825,7 @@
         "id": 300301,
         "name": "천향",
         "description": "랜덤 적군 2명에게 1턴 동안 지속되는 허약을(를) 부여한다. 랜덤 아군 2명의 병력을 회복시킨다(치유율 250%, 지력의 영향 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -13115,7 +13115,7 @@
         "id": 300401,
         "name": "국색",
         "description": "매 턴 시작 시, 랜덤 적군 2명이 받는 피해가 1턴 동안 20% 증가하며, 랜덤 아군 2명의 병력을 회복시킨다(치유율 180%, 지력의 영향 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 3,
       "warbook_slots": [
@@ -13791,7 +13791,7 @@
         "id": 300601,
         "name": "수전의 제왕",
         "description": "일반 공격 피해가 150% 증가하며, 일반 공격 전, 2턴 동안 자신의 무력이 12포인트 증가한다, 4회 중첩될 수 있다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -14198,7 +14198,7 @@
         "id": 300701,
         "name": "기지의 승리",
         "description": "전투 중, 전체 적군과 아군이 이상 상태 효과를 받으면 자신이 70% 확률로 기지를 발동한다. 기지: 랜덤 적군 2명에게 즉시 60%의 책략 피해를 준다. 기지는 턴마다 최대 4회 발동되며, 4회 누적 발동 후, 전체 아군의 병력이 회복된다(치유율 40%, 지력의 영향 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -15495,7 +15495,7 @@
         "id": 301101,
         "name": "완벽한 사격",
         "description": "매 턴 시작 시, 90% 확률로 축력 1스택을 획득한다. 축력: 일반 공격 성공 후, 모든 축력 스택수를 소모하여 추가로 일반 공격을 시전한다(무장 해제 상태 무시, 일반 공격 횟수는 축력 스택수와 동일, 최대 10스택까지 중첩 가능).\n자신이 일반 공격을 시전하기 전 이미 무장 해제 또는 일반 공격 불가 상태일 경우 90% 확률로 1스택의 축력을 획득한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -16282,7 +16282,7 @@
         "id": 301301,
         "name": "무열황제",
         "description": "2턴 동안 랜덤 적군 단일 목표의 통솔을 40포인트 감소시키며(무력 또는 통솔 중 높은 수치의 영향 받음), 250%의 병기 피해를 준다(추가로 통솔의 영향 받음). 그리고 1턴 동안 지속되는 공포을(를) 부여하고, 목표의 통솔이 자신보다 높으면 통솔 감소 효과 50% 증가한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -16487,7 +16487,7 @@
         "id": 301401,
         "name": "불굴의 의지",
         "description": "우군이 현재 병력의 10%보다 높은 피해를 받기 직전, 80% 확률(통솔의 영향 받음)로 우군을 위해 해당 피해를 부담한다. 매 턴 각 우군마다 최대 3회 부담할 수 있으며, 부담하는 피해가 50% 감소한다(통솔의 영향 받음). 자신이 곧 사망할 때 생존한 우군이 있으면 100% 확률로 불굴이 발동된다. 불굴: 치명적인 피해를 1회 면역한다. 불굴이 발동될 때마다 다음 발동률이 10% 감소한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -18285,7 +18285,7 @@
         "id": 400401,
         "name": "군웅 집결",
         "description": "매 턴 행동 시, 무력/지력/선공이 가장 높은 아군 단일 목표가 무력/지력/선공이 가장 낮은 적군 단일 목표에게 각각 75%의 병기와 책략 피해를 준다.\n\n",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -18642,7 +18642,7 @@
         "id": 400701,
         "name": "포위의 허점",
         "description": "2턴 동안 랜덤 적군 2명의 통솔(지력의 영향 받음)을 26포인트 탈취하고, 자신과 통솔이 가장 높은 우군에게 균등히 부여한다. 이후 180%의 책략 피해를 준다(통솔 차이의 영향을 추가로 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -18969,7 +18969,7 @@
         "id": 400801,
         "name": "혼란의 폭우",
         "description": "전체 적군에게 120%의 책략 피해를 주고, 2턴 동안 지속되는 홍수 상태를 부여한다. 또한, 자신과 랜덤 우군 1명(같은 열 우선)이 아래 효과 중 1~2개를 획득한다. 효과: 자신의 병력 회복(치유율 200%, 지력의 영향 받음). 2턴 동안 침묵 상태 면역. 2턴 동안 액티브 전법 발동률 10% 증가. 무장마다 개별적으로 판정된다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -19253,7 +19253,7 @@
         "id": 401001,
         "name": "군주 시해",
         "description": "랜덤 적군 2명에게 2턴 동안 지속되는 짐독 상태를 1스택 부여하며, 전체 아군이 2턴 동안 시해 상태를 획득한다. 시해: 짐독 상태인 목표에게 병기 또는 책략 피해를 준 후, 50% 확률로 목표에게 1스택의 짐독 상태를 부여한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -19483,7 +19483,7 @@
         "id": 401101,
         "name": "황천의 시대",
         "description": "1턴 동안 준비 후 전체 적군에게 300%의 책략 피해를 주며, 상대가 보유 중인 디버프 상태 1개당 책략 피해 계수가 30% 증가한다, 3회 증가할 수 있으며, 자신이 황천 효과를 획득한다. 황천: 준비 전법 발동 시, 50% 확률로 준비를 1턴 건너뛴다, 4턴 지속된다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -19711,7 +19711,7 @@
         "id": 401201,
         "name": "우천의 흑운",
         "description": "전투 시작 시, 자신이 10스택의 운신을 획득한다.\n자신이 피해를 받으면 이번 피해가 20% 감소하며(추가로 지력과 운신 스택수의 영향 받음), 우군 2명의 액티브 전법이 확률로 인해 발동하지 않으면 50% 확률로(지력의 영향 받음) 운신을 1스택 소모해 이번 액티브 전법을 다시 판정한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -20039,7 +20039,7 @@
         "id": 401301,
         "name": "지략전",
         "description": "매 턴 시작 시, 무력이 가장 높은 아군 단일 목표가 1턴 동안 종계를 획득한다. 종계: 받는 책략 피해가 15% 감소하며(지력의 영향 받음), 추격 전법 발동 후, 랜덤 적군 단일 목표에게 140%의 책략 피해를 준다(목표의 무력의 영향 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -20791,7 +20791,7 @@
         "id": 401501,
         "name": "서량 웅거",
         "description": "전투 시작 후 3턴 동안 아군 우군 2명의 추격 전법 피해가 20% 증가하며(통솔의 영향 받음), 매 턴 종료 시, 50% 확률로(통솔의 영향 받음) 추가로 일반 공격을 1회 부여하고, 무장마다 개별적으로 판정된다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -21116,7 +21116,7 @@
         "id": 401601,
         "name": "지략 방어",
         "description": "통솔이 가장 높은 아군 단일 목표가 1스택의 방어을(를) 획득하고, 무력, 지력, 선공이 40포인트 증가한다(최고 속성의 영향 받음). 통솔이 가장 낮은 적군 단일 목표의 무력, 지력, 선공이 40포인트 감소한다(최고 속성의 영향 받음). 해당 효과는 2턴 동안 지속된다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -21475,7 +21475,7 @@
         "id": 401701,
         "name": "남다른 완력",
         "description": "일반 공격 후, 현재 공격 목표에게 150%의 병기 피해를 주며, 목표의 무력이 자신보다 낮으면 추가로 70%의 병기 피해를 준다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 3,
       "warbook_slots": [
@@ -21831,7 +21831,7 @@
         "id": 401801,
         "name": "치열한 교전",
         "description": "일반 공격 후, 2턴 동안 백발백중 상태를 획득한다. 그리고 병력이 가장 낮은 적군 단일 목표에게 280%의 병기 피해를 준다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 3,
       "warbook_slots": [
@@ -22187,7 +22187,7 @@
         "id": 401901,
         "name": "마비산",
         "description": "턴 종료 시, 병력이 가장 낮은 우군 단일 목표가 받는 피해가 16% 감소하며(지력의 영향 받음), 1턴 동안 해당 목표에게 정신 회복을(를) 부여한다. 또한 해당 목표의 병력을 회복시킨다(치유율 240%, 지력의 영향 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -22521,7 +22521,7 @@
         "id": 402101,
         "name": "국경의 장수",
         "description": "일반 공격 후, 2턴 동안 자신의 피신율이 24% 증가하며(선공의 영향 받음), 이후 랜덤 적군 2명에게 140%의 병기와 책략 피해를 준다(추가로 양측 선공 차이의 영향 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -23186,7 +23186,7 @@
         "id": 402401,
         "name": "태평의 여운",
         "description": "전체 아군의 액티브 전법 발동 성공 후 80% 확률로 자신이 랜덤 적군 2명에게 140%의 책략 피해를 준다. 발동 시마다 현재 턴의 발동률이 10% 감소한다. 적군이 요술 상태면 주는 피해의 40%(지력의 영향 받음)만큼 병력이 가장 낮은 아군 단일 목표의 병력을 회복시킨다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -23518,7 +23518,7 @@
         "id": 402601,
         "name": "필사의 돌격",
         "description": "전투 3번째, 5번째 턴에 자신이 행동 시, 2턴 동안 전체 적군의 통솔과 지력을 30포인트 감소시킨다(무력의 영향 받음). 이어서 340%의 병기 피해를 준다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -23947,7 +23947,7 @@
         "id": 402701,
         "name": "천자 참칭",
         "description": "전투 시작 후 4턴 동안 전체 아군의 통솔이 80포인트 증가하며(통솔의 영향 받음), 획득한 통솔은 매 턴 종료 시 15포인트 감소하고, 4번째 턴 시작 시, 통솔이 가장 높은 우군이 옥새를 획득한다. 옥새: 피해가 15% 증가하며(통솔의 영향 받음), 자신의 행동 종료 시, 전체 적군에게 160%의 병기 피해를 준다(옥새 보유자의 통솔의 영향 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -24225,7 +24225,7 @@
         "id": 402801,
         "name": "압도적 권력",
         "description": "매 턴 행동 시, 전체 적군과 아군의 통솔을 20포인트 탈취하고, 전체 적군에게 60%의 병기와 책략 피해(추가로 통솔의 영향 받음)를 준다. 탈취한 통솔은 턴 종료 시 반환되며, 탈취 효과는 매 턴 10% 감소한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -24491,7 +24491,7 @@
         "id": 402901,
         "name": "눈부신 자태",
         "description": "전투 시작 시, 전체 아군이 눈짓을 획득한다. 눈짓: 받는 피해, 받는 추격 전법 피해, 받는 액티브 전법 피해가 16% 감소한다. 자신이 피해를 받은 후 전체 아군의 눈짓 효과가 2% 감소하며, 턴 종료 시까지 지속되고, 매 턴 최대 8회 감소한다. \n4번째 턴부터 매 턴 행동 시, 랜덤 아군 2명의 병력을 회복한다(치유율 140%, 지력의 영향 받음)",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -24821,7 +24821,7 @@
         "id": 403001,
         "name": "신속 출병",
         "description": "자신이 받는 피해가 12% 감소한다(통솔의 영향 받음). 매 턴 처음 피해를 받은 후, 군령을 1개 획득한다. 군령: 전체 아군의 통솔이 25포인트 증가하며 중첩될 수 있고, 최대 10개 보유할 수 있다. 자신의 통솔이 60포인트 증가할 때마다 추가로 군령을 1개 획득한다. 최초로 10스택의 군령을 보유하면 전체 적군에게 260%의 병기 피해를 준다(추가로 통솔 차이의 영향 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -25192,7 +25192,7 @@
         "id": 500001,
         "name": "민첩한 대응",
         "description": "적군 전체가 액티브 전법 발동 후, 적에게 50%의 책략 피해를 준다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -25862,7 +25862,7 @@
         "id": 500201,
         "name": "형강 사수",
         "description": "자신의 통솔이 40포인트 증가하며, 2턴 지속되는 정신 회복을(를) 획득한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -26092,7 +26092,7 @@
         "id": 500301,
         "name": "토벌의 격문",
         "description": "자신이 1턴 동안 정신 회복을(를) 획득한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": []
@@ -26129,7 +26129,7 @@
         "id": 500401,
         "name": "팔호의 수장",
         "description": "1턴 동안 준비 후 랜덤 적군 단일 목표에게 360%의 병기와 책략 피해를 준다. 목표가 홍수 상태면 이번 피해가 30% 증가한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -26790,7 +26790,7 @@
         "id": 500601,
         "name": "예측 불가",
         "description": "받는 피해가 병기 피해면 자신이 받는 병기 피해가 10% 감소한다. 그렇지 않으면 자신이 받는 책략 피해가 10% 감소하며, 최대 5회 발동된다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -27020,7 +27020,7 @@
         "id": 500701,
         "name": "단아한 선비",
         "description": "자신의 지력이 30포인트 증가한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": []
@@ -27383,7 +27383,7 @@
         "id": 500901,
         "name": "옹량 지휘",
         "description": "자신이 받는 피해가 14% 감소하며(통솔의 영향 받음), 자신이 병기 피해를 받은 후, 60% 확률로 2턴 동안 공격자의 무력을 20포인트 감소시킨다, 2회 중첩될 수 있다. 자신이 책략 피해를 받은 후, 60% 확률로 2턴 동안 공격자의 지력을 20포인트 감소시킨다, 2회 중첩될 수 있다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -27613,7 +27613,7 @@
         "id": 501201,
         "name": "형세 판단",
         "description": "2턴 동안 지력이 가장 높은 아군 단일 목표의 지력이 20 증가하고, 무력이 가장 높은 아군 단일 목표의 무력이 20 증가한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 3,
       "warbook_slots": []
@@ -27650,7 +27650,7 @@
         "id": 501601,
         "name": "청룡 출격",
         "description": "자신이 병기 피해를 준 후, 75% 확률로 용의 포효를 발동한다. 용의 포효: 목표에게 2턴 동안 지속되는 위협을(를) 부여하며, 목표가 위협 상태면 목표에게 100%의 병기 피해를 주는 것으로 변경된다. 매 턴 용의 포효가 4회 발동될 수 있다.\n",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 3,
       "warbook_slots": [
@@ -28290,7 +28290,7 @@
         "id": 501901,
         "name": "뛰어난 인재",
         "description": "자신의 묘책 확률이 12% 증가하며, 짝수 턴에 적군 전체에게 100%의 책략 피해를 준다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -28625,7 +28625,7 @@
         "id": 502001,
         "name": "충성과 용맹",
         "description": "매 턴 행동 시 자신의 병력을 회복한다(치유율 200%, 지력과 통솔의 영향 받음). 45% 확률로 랜덤 적군 2명에게 2턴 동안 지속되는 조롱 및 위협 상태를 부여한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -29193,7 +29193,7 @@
         "id": 502201,
         "name": "완력",
         "description": "자신이 주는 피해가 60% 증가하며, 매 턴 피해를 3회 받은 후, 자신이 1턴 동안 공포 상태가 된다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -29546,7 +29546,7 @@
         "id": 502301,
         "name": "무외의 경지",
         "description": "1턴 동안 준비 후 1턴 동안 자신의 무력이 30포인트 증가하며, 이후 전체 적군에게 260%~300%의 병기 피해를 준다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 3,
       "warbook_slots": [
@@ -29872,7 +29872,7 @@
         "id": 502501,
         "name": "명사수",
         "description": "우군이 일반 공격한 후, 자신은 35% 확률로 아군의 공격 목표에게 추가로 일반 공격을 1회 부여한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -30223,7 +30223,7 @@
         "id": 502601,
         "name": "고상한 품격",
         "description": "우군 2명이 2턴 동안 위로 획득: 책략 피해가 20% 증가하며(지력의 영향 받음), 매 턴 행동하기 전에 병력을 회복한다(치유율 300%, 지력의 영향 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -30528,7 +30528,7 @@
         "id": 502701,
         "name": "도약일격",
         "description": "자신이 정신 회복 상태를 획득하고, 매 턴 행동 시, 자신이 받는 회복 효과가 10% 증가한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -30854,7 +30854,7 @@
         "id": 502801,
         "name": "천하무략",
         "description": "2턴 동안 자신의 지력과 무력이 20포인트 증가하며, 2회 중첩될 수 있다. 랜덤 적군 2명에 2턴 동안 지속되는 홍수을(를) 부여하며, 목표가 이미 홍수 상태면 100%의 병기와 책략 피해를 준다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 2,
       "warbook_slots": [
@@ -31189,7 +31189,7 @@
         "id": 502901,
         "name": "용감한 선봉",
         "description": "일반 공격 후, 2턴 동안 자신의 선공이 25 증가한다. 이후 전체 적군에게 80%의 병기 피해를 준다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 3,
       "warbook_slots": [
@@ -31542,7 +31542,7 @@
         "id": 503201,
         "name": "진군 차단",
         "description": "자신의 무력과 통솔이 10% 증가하며, 자신의 액티브 또는 추격 전법 발동 후, 60% 확률로 랜덤 적군 단일 목표에게 80%의 병기 피해를 준다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -32128,7 +32128,7 @@
         "id": 503901,
         "name": "격렬한 언사",
         "description": "지력이 가장 높은 적군 단일 목표를 2턴 동안 조롱하며, 우군 랜덤 1명이 해당 상대에게 160%의 병기 피해와 책략 피해를 준다. 이후 해당 우군의 병력을 회복시킨다(치유율 140%, 지력의 영향 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -32430,7 +32430,7 @@
         "id": 504401,
         "name": "천공장군",
         "description": "매 턴 행동 시, 80% 확률로 랜덤 적군 2명에게 2턴 동안 지속되는 요술을(를) 부여한다.\n자신이 피해를 받을 때, 피해를 준 상대가 요술 상태면 이번 피해가 30% 감소한다(통솔의 영향 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -32660,7 +32660,7 @@
         "id": 504701,
         "name": "반란 평정",
         "description": "자신의 통솔이 60포인트 증가하며, 자신이 피해를 받은 후, 50% 확률로 2턴 동안 공격자가 주는 피해를 10% 감소시킨다, 4회 중첩될 수 있다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 4,
       "warbook_slots": [
@@ -33219,7 +33219,7 @@
         "id": 505101,
         "name": "나라의 기둥",
         "description": "홀수 턴 종료 시, 자신과 랜덤 우군 단일 목표에게 1스택의 방어을(를) 부여하며, 자신의 병력을 회복한다(치유율 180%, 지력과 통솔의 영향 받음).",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -33449,7 +33449,7 @@
         "id": 505201,
         "name": "아첨의 귀재",
         "description": "매 턴 시작 시, 지력이 가장 높은 우군이 주는 피해가 30% 증가하며, 5% 확률로 1턴 동안 혼란 상태가 되고, 혼란 확률은 매 턴 5% 증가한다.\n매 턴 종료 시, 지력이 가장 높은 우군이 랜덤 적군 단일 목표에게 100%의 책략 피해를 준다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 3,
       "warbook_slots": [
@@ -33788,7 +33788,7 @@
         "id": 505501,
         "name": "도술의 귀재",
         "description": "랜덤 적군 2명에게 280%의 책략 피해를 주며, 2턴 동안 지속되는 요술와(과) 폭풍 상태를 부여한다. 목표가 요술 상태면 이번 피해가 35% 증가한다.",
-        "effect_status": "not_implemented"
+        "effect_status": "estimated"
       },
       "default_arms_id": 1,
       "warbook_slots": [
@@ -34082,7 +34082,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20010,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20020,
@@ -34103,7 +34103,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20020,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20030,
@@ -34187,7 +34187,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20060,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20070,
@@ -34355,7 +34355,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20150,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20170,
@@ -34376,7 +34376,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20170,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20180,
@@ -34397,7 +34397,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20180,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20190,
@@ -34418,7 +34418,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20190,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20200,
@@ -34544,7 +34544,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20250,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20260,
@@ -34565,7 +34565,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20260,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20270,
@@ -34649,7 +34649,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20300,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20310,
@@ -34691,7 +34691,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20320,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20330,
@@ -34733,7 +34733,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20340,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20350,
@@ -34775,7 +34775,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20360,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20370,
@@ -34796,7 +34796,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20370,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20380,
@@ -34838,7 +34838,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20390,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20400,
@@ -34859,7 +34859,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20400,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20410,
@@ -34922,7 +34922,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20430,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20440,
@@ -34962,7 +34962,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20450,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20460,
@@ -34983,7 +34983,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20460,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20470,
@@ -35067,7 +35067,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20500,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20520,
@@ -35086,7 +35086,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20520,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20530,
@@ -35146,7 +35146,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20550,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20560,
@@ -35166,7 +35166,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20560,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20570,
@@ -35186,7 +35186,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20570,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20580,
@@ -35206,7 +35206,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20580,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20590,
@@ -35226,7 +35226,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20590,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20600,
@@ -35306,7 +35306,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20630,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20640,
@@ -35346,7 +35346,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20650,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20660,
@@ -35404,7 +35404,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20690,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20700,
@@ -35442,7 +35442,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20710,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20720,
@@ -35461,7 +35461,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20720,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20730,
@@ -35480,7 +35480,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20730,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20740,
@@ -35518,7 +35518,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20760,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20770,
@@ -35537,7 +35537,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20770,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20780,
@@ -35556,7 +35556,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20780,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20790,
@@ -35613,7 +35613,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20810,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 20820,
@@ -35632,7 +35632,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 20820,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70000,
@@ -35737,7 +35737,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70040,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70050,
@@ -35758,7 +35758,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70050,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70060,
@@ -35821,7 +35821,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70080,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70090,
@@ -35863,7 +35863,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70100,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70110,
@@ -35884,7 +35884,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70110,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70120,
@@ -35905,7 +35905,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70120,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70130,
@@ -35968,7 +35968,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70150,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70160,
@@ -35989,7 +35989,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70160,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70170,
@@ -36010,7 +36010,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70170,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70180,
@@ -36073,7 +36073,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70200,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70210,
@@ -36136,7 +36136,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70230,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70240,
@@ -36157,7 +36157,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70240,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70250,
@@ -36178,7 +36178,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70250,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70260,
@@ -36199,7 +36199,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70260,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70280,
@@ -36241,7 +36241,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70290,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70300,
@@ -36261,7 +36261,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70300,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 70310,
@@ -36281,7 +36281,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 70310,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 90000,
@@ -36344,7 +36344,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 90020,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 90030,
@@ -36365,7 +36365,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 90030,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 90040,
@@ -36386,7 +36386,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 90040,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 90050,
@@ -36407,7 +36407,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 90050,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 90060,
@@ -36428,7 +36428,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 90060,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 90070,
@@ -36449,7 +36449,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 90070,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 90080,
@@ -36470,7 +36470,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 90080,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 90090,
@@ -36491,7 +36491,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 90090,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 90100,
@@ -36512,7 +36512,7 @@
       "base_skill_id": null,
       "exclusive_group_id": 90100,
       "expires_with_season": null,
-      "effect_status": "not_implemented"
+      "effect_status": "estimated"
     },
     {
       "id": 800004,
@@ -47599,10 +47599,10 @@
       "allowed_hero_ids": [
         4011
       ],
-      "effect_status": "partial",
+      "effect_status": "estimated",
       "simulation_supported": true,
       "attribute_bonuses": {},
-      "scope_note": "고유 전법 발동 후 적군 책략 취약 8%·2턴·최대2중첩을 구현했습니다. 기본 장각 고유 전법이 미구현이라 현재 해당 연동은 발동하지 않습니다."
+      "scope_note": "기본 장각 고유 전법에 연결했습니다. 발동 후 적군 책략 취약 8%·2턴·최대2중첩을 추정 적용합니다."
     },
     {
       "id": 116,
@@ -47639,10 +47639,10 @@
       "allowed_hero_ids": [
         2021
       ],
-      "effect_status": "partial",
+      "effect_status": "estimated",
       "simulation_supported": true,
       "attribute_bonuses": {},
-      "scope_note": "고유 전법 발동 후 아군 피해 9회·25% 확률의 추가 토벌 조건을 구현했습니다. 기본 중원 토벌 미구현으로 현재 일반 강유의 고유 전법 연동은 발동하지 않으며 누적 탈주병 연동도 미구현입니다."
+      "scope_note": "중원 토벌 시작 시 아군 유효 피해9회 조건을 판정하여 25% 확률로 토벌1회를 추가합니다. 추가 토벌도 누적3회 탈주병 집계에 포함합니다. 피해 귀속·판정 시점은 후보 규칙입니다."
     },
     {
       "id": 3,

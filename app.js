@@ -340,6 +340,13 @@ function sel(rows,value,attrs={},{empty=false,group}={}){
 }
 const num=(value,attrs)=>h('input',{type:'number',inputMode:'decimal',step:'any',value:value??'',...attrs});
 const fkey=(side,slot,path)=>`${side}|${slot}|${path}`;
+/** v0.6.7 effect_status denotes candidate calculations, never a validated battle effect. */
+function effectFlag(row,{innate=false}={}){
+  if(row?.effect_status==='not_implemented')return h('span',{class:'tag warn',text:innate?'고유 효과 미반영':'효과 미반영'});
+  if(row?.effect_status==='estimated')return h('span',{class:'tag effect-estimated',title:'백엔드 후보 규칙에 연결되었지만 실측 검증 전입니다.',text:'추정 반영'});
+  return null;
+}
+
 
 /* 무장 전체 설정은 무장 객체에 남기고, 전열·후열을 결정하는 slot만 재배치합니다. */
 const orderedHeroIds=army=>[...army.heroes].sort((a,b)=>a.slot-b.slot).map(h=>h.hero_id);
@@ -565,7 +572,7 @@ function heroCard(side,army,hero){
   );
   const rom=romanceFor(d,hero),inn=innateFor(d,hero)||row.innate;
   const innate=h('details',{class:'innate'},
-    h('summary',{dataset:{focus:fkey(side,hero.slot,'innate')}},'고유 ',h('b',{text:inn.name}),rom?h('span',{class:'tag legend',text:`연의 · ${rom.name}`}):null,inn.effect_status==='not_implemented'?h('span',{class:'tag warn',text:'효과 미반영'}):null),
+    h('summary',{dataset:{focus:fkey(side,hero.slot,'innate')}},'고유 ',h('b',{text:inn.name}),rom?h('span',{class:'tag legend',text:`연의 · ${rom.name}`}):null,effectFlag(inn)),
     h('p',null,inn.description,h('small',{class:'desc-basis',text:` 설명 기준 Lv${d.rules.description_skill_level}·강화${d.rules.description_skill_grade} · 현재 Lv${hero.innate.level}·승품${hero.promotion??0}`})));
   const romOpts=(d.romance_options||[]).filter(r=>r.hero_id===hero.hero_id);
   const romance=romOpts.length?romanceRow(side,army,hero,romOpts):null;
@@ -577,7 +584,7 @@ function heroCard(side,army,hero){
   const tactics=h('div',{class:'tactic-row'});
   hero.learned.forEach((s,i)=>{const t=ix.tactic.get(s.skill_id);tactics.append(h('button',{class:'tactic-btn',type:'button',dataset:{pick:'tactic',index:i,focus:fkey(side,hero.slot,`pick-tactic-${i}`)},'aria-label':`학습 전법 ${i+1}: ${t?.name||'알 수 없음'}, 바꾸기`},
     h('span',{class:'t-name',text:t?.name||`ID ${s.skill_id}`}),
-    h('span',{class:'t-meta'},t?h('span',{class:`tag type-${t.type_name}`,text:t.type_name}):null,t&&t.variant&&t.variant!=='standard'?h('span',{class:'tag variant',text:t.variant_label||t.variant}):null,`Lv${s.level} · 승급·돌파${s.breakthrough??0}`)));});
+    h('span',{class:'t-meta'},t?h('span',{class:`tag type-${t.type_name}`,text:t.type_name}):null,t&&t.variant&&t.variant!=='standard'?h('span',{class:'tag variant',text:t.variant_label||t.variant}):null,t?effectFlag(t):null,`Lv${s.level} · 승급·돌파${s.breakthrough??0}`)));});
   if(hero.learned.length<2)tactics.append(h('button',{class:'tactic-btn empty'+(hero.learned.length?'':' wide'),type:'button',dataset:{pick:'tactic',index:hero.learned.length,focus:fkey(side,hero.slot,`pick-tactic-${hero.learned.length}`)},text:hero.learned.length?'+ 전법 추가':'+ 전법 추가 (2개까지 한 번에 선택)'}));
   const slots=row.warbook_slots.length;
   const adv=h('details',{class:'advanced',open:state.open.has(key),dataset:{openKey:key}},
@@ -625,7 +632,12 @@ function advancedBody(side,army,hero,row,arm,key){
       const book=current&&ix.book.get(current.warbook_id);
       add(panel,h('div',{class:'field'},
         h('label',{class:'sub-head',for:`wb-${side}-${hero.slot}-${rule.slot}`},`슬롯 ${rule.slot}`,h('span',{text:locked?`Lv${rule.unlock_level}에 해금`:`Lv${rule.unlock_level} 해금 · ${choices.length}개 선택 가능`})),
-        sel(choices,current?.warbook_id,{id:`wb-${side}-${hero.slot}-${rule.slot}`,disabled:locked,dataset:{path:`warbook.${rule.slot}`,focus:F(`wb${rule.slot}`)}},{empty:true,group:b=>b.quality_name}),
+        h('button',{type:'button',id:`wb-${side}-${hero.slot}-${rule.slot}`,class:'warbook-search-btn',disabled:locked,
+          dataset:{pick:'warbook',bookSlot:String(rule.slot),focus:F(`wb${rule.slot}`)},
+          'aria-label':`슬롯 ${rule.slot} 병법 검색 및 변경: ${book?.name||'선택 안 함'}`},
+          h('span',{class:'warbook-search-name',text:book?.name||'병법 검색하여 선택'}),
+          book?h('span',{class:'tag'+(book.quality===3?' legend':''),text:book.quality_name}):null,
+          h('span',{class:'warbook-search-icon','aria-hidden':'true',text:'⌕'})),
         book?h('p',{class:'desc-box'},h('span',{class:'tag'+(book.quality===3?' legend':''),text:book.quality_name}),' ',book.description):null));
     }
     if(!row.warbook_slots.length)add(panel,h('p',{class:'muted-note',text:'이 무장은 병법 슬롯 정보가 없습니다.'}));
@@ -904,7 +916,7 @@ function pickHero(side,slot){
       r.faction_name?h('span',{class:`tag faction-${r.faction}`,text:r.faction_name}):null,
       r.rarity_name?h('span',{class:'tag'+(r.rarity>=5?' legend':''),text:`${r.rarity_name}등급`}):null,
       arm?h('span',{class:'tag',text:arm.name}):null,
-      r.innate.effect_status==='not_implemented'?h('span',{class:'tag warn',text:'고유 효과 미반영'}):null];
+      effectFlag(r.innate,{innate:true})];
     if(dupName.has(r.name))tags.push(h('span',{class:'tag',text:`#${r.id}`}));
     return {id:r.id,name:r.name,tags,facets:{faction:r.faction_name,rarity:r.rarity_name&&`${r.rarity_name}등급`},desc:`${r.innate.name} — ${r.innate.description}`,
       search:[r.name,r.base_name,r.faction_name,r.rarity_name,r.innate.name,r.innate.description,arm?.name].join('').replace(/\s/g,'').toLowerCase(),disabled:taken,why:taken?'이미 이 부대에 있는 무장입니다.':''};
@@ -929,6 +941,26 @@ function pickItem(side,slot,kind){
     items,groups,current:hero[idKey],allowClear:hero[idKey]!=null,focusKey:fkey(side,slot,`pick-${kind}`),
     onPick:id=>{hero[idKey]=id;dirty();render();}});
 }
+/** 각 병법 슬롯의 유효한 후보만 검색합니다. 슬롯 간 전설/그룹 중복 규칙은 editor.bookChoices를 그대로 사용. */
+function pickWarbook(side,slot,bookSlot){
+  const hero=state.armies[side]?.heroes.find(x=>x.slot===slot),d=state.data;
+  const row=hero&&state.idx.hero.get(hero.hero_id);
+  const rule=row?.warbook_slots?.find(x=>x.slot===bookSlot);
+  if(!hero||!rule||hero.warbook_page==='romance'||hero.level<rule.unlock_level)return;
+  const current=hero.warbook_slots.find(s=>s.slot===bookSlot)?.warbook_id??null;
+  const choices=[...bookChoices(d,hero,bookSlot)].sort((a,b)=>b.quality-a.quality||a.name.localeCompare(b.name,'ko'));
+  const qualities=[...new Set(choices.map(b=>b.quality_name))];
+  const items=choices.map(b=>({id:b.id,name:b.name,
+    tags:[h('span',{class:'tag'+(b.quality===3?' legend':''),text:b.quality_name})],
+    facets:{quality:b.quality_name},desc:b.description||'',
+    search:[b.name,b.description,b.quality_name,`#${b.id}`].filter(Boolean).join(' ').replace(/\s/g,'').toLowerCase(),disabled:false}));
+  openPicker({title:`${row.name} · 병법 슬롯 ${bookSlot}`,
+    sub:`선택 가능한 병법 ${choices.length}개 · 이름·설명 검색 / 등급 필터. 이미 장착한 병법 및 같은 그룹, 전설 중복은 제외됩니다.`,
+    items,groups:[{key:'quality',label:'등급',options:qualities}],current,
+    allowClear:true,focusKey:fkey(side,slot,`wb${bookSlot}`),
+    onPick:id=>applyEdit(side,slot,`warbook.${bookSlot}`,id)});
+}
+
 function pickTactic(side,slot,index){
   const army=state.armies[side],hero=army.heroes.find(x=>x.slot===slot),d=state.data,ix=state.idx;
   const max=d.rules.max_learned_per_hero??2,replaceAt=Math.min(index,max-1);
@@ -943,7 +975,7 @@ function pickTactic(side,slot,index){
     return d.tactics.map(t=>{
       const dis=!selected.includes(t.id)&&!allowed.has(t.id),c=dis?clash(t):null;
       const why=!dis?'':c?(c.mine?`방금 고른 ${c.name}과(와) 같은 원본입니다. 일반·투영·반전은 함께 쓸 수 없습니다.`:`같은 원본의 ${c.name}이(가) 이미 부대에 있습니다. 일반·투영·반전은 함께 쓸 수 없습니다.`):`부대 내 사용 한도(${t.max_per_army}개)에 도달했습니다.`;
-      return {id:t.id,name:t.name,tags:[h('span',{class:`tag type-${t.type_name}`,text:t.type_name}),t.rarity_name?h('span',{class:'tag'+(t.rarity>=3?' legend':''),text:t.rarity_name}):null,t.variant&&t.variant!=='standard'?h('span',{class:'tag variant',text:t.variant_label||t.variant}):null,t.expires_with_season?h('span',{class:'tag warn',text:'이번 시즌 전용'}):null,t.effect_status==='not_implemented'?h('span',{class:'tag warn',text:'효과 미반영'}):null,t.max_per_army>1?h('span',{class:'tag',text:`부대당 ${t.max_per_army}개`}):null],facets:{type:t.type_name,rarity:t.rarity_name,variant:t.variant_label||'일반'},desc:t.description,search:(t.name+t.description+t.type_name+(t.variant_label||'')).replace(/\s/g,'').toLowerCase(),disabled:dis,why};
+      return {id:t.id,name:t.name,tags:[h('span',{class:`tag type-${t.type_name}`,text:t.type_name}),t.rarity_name?h('span',{class:'tag'+(t.rarity>=3?' legend':''),text:t.rarity_name}):null,t.variant&&t.variant!=='standard'?h('span',{class:'tag variant',text:t.variant_label||t.variant}):null,t.expires_with_season?h('span',{class:'tag warn',text:'이번 시즌 전용'}):null,effectFlag(t),t.max_per_army>1?h('span',{class:'tag',text:`부대당 ${t.max_per_army}개`}):null],facets:{type:t.type_name,rarity:t.rarity_name,variant:t.variant_label||'일반'},desc:t.description,search:(t.name+t.description+t.type_name+(t.variant_label||'')).replace(/\s/g,'').toLowerCase(),disabled:dis,why};
     });
   };
   const onApply=selected=>{
@@ -1942,6 +1974,7 @@ $('armies').addEventListener('click',e=>{
   }
   else if(t.dataset.pick==='equipment'||t.dataset.pick==='horse')pickItem(side,slot,t.dataset.pick);
   else if(t.dataset.pick==='hero')pickHero(side,slot);
+  else if(t.dataset.pick==='warbook')pickWarbook(side,slot,Number(t.dataset.bookSlot));
   else if(t.dataset.pick==='tactic')pickTactic(side,slot,Number(t.dataset.index));
   else if(t.dataset.tab){state.tabs.set(`${side}:${slot}`,t.dataset.tab);render();}
 });
