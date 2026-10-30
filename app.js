@@ -10,6 +10,7 @@ import {createDeckGuideCards} from './deck-guide-cards.js';
 import {reviewArmyCoexistence} from './guide-content.js';
 import {encodePoolCode,decodePoolCode} from './pool-code.js';
 import {PROJECTIONS,isProjection} from './planner-core.js?v=1.5.2';
+import {isBattleReadyPreset,resolvedBattleReference} from './battle-ready-decks.js?v=1.5.7';
 
 /* ── 기본 도구 ─────────────────────────────────────────── */
 const $=id=>document.getElementById(id);
@@ -429,16 +430,19 @@ async function openBattlePicker(side,source){
 }
 function battlePickRows(){
   if(battlePickSource==='mine')return decks.forSeason(state.season).map(d=>({id:d.id,source:'mine',name:d.name,sub:d.planning_draft?'계획 초안 · 편성 미완성':d.review_required?'검수용 초안':'저장된 덱',disabled:!d.army,raw:d,search:d.name}));
-  const originals=presetRows.filter(t=>deckSeason(t)===state.season).map(t=>({id:t.id,source:'preset',name:t.label,sub:'원본 추천 덱',raw:t,search:[t.label,...(t.heroes||[]).flatMap(x=>[x.name,...(x.learned_tactics||[]).map(y=>y.name)])].join(' ')}));
+  const originals=presetRows.filter(t=>deckSeason(t)===state.season&&isBattleReadyPreset(t,state.idx))
+    .map(t=>({id:t.id,source:'preset',name:t.label,sub:'원본 추천 덱 · 전법 6/6 확정',raw:t,search:[t.label,...(t.heroes||[]).flatMap(x=>[x.name,...(x.learned_tactics||[]).map(y=>y.name)])].join(' ')}));
   if(state.season!==3)return originals;
-  const references=(battlePickRefs||[]).map(v=>({id:v.id,source:'reference',name:v.label,sub:v.hero_roster_resolved?'S3 참고 세팅 · 전후열 확인 필요':'S3 참고 세팅 · 무장 ID 미확정',raw:v,disabled:!v.hero_roster_resolved,search:[v.label,...(v.members||[]).map(m=>m.general)].join(' ')}));
+  const references=(battlePickRefs||[]).filter(v=>resolvedBattleReference(v,state.idx)!==null)
+    .map(v=>({id:v.id,source:'reference',name:v.label,sub:'S3 참고 세팅 · 전법 6/6 확정 (전후열 검수)',raw:v,
+      search:[v.label,...(v.members||[]).flatMap(m=>[m.general,...(m.learned_choices||[]).map(c=>c.options?.[0]?.candidates?.[0]?.name||'')])].join(' ')}));
   return [...originals,...references];
 }
 function renderBattlePicker(){
   const search=String(battlePick$('battle-pick-search').value||'').replace(/\s+/g,'').toLocaleLowerCase('ko');
   for(const b of document.querySelectorAll('[data-pick-source]'))b.setAttribute('aria-selected',String(b.dataset.pickSource===battlePickSource));
   battlePick$('battle-pick-note').textContent=battlePickSource==='mine'? '현재 시즌에 저장한 내 덱입니다. 계획 초안은 배틀에 바로 불러올 수 없습니다.':
-    '현재 시즌의 원본 추천 덱과 시즌3 참고 세팅을 보여줍니다. 참고 세팅의 전후열·전법 선택은 확인이 필요하며 저장 덱은 변경되지 않습니다.';
+    '현재 시즌에서 장수 3명·학습 전법 6칸이 모두 확정된 추천덱만 보여줍니다. 참고 세팅의 전후열은 검수가 필요하며, 보유 풀과 저장 덱은 변경되지 않습니다.';
   const found=battlePickRows().filter(row=>!search||row.search.replace(/\s+/g,'').toLocaleLowerCase('ko').includes(search));
   battlePick$('battle-pick-count').textContent=`${found.length}개`;
   fill(battlePick$('battle-pick-list'),found.length?found.map(row=>h('button',{type:'button',class:'battle-pick-option',dataset:{battlePickId:row.id,battlePickType:row.source},disabled:!!row.disabled},
@@ -446,25 +450,20 @@ function renderBattlePicker(){
 }
 /** 확인된 무장 ID만 사용. 참고 세팅의 빈/모호한 전법과 병법은 임의로 채우지 않음. */
 function referenceArmyForBattle(v){
-  const ix=state.idx,heroes=(v.members||[]).map(m=>m.hero_choice?.status==='resolved'&&m.hero_choice?.candidates?.length===1?Number(m.hero_choice.candidates[0].id):null);
-  if(heroes.length!==3||heroes.some(id=>!ix.hero.has(id))||new Set(heroes).size!==3)throw new Error('무장 ID가 확정되지 않아 배틀에 적용할 수 없습니다.');
+  const ix=state.idx,loadout=resolvedBattleReference(v,ix);
+  if(!loadout)throw new Error('무장과 학습 전법 6칸이 모두 확정되지 않은 참고 세팅입니다.');
   const army=prep(state.data.examples[0]);army.name=`[참고] ${v.label}`.slice(0,80);
   const f=v.formation_choice;
   if(f?.status==='resolved'&&f.candidates?.length===1&&ix.formation.has(Number(f.candidates[0].id)))army.formation_id=Number(f.candidates[0].id);
   for(let i=0;i<3;i++){
     const m=v.members[i],hero=army.heroes[i];
-    hero.slot=i+1;hero.hero_id=heroes[i];hero.learned=[];hero.warbook_slots=[];hero.advanced_arms_id=null;hero.arms_skill_ids=[];
+    hero.slot=i+1;hero.hero_id=loadout.heroes[i];hero.learned=[];hero.warbook_slots=[];hero.advanced_arms_id=null;hero.arms_skill_ids=[];
     hero.romance_trait_id=null;hero.warbook_page='normal';hero.equipment_item_id=null;hero.horse_item_id=null;
     hero.equipment_loadout=[];hero.horse_loadout=null;hero.total_stats=null;hero.permanent_item_stats_included=null;
     hero.allocation={might:0,intelligence:0,defence:0,speed:0};hero.allocation_mode=ix.hero.get(hero.hero_id)?.recommended_attribute?'recommended':'manual';
     hero.equipment={might:0,intelligence:0,defence:0,speed:0};hero.horse={might:0,intelligence:0,defence:0,speed:0};
-    for(const choice of m.learned_choices||[]){
-      if(choice.options?.length!==1)continue;
-      const option=choice.options[0];
-      if(option.status!=='resolved'||option.candidates?.length!==1)continue;
-      const tid=Number(option.candidates[0].id);
-      if(ix.tactic.has(tid)&&myPool.tactics.has(tid)&&!hero.learned.some(x=>x.skill_id===tid))hero.learned.push({skill_id:tid,level:10,breakthrough:0,grade:0});
-    }
+    // 추천 원본에 확정된 전법을 그대로 불러온다. 보유 풀은 배틀 시뮬레이션의 필터가 아니다.
+    hero.learned=loadout.tactics[i].map(tid=>({skill_id:tid,level:10,breakthrough:0,grade:0}));
   }
   return loadable(state.data,army);
 }
@@ -475,10 +474,14 @@ async function applyBattlePick(id,source){
       !window.confirm('현재 편집 중인 덱의 미저장 변경사항이 있습니다. 다른 덱을 불러오고 편집을 종료할까요?'))return;
   let army,note='';
   if(source==='mine'){army=loadable(state.data,prep(item.raw.army));note='내 덱';}
-  else if(source==='preset'){({army}=presetArmyFor(item.raw));note='원본 추천 덱';}
+  else if(source==='preset'){
+    if(!isBattleReadyPreset(item.raw,state.idx))throw new Error('학습 전법 6칸이 완성되지 않은 추천덱입니다.');
+    // 배틀의 추천덱은 원본 학습 전법 6칸을 보존한다. 보유 풀 적합성 필터는 이 경로에 적용하지 않는다.
+    army=loadable(state.data,prep(item.raw.army));army.name=item.raw.label.slice(0,80);note='전법 완성 추천 덱';
+  }
   else{
-    if(!window.confirm('참고 세팅의 원문 무장 순서는 실제 전후열로 확정되지 않았습니다. 병법과 미확정 전법은 비워 두고 배틀에서 검수하시겠습니까?'))return;
-    army=referenceArmyForBattle(item.raw);note='시즌3 참고 세팅(검수 필요)';
+    if(!window.confirm('학습 전법 6칸은 확정되어 있습니다. 다만 참고 세팅의 원문 무장 순서는 실제 전후열로 확정되지 않았고 병법도 일부 미기재입니다. 배틀에서 확인하시겠습니까?'))return;
+    army=referenceArmyForBattle(item.raw);note='전법 완성 시즌3 참고 세팅(전후열 검수 필요)';
   }
   battlePick$('battle-pick-dialog').close();
   sendToBattle(army,battlePickSide,`${note} '${item.name}'을(를) ${SIDE_NAME[battlePickSide]}에 불러왔습니다.`);
