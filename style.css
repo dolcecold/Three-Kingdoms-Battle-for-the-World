@@ -1297,3 +1297,16 @@ body[data-view="recommendations"] .rec-detail.is-open .rec-detail-head{backgroun
 .war-empty-note{background:#294047;color:#c6d4d1}
 /* 스크롤 중 밝은 영역이 먼저 나타나지 않도록 html 및 dialog 배경도 고정 */
 html,body{background-color:#10151B}
+
+/* v1.6.0: alternative candidate picker. Keep the guild-wide dark theme. */
+.planner-alternatives{margin-top:16px;border:1px solid var(--line);border-radius:9px;padding:14px;background:var(--surface)}
+.planner-alternatives h4{margin:0 0 8px;font-size:16px}
+.planner-alternative-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:12px 0}
+.planner-alternative-controls>label{display:flex;gap:8px;align-items:center;font-weight:700}
+.planner-alternative-controls select,.planner-alternative-controls input{background:var(--bg);border:1px solid var(--line);color:var(--ink);padding:10px;border-radius:8px;min-height:42px}
+.planner-alternative-controls input{flex:1;min-width:170px}
+.planner-alternative-list{display:grid;gap:7px;max-height:420px;overflow:auto;overscroll-behavior:contain;margin-top:9px}
+.planner-alternative-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px;border:1px solid var(--line-soft);border-radius:8px;background:var(--bg)}
+.planner-alternative-description{display:grid;gap:3px;min-width:0}.planner-alternative-description b{font-size:13px}.planner-alternative-description small{color:var(--muted);font-size:11px}
+.planner-alternative-row button{flex:none;min-height:40px}
+@media(max-width:600px){.planner-alternative-row{flex-direction:column;align-items:stretch}.planner-alternative-row button{width:100%}}

@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;700;800&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="./style.css?v=1.5.9">
+  <link rel="stylesheet" href="./style.css?v=1.6.0">
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 바로 가기</a>
@@ -145,7 +145,7 @@
        <div class="planner-controls">
          <div class="planner-season"><strong id="planner-season">한국 시즌 2</strong><a href="#/roster/pool">보유 풀 관리</a></div>
          <label class="planner-select">목표 부대 수 <select id="planner-count" aria-label="목표 부대 수" disabled><option value="5" selected>5개 (고정 포함)</option></select></label>
-         <button type="button" class="solid-btn" id="planner-server-recommend">서버에서 5군 추천</button>
+         <button type="button" class="solid-btn" id="planner-server-recommend" hidden aria-hidden="true" tabindex="-1">자동 추천</button>
          <button type="button" class="ghost-btn" id="planner-server-rebuild" hidden>📌 고정 유지 · 나머지 재추천</button>
          <button type="button" class="ghost-btn" id="planner-server-validate" hidden>현재 편성 서버 검증</button>
        </div>
@@ -338,6 +338,6 @@
   </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <script type="module" src="./app.js?v=1.5.9"></script>
+  <script type="module" src="./app.js?v=1.6.0"></script>
 </body>
 </html>

@@ -2168,7 +2168,7 @@ async function route(){
       if(!recommendationsView){const mod=await import('./recommendations-view.js?v=1.5.2');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset,poolSnapshot,saveRecommendedDeck,saveReferenceDraft,notify});}
       await recommendationsView.show();
     }else if(r.view==='planner'){
-      if(!plannerView){const mod=await import('./planner-view.js?v=1.5.8');plannerView=mod.createPlannerView({state,h,fill,poolSnapshot,notify,openConnection,saveServerEntry:saveServerPlannerEntry,sendServerEntry:sendServerPlannerEntry});}
+      if(!plannerView){const mod=await import('./planner-view.js?v=1.6.0');plannerView=mod.createPlannerView({state,h,fill,poolSnapshot,notify,openConnection,saveServerEntry:saveServerPlannerEntry,sendServerEntry:sendServerPlannerEntry});}
       await plannerView.show();
     }else if(r.view==='matchups'){
       if(!matchupBoardView){const mod=await import('./matchup-board-view.js?v=1.5.2');matchupBoardView=mod.createMatchupBoardView({h,fill,notify});}
