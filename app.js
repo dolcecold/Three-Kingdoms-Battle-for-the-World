@@ -17,7 +17,7 @@ const $=id=>document.getElementById(id);
 const SIDES=['left','right'];
 const SIDE_NAME={left:'아군',right:'상대'};
 const SIDE_CLASS={left:'ally',right:'enemy'};
-const KEYS={api:'cheonha-sample-api',draft:'cheonha-draft-v1',theme:'cheonha-theme',decks:'cheonha-mydecks-v1',dev:'cheonha-dev',eng:'cheonha-max-engagements',pool:'cheonha-pool-v1',lineup:'cheonha-lineup-v1'};
+const KEYS={api:'cheonha-sample-api',draft:'cheonha-draft-v1',decks:'cheonha-mydecks-v1',dev:'cheonha-dev',eng:'cheonha-max-engagements',pool:'cheonha-pool-v1',lineup:'cheonha-lineup-v1'};
 const fmt=n=>Number(n??0).toLocaleString('ko-KR');
 const clone=v=>structuredClone(v);
 const reduceMotion=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -235,6 +235,38 @@ async function savePlanDrafts(entries){
   if(!saved&&lastError)throw lastError;
   return saved;
 }
+/** 백엔드 v0.6.8 planner 응답만 사용해 사용자가 클릭한 덱을 개인 브라우저에 저장합니다.
+ * 기존 보유풀·내 구성은 조회도/수정도 하지 않습니다. 미완성 덱은 출전 불가 계획 초안입니다. */
+async function saveServerPlannerEntry(entry){
+  if(!entry?.army||![1,2,3].includes(state.season))throw new Error('서버 편성 응답이 올바르지 않습니다.');
+  const name=String(entry.title||entry.army.name||'서버 추천 덱').slice(0,80);
+  if(entry.battle_ready===true&&typeof entry.code==='string'&&entry.code.startsWith('TC1.')){
+    const decoded=await decodeArmyCode(entry.code);
+    if(decoded.season!==state.season)throw new Error('다른 시즌의 서버 편성입니다.');
+    if(decoded.data_version&&state.data?.data_version&&decoded.data_version!==state.data.data_version)throw new Error('서버와 현재 editor 메타 버전이 다릅니다. 서버 데이터 갱신 후 다시 확인해 주세요.');
+    const army=loadable(state.data,prep(decoded.army));
+    decks.add(name,army,false,{season:decoded.season,review_required:false});
+  }else{
+    const slots=[...(entry.army.heroes||[])].sort((a,b)=>a.slot-b.slot).map(hero=>({
+      hero_id:hero.hero_id??null,name:state.idx?.hero.get(hero.hero_id)?.name||`무장 #${hero.hero_id}`,
+      owned:Boolean(hero.hero_id),
+      tactics:[1,2].map(slot=>{const cell=(entry.tactic_slots||[]).find(x=>x.hero_slot===hero.slot&&x.slot===slot);
+        return {slot,id:cell?.selected_id??null,name:cell?.selected_id?state.idx?.tactic.get(cell.selected_id)?.name||`#${cell.selected_id}`:null,projection:cell?.selected_id?Number(cell.selected_id)>=800000:false};})
+    }));
+    const missing_tactics=(entry.tactic_slots||[]).filter(x=>x.selected_id==null).length;
+    decks.add(`[계획] ${name}`.slice(0,80),null,false,{season:state.season,review_required:true,reference_id:entry.candidate_id||null,
+      planning_draft:{source:'server-v0.6.8',slots,missing_heroes:Math.max(0,3-slots.length),missing_tactics,army:clone(entry.army),tactic_slots:clone(entry.tactic_slots||[])}});
+  }
+  updateRosterCounts();
+}
+/** battle_ready + TC1 제공 항목만 현재 배틀 편집기로 전송합니다. */
+async function sendServerPlannerEntry(entry){
+  if(!entry?.battle_ready||!entry?.code)throw new Error('전법 6칸의 서버 검증이 완료된 덱만 배틀에 보낼 수 있습니다.');
+  const decoded=await decodeArmyCode(entry.code);
+  if(decoded.season!==state.season)throw new Error('선택 시즌과 서버 편성 시즌이 다릅니다.');
+  if(decoded.data_version&&state.data?.data_version&&decoded.data_version!==state.data.data_version)throw new Error('현재 서버 editor 데이터 버전과 추천 데이터가 일치하지 않습니다. 다시 추천해 주세요.');
+  sendToBattle(loadable(state.data,prep(decoded.army)),'left',`${entry.title||'서버 추천 덱'} 편성을 아군으로 불러왔습니다.`);
+}
 function acceptData(data,{reset=false}={}){
   if(data.season!==state.season||!Array.isArray(data.heroes)||!data.rules||!data.examples?.length)throw new Error('이 화면과 호환되지 않는 편성 데이터입니다.');
   if(!reset&&state.armies.left){for(const s of SIDES)loadable(data,state.armies[s]);}
@@ -253,13 +285,6 @@ function adoptServerData(data){
   warnIfServerDiffers(data);
   try{acceptData(data);return true;}
   catch(error){acceptData(data,{reset:true});notify(`현재 편성이 서버 데이터와 맞지 않아 예시 편성으로 바꿨습니다. (${error.message})`,true);return false;}
-}
-
-/* ── 테마 ─────────────────────────────────────────────── */
-function applyTheme(){const t=store.get(KEYS.theme);if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;else delete document.documentElement.dataset.theme;}
-function toggleTheme(){
-  const current=document.documentElement.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
-  store.set(KEYS.theme,current==='dark'?'light':'dark');applyTheme();
 }
 
 /* ── 바쁨·작업 ─────────────────────────────────────────── */
@@ -1985,17 +2010,16 @@ for(const b of document.querySelectorAll('.board-tabs [data-view]'))b.addEventLi
 for(const b of document.querySelectorAll('[data-close]'))b.addEventListener('click',()=>$(b.dataset.close).close());
 for(const d of document.querySelectorAll('dialog'))d.addEventListener('click',e=>{if(e.target===d)d.close();});
 
-$('theme-toggle').onclick=toggleTheme;
 $('open-connection').onclick=openConnection;
 $('connection-form').onsubmit=e=>{
   e.preventDefault();$('connection-error').textContent='';
   task(async()=>{
     const api=new BattleApi($('api-url').value.trim()),data=await api.editor(state.season);
-    adoptServerData(data);state.api=api;store.set(KEYS.api,api.baseUrl);render();$('connection-dialog').close();notify('전투 서버에 연결했습니다.');
+    adoptServerData(data);state.api=api;store.set(KEYS.api,api.baseUrl);render();$('connection-dialog').close();if(parseRoute().view==='planner')await route();notify('전투 서버에 연결했습니다.');
   },'connection-error');
 };
 $('disconnect').onclick=()=>task(async()=>{
-  const data=await localData(state.season);adoptServerData(data);state.api=null;store.set(KEYS.api,null);render();$('connection-dialog').close();notify('서버 연결을 해제했습니다. 편성 모드로 계속합니다.');
+  const data=await localData(state.season);adoptServerData(data);state.api=null;store.set(KEYS.api,null);render();$('connection-dialog').close();if(parseRoute().view==='planner')await route();notify('서버 연결을 해제했습니다. 편성 모드로 계속합니다.');
 },'connection-error');
 
 $('code-submit').onclick=()=>{$('code-error').textContent='';task(applyCode,'code-error');};
@@ -2129,6 +2153,7 @@ function parseRoute(){
 async function route(){
   if(!state.data)return;
   const r=parseRoute();
+  if(r.view!=='planner')plannerView?.cancel?.();
   for(const v of ['battle','roster','guides','recommendations','planner','matchups'])$(`view-${v}`).hidden=v!==r.view;
   document.querySelectorAll('.main-nav [data-nav]').forEach(a=>a.setAttribute('aria-current',a.dataset.nav===r.view?'page':'false'));
   document.body.dataset.view=r.view;
@@ -2143,7 +2168,7 @@ async function route(){
       if(!recommendationsView){const mod=await import('./recommendations-view.js?v=1.5.2');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset,poolSnapshot,saveRecommendedDeck,saveReferenceDraft,notify});}
       await recommendationsView.show();
     }else if(r.view==='planner'){
-      if(!plannerView){const mod=await import('./planner-view.js?v=1.5.2');plannerView=mod.createPlannerView({state,h,fill,ensurePresets,presetsData:()=>presets,poolSnapshot,readLineup,addTemplatesToLineup,savePlanDrafts,notify});}
+      if(!plannerView){const mod=await import('./planner-view.js?v=1.5.8');plannerView=mod.createPlannerView({state,h,fill,poolSnapshot,notify,openConnection,saveServerEntry:saveServerPlannerEntry,sendServerEntry:sendServerPlannerEntry});}
       await plannerView.show();
     }else if(r.view==='matchups'){
       if(!matchupBoardView){const mod=await import('./matchup-board-view.js?v=1.5.2');matchupBoardView=mod.createMatchupBoardView({h,fill,notify});}
@@ -2174,7 +2199,6 @@ window.addEventListener('hashchange',route);
 
 /* ── 시작 ─────────────────────────────────────────────── */
 async function init(){
-  applyTheme();
   await task(async()=>{
     let shared=null;
     const codes=readHashCodes();

@@ -1,35 +1,6 @@
-/* 천하결전 덱 시뮬레이터 — 청·홍 두 군기와 놋쇠 인장
-   색은 모두 :root 토큰에서 나옵니다. 다크 모드는 시스템 설정 또는 data-theme으로 전환합니다. */
-
+/* 천하결전 길드 공용 — 고정 다크 테마.
+ * 첫 프레임부터 다크 변수로 렌더링합니다. 시스템/저장된 light 설정을 적용하지 않습니다. */
 :root{
-  --bg:#E9ECE6; --surface:#F7F8F4; --surface-2:#DFE3DB; --raise:#FFFFFF;
-  --ink:#17202A; --muted:#58626E; --line:#C9CEC4; --line-soft:#DADED5;
-  --ally:#2B4C9B; --ally-soft:#DCE3F3; --ally-ink:#1D3672;
-  --enemy:#B8381F; --enemy-soft:#F4DDD5; --enemy-ink:#8A2713;
-  --brass:#946E22; --brass-soft:#EEE3C8;
-  --ok:#2F6B4F; --warn:#9A5B00; --danger:#B3261E;
-  --shadow:0 1px 0 rgba(23,32,42,.04),0 8px 24px -12px rgba(23,32,42,.18);
-  --font-ui:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
-  --font-display:"Hahmlet","Nanum Myeongjo","AppleMyungjo","Batang",serif;
-  --r-panel:20px; --r-card:14px; --r-ctl:9px;
-  color-scheme:light;
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#10151B; --surface:#18202A; --surface-2:#222C37; --raise:#1E2731;
-    --ink:#E7EAE4; --muted:#9BA6B2; --line:#303C49; --line-soft:#26313C;
-    --ally:#8AA6F3; --ally-soft:#1C2847; --ally-ink:#B9CBFA;
-    --enemy:#F08C70; --enemy-soft:#3B211A; --enemy-ink:#F6B6A3;
-    --brass:#D8B566; --brass-soft:#352C1C;
-    --ok:#7CC6A0; --warn:#E3B062; --danger:#FF8A80;
-    --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 28px -14px rgba(0,0,0,.7);
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
   --bg:#10151B; --surface:#18202A; --surface-2:#222C37; --raise:#1E2731;
   --ink:#E7EAE4; --muted:#9BA6B2; --line:#303C49; --line-soft:#26313C;
   --ally:#8AA6F3; --ally-soft:#1C2847; --ally-ink:#B9CBFA;
@@ -37,7 +8,14 @@
   --brass:#D8B566; --brass-soft:#352C1C;
   --ok:#7CC6A0; --warn:#E3B062; --danger:#FF8A80;
   --shadow:0 1px 0 rgba(0,0,0,.2),0 10px 28px -14px rgba(0,0,0,.7);
+  --font-ui:"Pretendard Variable",Pretendard,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+  --font-display:"Hahmlet","Nanum Myeongjo","AppleMyungjo","Batang",serif;
+  --r-panel:20px; --r-card:14px; --r-ctl:9px;
   color-scheme:dark;
+  background:#10151B;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -1168,7 +1146,6 @@ body[data-view="matchups"] .matchup-board{--ink:#f0efe7;--muted:#a5b8c0;--surfac
 .season-switch span{color:#c3d6d3}
 .season-switch input:checked+span{background:#e4e8dc;color:#263a42}
 .conn-pill{background:#263f48;border-color:#405a63;color:#d4dcd6}
-#theme-toggle{color:#d5e1df}
 
 /* 다부대 추천도 금색 네모 장식을 제거하고 먹색 패널 + 부대 번호 강조로 통일 */
 body[data-view="planner"]{background:radial-gradient(ellipse 80% 450px at 90% 0,#2b4b5060,transparent),#0d1720;color:#f1eee6}
@@ -1253,3 +1230,70 @@ body[data-view="planner"] .planner-plan-actions .solid-btn{background:#ac4b3a;co
 .warbook-search-name{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:650;font-size:13px}
 .warbook-search-icon{font-size:20px;color:var(--muted);line-height:1}
 .tag.effect-estimated{background:color-mix(in srgb,var(--ok) 12%,transparent);color:var(--ok);font-size:10px}
+
+/* v1.5.8 — 서버 추천 5군 / 기존 길드 공용 테마 유지 */
+.planner-server-status{min-height:28px}
+#planner-server-status{padding:9px 12px;background:var(--surface);border:1px solid var(--line);border-radius:8px;line-height:1.6}
+#planner-server-status.planner-error{border-color:#a35048;color:#f3b5ab}
+.planner-pin{min-height:40px;border:1px solid var(--line);padding:6px 10px;border-radius:7px;background:var(--surface);color:var(--ink);font-size:13px;font-weight:700}
+.planner-pin.is-pinned{border-color:#caab6b;background:color-mix(in srgb,#caab6b 16%,var(--surface))}
+.planner-skill-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;min-height:32px}
+.planner-skill-row>span{flex:1 1 140px}
+.planner-skill-row>small{color:var(--muted);font-size:11px}
+.planner-skill-row>button{margin-left:auto}
+.planner-empty-position{border:1px dashed var(--line);background:color-mix(in srgb,var(--surface) 70%,transparent);padding:16px;border-radius:8px}
+.planner-empty-position p{margin:6px 0 0}
+.planner-conflicts{padding:12px;background:var(--surface);border:1px solid var(--line);border-radius:8px;font-size:12px;line-height:1.6}
+.planner-conflicts p{padding:5px 0;border-bottom:1px solid var(--line-soft)}
+.planner-tactic-dialog{border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);width:min(94vw,560px);max-height:86vh;padding:0;box-shadow:0 22px 90px rgba(0,0,0,.55)}
+.planner-tactic-dialog::backdrop{background:rgba(0,0,0,.67)}
+.planner-tactic-form{display:grid;gap:12px;padding:18px}
+.planner-tactic-form h3{margin:0;font-size:18px}
+.planner-tactic-form input{padding:11px;width:100%;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:7px}
+.planner-tactic-options{display:grid;gap:4px;max-height:48vh;overflow-y:auto}
+.planner-tactic-choice{display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;border:1px solid var(--line-soft);background:var(--bg);color:var(--ink);border-radius:7px;padding:11px;min-height:43px}
+.planner-tactic-choice:hover{background:var(--raise);border-color:var(--ally)}
+.planner-tactic-choice small{color:var(--muted);font-size:10px}
+@media(max-width:600px){.planner-controls .solid-btn,.planner-controls .ghost-btn{min-height:43px}.planner-sort-tools{flex-wrap:wrap}.planner-pin{min-height:40px}.planner-sort-shortcuts{margin-left:auto}.planner-tactic-choice{flex-direction:column;align-items:flex-start}}
+
+/* v1.5.9 — 공용 사이트: 모든 화면을 동일한 다크 계열로 렌더링합니다.
+   밝은 종이 테마였던 추천덱 트리와 상성 시트를 어두운 전쟁 문서형으로 재조정합니다.
+   레이아웃/상호작용/데이터는 그대로 둡니다. */
+body[data-view="recommendations"] .rec-list{
+  background:#172630;color:#e5ebe4;border-color:#3a525b;box-shadow:none;
+}
+.war-file-tree{--tree-line:#40535b;--tree-blue:#80c8b5}
+.war-file-root{border-bottom-color:#45636b}
+.war-tree-family+.war-tree-family{border-top-color:#314751}
+.war-tree-toggle{color:#e0e7e0}
+.war-tree-toggle.roster{color:#bdd0d0}
+.war-tree-toggle:hover,.war-tree-leaf:hover{background:#2a4249}
+.war-tree-toggle .war-tree-chevron{color:#a2b7b7}
+.war-tree-toggle small{color:#98b0b1}
+.war-folder-icon{color:#c69a6a}
+.war-tree-leaf{color:#dce7e0}
+.war-tree-leaf[aria-current="true"]{background:#305850;color:#f5f6ed;box-shadow:inset 3px 0 #7ac9ad}
+.war-leaf-glyph,.war-tree-leaf-label small{color:#a5bfba}
+.war-tree-leaf-tags{color:#b5a58b}
+body[data-view="recommendations"] .rec-detail.is-open{
+  --bg:#152630;--surface:#20343d;--raise:#293f47;--ink:#edf0e8;
+  --muted:#a2b7b8;--line:#3e5960;--line-soft:#304952;
+  background:#152630;color:#edf0e8;
+}
+body[data-view="recommendations"] .rec-detail.is-open .rec-detail-head{background:#152630}
+.war-diagram-center{background:#2a4349;color:#f3f0e5;border-color:#607b7b}
+.war-diagram-center .war-overline{color:#b1c9c5}
+.war-diagram-center p{color:#c3d2cd}
+.war-modal-panel{background:#15252f;color:#edf0e9}
+.war-modal-description,.war-source-label,.war-setup-note{color:#adc0bd}
+.war-modal-tools{border-bottom-color:#3d5559}
+.war-modal-setups,.war-setup{color:#edf0e9}
+.war-setup{background:#21353e;border-color:#3c535b}
+.war-setup>summary small{color:#bacdca}
+.war-setup-content{border-top-color:#3b5258}
+.war-setup-member{background:#29424a}
+.war-setup-member h4,.war-setup-line b{color:#afd4c8}
+.war-link{color:#90dbc8}
+.war-empty-note{background:#294047;color:#c6d4d1}
+/* 스크롤 중 밝은 영역이 먼저 나타나지 않도록 html 및 dialog 배경도 고정 */
+html,body{background-color:#10151B}
