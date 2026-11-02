@@ -1,6 +1,5 @@
-/** 길드 공용 최적 5군 UI — 추천/자원 배분/검증은 서버 v0.6.8의 유일한 판정 기준. */
+/** 길드 공용 최적 5군 UI — 추천/후보 조회/자원 배분/검증은 서버 v0.6.9에서 수행. */
 import {LineupPlannerApi,PlannerSession,setPinned,moveEntry,editTactic} from './lineup-planner-client.js';
-import {resolvedBattleReference} from './battle-ready-decks.js';
 const $=id=>document.getElementById(id);
 const clone=x=>structuredClone(x);
 const keyFor=season=>`cheonha-server-planner-v068-s${season}`;
@@ -11,11 +10,10 @@ const cellStatus={selected:'배분됨',conflict:'중복 · 대체 필요',not_ow
 export function createPlannerView({state,h,fill,poolSnapshot,notify,openConnection,saveServerEntry,sendServerEntry}){
   let season=null,version=null,baseUrl=null,session=null,plan=null,busy=false,lastError='',lastAction='',projectionMode='auto',manualShadows=new Set(),rules=null,drag=null,validateTimer=null,viewEpoch=0;
   let verifiedPoolSig=null,verifiedProjectionSig=null;
-  let alternatives=null,altLoading=null,altQuery='',altTarget=1,altExpanded=false,activeView=false,serial=0;
+  let candidatesPage=null,candidateLoading=false,candidateError='',candidateQuery='',candidateTarget=1,candidateOffset=0,candidateSeq=0,candidateTimer=null,candidatesExpanded=false,activeView=false;
   const e=(tag,attrs,...children)=>h(tag,attrs,...children);
   const catalog=id=>state.idx?.tactic?.get(Number(id))?.name||`전법 #${id}`;
   const heroName=id=>state.idx?.hero?.get(Number(id))?.name||`무장 #${id}`;
-  const ownHeroes=()=>new Set((poolSnapshot().heroes||[]).map(Number));
   function showStatus(text,isError=false){lastError=isError?text:'';const el=$('planner-server-status');el.textContent=text||'';el.classList.toggle('planner-error',isError);}
   const poolSig=()=>JSON.stringify(poolSnapshot());
   const projectionSig=()=>JSON.stringify(projectionSelection());
@@ -27,7 +25,7 @@ export function createPlannerView({state,h,fill,poolSnapshot,notify,openConnecti
   function synchronize(){
     const nextSeason=state.season,nextVersion=state.data?.data_version||null,nextUrl=state.api?.baseUrl||null;
     if(season===nextSeason&&version===nextVersion&&baseUrl===nextUrl)return;
-    clearTimeout(validateTimer);session?.cancel();viewEpoch++;
+    clearTimeout(validateTimer);clearTimeout(candidateTimer);candidateSeq++;candidatesPage=null;candidateLoading=false;candidateError='';session?.cancel();viewEpoch++;
     season=nextSeason;version=nextVersion;baseUrl=nextUrl;session=nextUrl?new PlannerSession(new LineupPlannerApi(nextUrl)):null;busy=false;lastError='';
     const stored=safeRead(keyFor(season));
     plan=stored?.data_version===version&&Array.isArray(stored?.plan?.entries)?stored.plan:null;
@@ -59,7 +57,7 @@ export function createPlannerView({state,h,fill,poolSnapshot,notify,openConnecti
     $('planner-server-validate').hidden=!plan;
     if(!serverReady()){
       showStatus('전투 서버가 연결되지 않았습니다. 연결 후 서버 추천을 실행할 수 있습니다.',true);
-      fill($('planner-results'),e('div',{class:'empty-box'},e('p',{text:'이 기능은 백엔드 v0.6.8 이상에 연결되어야 동작합니다. 이전 브라우저 추천 엔진으로 자동 전환하지 않습니다.'}),e('button',{type:'button',class:'solid-btn',onClick:openConnection,text:'서버 연결 설정'})));
+      fill($('planner-results'),e('div',{class:'empty-box'},e('p',{text:'이 기능은 백엔드 v0.6.9 이상에 연결되어야 동작합니다. 이전 브라우저 추천 엔진으로 자동 전환하지 않습니다.'}),e('button',{type:'button',class:'solid-btn',onClick:openConnection,text:'서버 연결 설정'})));
       return;
     }
     if(!pool.heroes.length){fill($('planner-results'),e('div',{class:'empty-box'},e('p',{text:'보유 풀에 장수를 등록한 뒤 추천을 실행하세요.'}),e('a',{href:'#/roster/pool',class:'ghost-btn',text:'보유 풀 관리'})));return;}
@@ -75,7 +73,7 @@ export function createPlannerView({state,h,fill,poolSnapshot,notify,openConnecti
     const actions=e('div',{class:'planner-plan-actions'},
       e('span',{class:'planner-tag',text:`${labelStatus[plan.search_status]||'서버 검사'} · ${plan.mode||'rebuild'}`}),
       ...usedProjection.map(name=>e('span',{class:'planner-tag',text:name})),
-      e('button',{type:'button',class:'ghost-btn small',disabled:busy,onClick:()=>{altExpanded=!altExpanded;render();if(altExpanded)loadAlternatives();},text:altExpanded?'다른 후보 닫기':'다른 후보 보기'}),
+      e('button',{type:'button',class:'ghost-btn small',disabled:busy,onClick:()=>{candidatesExpanded=!candidatesExpanded;if(candidatesExpanded)loadCandidates();else invalidateCandidates(false);render();},text:candidatesExpanded?'다른 후보 닫기':'다른 후보 보기'}),
       e('button',{type:'button',class:'ghost-btn small',disabled:busy,onClick:()=>saveAll(),text:'5군 내 덱에 저장'}));
     const items=[];
     for(let position=1;position<=5;position++){
@@ -117,125 +115,110 @@ export function createPlannerView({state,h,fill,poolSnapshot,notify,openConnecti
     fill($('planner-results'),e('article',{class:'planner-plan war-card'},header,
       e('div',{class:'planner-priority-head'},e('p',{class:'planner-priority-help',text:'⠿ 드래그 또는 ↑ ↓ 이동: 현재 장수 조합을 유지하고 전법만 서버에서 재배분(reorder)합니다. 📌 고정 후 「나머지 재추천」: 고정한 편성 전체를 예약하고 나머지를 다시 탐색(rebuild)합니다.'})),actions,
       e('div',{class:'planner-plan-list'},...items),
-      altExpanded?renderAlternatives():null,
+      candidatesExpanded?renderCandidates():null,
       ...[...new Set((plan.notices||[]).map(String))].filter(x=>!/^다른 부대가 사용 중이거나/.test(x)).map(x=>e('p',{class:'muted-note',text:x})),
       ...(plan.changes||[]).slice(0,8).map(x=>e('p',{class:'planner-evidence',text:String(x)}))));
   }
-  async function loadAlternatives(){
-    if(alternatives?.season===state.season){if(activeView&&altExpanded)render();return;}
-    if(altLoading)return altLoading;
-    const requestedSeason=state.season;
-    altLoading=(async()=>{
-      try{
-        const sources=['./data/recommended-decks.json',...(requestedSeason===3?['./references/data/kr_s3_deck_references.json']:[])];
-        const results=await Promise.all(sources.map(async path=>{const r=await fetch(path,{cache:'no-cache'});if(!r.ok)throw Error('참고 후보 파일을 읽을 수 없습니다.');return r.json();}));
-        const templates=results[0].templates||[],variants=results[1]?.variants||[];
-        const rows=[];
-        for(const t of templates){
-          if((t.season??t.source_kr_season)!==requestedSeason||!t.army?.heroes||t.army.heroes.length!==3)continue;
-          const heroIds=t.army.heroes.map(h=>Number(h.hero_id));
-          if(new Set(heroIds).size!==3)continue;
-          rows.push({id:t.id,label:t.name||'원본 추천덱',source:'원본 추천',heroIds,army:t.army,ready:t.army.heroes.every(h=>h.learned?.length===2&&h.learned.every(sk=>Number(sk.skill_id)>0))});
-        }
-        for(const v of variants){
-          const heroIds=(v.members||[]).map(m=>m.hero_choice?.status==='resolved'&&m.hero_choice.candidates?.length===1?Number(m.hero_choice.candidates[0].id):null);
-          if(heroIds.length!==3||heroIds.some(x=>!x)||new Set(heroIds).size!==3)continue;
-          const resolved=resolvedBattleReference(v,state.idx);
-          // 연의 분기 선택이 필요한 편성은 서버 후보 API 없이 기본 분기를 임의 적용하지 않는다.
-          const ambiguousRomance=(v.members||[]).some(m=>m.romance_required===true);
-          rows.push({id:v.id,label:v.label||'시즌3 참고 세팅',source:'시즌3 참고',heroIds,variant:v,resolved,ready:!!resolved&&!ambiguousRomance,needsRomance:ambiguousRomance});
-        }
-        if(requestedSeason!==state.season)return;
-        alternatives={season:requestedSeason,rows};
-      }catch(err){if(requestedSeason===state.season)alternatives={season:requestedSeason,rows:[],error:err.message};}
-      finally{altLoading=null;if(activeView&&altExpanded)render();}
-    })();return altLoading;
+  /** 후보 조회는 절대 현재 편성을 변경하지 않는다. 검색/핀/보유풀 변경 시 이전 응답은 무효화한다. */
+  function invalidateCandidates(reload=false){
+    clearTimeout(candidateTimer);candidateSeq++;candidatesPage=null;candidateLoading=false;candidateError='';
+    if(reload&&activeView&&candidatesExpanded&&plan&&serverReady())loadCandidates();
   }
-  function candidateArmy(item){
-    if(item.army)return clone(item.army);
-    if(!item.resolved)throw Error('전법이 확정되지 않은 참고 세팅입니다.');
-    // 기존 배틀의 참고 세팅 변환과 동일한 원본 예시 구조를 사용한다.
-    const base=state.data?.examples?.[0];
-    if(!base?.heroes||base.heroes.length!==3)throw Error('기본 편성 데이터가 없습니다.');
-    const army=clone(base);army.name=String(item.label).slice(0,80);
-    const f=item.variant.formation_choice;
-    if(f?.status==='resolved'&&f.candidates?.length===1&&state.idx?.formation?.has(Number(f.candidates[0].id)))army.formation_id=Number(f.candidates[0].id);
-    army.heroes=army.heroes.map((h,i)=>({
-      ...h,slot:i+1,hero_id:item.resolved.heroes[i],
-      learned:item.resolved.tactics[i].map(id=>({skill_id:id,level:10,breakthrough:0,grade:0})),
-      warbook_slots:[],advanced_arms_id:null,arms_skill_ids:[],romance_trait_id:null,
-      equipment_item_id:null,horse_item_id:null,total_stats:null,
-      allocation:{might:0,intelligence:0,defence:0,speed:0},allocation_mode:'manual',
-      equipment:{might:0,intelligence:0,defence:0,speed:0},horse:{might:0,intelligence:0,defence:0,speed:0}
-    }));
-    return army;
+  async function loadCandidates(){
+    if(!activeView||!candidatesExpanded||!plan||!session||busy)return;
+    const n=++candidateSeq,epoch=viewEpoch,currentSession=session,signature=poolSig(),projectSig=projectionSig();
+    candidateLoading=true;candidateError='';render();
+    try {
+      const result=await currentSession.candidates({season:state.season,pool:poolSnapshot(),count:5,
+        plan,projection_selection:projectionSelection(),data_version:version,
+        exclude_candidate_ids:(plan.entries||[]).map(e=>e.candidate_id).filter(Boolean),
+        query:candidateQuery.trim(),offset:candidateOffset,limit:20});
+      if(n!==candidateSeq||epoch!==viewEpoch||!activeView||!candidatesExpanded||currentSession!==session||signature!==poolSig()||projectSig!==projectionSig()||!result)return;
+      candidatesPage=result;
+    }catch(err){
+      if(n!==candidateSeq||epoch!==viewEpoch||!activeView)return;
+      candidateError=errorMessage(err);
+    }finally{if(n===candidateSeq&&epoch===viewEpoch&&activeView){candidateLoading=false;render();}}
   }
-  function insertCandidate(item){
-    if(busy||!plan)return;
-    const owned=ownHeroes();
-    if(!item.ready||item.heroIds.some(id=>!owned.has(id))){notify('장수 3명과 전법이 확정된 보유 편성만 추가 요청할 수 있습니다.',true);return;}
-    const occupied=plan.entries.find(x=>x.position===altTarget);
-    if(occupied?.pinned){notify('해당 순위는 고정된 부대입니다. 먼저 핀을 해제해 주세요.',true);return;}
-    const pinned=plan.entries.filter(x=>x.pinned);
-    const used=new Set(pinned.flatMap(e=>(e.army?.heroes||[]).map(h=>Number(h.hero_id))));
-    if(item.heroIds.some(id=>used.has(id))){notify('고정된 부대에서 사용하는 장수가 포함되어 있습니다. 고정을 해제하거나 다른 후보를 선택해 주세요.',true);return;}
-    const army=candidateArmy(item);
-    // 원본 전법 6칸은 참고 출발점이다. 서버가 미보유/중복을 검증하고 422를 반환할 수 있다.
-    const slots=army.heroes.flatMap(h=>[1,2].map(i=>({hero_slot:h.slot,slot:i,selected_id:h.learned?.[i-1]?.skill_id??null,state:'unresolved'})));
-    const next=clone(plan);
-    next.entries=pinned.map(x=>clone(x));
-    next.entries.push({entry_id:`manual-${Date.now().toString(36)}-${(++serial).toString(36)}`,position:altTarget,pinned:true,candidate_id:null,
-      title:item.label,army,tactic_slots:slots,battle_ready:false,code:null,notes:['참고 원본 선택 · 서버 자원 확인 필요']});
-    next.empty_positions=Array.from({length:5},(_,i)=>i+1).filter(pos=>!next.entries.some(e=>e.position===pos));
-    request('rebuild',next);
-  }
-  function renderAlternatives(){
-    const box=e('section',{class:'planner-alternatives'},e('h4',{text:'다른 후보에서 부대 교체'}),
-      e('p',{class:'muted-note',text:'시즌별 공개 추천 원본에서 보유 장수 3명이 일치하는 편성을 찾습니다. 서버가 제공한 검증된 대체 후보 목록은 아니며, 삽입 시 고정 부대로 제출하고 나머지를 재추천합니다. 서버가 거절하면 현재 5군은 유지됩니다.'}));
-    if(!alternatives||alternatives.season!==state.season){box.append(e('p',{class:'muted-note',text:'참고 후보를 불러오는 중…'}));return box;}
-    if(alternatives.error){box.append(e('p',{class:'muted-note',text:alternatives.error}));return box;}
-    const select=e('select',{'aria-label':'교체할 부대 순위'});
-    for(let p=1;p<=5;p++){const pinned=plan.entries.some(e=>e.position===p&&e.pinned);select.append(e('option',{value:p,text:`${p}군 ${pinned?'· 고정 중 (교체 불가)':'위치에 넣기'}`,disabled:pinned}));}
-    if(plan.entries.some(e=>e.position===altTarget&&e.pinned))altTarget=Array.from({length:5},(_,i)=>i+1).find(p=>!plan.entries.some(e=>e.position===p&&e.pinned))||1;
-    select.value=String(altTarget);select.addEventListener('change',()=>{altTarget=Number(select.value);render();});
-    const search=e('input',{type:'search',placeholder:'덱명 · 장수 이름 검색',value:altQuery,'aria-label':'다른 추천 후보 검색'});
-    search.addEventListener('input',()=>{altQuery=search.value;refreshRows();});
-    const counter=e('span',{class:'muted-note'}),list=e('div',{class:'planner-alternative-list'});
-    box.append(e('div',{class:'planner-alternative-controls'},e('label',null,'교체 위치 ',select),search),counter,list);
-    function refreshRows(){
-      const owned=ownHeroes(),pinnedHeroes=new Set(plan.entries.filter(e=>e.pinned).flatMap(e=>(e.army?.heroes||[]).map(h=>Number(h.hero_id))));
-      const currentIds=new Set(plan.entries.map(e=>e.candidate_id).filter(Boolean));
-      const q=altQuery.replace(/\s+/g,'').toLocaleLowerCase('ko');
-      const filtered=alternatives.rows.filter(item=>item.heroIds.every(id=>owned.has(id))&&!currentIds.has(item.id))
-        .filter(item=>!q||[item.label,...item.heroIds.map(heroName)].join(' ').replace(/\s+/g,'').toLocaleLowerCase('ko').includes(q));
-      counter.textContent=`보유 장수 일치 후보 ${filtered.length}개 · 원본 전법 확정 후보만 서버 편성 요청 가능`;
-      fill(list,...filtered.slice(0,100).map(item=>{
-        const conflict=item.heroIds.some(id=>pinnedHeroes.has(id)),enabled=item.ready&&!conflict;
-        return e('div',{class:'planner-alternative-row'},
-          e('div',{class:'planner-alternative-description'},e('b',{text:item.label}),e('span',{class:'muted-note',text:item.heroIds.map(heroName).join(' · ')}),e('small',{text:`${item.source} · ${item.ready?'전법 6칸 확정 · 입력 검토 필요':item.needsRomance?'연의 분기 선택 필요':'일부 전법 선택 필요'}${conflict?' · 고정 장수와 중복':''}`})),
-          e('button',{type:'button',class:'ghost-btn small',disabled:busy||!enabled||plan.entries.some(e=>e.position===altTarget&&e.pinned),onClick:()=>insertCandidate(item),text:enabled?'이 순위에 넣고 재추천':'선택 불가'}));
-      }));
-      if(!filtered.length)list.append(e('p',{class:'muted-note',text:'보유 장수가 모두 일치하는 다른 참고 편성이 없습니다.'}));
+  function insertCandidate(candidate){
+    if(!plan||busy||!candidate?.is_selectable)return;
+    const position=candidateTarget;
+    if(plan.entries.some(e=>e.position===position&&e.pinned)){
+      notify(`${position}군은 고정된 부대입니다. 고정을 해제한 뒤 다시 선택하세요.`,true);return;
     }
-    refreshRows();return box;
+    // 서버가 candidate_id로 실제 원문 편성을 복원한다. 클라이언트 편성 조립 금지.
+    request('rebuild',plan,[{position,candidate_id:candidate.candidate_id,pin_result:true}]);
+  }
+  function renderCandidates(){
+    const box=e('section',{class:'planner-alternatives'},e('h4',{text:'서버 추천 후보에서 교체'}),
+      e('p',{class:'muted-note',text:'백엔드 v0.6.9의 후보 조회 결과입니다. 선택 가능은 전투 준비 완료를 뜻하지 않습니다. 부족한 전법은 삽입 후 대체·검증해야 합니다.'}));
+    if(plan.entries.some(x=>x.position===candidateTarget&&x.pinned))
+      candidateTarget=Array.from({length:5},(_,i)=>i+1).find(x=>!plan.entries.some(y=>y.position===x&&y.pinned))||1;
+    const select=e('select',{'aria-label':'후보 삽입 순위'});
+    for(let p=1;p<=5;p++){
+      const pinned=plan.entries.some(x=>x.position===p&&x.pinned);
+      select.append(e('option',{value:p,disabled:pinned,text:`${p}군 ${pinned?'· 고정 (선택 불가)':'위치에 넣기'}`}));
+    }
+    select.value=String(candidateTarget);
+    select.addEventListener('change',()=>{candidateTarget=Number(select.value);render();});
+    const search=e('input',{type:'search',placeholder:'서버 후보 이름 또는 ID 검색',value:candidateQuery,'aria-label':'서버 후보 검색'});
+    search.addEventListener('input',()=>{
+      candidateQuery=search.value;candidateOffset=0;
+      invalidateCandidates(false);clearTimeout(candidateTimer);
+      const oldList=box.querySelector('.planner-alternative-list');
+      if(oldList)oldList.replaceChildren(e('p',{class:'muted-note',text:'검색어에 맞는 후보 조회 대기 중…'}));
+      candidateTimer=setTimeout(loadCandidates,300);
+      // 검색 입력에 포커스를 유지하도록 결과 렌더링은 서버 요청 때 수행.
+    });
+    const reload=e('button',{type:'button',class:'ghost-btn small',disabled:busy||candidateLoading,onClick:()=>loadCandidates(),text:'후보 새로고침'});
+    box.append(e('div',{class:'planner-alternative-controls'},e('label',null,'교체 위치 ',select),search,reload));
+    if(candidateLoading){box.append(e('p',{class:'muted-note',text:'보유 풀과 고정 편성으로 서버 후보를 확인하는 중…'}));return box;}
+    if(candidateError){box.append(e('p',{class:'planner-error',text:candidateError}));return box;}
+    if(!candidatesPage){box.append(e('p',{class:'muted-note',text:'다른 후보 보기를 열면 서버에서 후보를 조회합니다.'}));return box;}
+    const page=candidatesPage,rows=Array.isArray(page.candidates)?page.candidates:[];
+    box.append(e('p',{class:'muted-note',text:`서버 후보 ${page.total??0}개 · ${rows.length?Number(page.offset??0)+1:0}~${Math.min(Number(page.total??0),Number(page.offset??0)+rows.length)}개 표시 · 선택할 수 없는 후보도 포함` }));
+    const list=e('div',{class:'planner-alternative-list'});
+    for(const item of rows){
+      const selectable=Boolean(item.is_selectable),heroes=(item.hero_ids||[]).map((id,i)=>`${heroName(id)}${item.hero_owned?.[i]===false?' (미보유)':''}`).join(' · ');
+      const message=[!selectable?(item.unavailable_reason||'보유·고정·시즌 조건 확인 필요'):null,
+        selectable&&(item.missing_tactic_ids||[]).length?`부족한 전법 ${item.missing_tactic_ids.map(catalog).join(', ')} · 삽입 후 수동 대체`:null,
+        item.needs_review?'병법/연의/원문 세팅 추가 확인 필요':null,
+        ...(item.preview?.notes||[]).slice(0,3).map(String),
+        ...(item.issues||[]).slice(0,2).map(i=>typeof i==='string'?i:i.message).filter(Boolean)].filter(Boolean).join(' / ');
+      list.append(e('div',{class:'planner-alternative-row'},
+        e('div',{class:'planner-alternative-description'},
+          e('b',{text:item.title||item.candidate_id}),e('span',{class:'muted-note',text:heroes}),
+          e('small',{text:[item.tier_label,item.source,selectable?'선택 가능':'선택 불가'].filter(Boolean).join(' · ')}),
+          message?e('small',{class:'muted-note',text:message}):null),
+        e('button',{type:'button',class:'ghost-btn small',disabled:busy||!selectable||plan.entries.some(x=>x.position===candidateTarget&&x.pinned),
+          onClick:()=>insertCandidate(item),text:selectable?'이 순위에 넣고 재추천':'선택 불가'})));
+    }
+    if(!rows.length)list.append(e('p',{class:'muted-note',text:'조건에 맞는 후보가 없습니다.'}));
+    box.append(list);
+    const total=Number(page.total||0),offset=Number(page.offset||0),limit=Number(page.limit||20);
+    box.append(e('div',{class:'planner-alternative-pagination'},
+      e('button',{type:'button',class:'ghost-btn small',disabled:offset===0||candidateLoading,onClick:()=>{candidateOffset=Math.max(0,offset-limit);loadCandidates();},text:'이전 20개'}),
+      e('span',{class:'muted-note',text:`${total?Math.floor(offset/limit)+1:0} / ${Math.max(1,Math.ceil(total/limit))}페이지`}),
+      e('button',{type:'button',class:'ghost-btn small',disabled:offset+rows.length>=total||candidateLoading,onClick:()=>{candidateOffset=offset+limit;loadCandidates();},text:'다음 20개'})));
+    return box;
   }
   function errorMessage(err){
     if(err?.status===429)return `서버 계산 중입니다. ${err.retryAfter?`${err.retryAfter}초 뒤에 `:'잠시 후 '}다시 실행해 주세요. 자동 반복 요청하지 않습니다.`;
     if(err?.status===413)return '요청 데이터가 서버 제한을 초과했습니다. 보유 풀 또는 서버 요청 크기 제한을 확인하세요.';
-    if(err?.status===422)return `${err.code==='INVALID_LINEUP'?'고정 부대/편성 자원 충돌':'요청 정보'}: ${err.message||'서버 제약을 확인하세요.'} 기존 편성과 보유 풀은 유지했습니다.`;
+    if(err?.status===422){const details=(err.issues||[]).slice(0,3).map(i=>`${i.position?`${i.position}군 · `:''}${i.message||''}`).filter(Boolean).join(' / ');return `${err.code==='INVALID_LINEUP'?'고정 부대/편성 자원 충돌':'요청 정보'}: ${err.message||'서버 제약을 확인하세요.'}${details?' · '+details:''} 기존 편성과 보유 풀은 유지했습니다.`;}
     return `${err?.message||'서버 연결 실패'}. 기존 편성과 보유 풀은 유지했습니다.`;
   }
-  async function request(mode='rebuild',input=plan){
+  async function request(mode='rebuild',input=plan,forced_candidates=[]){
     synchronize();if(!serverReady()){render();return;}
-    const currentEpoch=viewEpoch,before=plan;busy=true;showStatus(`서버에서 ${mode==='validate'?'편성 검증':mode==='reorder'?'전법 재배분':'5군 추천'} 중…`);render();
+    const currentEpoch=viewEpoch,before=plan;busy=true;showStatus(`서버에서 ${mode==='validate'?'편성 검증':mode==='reorder'?'전법 재배분':forced_candidates.length?'후보 배치 및 잔여 재추천':'5군 추천'} 중…`);render();
     try{
-      const data=await session.run({season:state.season,data_version:state.data?.data_version||null,pool:poolSnapshot(),count:5,mode,plan:input,projection_selection:projectionSelection()});
+      const data=await session.run({season:state.season,data_version:state.data?.data_version||null,pool:poolSnapshot(),count:5,mode,plan:input,projection_selection:projectionSelection(),forced_candidates});
       if(!data||currentEpoch!==viewEpoch)return;
-      plan=data;session.plan=data;verifiedPoolSig=poolSig();verifiedProjectionSig=projectionSig();persist();showStatus(`서버 응답 완료 · ${labelStatus[data.search_status]||'결과 확인'} · ${data.entries?.length||0}개 부대`);
+      plan=data;session.plan=data;invalidateCandidates(false);verifiedPoolSig=poolSig();verifiedProjectionSig=projectionSig();persist();showStatus(`서버 응답 완료 · ${labelStatus[data.search_status]||'결과 확인'} · ${data.entries?.length||0}개 부대`);if(candidatesExpanded)loadCandidates();
     }catch(err){if(currentEpoch!==viewEpoch)return;plan=before;showStatus(errorMessage(err),true);}
-    finally{if(currentEpoch===viewEpoch){busy=false;render();}}
+    finally{if(currentEpoch===viewEpoch){busy=false;render();if(candidatesExpanded&&activeView&&serverReady()&&!candidatesPage&&!candidateLoading)loadCandidates();}}
   }
-  function pin(id){if(busy||!plan)return;try{const row=plan.entries.find(x=>x.entry_id===id);plan=setPinned(plan,id,!row.pinned);if(session)session.plan=plan;persist();render();showStatus('📌 표시만 변경했습니다. 「나머지 재추천」을 누르면 고정 부대를 보존합니다.');}catch(err){notify(err.message,true);}}
+  function pin(id){if(busy||!plan)return;try{const row=plan.entries.find(x=>x.entry_id===id);plan=setPinned(plan,id,!row.pinned);if(session)session.plan=plan;persist();invalidateCandidates(true);render();showStatus('📌 표시만 변경했습니다. 「나머지 재추천」을 누르면 고정 부대를 보존합니다.');}catch(err){notify(err.message,true);}}
   function move(id,to){if(busy||!plan)return;try{const changed=moveEntry(plan,id,to);request('reorder',changed);}catch(err){notify(err.message,true);}}
   function rebuildPinned(id){if(busy||!plan)return;try{request('rebuild',setPinned(plan,id,true));}catch(err){notify(err.message,true);}}
   const safeEntry=entry=>stale()?{...entry,battle_ready:false,code:null}:entry;
@@ -255,7 +238,7 @@ export function createPlannerView({state,h,fill,poolSnapshot,notify,openConnecti
     const options=[...universe].filter(x=>state.idx?.tactic?.has(x)).sort((a,b)=>catalog(a).localeCompare(catalog(b),'ko'));
     function choose(id2){d.close();clearTimeout(validateTimer);session?.cancel();
       const orig=plan;try{
-        plan=editTactic(plan,id,heroSlot,tacticSlot,id2?{skill_id:id2,level:10,breakthrough:0,grade:0}:null);
+        invalidateCandidates(false);plan=editTactic(plan,id,heroSlot,tacticSlot,id2?{skill_id:id2,level:10,breakthrough:0,grade:0}:null);
         session.plan=plan;persist();showStatus('전법 수동 변경됨 · 서버 validate 대기 중');render();
         validateTimer=setTimeout(()=>request('validate',plan),280);
       }catch(err){plan=orig;notify(err.message,true);render();}}
@@ -296,10 +279,10 @@ export function createPlannerView({state,h,fill,poolSnapshot,notify,openConnecti
   }
   $('planner-server-rebuild').addEventListener('click',()=>request('rebuild'));
   $('planner-server-validate').addEventListener('click',()=>request('validate'));
-  document.querySelectorAll('input[name="projection-mode"]').forEach(input=>input.addEventListener('change',()=>{if(!input.checked)return;session?.cancel();viewEpoch++;busy=false;projectionMode=input.value;persist();render();}));
+  document.querySelectorAll('input[name="projection-mode"]').forEach(input=>input.addEventListener('change',()=>{if(!input.checked)return;session?.cancel();viewEpoch++;busy=false;projectionMode=input.value;invalidateCandidates(true);persist();render();}));
   $('planner-projection-options').addEventListener('change',evt=>{const input=evt.target.closest('input[type="checkbox"]');if(!input)return;const id=Number(input.value);if(input.checked&&manualShadows.size>=3){input.checked=false;notify('투영 전법은 3종까지 선택할 수 있습니다.',true);return;}
-    session?.cancel();viewEpoch++;busy=false;if(input.checked)manualShadows.add(id);else manualShadows.delete(id);persist();render();});
+    session?.cancel();viewEpoch++;busy=false;invalidateCandidates(true);if(input.checked)manualShadows.add(id);else manualShadows.delete(id);persist();render();});
   const dialog=e('dialog',{id:'planner-tactic-dialog',class:'planner-tactic-dialog'});document.body.append(dialog);
   attachDrag();
-  return {show,cancel:()=>{activeView=false;clearTimeout(validateTimer);session?.cancel();viewEpoch++;busy=false;}};
+  return {show,cancel:()=>{activeView=false;clearTimeout(validateTimer);invalidateCandidates(false);session?.cancel();viewEpoch++;busy=false;}};
 }

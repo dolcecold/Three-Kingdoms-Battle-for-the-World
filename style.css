@@ -1310,3 +1310,7 @@ html,body{background-color:#10151B}
 .planner-alternative-description{display:grid;gap:3px;min-width:0}.planner-alternative-description b{font-size:13px}.planner-alternative-description small{color:var(--muted);font-size:11px}
 .planner-alternative-row button{flex:none;min-height:40px}
 @media(max-width:600px){.planner-alternative-row{flex-direction:column;align-items:stretch}.planner-alternative-row button{width:100%}}
+
+/* v1.6.1: server-side candidate navigation */
+.planner-alternative-pagination{display:flex;align-items:center;justify-content:center;gap:1rem;padding:0.8rem 0;flex-wrap:wrap}
+.planner-alternative-description small{display:block;line-height:1.5;word-break:break-word}

@@ -7,6 +7,7 @@ export class ApiError extends Error {
     this.code = data?.error?.code || 'HTTP_ERROR';
     this.requestId = data?.request_id || null;
     this.retryAfter = retryAfter;
+    this.issues = Array.isArray(data?.error?.issues) ? data.error.issues : [];
   }
 }
 

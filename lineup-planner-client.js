@@ -2,6 +2,9 @@
 import {BattleApi} from './api-client.js';
 const clone=x=>structuredClone(x);
 export class LineupPlannerApi extends BattleApi {
+  candidates(payload,{signal}={}) {
+    return this.request('/api/v2/lineups/candidates',{method:'POST',body:payload,signal});
+  }
   recommend(payload,{signal}={}) {
     return this.request('/api/v2/lineups/recommend',{method:'POST',body:payload,signal});
   }
@@ -44,15 +47,21 @@ export function editTactic(plan,id,heroSlot,slot,tactic) {
 }
 /** Stale responses are ignored; existing personal state is never overwritten on failure. */
 export class PlannerSession {
-  constructor(api){this.api=api;this.revision=0;this.pending=null;this.plan=null;}
-  cancel(){this.revision++;this.pending?.abort();this.pending=null;}
-  async run({season,pool,pool_code,count=5,mode='rebuild',plan=this.plan,projection_selection='auto',data_version}) {
-    const n=++this.revision;this.pending?.abort();const pending=new AbortController();this.pending=pending;
-    const request={season,count,mode,projection_selection,data_version,entries:entryInputs(plan),request_revision:String(n),...(pool_code?{pool_code}:{pool})};
+  constructor(api){this.api=api;this.revision=0;this.pending=null;this.plan=null;this.candidateRevision=0;}
+  async candidates({season,pool,pool_code,count=5,plan=this.plan,projection_selection='auto',data_version,exclude_candidate_ids=[],query='',offset=0,limit=20}) {
+    const n=++this.candidateRevision;
+    const payload={season,count,entries:entryInputs(plan),projection_selection,data_version,exclude_candidate_ids,query,offset,limit,request_revision:String(n),...(pool_code?{pool_code}:{pool})};
+    const result=await this.api.candidates(payload);
+    return n===this.candidateRevision&&result.request_revision===String(n)?result:null;
+  }
+  cancel(){this.candidateRevision++;this.revision++;this.pending?.abort();this.pending=null;}
+  async run({season,pool,pool_code,count=5,mode='rebuild',plan=this.plan,projection_selection='auto',data_version,forced_candidates=[]}) {
+    this.candidateRevision++;const n=++this.revision;this.pending?.abort();const pending=new AbortController();this.pending=pending;
+    const request={season,count,mode,forced_candidates,projection_selection,data_version,entries:entryInputs(plan),request_revision:String(n),...(pool_code?{pool_code}:{pool})};
     try {
       const response=await this.api.recommend(request,{signal:pending.signal});
       if(n!==this.revision||response.request_revision!==String(n))return null;
-      this.plan=response;return response;
+      this.candidateRevision++;this.plan=response;return response;
     } catch(error) {
       if(n!==this.revision||pending.signal.aborted)return null;
       throw error; // UI handles 422/429/413; no fallback client-side optimizer.
