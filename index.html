@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@500;700;800&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="./style.css?v=1.6.2">
+  <link rel="stylesheet" href="./style.css?v=1.6.5">
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 바로 가기</a>
@@ -28,7 +28,7 @@
     <nav class="main-nav" aria-label="메뉴">
       <a href="#/guides" data-nav="guides"><span class="nav-ico" aria-hidden="true">書</span>가이드</a>
       <a href="#/recommendations" data-nav="recommendations"><span class="nav-ico" aria-hidden="true">策</span>추천 덱</a>
-      <a href="#/planner" data-nav="planner"><span class="nav-ico" aria-hidden="true">組</span>최적 5군</a>
+      <a href="#/planner" data-nav="planner"><span class="nav-ico" aria-hidden="true">組</span>편성 작업실</a>
       <a href="#/matchups" data-nav="matchups"><span class="nav-ico" aria-hidden="true">剋</span>상성 관계도</a>
       <a href="#/battle" data-nav="battle"><span class="nav-ico" aria-hidden="true">戰</span>배틀</a>
       <a href="#/roster" data-nav="roster"><span class="nav-ico" aria-hidden="true">將</span>보유 풀</a>
@@ -138,20 +138,20 @@
 
    <section id="view-planner" class="view" hidden aria-labelledby="planner-title">
      <div class="view-head">
-       <h1 id="planner-title">내 보유 풀 · 서버 추천 5군</h1>
-       <p class="view-sub">서버 v0.6.9이 원문 추천 세팅과 보유 자원으로 편성을 추천합니다. 핀 고정·전법 재배분·최종 검증은 서버 판정입니다.</p>
+       <h1 id="planner-title">편성 작업실 · 최적 5군</h1>
+       <p class="view-sub">보유 풀 기준 자동 추천 · 부대 선택 · 전법 편집 · 후보 교체까지 한 화면에서 진행합니다.</p>
      </div>
      <div class="planner-panel">
        <div class="planner-controls">
          <div class="planner-season"><strong id="planner-season">한국 시즌 2</strong><a href="#/roster/pool">보유 풀 관리</a></div>
-         <label class="planner-select">목표 부대 수 <select id="planner-count" aria-label="목표 부대 수" disabled><option value="5" selected>5개 (고정 포함)</option></select></label>
+         <input id="planner-count" type="hidden" value="5">
          <button type="button" class="solid-btn" id="planner-server-recommend" hidden aria-hidden="true" tabindex="-1">자동 추천</button>
-         <button type="button" class="ghost-btn" id="planner-server-rebuild" hidden>📌 고정 유지 · 나머지 재추천</button>
-         <button type="button" class="ghost-btn" id="planner-server-validate" hidden>현재 편성 서버 검증</button>
+         <button type="button" class="ghost-btn" id="planner-server-rebuild" hidden>📌 고정 유지 · 나머지 자동 추천</button>
+         <button type="button" class="ghost-btn" id="planner-server-validate" hidden>편성 전체 검증</button>
        </div>
        <p id="planner-server-status" class="muted-note" role="status" aria-live="polite"></p>
        <details id="planner-projection-panel" class="projection-panel">
-         <summary>투영 전법 관리 <span id="planner-projection-label">자동 배분 · 최대 3종</span></summary>
+         <summary>고급 설정 · 투영 전법 <span id="planner-projection-label">자동 배분 · 최대 3종</span></summary>
          <p>시즌3에서는 아래 6종 중 <strong>서로 다른 투영 전법 최대 3종</strong>만 추가로 배분합니다. 원본 전법을 보유해야 자동 생성 후보가 됩니다. 같은 투영 전법은 2개 이상 생성하지 않습니다.</p>
          <div class="projection-modes" role="group" aria-label="투영 전법 선택 방식">
            <label><input type="radio" name="projection-mode" value="auto" checked>최적 5군에 맞게 자동 선택</label>
@@ -162,7 +162,7 @@
        </details>
        <div id="planner-overview" class="planner-overview" role="status"></div>
        <p id="planner-explain" class="rec-source-note"></p>
-       <p class="planner-disclaimer">추천은 게임 실측 승률이 아니라 원문·보유 적합성 기준입니다. 고정한 부대에는 장수·전법·병법·수치·장비가 보존됩니다. 비어 있는 전법은 대체 후 검증해야 하며, 서버가 battle_ready=true로 확인한 부대만 배틀에 불러올 수 있습니다.</p>
+       <details class="planner-ux-about"><summary>추천 기준 · 서버 검증 안내</summary><p>추천은 실측 승률이 아닌 원문·보유 적합성 기준입니다. 고정한 편성은 보존되고, 빈 전법은 직접 편집해 서버 검증을 받아야 합니다. 서버가 battle_ready=true로 확인한 부대만 배틀에 불러올 수 있습니다.</p></details>
        <div id="planner-results" class="planner-results" aria-live="polite"></div>
      </div>
    </section>
@@ -178,7 +178,7 @@
 
    <section id="view-roster" class="view" hidden aria-labelledby="roster-title">
     <div class="view-head">
-      <h1 id="roster-title">보유 풀</h1>
+      <h1 id="roster-title">보유 풀 · 내 덱</h1>
       <p class="view-sub">갖고 있는 무장·전법을 등록하면 그걸로 맞출 수 있는 추천덱을 찾고, 여러 부대를 겹치지 않게 짜고, 완성한 덱을 저장합니다. 모든 정보는 이 브라우저에만 저장됩니다.</p>
     </div>
     <nav class="subnav" aria-label="보유 풀 메뉴">
@@ -186,6 +186,7 @@
       <a href="#/roster/presets" data-sub="presets"><i>2</i>추천덱 찾기</a>
       <a href="#/roster/lineup" data-sub="lineup"><i>3</i>내 구성 <b id="sub-n-lineup"></b></a>
       <a href="#/roster/decks" data-sub="decks"><i>4</i>내 덱 <b id="sub-n-decks"></b></a>
+      <a href="#/planner" class="workspace-subnav-go"><i>5</i>편성 작업실 ↗</a>
     </nav>
 
     <div id="roster-pool" class="sub" hidden>
@@ -338,6 +339,6 @@
   </dialog>
 
   <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
-  <script type="module" src="./app.js?v=1.6.2"></script>
+  <script type="module" src="./app.js?v=1.6.5"></script>
 </body>
 </html>

@@ -11,6 +11,7 @@ import {reviewArmyCoexistence} from './guide-content.js';
 import {encodePoolCode,decodePoolCode} from './pool-code.js';
 import {PROJECTIONS,isProjection} from './planner-core.js?v=1.5.2';
 import {isBattleReadyPreset,resolvedBattleReference} from './battle-ready-decks.js?v=1.5.7';
+import {openArmyWorkspaceEditor} from './army-workspace-editor.js?v=1.6.5';
 
 /* ── 기본 도구 ─────────────────────────────────────────── */
 const $=id=>document.getElementById(id);
@@ -1570,12 +1571,20 @@ function renderLineupView(){
 
 /* 4) 내 덱 */
 const pendingDeck={};
+const workspaceDeckSelection=new Set();
+let pendingWorkspaceDeckIds=null;
 function renderDecksView(){
   const host=$('roster-decks'),list=decks.forSeason(state.season),other=decks.all().length-list.length;
   const help=h('p',{class:'sub-help',text:`배틀 화면이나 추천덱에서 저장한 덱입니다. '편집'을 누르면 배틀에서 변경 후 같은 덱에 저장할 수 있습니다. ⠿ 손잡이를 드래그하면 저장된 덱의 1·2·3번 위치가 바로 바뀝니다. ★ 기본 편성은 처음 열 때 아군에 들어갑니다. 한국 시즌 ${state.season} 덱만 보입니다${other?` (다른 시즌 ${other}개)`:''}.`});
   if(!list.length){fill(host,help,h('div',{class:'empty-box'},h('p',{text:'저장한 덱이 없습니다.'}),rosterLink('presets','추천덱에서 가져오기','solid-btn small')));return;}
   const btn=(text,act,id,cls='ghost-btn small')=>h('button',{type:'button',class:cls,dataset:{deckAct:act,id},text});
-  fill(host,help,h('div',{class:'deck-list'},list.map(d=>{
+  // 이 선택은 5군 계획 입력용 메모리 상태다. 보유풀/내 덱 원본에 기록하지 않는다.
+  const selectedIds=list.filter(d=>d.army&&workspaceDeckSelection.has(d.id)).map(d=>d.id);
+  const workActions=h('section',{class:'workspace-deck-selection'},
+    h('div',null,h('strong',{text:`편성 작업실로 보내기 · ${selectedIds.length}/5개 선택`}),
+      h('p',{class:'muted-note',text:'덱을 최대 5개 선택해 📌 고정 편성으로 가져오고, 남는 순위에 서버 후보를 추천받습니다. 저장된 덱 자체는 변경되지 않습니다.'})),
+    h('button',{type:'button',class:'solid-btn',disabled:!selectedIds.length,dataset:{deckWorkspaceGo:'1'},text:`선택 ${selectedIds.length}개로 편성하기 →`}));
+  fill(host,help,workActions,h('div',{class:'deck-list'},list.map(d=>{
     if(d.planning_draft){
       const plan=d.planning_draft;
       return h('article',{class:'deck-item planning-draft'},
@@ -1589,19 +1598,40 @@ function renderDecksView(){
     }
     const ids=orderedHeroIds(d.army);
     return h('div',{class:'deck-item'+(d.base?' is-base':'')},
+      h('label',{class:'workspace-deck-toggle'},
+        h('input',{type:'checkbox',checked:workspaceDeckSelection.has(d.id),dataset:{workspacePick:d.id}}),
+        h('span',{text:workspaceDeckSelection.has(d.id)?'5군 고정 편성에 선택됨':'5군 작업실에 선택'})),
       h('div',{class:'top'},h('strong',{text:d.name}),d.base?h('span',{class:'tag legend',text:'★ 기본 편성'}):null),
       d.review_required?h('p',{class:'rec-counter-unknown',text:'검수용 초안: 원문 전후열이 확인되지 않았습니다. 배틀 편성 화면에서 무장 위치·전법·병법·장비를 수정하세요.'}):null,
       d.review_note?h('p',{class:'rec-counter-unknown',text:d.review_note}):null,
       memberOrder('decks',d.id,ids),
       h('span',{class:'muted-note',text:`저장: ${new Date(d.updated).toLocaleString('ko-KR',{dateStyle:'short',timeStyle:'short'})}`}),
       h('div',{class:'deck-actions'},
-        btn('편집 · 기존 덱에 저장','edit',d.id,'solid-btn small'),
+        btn('여기서 바로 편집','quick',d.id,'solid-btn small'),
+        btn('배틀 상세 편집','edit',d.id,'ghost-btn small'),
         btn(d.review_required?'아군에서 초안 검수':'배틀: 아군으로','left',d.id,'ghost-btn small ally-btn'),btn('배틀: 상대로','right',d.id),
         btn(d.base?'기본 해제':'★ 기본으로','base',d.id),
         btn(pendingDeck[d.id]?'한 번 더 누르면 삭제':'삭제','delete',d.id,'ghost-btn small danger')));
   })));
 }
 
+/** 편성 작업실 공용 인라인 편집. 저장 덱 ID와 다른 필드를 그대로 보존한다. */
+async function quickEditSavedDeck(id){
+  const original=decks.all().find(d=>d.id===id&&d.season===state.season&&d.army);
+  if(!original)throw new Error('현재 시즌에서 편집할 수 있는 내 덱을 찾지 못했습니다.');
+  await openArmyWorkspaceEditor({army:prep(original.army),data:state.data,title:`내 덱 편집 · ${original.name}`,
+    onSave:async next=>{
+      const army=loadable(state.data,prep(next));
+      const valid=isValid(state.data,army);
+      const existing=decks.all().find(d=>d.id===id);
+      if(!existing)throw new Error('저장 중 원본 덱이 변경되었습니다. 다시 열어 주세요.');
+      // 개인 브라우저의 덱 값만 저장. 보유풀/구성 저장소를 수정하지 않는다.
+      try{localStorage.setItem('cheonha-decks-before-workspace-edit-v165',store.get(KEYS.decks)||'');}catch{}
+      decks.update(id,{name:army.name,army:clone(army),review_required:!valid,planning_draft:null});
+      updateRosterCounts();renderDecksView();
+      notify(valid?'내 덱을 같은 ID로 수정했습니다.':'설정을 저장했습니다. 미완성 항목은 검수용으로 표시합니다.',!valid);
+    }});
+}
 /* ── 배틀: 내 덱 저장 대화상자 ─────────────────────────── */
 let deckSide='left';const pending={};
 function showDeckSave(side){
@@ -2086,6 +2116,7 @@ $('roster-lineup').onclick=e=>{
 $('roster-decks').onclick=e=>{
   const b=e.target.closest('[data-deck-act]');if(!b)return;
   const {deckAct:act,id}=b.dataset,d=decks.all().find(x=>x.id===id);if(!d)return;
+  if(act==='quick')return; // 별도 인라인 편집기에서 처리
   try{
     if(act==='edit'){beginDeckEdit(id);return;}
     if(act==='left'||act==='right'){sendToBattle(loadable(state.data,prep(d.army)),act,`'${d.name}'을(를) ${SIDE_NAME[act]} 부대로 불러왔습니다.`);return;}
@@ -2168,8 +2199,9 @@ async function route(){
       if(!recommendationsView){const mod=await import('./recommendations-view.js?v=1.5.2');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset,poolSnapshot,saveRecommendedDeck,saveReferenceDraft,notify});}
       await recommendationsView.show();
     }else if(r.view==='planner'){
-      if(!plannerView){const mod=await import('./planner-view.js?v=1.6.2');plannerView=mod.createPlannerView({state,h,fill,poolSnapshot,notify,openConnection,saveServerEntry:saveServerPlannerEntry,sendServerEntry:sendServerPlannerEntry});}
-      await plannerView.show();
+      if(!plannerView){const mod=await import('./planner-view.js?v=1.6.5');plannerView=mod.createPlannerView({state,h,fill,poolSnapshot,notify,openConnection,saveServerEntry:saveServerPlannerEntry,sendServerEntry:sendServerPlannerEntry,listSavedDecks:()=>decks.forSeason(state.season),openSavedDeckEditor:quickEditSavedDeck,openPlannerArmyEditor:({entry,onSave})=>openArmyWorkspaceEditor({army:prep(entry.army),data:state.data,title:`${entry.position}군 편성 수정`,onSave})});}
+      const fromDecks=pendingWorkspaceDeckIds;pendingWorkspaceDeckIds=null;
+      await plannerView.show({savedDeckIds:fromDecks});
     }else if(r.view==='matchups'){
       if(!matchupBoardView){const mod=await import('./matchup-board-view.js?v=1.5.2');matchupBoardView=mod.createMatchupBoardView({h,fill,notify});}
       await matchupBoardView.show();
@@ -2196,6 +2228,24 @@ function guideCtx(){
     switchSeason:async n=>{await switchSeason(n);dirty();render();}};
 }
 window.addEventListener('hashchange',route);
+// 내 덱 다중 선택 → 통합 편성 작업실. 개인 덱은 여기서 수정하지 않는다.
+$('roster-decks').addEventListener('change',evt=>{
+  const item=evt.target.closest('[data-workspace-pick]');if(!item)return;
+  if(item.checked&&workspaceDeckSelection.size>=5){item.checked=false;notify('최대 5개까지 선택할 수 있습니다.',true);return;}
+  item.checked?workspaceDeckSelection.add(item.dataset.workspacePick):workspaceDeckSelection.delete(item.dataset.workspacePick);
+  renderDecksView();
+});
+$('roster-decks').addEventListener('click',evt=>{
+  const go=evt.target.closest('[data-deck-workspace-go]');if(!go)return;
+  const ordered=decks.forSeason(state.season).filter(x=>workspaceDeckSelection.has(x.id)&&x.army).map(x=>x.id);
+  if(!ordered.length)return;
+  pendingWorkspaceDeckIds=ordered;
+  if(location.hash==='#/planner')route();else location.hash='#/planner';
+});
+$('roster-decks').addEventListener('click',evt=>{
+  const q=evt.target.closest('[data-deck-act="quick"]');if(q)task(()=>quickEditSavedDeck(q.dataset.id));
+});
+
 
 /* ── 시작 ─────────────────────────────────────────────── */
 async function init(){
