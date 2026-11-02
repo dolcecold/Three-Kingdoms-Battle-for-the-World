@@ -1314,3 +1314,10 @@ html,body{background-color:#10151B}
 /* v1.6.1: server-side candidate navigation */
 .planner-alternative-pagination{display:flex;align-items:center;justify-content:center;gap:1rem;padding:0.8rem 0;flex-wrap:wrap}
 .planner-alternative-description small{display:block;line-height:1.5;word-break:break-word}
+
+/* v1.6.2: 길드 공용 후보 탐색, 선택 가능 우선 */
+.planner-candidate-filter{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid var(--line-soft);border-radius:8px;background:var(--bg);cursor:pointer;margin:6px 0 12px}
+.planner-candidate-filter input{width:18px;height:18px;accent-color:var(--ally);flex:none}
+.planner-candidate-filter .muted-note{margin-left:auto;font-weight:400;font-size:12px}
+.planner-alternative-row:has(button:not(:disabled)){border-color:color-mix(in srgb,var(--ally) 45%,var(--line-soft))}
+@media(max-width:650px){.planner-candidate-filter{flex-wrap:wrap}.planner-candidate-filter .muted-note{margin-left:27px}}
