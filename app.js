@@ -2193,7 +2193,7 @@ async function route(){
       const sub=['pool','presets','lineup','decks'].includes(r.parts[0])?r.parts[0]:(poolActive()?'presets':'pool');
       await renderRoster(sub);
     }else if(r.view==='guides'){
-      if(!guideView){const mod=await import('./guide-view.js');guideView=await mod.createGuideView(guideCtx());}
+      if(!guideView){const mod=await import('./guide-view.js?v=1.6.6');guideView=await mod.createGuideView(guideCtx());}
       await guideView.show(r.parts);
     }else if(r.view==='recommendations'){
       if(!recommendationsView){const mod=await import('./recommendations-view.js?v=1.5.2');recommendationsView=mod.createRecommendationsView({state,h,fill,ensurePresets,presetsData:()=>presets,openPreset,poolSnapshot,saveRecommendedDeck,saveReferenceDraft,notify});}
@@ -2211,6 +2211,7 @@ async function route(){
 function guideCtx(){
   return {state,h,fill,notify,message,clone,prep,loadable,isValid,validateArmy,store,SIDE_NAME,
     poolHeroIds:()=>poolActive()?[...myPool.heroes]:null,
+    poolTacticIds:()=>poolActive()?[...myPool.tactics]:null,
     ensurePresets,openPreset,addTemplatesToLineup,
     sendToBattle:(army,side,text,warn)=>sendToBattle(army,side,text,warn),
     presetsData:()=>presets,

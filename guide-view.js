@@ -9,6 +9,9 @@ export async function createGuideView(ctx){
   const articles=new Map(content.articles.map(a=>[a.id,a]));
   const menuOf=new Map(content.menus.flatMap(m=>m.article_ids.map(id=>[id,m])));
   let current={menu:null,article:null};
+  let effectExplorer=null;
+  const guideLayout=document.querySelector('#view-guides .guide-layout');
+  const guideTabs=document.getElementById('guide-main-tabs');
 
   $('guide-scope').textContent=content.scope_note;
   $('guide-search').oninput=()=>renderNav();
@@ -37,6 +40,15 @@ export async function createGuideView(ctx){
 
   /* ── 본문 ── */
   async function show(parts){
+    const isEffects=parts[0]==='effects';
+    guideLayout?.classList.toggle('effects-mode',isEffects);
+    guideTabs?.querySelectorAll('a').forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')===(isEffects?'#/guides/effects':'#/guides')?'page':'false'));
+    if(isEffects){
+      if(!effectExplorer){const mod=await import('./effect-explorer-view.js?v=1.6.6');effectExplorer=mod.createEffectExplorer(ctx,content.glossary);} 
+      fill($('guide-body'),effectExplorer.element);
+      effectExplorer.show();
+      return;
+    }
     const menu=content.menus.find(m=>m.id===parts[0])||content.menus[0];
     const articleId=parts[1]&&menu.article_ids.includes(parts[1])?parts[1]:menu.article_ids[0];
     current={menu:menu.id,article:articleId};
